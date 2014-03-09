@@ -7,11 +7,11 @@
     <description>xxyys common libary</description>
     <packaging>jar</packaging>
 
-    <!--<scm>
-        <connection>git://192.168.1.242/common/xyc.git</connection>
-        <developerConnection>https://xxyy@192.168.1.242:8443/git/common/xyc.git</developerConnection>
-        <url>https://192.168.1.242:8443/summary/common%2Fxyc.git</url>
-    </scm>-->
+    <scm>
+        <connection>git@bitbucket.org:xxyy/xyc.git</connection>
+        <developerConnection>git@bitbucket.org:xxyy/xyc.git</developerConnection>
+        <url>https://bitbucket.org/xxyy/xyc/</url>
+    </scm>
   
     <dependencies>
         <dependency>
