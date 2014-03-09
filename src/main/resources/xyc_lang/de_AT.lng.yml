@@ -1,0 +1,23 @@
+#XyCommon language file: de_AT
+#Author: xxyy98
+#ESCAPE Special chars: &uuml; &auml; &ouml; &szlig;
+#& == PARAGRAPH (color codes)
+info:
+  short: 'de_AT'
+  author: 'xxyy98'
+  long: 'Deutsch (&Ouml;sterreich)'
+  en_name: 'German (Austria)'
+  plugin: 'XYC'
+lang:
+  XYC-name: 'XYC'
+  XYC-prefix: '&7[&8XYC&7] '
+  XYC-pricol: '&7'
+  XYC-warningcol: '&8'
+  XYC-codecol: '&3'
+  XYC-kickconsolemsg: '%1$sDas Kommando /%2$s kann nur von einem Spieler ausgef&uuml;hrt werden!'
+  XYC-noperms-1: '&7Du hast keine Berechtigung, um den Befehl %1$s zu verwenden.'
+  XYC-noperms-2: '&7Ben&ouml;tigte Berechtigung: &3%1$s'
+  XYC-nopermsact-1: '&7Du hast keine Berechtigung, um folgende Aktion auszuf&uuml;hren: &3%1$s'
+  XYC-lang-nan: '&8Fehler beim Aufrufen der Hilfe: Die Seitenzahl ist keine Zahl!'
+  XYC-lang-header: '&7==={&l&8%1$s - Seite %2$s/%3$s&r&7}&7==='
+  XYC-lang-nextpage: '&8Um die n&auml;chste Seite zu sehen, tippe &3/%1$s %2$s&8.' 
