@@ -2,3 +2,5 @@ bin/
 target/
 .idea/
 *.iml
+build.xml*
+javadoc*.xml
