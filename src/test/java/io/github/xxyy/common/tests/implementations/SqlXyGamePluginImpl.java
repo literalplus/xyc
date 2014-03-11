@@ -44,7 +44,7 @@ public class SqlXyGamePluginImpl extends SqlXyGamePlugin {
 
     @Override
     public String getSqlHost() {
-        return "";
+        return "jdbc:mysql://localhost:3306/";
     }
 
     @Override
@@ -54,7 +54,7 @@ public class SqlXyGamePluginImpl extends SqlXyGamePlugin {
 
     @Override
     public String getSqlUser() {
-        return "";
+        return "root";
     }
 
     @Override

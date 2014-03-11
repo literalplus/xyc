@@ -4,19 +4,12 @@
  */
 package io.github.xxyy.common.tests;
 
-import io.github.xxyy.common.games.data.PlayerWrapper;
-import io.github.xxyy.common.games.data.PlayerWrapperFactory;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
  *
  * @author xxyy98 (http://xxyy.github.io/)
  */
 public class PlayerWrapperTest extends XyCommonTest {
-
+/*
     private PlayerWrapper wrp;
 
     @Before
@@ -86,5 +79,5 @@ public class PlayerWrapperTest extends XyCommonTest {
     public void testGetNameByNick() {
         System.out.println("Now testing getNameByNick(String)...");
         System.out.println("'xxyy'->" + PlayerWrapper.getNameByNick("xxyy"));
-    }
+    }*/
 }

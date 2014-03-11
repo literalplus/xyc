@@ -354,6 +354,11 @@ public class TestServer implements Server {
     }
 
     @Override
+    public BanList getBanList(BanList.Type type) {
+        throw new UnsupportedOperationException("Not supported yet."); //TODO not yet implemented overriding method
+    }
+
+    @Override
     public Set<OfflinePlayer> getOperators() {
         throw new UnsupportedOperationException("Not supported yet."); //TODO not yet implemented overriding method
     }

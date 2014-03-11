@@ -1,21 +1,12 @@
 package io.github.xxyy.common.tests;
 
-import io.github.xxyy.common.tests.implementations.SqlXyGamePluginImpl;
-import io.github.xxyy.common.tests.implementations.TestServer;
-import io.github.xxyy.common.xyplugin.SqlXyGamePlugin;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-
-import java.sql.SQLException;
-
 /**
  *
  * @author xxyy98 (http://xxyy.github.io/)
  */
 public class XyCommonTest {
 
-    public static SqlXyGamePlugin instance;
+    /*public static SqlXyGamePlugin instance;
     public static boolean initialised = false;
 
     @Before
@@ -41,9 +32,9 @@ public class XyCommonTest {
 
     @org.junit.Test(timeout = 20_000)
     public void testQuery() throws SQLException {
-        /*ResultSet rs = instance.getSql().executeQuery("SELECT 1");
+        *//*ResultSet rs = instance.getSql().executeQuery("SELECT 1");
         rs.next();
-        Assert.assertEquals("Could not connect to SQL - Could not SELECT 1!", 1, rs.getInt(1));*/
-    }
+        Assert.assertEquals("Could not connect to SQL - Could not SELECT 1!", 1, rs.getInt(1));*//*
+    }*/
 
 }
