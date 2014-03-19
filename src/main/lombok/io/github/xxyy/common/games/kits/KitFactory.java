@@ -32,7 +32,6 @@ public class KitFactory {
      * @param authorName Who created the kit. For use with {@link CommandSender#getName()}.
      * @param ldr        {@link KitLoader} to use.
      *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public KitFactory(String name, int id, String authorName, KitLoader ldr) {
         this.authorName = authorName;
@@ -72,7 +71,6 @@ public class KitFactory {
 
     /**
      * @return A produced {@link KitInfo}. <code>null</code> if not produced.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public KitInfo fetchProduct() {
         return this.product;
@@ -80,7 +78,6 @@ public class KitFactory {
 
     /**
      * @return The armor for this kit.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack[] getArmor() {
         return this.armor;
@@ -88,7 +85,6 @@ public class KitFactory {
 
     /**
      * @return Who authored this kit?
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getAuthorName() {
         return this.authorName;
@@ -97,7 +93,6 @@ public class KitFactory {
     /**
      * @return The inventory contents of this kit, excluding armor.
      * @see KitFactory#getArmor()
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack[] getContents() {
         return this.contents;
@@ -105,7 +100,6 @@ public class KitFactory {
 
     /**
      * @return The icon that is used to represent tis KitFactory's kit in a {@link KitSelector}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack getIcon() {
         return this.icon;
@@ -114,7 +108,6 @@ public class KitFactory {
     /**
      * @return Gets the ID of the kit to be produced.
      * @see KitFactory#KitFactory(String, int, String, KitLoader)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public int getId() {
         return this.id;
@@ -123,7 +116,6 @@ public class KitFactory {
     /**
      * @return Gets the {@link KitLoader} of the kit to be produced.
      * @see KitFactory#KitFactory(String, int, String, KitLoader)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public KitLoader getLdr() {
         return this.ldr;
@@ -132,7 +124,6 @@ public class KitFactory {
     /**
      * @return Gets the name of the kit to be produced.
      * @see KitFactory#KitFactory(String, int, String, KitLoader)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getName() {
         return this.name;
@@ -140,7 +131,6 @@ public class KitFactory {
 
     /**
      * @return The name of the objective that needs to be fulfilled by an user in order to use this kit.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getObjectiveNeeded() {
         return this.objectiveNeeded;
@@ -149,7 +139,6 @@ public class KitFactory {
     /**
      * @return The amount of the objective that needs to be fulfilled by an user in order to use this kit. What this is is objective-implementation
      *         specific.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getObjectiveNeededAmount() {
         return this.objectiveNeededAmount;
@@ -157,7 +146,6 @@ public class KitFactory {
 
     /**
      * @return The icon that is used to represent tis KitFactory's kit in a {@link KitSelector} if the objective is not fulfilled by an user.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack getUnavailIcon() {
         return this.unavailIcon;
@@ -174,7 +162,6 @@ public class KitFactory {
 
     /**
      * @return Whether this kit is ready to be produced (i.e. steps 1 and 2 have been completed)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public boolean isCompleted() {
         return this.contents != null && this.icon != null;
@@ -182,7 +169,6 @@ public class KitFactory {
 
     /**
      * @return If a product is available for retrieval.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public boolean isProduced() {
         return this.product != null;
@@ -190,7 +176,6 @@ public class KitFactory {
 
     /**
      * @return Whether step 3 is completed (needed for step 4)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public boolean isStep3Complete() {
         return this.unavailIcon != null;
@@ -200,8 +185,6 @@ public class KitFactory {
      * Sends the completion state of this {@link KitFactory} to a {@link Player} as a ToDo List.
      *
      * @param plr Player to receive the list.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void sendCompletionState(Player plr) {
         plr.sendMessage(new String[] {
@@ -215,8 +198,6 @@ public class KitFactory {
 
     /**
      * Sets the armor of the kit.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setArmor(ItemStack[] armor) {
         this.armor = armor;
@@ -226,7 +207,6 @@ public class KitFactory {
      * Sets the contents of the kit, excluding armor.
      *
      * @see KitFactory#setArmor(ItemStack[])
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setContents(ItemStack[] contents) {
         this.contents = contents;
@@ -235,7 +215,6 @@ public class KitFactory {
     /**
      * Sets the icon to be displayed in a {@link KitLoader} to represent the kit to be produced.
      *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setIcon(ItemStack icon) {
         this.icon = icon;
@@ -244,7 +223,6 @@ public class KitFactory {
     /**
      * Sets the name of the objective to be completed by an user in order to use this kit.
      *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setObjectiveNeeded(String objectiveNeeded) {
         this.objectiveNeeded = objectiveNeeded;
@@ -253,7 +231,6 @@ public class KitFactory {
     /**
      * Sets the amount of the objective to be completed by an user in order to use this kit. What this is is objective-implementation-specific.
      *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setObjectiveNeededAmount(String objectiveNeededAmount) {
         this.objectiveNeededAmount = objectiveNeededAmount;
@@ -262,7 +239,6 @@ public class KitFactory {
     /**
      * Sets the icon to be displayed in a {@link KitLoader} to represent the kit to be produced if the objective is not fulfilled by an user.
      *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setUnavailIcon(ItemStack unavailIcon) {
         this.unavailIcon = unavailIcon;
@@ -274,7 +250,6 @@ public class KitFactory {
      * @param plr Player to receive any messages (in German).
      *
      * @return Whether the kit was produced successfully.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public boolean tryProduce(Player plr) {
         if (!this.isCompleted()) {
