@@ -223,7 +223,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <bottom><![CDATA[Copyright ${inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
+                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
                     <destDir>target/site/apidocs</destDir>
                     <detectLinks>true</detectLinks>
