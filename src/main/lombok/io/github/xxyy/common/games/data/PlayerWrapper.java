@@ -49,7 +49,6 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     /**
      * Gets a wrapper for a {@link CommandSender}. If it's a {@link ConsoleCommandSender}, internal things will happen. Use this method if you want to
      * check permissions for {@link CommandSender}s!
-     * <p/>
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
      *
      * @param sender A {@link CommandSender}. (must be {@link Player} or {@link ConsoleCommandSender} or {@link BlockCommandSender})
@@ -74,7 +73,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
 
     /**
      * Wraps a {@link Player}.
-     * <p/>
+     *
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
      *
      * @param plr  Player to wrap.
@@ -95,7 +94,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      * return null.
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     * <p/>
+     *
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
      *
      * @param plrName Player to wrap (by name)
@@ -111,7 +110,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      * return null.
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     * <p/>
+     *
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
      *
      * Only use this if you don't have anything else, stuff will break very badly if there's no database entry for this UUID.
@@ -283,7 +282,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      * Checks if this {@link PlayerWrapper} has a permission. If a {@link ConsoleCommandSender} or {@link BlockCommandSender} was wrapped using
      * {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)},
      * <code>true</code> will always be returned.
-     * <p/>
+     *
      * Regular expressions can be used, for example:
      * <code>game.admin.*</code> matches
      * <code>game.admin</code> and, for example,
@@ -569,17 +568,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     }
 
     /**
-     * Initialises tables used by this class. This executes the following SQL:
-     * <code>CREATE DATABASE IF NOT EXISTS</code> {@value GameLib#XY_DB_NAME}
-     * <code>CREATE TABLE IF NOT EXISTS</code> {@value PlayerWrapper#FULL_XY_TABLE_NAME}
-     * `username` VARCHAR(30) NOT NULL,
-     * `passes_amount` INT UNSIGNED NOT NULL DEFAULT '0',
-     * `passes_used` INT UNSIGNED NOT NULL DEFAULT '0',
-     * `nickname` VARCHAR(30) DEFAULT NULL,
-     * `groupname` VARCHAR(30) NOT NULL DEFAULT 'default',
-     * PRIMARY KEY (`username`)
-     * COLLATE='utf8_unicode_ci'
-     * ENGINE=MyISAM;</code>
+     * Initialises tables used by this class.
      *
      * @param ssql SafeSql to use to query the database.
      */

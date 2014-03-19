@@ -1,8 +1,8 @@
 package io.github.xxyy.common.util;
 
-import java.util.regex.Pattern;
-
 import org.bukkit.ChatColor;
+
+import java.util.regex.Pattern;
 
 /**
  * Class that provides some static methods for chat formatting
@@ -33,15 +33,14 @@ public abstract class ChatHelper
      */
     public static float percentForCaps = 50;
     /**
-     * These characters will cause '&' to become {@link ChatColor#COLOR_CHAR} if followed by one of them.
+     * These characters will cause '&amp;' to become {@link ChatColor#COLOR_CHAR} if followed by one of them.
      */
     public static String allowedChatColors = "012356789AaBbDdEeFfRr";
 
     /**
-     * Converts a string for colorizing, using '&' as color char and {@link ChatHelper#allowedChatColors} for allowed colors.
+     * Converts a string for colorizing, using '&amp;' as color char and {@link ChatHelper#allowedChatColors} for allowed colors.
      * @param message Message to colorize
      * @return Colorized message
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static String convertDefaultChatColors(String message)
     {
@@ -56,10 +55,9 @@ public abstract class ChatHelper
     }
 
     /**
-     * Converts a string for colorizing, using '&' as color char and "012356789AaBbCcDdEeFfKkRr" for allowed colors.
+     * Converts a string for colorizing, using '&amp;' as color char and "012356789AaBbCcDdEeFfKkRr" for allowed colors.
      * @param message Message to colorize
      * @return Colorized message
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static String convertStandardColors(String message)
     {
@@ -77,7 +75,6 @@ public abstract class ChatHelper
      * Detects if a message is an advertisement (aka a server or internet address) based on {@link ChatHelper#adDetectionLevel}.
      * @param msg Message to check
      * @return If the message is probably an ad.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static boolean isAdvertisement(String msg)
     {
@@ -101,8 +98,7 @@ public abstract class ChatHelper
     /**
      * Checks if a message is CAPTIALIZED, based on {@link ChatHelper#percentForCaps}.
      * @param msg Message to check
-     * @return Whether {@link ChatHelper#percentForCaps}% of this message are CAPITALIZED. 
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
+     * @return Whether {@link ChatHelper#percentForCaps}% of this message are CAPITALIZED.
      */
     public static boolean isCaps(String msg)
     {
@@ -120,11 +116,10 @@ public abstract class ChatHelper
     }
 
     /**
-     * replaces some common insults with nice replacements (german!) and some other things (for example '<3').
+     * replaces some common insults with nice replacements (german!) and some other things (for example '&lt;3').
      * Remember to ship your plugin in UTF-8 if you use this method!
      * @param msg Message to use
      * @return Censored and prettified message
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static String replaceSpecialWords(String msg)
     {

@@ -3,7 +3,6 @@ package io.github.xxyy.common.xyplugin;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.SqlConnectable;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
@@ -14,10 +13,6 @@ import java.util.List;
  * MUST be implemented if a plugin wants to use SafeSql. If you only need a single query, use XyHelper.commonutil Thou shall execute: ssql = new
  * SafeSql(this); ssql.con=sql.makeConnection(); ssql.dbName = "%DBNAME%";
  *
- * @see {@link GenericXyPlugin}
- * @see {@link AbstractXyPlugin}
- * @see {@link XyPlugable}
- * @see {@link JavaPlugin}
  *
  */
 public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnectable {

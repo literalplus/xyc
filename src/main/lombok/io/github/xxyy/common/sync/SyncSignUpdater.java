@@ -12,8 +12,9 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.Callable;
 
 /**
+ * Updates a Sign on the main server thread.
  *
- * @author xxyy98 < xxyy98@gmail.com >
+ * @author xxyy
  */
 public class SyncSignUpdater implements Callable<Void> {
 
@@ -51,7 +52,6 @@ public class SyncSignUpdater implements Callable<Void> {
      * @param lines Lines to change, Expected size is 4 elements; Set any element to null if you ant to keep the previous line value.
      *
      * @return Always true, for methods which want to return booleans in a single line.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static boolean invoke(Sign sign, String[] lines) {
         Bukkit.getScheduler().callSyncMethod(AbstractXyPlugin.getInstances().get(0), new SyncSignUpdater(sign, lines));
@@ -65,7 +65,7 @@ public class SyncSignUpdater implements Callable<Void> {
      * @param lineId Line to change
      * @param line   New content of this line
      *
-     * @return Always true, for methods which want to return booleans in a s* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @return Always true, for methods which want to return booleans in a single statement.
      */
     public static boolean invoke(Sign sign, int lineId, String line) {
         String[] lines = new String[4];

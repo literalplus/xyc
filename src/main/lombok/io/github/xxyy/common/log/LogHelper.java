@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * It is intended that you create static Loggers with Getters (and - if needed - Setters)
  * and initialize them in {@link LogHelper#initLoggers()}.
  * To initialize logging, you would call the following in you Plugin's {@link GenericXyPlugin#onEnable()}:
- * <code>(new <class extends LogHelper()>).initLoggers();</code>
+ * <code>(new [class extends LogHelper()]).initLoggers();</code>
  * (reference will not be needed any more)
  * 
  * @author <a href="http://xxyy.github.io/">xxyy</a>
@@ -31,8 +31,6 @@ public abstract class LogHelper
     
     /**
      * Override this method with logic to initialize your loggers using {@link LogHelper#initLogger(Logger, String, Formatter)}.
-     * 
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public abstract void initLoggers();
 

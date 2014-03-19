@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 /**
  * Example implementation of {@link PlayerWrapper}. Allows for access to the API, even if no own data needs to be saved.
  *
- * @author xxyy98 < xxyy98@gmail.com >
+ * @author xxyy
  */
 public class GenericPlayerWrapper extends PlayerWrapper<GenericPlayerWrapper> {
 

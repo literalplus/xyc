@@ -38,7 +38,7 @@ public class SyncCommandSenderMessage implements Callable<Boolean>
      * Use this if you don't care when the message is being sent.
      * @param sender Sender to be messaged
      * @param message Message to send
-     * @return Always true, for methods which want to return booleans in a s* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @return Always true, for methods which want to return booleans in a single statement.
      */
     public static boolean send(CommandSender sender, String message){
         Bukkit.getScheduler().callSyncMethod(AbstractXyPlugin.getInstances().get(0), new SyncCommandSenderMessage(sender, message));

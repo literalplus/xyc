@@ -8,7 +8,7 @@ package io.github.xxyy.common.util;
 public interface ToShortStringable {
     /**
      * @return A short String representation of this object.
-     * @see Object* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @see Object#toString()
      */
     public String toShortString();
 }

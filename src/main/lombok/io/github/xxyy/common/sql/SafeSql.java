@@ -95,10 +95,10 @@ public class SafeSql implements AutoCloseable {
     }
 
     /**
-     * formats an exception, prints a line before it, then prints (to Ops & console) & logs it.
+     * formats an exception, prints a line before it, then prints (to Ops &amp; console) &amp; logs it.
      *
      * @param e         Exception to use
-     * @param firstLine A line describing the error, normally class & method name - more efficient than getting the caller (some methods take up to
+     * @param firstLine A line describing the error, normally class &amp; method name - more efficient than getting the caller (some methods take up to
      *                  7s!)
      */
     public void formatAndPrintException(SQLException e, String firstLine) {
@@ -168,7 +168,7 @@ public class SafeSql implements AutoCloseable {
 
     /**
      * Safely prepares a statement. Remember to close it afterwards. Insert values by using '?'.
-     * <p/>
+     *
      * Example:
      * <code>
      * PreparedStatement stmt = null;

@@ -1,9 +1,10 @@
 package io.github.xxyy.common.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Class that provides some static methods to deal with numbers.
@@ -23,9 +24,9 @@ public abstract class NumberHelper {
 
     /**
      * Formats a number with spaces as group seperator for use on signs. The number will be colored in black, if it's to short to actually
-     * automatically be aligned right, it will be prefixed with grey underscores. Possible outputs: &7________&0123 123456789012345
+     * automatically be aligned right, it will be prefixed with grey underscores. Possible outputs: &amp;7________&amp;0123 123456789012345
      *
-     * @param number The number to be format* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @param number The number to be formatted
      */
     public static String formatForSignRightAligned(int number) {
 //        String rtrn = NumberFormat.getInstance(Locale.GERMAN).format(number);
@@ -45,7 +46,6 @@ public abstract class NumberHelper {
      * @param def    int to return if <code>source</code> does not contain a valid int.
      *
      * @return int contained in <code>source</code> or <code>def</code>.
-     * @* @author <a href="http://xxyy.github.io/">xxyy</a>* @author xxyy98<xxyy98@gmail.com>
      */
     public static int tryParseInt(final String source, final int def) {
         int result;

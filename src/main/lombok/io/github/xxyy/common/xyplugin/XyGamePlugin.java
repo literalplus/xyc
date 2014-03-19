@@ -12,7 +12,6 @@ public interface XyGamePlugin
      *
      * @param desc Short description of the error.
      * @param caller Which method reported this error?
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void setError(String desc, String caller);
 }

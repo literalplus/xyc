@@ -2,10 +2,9 @@ package io.github.xxyy.common;
 
 import io.github.xxyy.common.localisation.XycLocale;
 import io.github.xxyy.common.xyplugin.GenericXyPlugin;
+import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
-
-import org.bukkit.command.CommandSender;
 
 
 /**
@@ -29,7 +28,7 @@ public class HelpManager {
 	/**
 	 * Sub-commands of this command.
 	 * i.e. for /xyc test, the mapping would be as follows:
-	 * "test" => "An example of a sub-command."
+	 * "test" =&gt; "An example of a sub-command."
 	 */
 	public HashMap<String,String> subCmds;
 	
@@ -38,7 +37,6 @@ public class HelpManager {
 	 * @param cmdName Name of the command (see {@link HelpManager#helpPageTitle})
 	 * @param cmdDescLines A few loines to describe this command to be displayed on the first help page.
 	 * @param subCmds see: {@link HelpManager#subCmds}
-	 * @author <a href="http://xxyy.github.io/">xxyy</a>
 	 */
 	public HelpManager(String cmdName,String[] cmdDescLines,HashMap<String,String> subCmds){
 		this.helpPageTitle=cmdName; this.subCmds=subCmds; 
@@ -52,8 +50,7 @@ public class HelpManager {
 	 * @param pageNum Page number - provide "1" to show the first page.
 	 *                    If this is not an int, an error message will be displayed.
 	 * @param helpCmdLabel Help command to display a specific page, i.e. "/xyc help" will be
-	 *                      displayed as "/xyc help <next Page>".
-	 * @author <a href="http://xxyy.github.io/">xxyy</a>
+	 *                      displayed as "/xyc help [next Page]".
 	 */
 	public void printHelpToSender(CommandSender sender,String label,String pageNum,String helpCmdLabel){
 		//6 Commands/page
@@ -125,9 +122,8 @@ public class HelpManager {
 	 * @param label Alias this comamnd was called with.
 	 * @param pageNum page to be displayed or "1" for the first page.
 	 * @param helpCmdLabel Help command to display a specific page, i.e. "/xyc help" will be
-     *                      displayed as "/xyc help <next Page>".
+     *                      displayed as "/xyc help [next Page]".
 	 * @return <code>true</code> if help was given, else <code>false</code>. If <code>false</code>, an error message has already been sent.
-	 * @author <a href="http://xxyy.github.io/">xxyy</a>
 	 */
 	//INITIALIZATION AND STATIC VALUES
 	

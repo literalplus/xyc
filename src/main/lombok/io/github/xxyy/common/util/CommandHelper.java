@@ -32,7 +32,6 @@ public class CommandHelper {
      * @param permission Players with that permission will receive <code>msg</code>
      *
      * @see Bukkit#broadcast(String, String)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static void broadcast(String msg, String permission) {
         for (Player plr : Bukkit.getOnlinePlayers()) {
@@ -116,7 +115,7 @@ public class CommandHelper {
     }
 
     /**
-     * Comma separates a Collection's contents' String representations. This is the same as calling {@link CommandHelper#CSCollection(java.lang.Iterable, java.lang.String) with "{empty}" as default.
+     * Comma separates a Collection's contents' String representations. This is the same as calling {@link CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)} with "{empty}" as default.
      *
      * @param input An Iterable to separate
      *
@@ -175,18 +174,18 @@ public class CommandHelper {
     }
 
     /**
-     * Formats <code>seconds</code> for a human-readable output in german. If <code>seconds >= 60</code>, the output will be formatted like this:
+     * Formats <code>seconds</code> for a human-readable output in german. If <code>seconds &gt;= 60</code>, the output will be formatted like this:
      * <i>x Minuten und y Sekunden</i>
      * <b>Notice:</b> Currently, there is no support for hours.
      *
      * <b>Examples:</b>
-     * 1 -> <i>1 Sekunde</i>
-     * 46 -> <i>46 Sekunden</i>
-     * 60 -> <i>1 Minute</i>
-     * 61 -> <i>1 Minute und 1 Sekunde</i>
-     * 90 -> <i>1 Minute und 30 Sekunden</i>
-     * 120 -> <i>2 Minuten</i>
-     * 125 -> <i>2 Minuten und 5 Sekunden</i>
+     * 1 -&gt; <i>1 Sekunde</i>
+     * 46 -&gt; <i>46 Sekunden</i>
+     * 60 -&gt; <i>1 Minute</i>
+     * 61 -&gt; <i>1 Minute und 1 Sekunde</i>
+     * 90 -&gt; <i>1 Minute und 30 Sekunden</i>
+     * 120 -&gt; <i>2 Minuten</i>
+     * 125 -&gt; <i>2 Minuten und 5 Sekunden</i>
      *
      * @param seconds Time to be formatted, in seconds.
      *
@@ -337,7 +336,7 @@ public class CommandHelper {
     /**
      * Returns a List with only <code>t</code> in it.
      *
-     * @deprecated Use {@link com.google.common.collect.Lists#newArrayList(java.lang.Object...)
+     * @deprecated Use {@link com.google.common.collect.Lists#newArrayList(java.lang.Object...)}
      */
     @Deprecated
     public static <T> List<T> list(T t) {
@@ -408,9 +407,10 @@ public class CommandHelper {
      *
      * @param t Element to put and type argument
      *
-     * @return Set<T> with <code>t</code> in it.
+     * @return Set of type T with <code>t</code> in it.
      * @deprecated Use {@link com.google.common.collect.Sets#newHashSet(java.lang.Object...)} instead
      */
+    @Deprecated
     public static <T> Set<T> set(T t) {
         Set<T> set = new HashSet<>();
         set.add(t);
@@ -420,7 +420,7 @@ public class CommandHelper {
     /**
      * Returns a String with maximal length of 16 characters. If <code>colorString</code> does not fit into <code>input</code> without exceeding the
      * limit, it will be returned uncolorized.
-     * <b>Notice:</b> colorString is put first; Example: ("xxyy98","§3§l") => "§3§lxxyy98"
+     * <b>Notice:</b> colorString is put first; Example: ("xxyy98","§3§l") =&gt; "§3§lxxyy98"
      *
      * @param input       String to colorize
      * @param colorString Color to use

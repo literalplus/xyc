@@ -24,7 +24,7 @@ public class BungeeCordHelper {
      * XyPlugin found if that has not already been done.
      *
      * @param plr        The player to send
-     * @param serverName Destination ser* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @param serverName Destination server
      */
     public static void sendTo(Player plr, String serverName) {
         BungeeCordHelper.tryRegOut();

@@ -33,7 +33,7 @@ public class LangHelper {
     public static final Pattern PATTERN = Pattern.compile("`([^` ]+)`");
 
     /**
-     * Parses a String so that a) {@link ChatColor} is parsed with '&' instead of '§' b) html entities are replaced with their unicode representations.
+     * Parses a String so that a) {@link ChatColor} is parsed with '&amp;' instead of the paragraph sign b) html entities are replaced with their unicode representations.
      */
     public static String applyCodes(String str) {
         return ChatColor.translateAlternateColorCodes('&', StringEscapeUtils.unescapeHtml(str));
@@ -75,7 +75,7 @@ public class LangHelper {
     }
 
     /**
-     * loc & pl are normally the same object. Files will be pulled from /lang/*.lng.yml folder in JAR languages are defined by getShippedLocales()
+     * loc &amp; pl are normally the same object. Files will be pulled from /lang/*.lng.yml folder in JAR languages are defined by getShippedLocales()
      *
      * @param loc    The localization object to pull the names from
      * @param plugin The plugin to copy the files from

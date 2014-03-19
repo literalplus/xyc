@@ -20,7 +20,6 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
      * @param senderName Pre-fetched to save dat line of code :)
      *
      * @return Success
-     * @author xxyy98<xxyy98@gmail.com
      */
     public abstract boolean catchCommand(CommandSender sender, String senderName, Command cmd, String label, String[] args);
 
@@ -46,12 +45,6 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
      * want to undo AFK states, display mails and so on. (Also to specify your very own credit message)
      *
      * @return Whether execution should continue
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
-     * @param sender
-     * @param senderName
-     * @param cmd
-     * @param label
-     * @param args
      */
     public boolean preCatch(CommandSender sender, String senderName, Command cmd, String label, String[] args) {
         return true;

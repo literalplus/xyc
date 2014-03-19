@@ -1,10 +1,11 @@
 package io.github.xxyy.common.sync;
 
 import io.github.xxyy.common.XyHelper;
-import java.lang.ref.WeakReference;
-import java.util.concurrent.Callable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.lang.ref.WeakReference;
+import java.util.concurrent.Callable;
 
 
 /**
@@ -37,7 +38,7 @@ public class SyncPlayerKicker implements Callable<Boolean>
      * Use this if you don't care when the message is being sent.
      * @param plr Player to be kicked
      * @param message kick message.
-     * @return Always true, for methods which want to return booleans in a s* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @return Always true, for methods which want to return booleans in a single statement
      */
     public static boolean kick(Player plr, String message){
         Bukkit.getScheduler().callSyncMethod(XyHelper.getPlugins().get(0), new SyncPlayerKicker(plr, message));

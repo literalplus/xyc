@@ -10,7 +10,7 @@ import org.apache.commons.lang.math.RandomUtils;
 public abstract class MiscHelper
 {
     /**
-     * Returns a random element from <code>cl* @author <a href="http://xxyy.github.io/">xxyy</a>xxyy98@gmail.com>
+     * @return a semi-random element from <code>clazz</code>.
      */
     public static <T extends Enum<?>> T randomEnumElement(Class<T> clazz){
         T[] values = clazz.getEnumConstants();//each call copies an array!
