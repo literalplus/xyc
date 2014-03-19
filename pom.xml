@@ -24,12 +24,13 @@
         <url>http://server.nowak-at.net/jenkins/job/xyca~Commit%20and%20Test%20Stage/</url>
     </ciManagement>
 
-    <repositories>
+    <distributionManagement>
+        <downloadUrl>http://server.nowak-at.net/jenkins/view/XYCI/job/xyca~Deploy%20Stage</downloadUrl>
         <repository>
-            <id>xxyy-repo</id>
-            <url>http://server.nowak-at.net/repo/content/</url>
+            <id>xxyy-artifactory</id>
+            <url>http://server.nowak-at.net/repo/xxyy-private/</url>
         </repository>
-    </repositories>
+    </distributionManagement>
   
     <dependencies>
         <dependency>
