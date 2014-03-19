@@ -181,6 +181,7 @@
                             <shadedPattern>io.github.xxyy.common.lib.lombok</shadedPattern>
                         </relocation>
                     </relocations>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
             </plugin>
 
