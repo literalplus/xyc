@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -38,7 +39,7 @@ public abstract class AbstractTeam implements GameTeam {
     }
 
     @Override
-    public Player getPlayer(@NonNull String plrName){
+    public Player getPlayer(@NotNull @NonNull String plrName){
         for(Player plr : getPlayers()){
             if(plr != null && plrName.equals(plr.getName())){
                 return plr;
@@ -54,17 +55,17 @@ public abstract class AbstractTeam implements GameTeam {
     }
 
     @Override
-    public boolean hasPlayer(@NonNull String plrName){
+    public boolean hasPlayer(@NotNull @NonNull String plrName){
         return getPlayer(plrName) != null;
     }
 
     @Override
-    public void removePlayer(@NonNull Player plr){
+    public void removePlayer(@NotNull @NonNull Player plr){
         playerMap.remove(plr);
     }
 
     @Override
-    public Player removePlayer(@NonNull String plrName){
+    public Player removePlayer(@NotNull @NonNull String plrName){
         for (Iterator<Player> iterator = getPlayers().iterator(); iterator.hasNext(); ) {
             Player plr = iterator.next();
             if (plr != null && plrName.equals(plr.getName())) {
@@ -87,7 +88,7 @@ public abstract class AbstractTeam implements GameTeam {
     }
 
     @Override
-    public void addSpawn(@NonNull MapSpawn mapSpawn){
+    public void addSpawn(@NotNull @NonNull MapSpawn mapSpawn){
         if(spawns == null){
             spawns = new ArrayList<>();
         }

@@ -1,7 +1,7 @@
 package io.github.xxyy.common.games.teams;
 
 import io.github.xxyy.common.games.maps.MapSpawn;
-import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -23,5 +23,5 @@ public interface GameTeam extends Team {
      * Adds a {@link io.github.xxyy.common.games.maps.MapSpawn} to this team's spawn list.
      * @param mapSpawn Spawn to add.
      */
-    void addSpawn(@NonNull MapSpawn mapSpawn);
+    void addSpawn(@NotNull MapSpawn mapSpawn);
 }

@@ -1,7 +1,7 @@
 package io.github.xxyy.common.games.teams;
 
-import lombok.NonNull;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -21,7 +21,7 @@ public interface Team {
      * @param plrName Name of the player to get
      * @return A {@link org.bukkit.entity.Player} instance if a player by the name {@code plrName} is in this team or {@code null} if there is no such player.
      */
-    Player getPlayer(@NonNull String plrName);
+    Player getPlayer(@NotNull String plrName);
 
     /**
      * Checks whether this team contains a specific player.
@@ -36,20 +36,20 @@ public interface Team {
      * @param plrName Name of the player to get
      * @return Whether this team contains a player by the name of {@code plrName}
      */
-    boolean hasPlayer(@NonNull String plrName);
+    boolean hasPlayer(@NotNull String plrName);
 
     /**
      * Removes a {@link org.bukkit.entity.Player} instance from this team, regardless if its in the team or not.
      * @param plr {@link org.bukkit.entity.Player} to remove
      */
-    void removePlayer(@NonNull Player plr);
+    void removePlayer(@NotNull Player plr);
 
     /**
      * Tries to remove a {@link org.bukkit.entity.Player} from this team by its name.
      * @param plrName Name of the player to remove
      * @return A {@link org.bukkit.entity.Player} object if there was such player, or {@code null} otherwise.
      */
-    Player removePlayer(@NonNull String plrName);
+    Player removePlayer(@NotNull String plrName);
 
     /**
      * Adds a {@link org.bukkit.entity.Player} to this team.
