@@ -210,15 +210,16 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <quiet />
                     <excludePackageNames>*.lib.*</excludePackageNames>
                     <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
-                    <destDir>target/site/apidocs</destDir>
                     <detectLinks>true</detectLinks>
                     <doctitle>xy_common ${project.version} API - Do not distribute!</doctitle>
                     <remoteRepositories>
                         <remoteRepository>http://server.nowak-at.net/repo/all-all/</remoteRepository>
                     </remoteRepositories>
+                    <outputDirectory>${basedir}</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
