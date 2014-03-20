@@ -169,7 +169,7 @@
                 </executions>
             </plugin>
 
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>2.2</version>
@@ -184,18 +184,18 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>org.projectlombok:lombok</include>
+                            <include>com.google.code.gson:Gson</include>
                         </includes>
                     </artifactSet>
                     <relocations>
                         <relocation>
-                            <pattern>lombok</pattern>
-                            <shadedPattern>io.github.xxyy.common.lib.lombok</shadedPattern>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>io.github.xxyy.common.lib.com.google.gson</shadedPattern>
                         </relocation>
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
-            </plugin>-->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
