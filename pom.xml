@@ -184,7 +184,7 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>com.google.code.gson:Gson</include>
+                            <include>com.google.code.gson:gson</include>
                         </includes>
                     </artifactSet>
                     <relocations>
