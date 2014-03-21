@@ -167,6 +167,15 @@
                         </goals>
                     </execution>
                 </executions>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries/>
+                            <Implementation-Build>${buildNumber}</Implementation-Build>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
 
             <plugin>
