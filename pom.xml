@@ -141,12 +141,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-            </plugin>
-
-            <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
                 <version>1.12.6.0</version>
@@ -216,6 +210,32 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>woa-javadoc</id>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <phase>site</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludePackageNames>*.lib.*</excludePackageNames>
+                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
+                    <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
+                    <detectLinks>true</detectLinks>
+                    <doctitle>xy_common ${project.version} API - Do not distribute!</doctitle>
+                    <remoteRepositories>
+                        <remoteRepository>http://server.nowak-at.net/repo/all-all/</remoteRepository>
+                    </remoteRepositories>
+                    <outputDirectory>${basedir}</outputDirectory>
+                </configuration>
+            </plugin>
         </plugins>
 
         <resources>
@@ -237,27 +257,6 @@
 
         <finalName>xyc_imp.xy</finalName> <!-- xyc_imp.xy.jar - To save me from having to rename this every time -->
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <configuration>
-                    <excludePackageNames>*.lib.*</excludePackageNames>
-                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
-                    <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
-                    <detectLinks>true</detectLinks>
-                    <doctitle>xy_common ${project.version} API - Do not distribute!</doctitle>
-                    <remoteRepositories>
-                        <remoteRepository>http://server.nowak-at.net/repo/all-all/</remoteRepository>
-                    </remoteRepositories>
-                    <outputDirectory>${basedir}</outputDirectory>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
 
     <profiles>
         <profile>
