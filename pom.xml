@@ -185,12 +185,17 @@
                     <artifactSet>
                         <includes>
                             <include>com.google.code.gson:gson</include>
+                            <include>com.intellij:annotations</include>
                         </includes>
                     </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>com.google.gson</pattern>
                             <shadedPattern>io.github.xxyy.common.lib.com.google.gson</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.*.annotations</pattern>
+                            <shadedPattern>io.github.xxyy.common.lib.com.intellij.annotations</shadedPattern>
                         </relocation>
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
