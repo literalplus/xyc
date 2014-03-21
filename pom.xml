@@ -194,7 +194,11 @@
                             <shadedPattern>io.github.xxyy.common.lib.com.google.gson</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.*.annotations</pattern>
+                            <pattern>org.intellij.lang.annotations</pattern>
+                            <shadedPattern>io.github.xxyy.common.lib.com.intellij.annotations</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains.annotations</pattern>
                             <shadedPattern>io.github.xxyy.common.lib.com.intellij.annotations</shadedPattern>
                         </relocation>
                     </relocations>
