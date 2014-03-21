@@ -2,6 +2,7 @@ package io.github.xxyy.common.xyplugin;
 
 import io.github.xxyy.common.version.PluginVersion;
 import lombok.Getter;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -84,6 +85,7 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPlugable 
      * This sets the CommandExecutor for a command, using exec for both. Convenience method.
      */
     protected final <T extends CommandExecutor> void setExec(final T exec, final String cmdName) {
+        Validate.notNull(this.getCommand(cmdName), "Command "+cmdName+" is not registered for this plugin: "+this.toString());
         this.getCommand(cmdName).setExecutor(exec);
     }
 
