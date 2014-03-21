@@ -172,8 +172,10 @@
                     <archive>
                         <manifest>
                             <addDefaultImplementationEntries/>
-                            <Implementation-Build>${buildNumber}</Implementation-Build>
                         </manifest>
+                        <manifestEntries>
+                            <Implementation-Build>${buildNumber}</Implementation-Build>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
