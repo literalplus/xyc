@@ -5,7 +5,6 @@ import io.github.xxyy.common.sql.SafeSql;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -95,7 +94,7 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
                 rtrn = constr.newInstance(sender, ssql);
                 this.wrappers.put(sender.getName(), rtrn);
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
-            } catch (SecurityException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
                         "Could not aquire instance - Mising T(CommandSender) constructor, probably.", ex);
             }
@@ -120,7 +119,7 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
                 rtrn = constr.newInstance(plrName, ssql);
                 this.wrappers.put(plrName, rtrn);
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
-            } catch (SecurityException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
                         "Could not aquire instance - Mising T(String) constructor, probably.", ex);
             }
@@ -150,7 +149,7 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
                 rtrn = constr.newInstance(uuid, ssql);
                 this.wrappers.put(rtrn.name(), rtrn);
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
-            } catch (SecurityException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
                         "Could not aquire instance - Mising T(UUID, SafeSql) constructor, probably.", ex);
             }
