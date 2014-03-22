@@ -464,6 +464,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
         if (!tryFetchByUUID() && !tryFetchByName() &&
                 getUniqueId() != null && name() != null) {
             ssql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId().toString());
+            tryFetchByUUID();
         }
 
         if (getUniqueId() == null) {
@@ -474,6 +475,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
                     this.uuid = io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(matchedProfiles[0].getId());
                     ssql.safelyExecuteUpdate("INSERT INTO "+ PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME+" SET username=?, uuid=? " +
                             "ON DUPLICATE KEY UPDATE username=?, uuid=?", name(), this.uuid, name(), this.uuid);
+                    tryFetchByUUID();
                     return;
                 }
             }
