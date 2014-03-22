@@ -349,7 +349,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
             Player plr = plr();
 
             if (plr == null) {
-                this.xyFetch(); //Try and get UUID from SQL
+                this.tryFetchByName();
             } else {
                 this.uuid = plr.getUniqueId();
             }
