@@ -524,7 +524,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
             return;
         }
 
-        ssql.safelyExecuteUpdate("UPDATE " + PlayerWrapper.FULL_XY_TABLE_NAME + " SET "
+        ssql.safelyExecuteUpdate("UPDATE " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " SET "
                 + "passes_amount=" + this.passesAmount + ","
                 + "passes_used=" + this.passesUsed + ","
                 + "nickname=?, groupname=? "
