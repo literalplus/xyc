@@ -463,7 +463,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
 
         if (!tryFetchByUUID() && !tryFetchByName() &&
                 getUniqueId() != null && name() != null) {
-            ssql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId());
+            ssql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId().toString());
         }
 
         if (getUniqueId() == null) {
@@ -527,7 +527,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
                 + "passes_used=" + this.passesUsed + ","
                 + "nickname=?, groupname=? "
                 + "WHERE uuid=?",
-                this.nick, this.group.getName(), getUniqueId()); //If we have fetched, there must be an UUID
+                this.nick, this.group.getName(), getUniqueId().toString()); //If we have fetched, there must be an UUID
     }
 
     /**
