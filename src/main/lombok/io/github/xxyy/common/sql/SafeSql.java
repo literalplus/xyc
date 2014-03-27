@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author xxyy98
  */
-public class SafeSql implements AutoCloseable {
+public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     /**
      * A DEBUG switch to print every single query made by ANY {@link SafeSql} to {@link System#out}.
      */
@@ -143,9 +143,9 @@ public class SafeSql implements AutoCloseable {
         return c;
     }
 
-    public Connection getAnyConnection(){
+    public Connection getAnyConnection() {
         try {
-            if(this.currentConnection == null || this.currentConnection.isClosed()){
+            if (this.currentConnection == null || this.currentConnection.isClosed()) {
                 this.currentConnection = makeConnection();
             }
         } catch (SQLException e) {
@@ -162,13 +162,13 @@ public class SafeSql implements AutoCloseable {
      * @deprecated Ambiguous name. Kept for compatibility with previous code.
      */
     @Deprecated
-    public Connection getConnection(){
+    public Connection getConnection() {
         return makeConnection();
     }
 
     /**
      * Safely prepares a statement. Remember to close it afterwards. Insert values by using '?'.
-     *
+     * <p/>
      * Example:
      * <code>
      * PreparedStatement stmt = null;
@@ -185,17 +185,12 @@ public class SafeSql implements AutoCloseable {
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
      */
-    public PreparedStatement prepareStatement(String query) {
-        try {
-            PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
-            if (SafeSql.debug) {
-                CommandHelper.sendMessageToOpsAndConsole("§ePreparing Statement: " + query);
-            }
-            return stmt;
-        } catch (SQLException e) {
-            this.formatAndPrintException(e, "§cException while trying to prepare Statement: '" + query + "'");
+    public PreparedStatement prepareStatement(String query) throws SQLException {
+        PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
+        if (SafeSql.debug) {
+            CommandHelper.sendMessageToOpsAndConsole("§ePreparing Statement: " + query);
         }
-        return null;
+        return stmt;
     }
 
     /**
@@ -256,29 +251,6 @@ public class SafeSql implements AutoCloseable {
         return null;
     }
 
-    /*/** //Replaced by the Object thing
-     * SAFE
-     *
-     * @param query Update to execute
-     * @param ints  ints to insert using {@link PreparedStatement#setInt(int, int)}
-     * @return int (see: {@link PreparedStatement#executeUpdate()}
-     * @see #executeUpdate(String)
-     * @see #executeUpdateWithResult(String, Object...)
-     *//*
-    public int safelyExecuteUpdate(String query, int... ints) {
-        try (PreparedStatement stmnt = this.prepareStatement(query)) {
-            int i = 1;
-            for (int nr : ints) {
-                stmnt.setInt(i, nr);
-                i++;
-            }
-            return stmnt.executeUpdate();
-        } catch (SQLException e) {
-            this.formatAndPrintException(e, "§cException while trying to safely execute an update (int)!");
-        }
-        return -1;
-    }*/
-
     /**
      * Executes a query in the database by creating a {@link java.sql.PreparedStatement} and filling with the the given objects.
      *
@@ -311,7 +283,7 @@ public class SafeSql implements AutoCloseable {
         return new QueryResult(stmt, stmt.executeUpdate());
     }
 
-    public void fillStatement(PreparedStatement stmt, Object[] objects) throws SQLException {
+    public PreparedStatement fillStatement(PreparedStatement stmt, Object[] objects) throws SQLException {
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] == null) {
                 stmt.setNull(i + 1, Types.OTHER);
@@ -319,6 +291,8 @@ public class SafeSql implements AutoCloseable {
                 stmt.setObject(i + 1, objects[i]);
             }
         }
+
+        return stmt;
     }
 
     /**
@@ -346,9 +320,9 @@ public class SafeSql implements AutoCloseable {
         try {
             conStr = " [con:" + ((this.currentConnection.isClosed()) ? "" : "!") + "closed" + " @ " + this.currentConnection.getMetaData().getURL() + "]";
         } catch (Exception e) {
-            conStr = " [con: ~"+e.getClass().getName()+"~]";
+            conStr = " [con: ~" + e.getClass().getName() + "~]";
         }
-        return getClass().getName()+"->" + this.authDataProvider.getSqlUser() + "@" + this.authDataProvider.getSqlHost() + "|" + this.authDataProvider.getSqlDb() + conStr;
+        return getClass().getName() + "->" + this.authDataProvider.getSqlUser() + "@" + this.authDataProvider.getSqlHost() + "|" + this.authDataProvider.getSqlDb() + conStr;
     }
 
     /**
@@ -372,7 +346,7 @@ public class SafeSql implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if(currentConnection != null){
+        if (currentConnection != null) {
             currentConnection.close();
             currentConnection = null;
         }

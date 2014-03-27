@@ -25,7 +25,7 @@ import java.util.UUID;
  * @author xxyy98
  */
 public abstract class PlayerWrapper<T>//TODO implement Player?
-{//TODO daily passes w/ extra method to call in onJoin @ lobby
+{
 
     /**
      * Full table name used to store common data. Defaults to {@value GameLib#XY_DB_NAME}.game_users.
@@ -33,18 +33,23 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
     public static final String FULL_CENTRAL_USER_TABLE_NAME = GameLib.CENTRAL_DB_NAME + ".user";
     public static final HttpProfileRepository HTTP_PROFILE_REPOSITORY = new HttpProfileRepository();
-    protected int passesUsed = 0;
-    protected String nick = null;
+    protected int passesUsed ;
+    protected String nick;
     protected GroupData group;
-    protected int passesAmount = 0;
+    protected int passesAmount ;
     protected boolean xyFetched = false;
     protected boolean impFetched = false;
-    protected String plrName = null;
+    protected String plrName;
     protected boolean xyChanged = false;
-    protected UUID uuid = null;
-    private WeakReference<Player> weakPlr = null;
+    protected UUID uuid;
+    private WeakReference<Player> weakPlr;
     protected boolean isConsole = false;
     protected final SafeSql ssql;
+    protected int coinsAmount;
+    protected int globalPoints;
+    protected int playtime;
+    protected int kills;
+    protected int deaths;
 
     /**
      * Gets a wrapper for a {@link CommandSender}. If it's a {@link ConsoleCommandSender}, internal things will happen. Use this method if you want to
@@ -182,7 +187,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      * @return The chat color of this player, using the one of the "default" group if a nickname is enabled.
      */
     public String getChatColor() {
-        if (this.getNick() != null) {
+        if (this.getNick() != null) { //default chat for nicknames - kanney feature(TM)
             return GroupData.getByName("default", ssql).getChatColor();
         }
         return this.getGroup().getChatColor();
@@ -196,7 +201,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      */
     public String getColorizedDisplayName(boolean sixteenCharLimit) {
         String nameColor = this.getGroup().getNameColor();
-        if (this.getNick() != null) {
+        if (this.getNick() != null) { //default chat for nicknames - kanney feature(TM)
             nameColor = GroupData.getByName("default", ssql).getNameColor();
         }
         if (!sixteenCharLimit) {
@@ -508,7 +513,6 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
 
     private boolean tryFetchByUUID() { //Returns true if it got the data
         return getUniqueId() != null && tryFetchByArgs("uuid", getUniqueId().toString());
-
     }
 
     private boolean tryFetchByName() { //Returns true if it got the data
