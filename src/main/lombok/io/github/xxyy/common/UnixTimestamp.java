@@ -14,35 +14,30 @@ public class UnixTimestamp
     }
     /**
      * @return Amount of milliseconds that passed since 1.1.1970 for this object.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public long getMillis(){
         return this.seconds * 1000;
     }
     /**
      * @return Amount of seconds that passed since 1.1.1970 for this object.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public long getSeconds(){
         return this.seconds;
     }
     /**
      * Gets a new {@link UnixTimestamp} from a amount of milliseconds that passed since 1.1.1970.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static UnixTimestamp fromMillis(long millis){
         return new UnixTimestamp(millis / 1000);
     }
     /**
      * Gets a new {@link UnixTimestamp} from a amount of milliseconds that passed since 1.1.1970.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static UnixTimestamp fromSeconds(long seconds){
         return new UnixTimestamp(seconds);
     }
     /**
      * Gets the current {@link UnixTimestamp}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public static UnixTimestamp now(){
         return new UnixTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);

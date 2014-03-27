@@ -16,7 +16,7 @@ public class PlayerWrapperTest extends XyCommonTest {
     @Override
     public void setUp() {
         super.setUp();
-        wrp = PlayerWrapperFactory.getGenericFactory().getWrapper("xxyy98"); //Hopez
+        wrp = PlayerWrapperFactory.getGenericFactory().getWrapper("xxyy98"); //Hope
         Assert.assertNotNull("Wrapper is null!", wrp);
     }
 

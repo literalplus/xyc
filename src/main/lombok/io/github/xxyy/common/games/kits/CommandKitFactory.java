@@ -3,11 +3,6 @@ package io.github.xxyy.common.games.kits;
 import com.google.common.collect.Lists;
 import io.github.xxyy.common.cmd.XYCCommandExecutor;
 import io.github.xxyy.common.util.CommandHelper;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,6 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Register this command AND TabCompleter with the following aliases: "kitfactory","kf","kitfabrik"
@@ -33,10 +33,8 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
      *
      * @param prov             The {@link KitLoaderProvider} that can be used to fetch a KitLoader by a player.
      * @param availObjectives  A list of available Kit Objectives, i.e. Tasks that have to be completed to unlock specific kits. If you don't have
-     *                         that, just pass <code>null</code>.
+     *                         that, just pass {@code null}.
      * @param importantMessage A message that is displayed above the help, for important information regarding multiple KitLoaders.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public CommandKitFactory(KitLoaderProvider prov,
                              Map<String, String> availObjectives,
@@ -51,11 +49,9 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
      *
      * @param prov                The {@link KitLoaderProvider} that can be used to fetch a KitLoader by a player.
      * @param availObjectiveNames A list of available Kit Objectives, i.e. Tasks that have to be completed to unlock specific kits. If you don't have
-     *                            that, just pass <code>null</code>.
+     *                            that, just pass {@code null}.
      * @param importantMessage    A message that is displayed above the help, for important information regarding multiple KitLoaders.
      * @param perm                The permission needed to execute this command.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public CommandKitFactory(String perm,
                              KitLoaderProvider prov,
@@ -65,6 +61,7 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
         this.perm = perm;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public boolean catchCommand(CommandSender sender, String senderName, Command cmd, String label, String[] args) {
         if (CommandHelper.kickConsoleFromMethod(sender, label)) {
@@ -189,9 +186,7 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
                 plr.sendMessage("§7[Xyg] §cKeine Aufgaben definiert, überspringe diesen Schritt einfach.");
                 return true;
             }
-            Iterator<Entry<String, String>> it = this.availObjectives.entrySet().iterator();
-            while (it.hasNext()) {
-                Entry<String, String> entry = it.next();
+            for (Entry<String, String> entry : this.availObjectives.entrySet()) {
                 plr.sendMessage("§c" + entry.getKey() + ": §e" + entry.getValue());
             }
             return true;
@@ -202,7 +197,7 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
     }
 
     @Override
-    @SuppressWarnings("fallthrough")
+    @SuppressWarnings({"fallthrough", "SpellCheckingInspection"})
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length > 0) {
             switch (args[0]) {
@@ -243,6 +238,7 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
         return Lists.newArrayList("step", "shelp", "help", "produce", "todo", "objectives");
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private boolean printHelpTo(CommandSender sender, String label) {
         sender.sendMessage(new String[] {
             this.importantMessage,
@@ -260,7 +256,8 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
         return true;
     }
 
-    private static void completeStep(KitFactory kf, byte stepId, Player plr, String[] additionalArgs) {//silently overwrite everythin'
+    @SuppressWarnings("SpellCheckingInspection")
+    private static void completeStep(KitFactory kf, byte stepId, Player plr, String[] additionalArgs) {//silently overwrite everything
         switch (stepId) {
         case 1:
             kf.setContents(plr.getInventory().getContents());
@@ -305,11 +302,9 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
     public interface KitLoaderProvider {
 
         /**
-         * Gets a
-         * <code>KitLoader</code> by a Player.
+         * Gets a {@code KitLoader} by a Player.
          *
          * @return KitLoader OR null on failure !! You have to print out error messages yourself!
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public abstract KitLoader getKitLoader(Player plr);
     }

@@ -30,8 +30,6 @@ public class KitSelector implements Listener {
      * Duplicated a {@link KitSelector}.
      *
      * @param original {@link KitSelector} to duplicate.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public KitSelector(KitSelector original) {
         this(original.name, original.loader, original.handler, original.checker, original.plugin);
@@ -45,8 +43,6 @@ public class KitSelector implements Listener {
      * @param handler Class that handles {@link OptionClickEvent}s invoked by this instance.
      * @param checker Class that checks for fulfillment of objectives.
      * @param plugin  Plugin owning this instance.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public KitSelector(String name, KitLoader ldr, OptionClickEventHandler handler, FulfillChecker checker, Plugin plugin) {
         this.name = name;
@@ -73,8 +69,6 @@ public class KitSelector implements Listener {
 
     /**
      * Destroys this instance and unregisters all {@link EventHandler}s.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void destroy() {
         HandlerList.unregisterAll(this);
@@ -87,8 +81,6 @@ public class KitSelector implements Listener {
      * Opens this {@link KitSelector} to a {@link Player}.
      *
      * @param plr {@link Player} to open to.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void open(Player plr) {
         Inventory inventory = Bukkit.createInventory(plr, this.size, this.name);
@@ -159,7 +151,6 @@ public class KitSelector implements Listener {
          *                  "permission" it would be the required permission. (that means it's up to YOU)
          *
          * @return Whether the {@link Player} is allowed to use a kit "guarded" by this objective.
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public boolean fulfillsObjective(Player plr, String objective, String amount);
     }
@@ -178,13 +169,11 @@ public class KitSelector implements Listener {
         private boolean cancelled;
 
         /**
-         * Construsts a new {@link OptionClickEvent}.
+         * Constructs a new {@link OptionClickEvent}.
          *
          * @param player   Player who clicked.
          * @param position slot id that was clicked.
          * @param kit      Kit located in this slot.
-         *
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public OptionClickEvent(Player player, int position, KitInfo kit) {
             this.player = player;
@@ -196,7 +185,6 @@ public class KitSelector implements Listener {
 
         /**
          * @return The kit located in the clicked slot.
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public KitInfo getKit() {
             return this.kit;
@@ -204,7 +192,6 @@ public class KitSelector implements Listener {
 
         /**
          * @return Who clicked
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public Player getPlayer() {
             return this.player;
@@ -212,7 +199,6 @@ public class KitSelector implements Listener {
 
         /**
          * @return Slot which was clicked (id)
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public int getPosition() {
             return this.position;
@@ -230,8 +216,6 @@ public class KitSelector implements Listener {
 
         /**
          * @param close Whether the inventory will close.
-         *
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public void setWillClose(boolean close) {
             this.close = close;
@@ -241,7 +225,6 @@ public class KitSelector implements Listener {
          * @param load Whether the kit will be applied to the {@link Player}.
          *
          * @deprecated Use {@link OptionClickEvent#setCancelled(boolean)} instead.
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         @Deprecated
         public void setWillLoad(boolean load) {
@@ -250,7 +233,6 @@ public class KitSelector implements Listener {
 
         /**
          * @return Whether the inventory will close.
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public boolean willClose() {
             return this.close;
@@ -259,7 +241,6 @@ public class KitSelector implements Listener {
         /**
          * @return Whether the kit will be applied to the {@link Player}.
          * @deprecated Use {@link OptionClickEvent#isCancelled()} instead.
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         @Deprecated
         public boolean willLoad() {
@@ -278,8 +259,6 @@ public class KitSelector implements Listener {
          * This method gets invoked if an event is called.
          *
          * @param event Event that was called.
-         *
-         * @author <a href="http://xxyy.github.io/">xxyy</a>
          */
         public void onOptionClick(OptionClickEvent event);
     }

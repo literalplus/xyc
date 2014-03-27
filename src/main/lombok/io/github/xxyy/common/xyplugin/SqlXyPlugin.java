@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MUST be implemented if a plugin wants to use SafeSql. If you only need a single query, use XyHelper.commonutil Thou shall execute: ssql = new
+ * MUST be implemented if a plugin wants to use SafeSql. If you only need a single query, use Thou shall execute: ssql = new
  * SafeSql(this); ssql.con=sql.makeConnection(); ssql.dbName = "%DBNAME%";
  *
  *

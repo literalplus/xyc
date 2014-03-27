@@ -70,7 +70,7 @@ public class KitFactory {
     }
 
     /**
-     * @return A produced {@link KitInfo}. <code>null</code> if not produced.
+     * @return A produced {@link KitInfo}. {@code null} if not produced.
      */
     public KitInfo fetchProduct() {
         return this.product;
@@ -186,6 +186,7 @@ public class KitFactory {
      *
      * @param plr Player to receive the list.
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public void sendCompletionState(Player plr) {
         plr.sendMessage(new String[] {
             "§e§l======= §9KitFactory-ToDo-Liste: §1" + this.name + " §e§l=======",

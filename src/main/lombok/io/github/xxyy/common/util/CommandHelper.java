@@ -29,7 +29,7 @@ public class CommandHelper {
      * Alternative to {@link Bukkit#broadcast(String, String)} that works with PermissionsEx.
      *
      * @param msg        Message to send
-     * @param permission Players with that permission will receive <code>msg</code>
+     * @param permission Players with that permission will receive {@code msg}
      *
      * @see Bukkit#broadcast(String, String)
      */
@@ -47,9 +47,9 @@ public class CommandHelper {
      *
      * @param sender     CommandSender to check for permission and to send message to
      * @param permission Permission to require
-     * @param action     Short description of the action that needs permission, shown to <code>sender</code> if permission check returns false.
+     * @param action     Short description of the action that needs permission, shown to {@code sender} if permission check returns false.
      *
-     * @return Whether <code>sender</code> had the permission required.
+     * @return Whether {@code sender} had the permission required.
      */
     public static boolean checkActionPermAndMsg(CommandSender sender, String permission, String action) {
         if (sender.hasPermission(permission)) {
@@ -61,11 +61,11 @@ public class CommandHelper {
     }
 
     /**
-     * Checks for a permission and gives an appropriate message if it is assigned to <code>sender</code>.
+     * Checks for a permission and gives an appropriate message if it is assigned to {@code sender}.
      *
      * @param sender     CommandSender to check for permission and to send message to
      * @param permission Permission to require
-     * @param label      Label of the command that needs permission, shown to <code>sender</code> if permission check returns false.
+     * @param label      Label of the command that needs permission, shown to {@code sender} if permission check returns false.
      *
      * @return If sender has permission.
      */
@@ -96,8 +96,8 @@ public class CommandHelper {
      * @see CommandHelper#clearInv(org.bukkit.entity.Player)
      */
     public static void clearInvList(final List<Player> plrs) {
-        for (int i = 0; i < plrs.size(); i++) {
-            CommandHelper.clearInv(plrs.get(i));
+        for (Player plr : plrs) {
+            CommandHelper.clearInv(plr);
         }
     }
 
@@ -119,7 +119,7 @@ public class CommandHelper {
      *
      * @param input An Iterable to separate
      *
-     * @return Element1,Element2,Element3 OR <code>defaultVal</code> @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
+     * @return Element1,Element2,Element3 OR {@code defaultVal} @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
      */
     public static String CSCollection(Iterable<?> input) {
         return CSCollection(input, "{empty}");
@@ -129,9 +129,9 @@ public class CommandHelper {
      * Comma separates a Collection's children's String representations.
      *
      * @param input      An Iterable to separate
-     * @param defaultVal value to be returned if <code>col</code> is empty.
+     * @param defaultVal value to be returned if {@code col} is empty.
      *
-     * @return Element1,Element2,Element3 OR <code>defaultVal</code>
+     * @return Element1,Element2,Element3 OR {@code defaultVal}
      * @see CommandHelper#CSCollection(java.lang.Iterable)
      */
     public static String CSCollection(Iterable<?> input, String defaultVal) {
@@ -152,11 +152,11 @@ public class CommandHelper {
     }
 
     /**
-     * Comma seperates a Collection's children's ShortString representations.
+     * Comma separates a Collection's children's ShortString representations.
      *
-     * @param input An Iterable to seperate
+     * @param input An Iterable to separate
      *
-     * @return Element1,Element2,Element3 OR <code>defaultVal</code>
+     * @return Element1,Element2,Element3 OR {@code defaultVal}
      * @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
      * @see CommandHelper#CSCollection(java.lang.Iterable)
      */
@@ -174,7 +174,7 @@ public class CommandHelper {
     }
 
     /**
-     * Formats <code>seconds</code> for a human-readable output in german. If <code>seconds &gt;= 60</code>, the output will be formatted like this:
+     * Formats {@code seconds} for a human-readable output in german. If {@code seconds &gt;= 60}, the output will be formatted like this:
      * <i>x Minuten und y Sekunden</i>
      * <b>Notice:</b> Currently, there is no support for hours.
      *
@@ -193,6 +193,7 @@ public class CommandHelper {
      *
      * @deprecated Implemented for a specific language, with no possibility to change locale. Deprecated without replacement.
      */
+    @SuppressWarnings("SpellCheckingInspection")
     @Deprecated
     public static String formatSeconds(int seconds) {
         if (seconds < 60) {
@@ -204,12 +205,12 @@ public class CommandHelper {
     }
 
     /**
-     * Returns a string representing the size of each element in <code>values</code> in ASCII art. <code>values</code> may only contain up to 16
+     * Returns a string representing the size of each element in {@code values} in ASCII art. {@code values} may only contain up to 16
      * values (Hexadecimal)
      *
      * @param maxLength how long the string shall be.
      * @param values    values.
-     * @param max       The highest value in <code>values</code>.
+     * @param max       The highest value in {@code values}.
      *
      * @return 1111112222233333
      * @deprecated Implementation not clean, not generic enough
@@ -262,7 +263,7 @@ public class CommandHelper {
     public static String getProgressBar(int maxLength, int value, int max) {
         Preconditions.checkArgument(value <= max, "The current progress may not be greather than the goal.");
         double factor = (((double) value) / ((double) max));
-        maxLength -= 5;// "[]xx%".lenght
+        maxLength -= 5;// "[]xx%".length
         byte linesToDraw = (byte) (maxLength * factor);
         return StringUtils.rightPad(StringUtils.rightPad("[", linesToDraw, '\u2588'), maxLength, '\u2592') + "]"
                 + StringUtils.leftPad(((byte) (factor * 100)) + "%", 3, '0');
@@ -290,22 +291,14 @@ public class CommandHelper {
     }
 
     /**
-     * @deprecated @see org.apache.commons.lang.StringUtils#isNumeric(java.lang.String)
-     */
-    @Deprecated
-    public static boolean isNum(String str) {
-        throw new AssertionError();
-    }
-
-    /**
-     * Determines if a number <code>toCheck</code> is between or equal to one the boundaries specified. There is no special order of the boundaries
+     * Determines if a number {@code toCheck} is between or equal to one the boundaries specified. There is no special order of the boundaries
      * required, they can even be equal.
      *
      * @param toCheck   Target integer
      * @param boundary1 One of the boundaries
      * @param boundary2 One of the boundaries
      *
-     * @return <code>true</code>, If <code>toCheck</code> is between boundary1 and boundary2.
+     * @return {@code true}, If {@code toCheck} is between boundary1 and boundary2.
      */
     public static boolean isNumberBetween(int toCheck, int boundary1, int boundary2) {
         if (boundary1 > boundary2) {
@@ -334,7 +327,7 @@ public class CommandHelper {
     }
 
     /**
-     * Returns a List with only <code>t</code> in it.
+     * Returns a List with only {@code t} in it.
      *
      * @deprecated Use {@link com.google.common.collect.Lists#newArrayList(java.lang.Object...)}
      */
@@ -351,7 +344,7 @@ public class CommandHelper {
      * @param msg    Message to be sent, preferably multi-line (use /n)
      * @param sender Receiver of the message
      *
-     * @return always <code>true</code> for use with commands.
+     * @return always {@code true} for use with commands.
      */
     public static boolean msg(String msg, CommandSender sender) {
         for (String str2 : msg.split("\n")) {
@@ -361,10 +354,10 @@ public class CommandHelper {
     }
 
     /**
-     * Prints a message to {@link System#out} and the provided logger <code>lgr</code> if it is not <code>null</code>.
+     * Prints a message to {@link System#out} and the provided logger {@code lgr} if it is not {@code null}.
      *
      * @param message Message to print
-     * @param lgr     The logger to print it to, can be <code>null</code>.
+     * @param lgr     The logger to print it to, can be {@code null}.
      * @param lvl     {@link Level} to use
      *
      */
@@ -403,11 +396,11 @@ public class CommandHelper {
     }
 
     /**
-     * returns a set with just <code>t</code> in it.
+     * returns a set with just {@code t} in it.
      *
      * @param t Element to put and type argument
      *
-     * @return Set of type T with <code>t</code> in it.
+     * @return Set of type T with {@code t} in it.
      * @deprecated Use {@link com.google.common.collect.Sets#newHashSet(java.lang.Object...)} instead
      */
     @Deprecated
@@ -418,14 +411,14 @@ public class CommandHelper {
     }
 
     /**
-     * Returns a String with maximal length of 16 characters. If <code>colorString</code> does not fit into <code>input</code> without exceeding the
+     * Returns a String with maximal length of 16 characters. If {@code colorString} does not fit into {@code input} without exceeding the
      * limit, it will be returned uncolorized.
      * <b>Notice:</b> colorString is put first; Example: ("xxyy98","§3§l") =&gt; "§3§lxxyy98"
      *
      * @param input       String to colorize
      * @param colorString Color to use
      *
-     * @return A String with a maximal length of 16 characters. Even if <code>input</code> is longer than that.
+     * @return A String with a maximal length of 16 characters. Even if {@code input} is longer than that.
      */
     public static String sixteenCharColorize(final String input, final String colorString) {
         if (input == null) {
@@ -441,11 +434,11 @@ public class CommandHelper {
     }
 
     /**
-     * Returns <code>input</code>. If it is longer than 16 characters, returns a shortened version (cuts the end off)
+     * Returns {@code input}. If it is longer than 16 characters, returns a shortened version (cuts the end off)
      *
      * @param input String to limit
      *
-     * @return <code>input</code>, trimmed to 16 chars in necessary (trimming tail)
+     * @return {@code input}, trimmed to 16 chars in necessary (trimming tail)
      *
      */
     public static String sixteenCharLimit(final String input) {
@@ -459,14 +452,14 @@ public class CommandHelper {
     }
 
     /**
-     * Parses a tabComplete return so that all elements not starting with the last element of <code>args</code> are removed. if <code>rtrn</code> is
-     * <code>null</code> or empty, <code>null</code> is returned. If <code>args.length == 0</code>, <code>rtrn</code> is returned. if the last arg is
-     * empty, * <code>rtrn</code> is returned.
+     * Parses a tabComplete return so that all elements not starting with the last element of {@code args} are removed. if {@code rtrn} is
+     * {@code null} or empty, {@code null} is returned. If {@code args.length == 0}, {@code rtrn} is returned. if the last arg is
+     * empty, * {@code rtrn} is returned.
      *
      * @param args Arguments already entered by the user.
      * @param rtrn A list of Strings with tabComplete suggestions.
      *
-     * @return <code>rtrn</code>, with all elements not starting with the last element of <code>args</code> removed.
+     * @return {@code rtrn}, with all elements not starting with the last element of {@code args} removed.
      */
     public static List<String> tabCompleteArgs(final String[] args, final List<String> rtrn) {
         if (rtrn == null || rtrn.isEmpty()) {
@@ -514,7 +507,7 @@ public class CommandHelper {
      * @param <T>   Type of the input Object.
      * @param input Object whose String representation is to be printed.
      *
-     * @return <code>t</code>, completely untouched.
+     * @return {@code t}, completely untouched.
      */
     public static <T> T writeAndPass(T input) {
         System.out.println("output: " + input.toString());

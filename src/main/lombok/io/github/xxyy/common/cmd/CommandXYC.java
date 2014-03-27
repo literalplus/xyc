@@ -22,6 +22,7 @@ public class CommandXYC extends XYCCommandExecutor {
             switch (args[0].toLowerCase()) {
             case "rstlng":
                 XyHelper.getLocale().resetLang();
+                //noinspection SpellCheckingInspection
                 sender.sendMessage("§aI haz reset da langz!");
                 break;
             case "plugins":

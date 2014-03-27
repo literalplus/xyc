@@ -35,7 +35,7 @@ public class HelpManager {
 	/**
 	 * Constructs a new {@link HelpManager}.
 	 * @param cmdName Name of the command (see {@link HelpManager#helpPageTitle})
-	 * @param cmdDescLines A few loines to describe this command to be displayed on the first help page.
+	 * @param cmdDescLines A few lines to describe this command to be displayed on the first help page.
 	 * @param subCmds see: {@link HelpManager#subCmds}
 	 */
 	public HelpManager(String cmdName,String[] cmdDescLines,HashMap<String,String> subCmds){
@@ -46,7 +46,7 @@ public class HelpManager {
 	/**
 	 * Prints a help page to a {@link CommandSender}.
 	 * @param sender Who shall receive help?
-	 * @param label The alias this coammnd was called with.
+	 * @param label The alias this command was called with.
 	 * @param pageNum Page number - provide "1" to show the first page.
 	 *                    If this is not an int, an error message will be displayed.
 	 * @param helpCmdLabel Help command to display a specific page, i.e. "/xyc help" will be
@@ -80,7 +80,7 @@ public class HelpManager {
                 sender.sendMessage("§8"+ln);
             }
 		}
-		//subcommands
+		//sub commands
 		for(String key : this.subCmds.keySet()){
 			i=i+1;
 			if(i >= 6*intPageNum) {
@@ -92,6 +92,7 @@ public class HelpManager {
 			sender.sendMessage("§3/"+label+" "+key+" §7"+this.subCmds.get(key));
 		}
 		if(pageCount != 1 && intPageNum != pageCount) {
+            //noinspection SpellCheckingInspection
             sender.sendMessage(String.format(XycLocale.getString("XYC-lang-nextpage", sender.getName()), helpCmdLabel,(intPageNum + 1)));
         }
 		sender.sendMessage(String.format(XycLocale.getString("XYC-lang-header", sender.getName()),this.helpPageTitle,intPageNum,pageCount));
@@ -99,8 +100,6 @@ public class HelpManager {
 	
 	/**
 	 * Clears all {@link HelpManager}s.
-	 * 
-	 * @author <a href="http://xxyy.github.io/">xxyy</a>
 	 */
 	public static void clearHelpManagers(){
 		HelpManager.helpMans.clear();
@@ -108,8 +107,7 @@ public class HelpManager {
 	
 	/**
 	 * Gets a {@link HelpManager} by its key in {@link HelpManager#helpMans}.
-	 * @return a {@link HelpManager} or <code>null</code> if no such entry exists.
-	 * @author <a href="http://xxyy.github.io/">xxyy</a>
+	 * @return a {@link HelpManager} or {@code null} if no such entry exists.
 	 */
 	public static HelpManager getHelpManager(String helpManId){
 		return HelpManager.helpMans.get(helpManId);
@@ -119,15 +117,16 @@ public class HelpManager {
 	 * Tries to print help for a command or displays an error message.
 	 * @param commandKey Key that the {@link HelpManager} is stored with in {@link HelpManager#helpMans}.
 	 * @param sender {@link CommandSender} to receive the messages.
-	 * @param label Alias this comamnd was called with.
+	 * @param label The alias this command was called with.
 	 * @param pageNum page to be displayed or "1" for the first page.
 	 * @param helpCmdLabel Help command to display a specific page, i.e. "/xyc help" will be
      *                      displayed as "/xyc help [next Page]".
-	 * @return <code>true</code> if help was given, else <code>false</code>. If <code>false</code>, an error message has already been sent.
+	 * @return {@code true} if help was given, else {@code false}. If {@code false}, an error message has already been sent.
 	 */
 	//INITIALIZATION AND STATIC VALUES
 	
-	public static boolean tryPrintHelp(String commandKey,CommandSender sender, String label, String pageNum, String helpCmdLabel){
+	@SuppressWarnings("SpellCheckingInspection")
+    public static boolean tryPrintHelp(String commandKey,CommandSender sender, String label, String pageNum, String helpCmdLabel){
 		try{
 			HelpManager helpMan = HelpManager.getHelpManager(commandKey);
 			if(helpMan == null){

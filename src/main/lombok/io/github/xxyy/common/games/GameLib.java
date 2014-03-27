@@ -20,7 +20,7 @@ public abstract class GameLib {
      */
     public static final List<SqlXyGamePlugin> plugs=new ArrayList<>();
     /**
-     * Name of the database used by the libary. Constant with value "games".
+     * Name of the database used by the library. Constant with value "games".
      */
     public static final String XY_DB_NAME = "games";
     /**
@@ -31,7 +31,7 @@ public abstract class GameLib {
     private static SafeSql ssql;
 
     /**
-     * Registers a plugin and initialises the libary if that has not already been done.
+     * Registers a plugin and initialises the library if that has not already been done.
      * @param pl {@link SqlXyGamePlugin} to register.
      */
     public static void registerPlugin(SqlXyGamePlugin pl){
@@ -58,12 +58,12 @@ public abstract class GameLib {
      * @param pl It's just needed.
      */
     private static void initLib(SqlXyGamePlugin pl) {
-        Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loading xxyy98's game libary...");
+        Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loading xxyy98's game library...");
 
         ssql = pl.getSql();
         PlayerWrapper.initTable(pl.getSql());
 
-        Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loaded xxyy98's game libary!");
+        Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loaded xxyy98's game library!");
         GameLib.isInit = true;
     }
 }

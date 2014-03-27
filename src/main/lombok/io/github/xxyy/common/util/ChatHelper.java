@@ -16,11 +16,11 @@ public abstract class ChatHelper
      */
     public static boolean isGlobalMute = false;
     /**
-     * Reason for golbal mute. This is just storage and chat listeners have to implement this themselves.
+     * Reason for global mute. This is just storage and chat listeners have to implement this themselves.
      */
     public static String gloMuReason = "";
     /**
-     * The lavel of Ad detection. Values go from 0 (off) to 3 (most aggressive). To minimize failure with an acceptable rate
+     * The level of Ad detection. Values go from 0 (off) to 3 (most aggressive). To minimize failure with an acceptable rate
      * of messages tricking the filter, use 1.
      */
     public static short adDetectionLevel = 1;
@@ -88,15 +88,13 @@ public abstract class ChatHelper
             msg = msg.replaceAll("[-_\\|~]", ".");
         }
     	if(msg.matches("(.*)(\\d{1,3}\\.\\d{1,3}.\\d{1,3}.\\d{1,3})+(.*)")) return true;
-    	if(ChatHelper.adDetectionLevel >= 3) {if(msg.matches("(.*)\\.([^-\\./]{1}[A-Za-z]{1,4})(.*)")) return true;}
-    	if(ChatHelper.adDetectionLevel < 1) return false;
-    	if(Pattern.compile("\\.(me|de|at|to|tk|eu|com|net|org|ly)\\b", Pattern.CASE_INSENSITIVE)
-    	        .matcher(msg).find()) return true;
-    	return false;
+    	if(ChatHelper.adDetectionLevel >= 3) {if(msg.matches("(.*)\\.([^-\\./][A-Za-z]{1,4})(.*)")) return true;}
+        return ChatHelper.adDetectionLevel >= 1 &&
+                Pattern.compile("\\.(me|de|at|to|tk|eu|com|net|org|ly)\\b", Pattern.CASE_INSENSITIVE).matcher(msg).find();
     }
 
     /**
-     * Checks if a message is CAPTIALIZED, based on {@link ChatHelper#percentForCaps}.
+     * Checks if a message is CAPITALIZED, based on {@link ChatHelper#percentForCaps}.
      * @param msg Message to check
      * @return Whether {@link ChatHelper#percentForCaps}% of this message are CAPITALIZED.
      */
@@ -121,6 +119,7 @@ public abstract class ChatHelper
      * @param msg Message to use
      * @return Censored and prettified message
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public static String replaceSpecialWords(String msg)
     {
     	msg = msg.replaceAll("[nN][oO0u\\(\\)]+[bB]","nette Person");//noob
@@ -132,7 +131,7 @@ public abstract class ChatHelper
     	
     	msg = msg.replaceAll("<3", "❤");
     	msg = msg.replaceAll(";\\)", " ツ");
-    	msg = msg.replaceAll("\\!", "❢");
+    	msg = msg.replaceAll("!", "❢");
     	msg = msg.replaceFirst("%", "%%");
     
     	return msg;

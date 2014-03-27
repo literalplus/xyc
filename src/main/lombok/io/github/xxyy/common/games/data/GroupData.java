@@ -129,7 +129,7 @@ public class GroupData {
      *
      * @param name Name of the group the object will represent.
      * @param ssql SafeSql to use to communicate with the database.
-     * @return A (not necessarily new) {@link GroupData} object that represents the group of the name <code>name</code>.
+     * @return A (not necessarily new) {@link GroupData} object that represents the group of the name {@code name}.
      */
     public static GroupData getByName(String name, SafeSql ssql) {
         GroupData rtrn = GroupData.cache.get(name);
@@ -140,6 +140,7 @@ public class GroupData {
         return rtrn;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     void fetchMeta() {
         try (QueryResult queryResult = ssql.executeQueryWithResult("SELECT namecol, chatcol FROM " +
                 GroupData.FULL_XY_META_TABLE + " WHERE groupname=?", this.name).assertHasResultSet()) {

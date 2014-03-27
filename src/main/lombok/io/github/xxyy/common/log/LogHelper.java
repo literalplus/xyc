@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * It is intended that you create static Loggers with Getters (and - if needed - Setters)
  * and initialize them in {@link LogHelper#initLoggers()}.
  * To initialize logging, you would call the following in you Plugin's {@link GenericXyPlugin#onEnable()}:
- * <code>(new [class extends LogHelper()]).initLoggers();</code>
+ * {@code (new [class extends LogHelper()]).initLoggers();}
  * (reference will not be needed any more)
  * 
  * @author <a href="http://xxyy.github.io/">xxyy</a>
@@ -55,10 +55,10 @@ public abstract class LogHelper
         while(it.hasNext()){
             Logger lgr = it.next();
             lgr.log(Level.INFO,"TDLogHelper: Closing and flushing logger..");
-            for(Handler hdlr : lgr.getHandlers()){
-                hdlr.flush();
-                hdlr.close();
-                lgr.removeHandler(hdlr);
+            for(Handler handler : lgr.getHandlers()){
+                handler.flush();
+                handler.close();
+                lgr.removeHandler(handler);
             }
             it.remove();
         }
@@ -66,12 +66,11 @@ public abstract class LogHelper
 
     /**
      * Tries to initialize a new logger.
-     * Prints a message to conole in case of failure.
+     * Prints a message to console in case of failure.
      * @param lgr Logger to initialize
      * @param fileName file to write to (creates a new {@link FileHandler})
      * @param formatter formatter used to format the log (preferably {@link XYCFormatter})
      * @see LogHelper#initLogger(java.util.logging.Logger, String, java.util.logging.Formatter)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     protected void tryInitLogger(Logger lgr, String fileName, String loggerName, Formatter formatter){
         try{
@@ -89,7 +88,6 @@ public abstract class LogHelper
      * @param formatter formatter used to format the log (preferably {@link XYCFormatter})
      * @throws Exception Various things
      * @see LogHelper#tryInitLogger(Logger, String, String, Formatter)
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     void initLogger(Logger lgr, String fileName, Formatter formatter) throws Exception{
         if(LogHelper.instance == null)

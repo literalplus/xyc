@@ -10,10 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -48,13 +45,13 @@ public class KitLoader {
      */
     public KitLoader(String path) {
         this.path = path;
-        ItemStack icon = new ItemStack(Material.LOCKED_CHEST);
+        ItemStack icon = new ItemStack(Material.FLOWER_POT_ITEM);
         ItemMeta meta = icon.getItemMeta();
         meta.setDisplayName("§4§lDummy Kit!");
         meta.setLore(Lists.newArrayList("§7§oThis means that no kits were found for loading.", "§e§oSee the server log for details."));
         icon.setItemMeta(meta);
-        ItemStack[] armor = new ItemStack[] {new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.CHAINMAIL_LEGGINGS),
-                                             new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.CHAINMAIL_HELMET)};
+        ItemStack[] armor = new ItemStack[]{new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.CHAINMAIL_LEGGINGS),
+                new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.CHAINMAIL_HELMET)};
         ItemStack[] contents = Lists.newArrayList(new ItemStack(Material.POISONOUS_POTATO), new ItemStack(Material.CLAY_BALL))
                 .toArray(new ItemStack[36]);
         this.defaultKit = KitInfo.constructDummy("NoKitsLoaded", icon, armor, contents);
@@ -63,8 +60,7 @@ public class KitLoader {
     /**
      * Constructs a new {@link KitLoader} by a path where kits are located.
      *
-     * @param path Path where the kits are.
-     *
+     * @param path          Path where the kits are.
      * @param fileExtension file extension to use. (including '.')
      */
     public KitLoader(String path, String fileExtension) {
@@ -103,17 +99,21 @@ public class KitLoader {
      * Recursively deletes a kit by name.
      *
      * @param name Name of the kit.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void delete(String name) {
-        (new File(String.format(this.path, name))).deleteOnExit();
-        this.kits.remove(name);
+        Validate.isTrue((new File(String.format(this.path, name))).delete(), "Could not delete KitInfo file for " + name);
+
+        Iterator<KitInfo> iterator = kits.iterator();
+
+        while (iterator.hasNext()) {
+            if (iterator.next().getName().equalsIgnoreCase(name)) {
+                iterator.remove();
+            }
+        }
     }
 
     /**
      * @return The default kit that is used if no kits are available.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public KitInfo getDefaultKit() {
         return this.defaultKit;
@@ -121,7 +121,6 @@ public class KitLoader {
 
     /**
      * @return The file extension that suffixes all kit files.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getFileExtension() {
         return this.fileExtension;
@@ -129,7 +128,6 @@ public class KitLoader {
 
     /**
      * @return All available kits.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public List<KitInfo> getKits() {
         if (!this.loaded) {
@@ -140,7 +138,6 @@ public class KitLoader {
 
     /**
      * @return The path where the kits are located.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getPath() {
         return this.path;
@@ -150,9 +147,7 @@ public class KitLoader {
      * Gets the kit applied to a {@link Player}.
      *
      * @param plrName Name of the player.
-     *
-     * @return KitInfo or <code>null</code>.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
+     * @return KitInfo or {@code null}.
      */
     public KitInfo getPlayerKit(String plrName) {
         return this.playerKits.get(plrName);
@@ -161,7 +156,6 @@ public class KitLoader {
     /**
      * @return Whether this KitLoader has loaded its kits.
      * @see KitLoader#load()
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public boolean isLoaded() {
         return this.loaded;
@@ -169,15 +163,13 @@ public class KitLoader {
 
     /**
      * (Re-)loads the kits from the {@link KitLoader}'s folder.
-     *
      * @see KitLoader#isLoaded()
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void load() {
         this.loaded = true;
         File fl = new File(this.path);
         if (!fl.exists()) {
-            fl.mkdirs();
+            assert fl.mkdirs();
         }
         if (!fl.isDirectory()) {
             throw new IllegalStateException("path is no directory");

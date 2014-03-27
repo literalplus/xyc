@@ -31,7 +31,7 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
 
     /**
      * Creates a new factory that is capable of managing
-     * <code>T extends {@link PlayerWrapper}</code> instances and delegating construction of these.
+     * {@code T extends {@link PlayerWrapper}} instances and delegating construction of these.
      */
     public PlayerWrapperFactory(Class<T> clazz, SafeSql ssql) {
         this.clazz = clazz;
@@ -89,14 +89,14 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
         T rtrn = this.wrappers.get(sender.getName());
         if (rtrn == null) {
             try {
-                Constructor<T> constr = clazz.getDeclaredConstructor(CommandSender.class, SafeSql.class);
-                constr.setAccessible(true);
-                rtrn = constr.newInstance(sender, ssql);
+                Constructor<T> constructor = clazz.getDeclaredConstructor(CommandSender.class, SafeSql.class);
+                constructor.setAccessible(true);
+                rtrn = constructor.newInstance(sender, ssql);
                 this.wrappers.put(sender.getName(), rtrn);
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
             } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
-                        "Could not aquire instance - Mising T(CommandSender) constructor, probably.", ex);
+                        "Could not acquire instance - Missing T(CommandSender) constructor, probably.", ex);
             }
         }
         return rtrn;
@@ -114,14 +114,14 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
         T rtrn = this.wrappers.get(plrName);
         if (rtrn == null) {
             try {
-                Constructor<T> constr = clazz.getDeclaredConstructor(String.class, SafeSql.class);
-                constr.setAccessible(true);
-                rtrn = constr.newInstance(plrName, ssql);
+                Constructor<T> constructor = clazz.getDeclaredConstructor(String.class, SafeSql.class);
+                constructor.setAccessible(true);
+                rtrn = constructor.newInstance(plrName, ssql);
                 this.wrappers.put(plrName, rtrn);
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
             } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
-                        "Could not aquire instance - Mising T(String) constructor, probably.", ex);
+                        "Could not acquire instance - Missing T(String) constructor, probably.", ex);
             }
         }
         return rtrn;
@@ -144,14 +144,14 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
 
         if (rtrn == null) {
             try {
-                Constructor<T> constr = clazz.getDeclaredConstructor(UUID.class, SafeSql.class);
-                constr.setAccessible(true);
-                rtrn = constr.newInstance(uuid, ssql);
+                Constructor<T> constructor = clazz.getDeclaredConstructor(UUID.class, SafeSql.class);
+                constructor.setAccessible(true);
+                rtrn = constructor.newInstance(uuid, ssql);
                 this.wrappers.put(rtrn.name(), rtrn);
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
             } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
-                        "Could not aquire instance - Mising T(UUID, SafeSql) constructor, probably.", ex);
+                        "Could not acquire instance - Missing T(UUID, SafeSql) constructor, probably.", ex);
             }
         }
         return rtrn;

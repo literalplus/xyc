@@ -21,8 +21,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 public abstract class FileHelper
 {
     /**
-     * Copies a file or directory <code>src</code> (and all its contents, if any)
-     * to a new destination <code>dest</code>.
+     * Copies a file or directory {@code src} (and all its contents, if any)
+     * to a new destination {@code dest}.
      * @throws IOException If something went wrong while copying
      */
     public static void copyFolder(File src, File dest) throws IOException{
@@ -30,7 +30,7 @@ public abstract class FileHelper
         {
             if(!dest.exists())
             {
-               dest.mkdir();
+               assert dest.mkdir();
             }
      
             String files[] = src.list();

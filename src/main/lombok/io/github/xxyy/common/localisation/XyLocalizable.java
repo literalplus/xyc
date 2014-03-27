@@ -8,7 +8,6 @@ package io.github.xxyy.common.localisation;
 public interface XyLocalizable {
     /**
      * An array of the names of languages included in this object's JAR.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String[] getShippedLocales();
 

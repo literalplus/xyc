@@ -38,7 +38,7 @@ public class MapSpawn implements ConfigurationSerializable {
     /**
      * Constructs a MapSpawn from a source (YAML) map.
      * Example of a source YAML:
-     * <code>
+     * {@code
      * team: YELLOW<br>
      * location:<br>
      *.   world: world<br>
@@ -47,7 +47,7 @@ public class MapSpawn implements ConfigurationSerializable {
      *.   z: 56<br>
      *.   pitch: 56<br>
      *.   yaw: 90<br>
-     * </code>
+     * }
      *
      * @param sourceMap Map to use as data source
      * @return A MapSpawn object corresponding to the given data.

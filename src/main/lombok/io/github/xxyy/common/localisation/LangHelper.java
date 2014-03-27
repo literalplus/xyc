@@ -34,17 +34,15 @@ public class LangHelper {
 
     /**
      * Parses a String so that a) {@link ChatColor} is parsed with '&amp;' instead of the paragraph sign b) html entities are replaced with their unicode representations.
+     * @param str String to process
      */
     public static String applyCodes(String str) {
         return ChatColor.translateAlternateColorCodes('&', StringEscapeUtils.unescapeHtml(str));
     }
 
-    public static boolean changeSenderLang(String senderName) {
-        return false; //NYI
-    }
-
     /**
      * Clears the language cache for a plugin, so that language files will be reloaded.
+     * @param pluginId The plugin providing String of the target plugin
      */
     public static void clearPluginLangCache(String pluginId) {
         if (!LangHelper.langCache.containsKey(pluginId)) {
@@ -121,7 +119,7 @@ public class LangHelper {
     /**
      * Gets the {@link YamlConfiguration} object that represents a specific language file of a specific plugin.
      *
-     * @return {@link YamlConfiguration} or <code>null</code> if not found.
+     * @return {@link YamlConfiguration} or {@code null} if not found.
      */
     public static YamlConfiguration getLangFile(String lang, String pluginId) {
         if (!LangHelper.langCache.containsKey(pluginId)) {
@@ -139,6 +137,7 @@ public class LangHelper {
      *
      * @return The option's value or "XYC-notexists"/"XYC-notexists2"
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public static String getOption(String option, String lang, String pluginId) {
         if (!LangHelper.langCache.containsKey(pluginId)) {
             return "XYC-notloaded";
@@ -151,8 +150,7 @@ public class LangHelper {
     }
 
     /**
-     * Gets the lang
-     * <code>senderName</code> has chosen for all messages; Only returns {@link XyHelper#defaultLang} for now.
+     * Gets the lang {@code senderName} has chosen for all messages; Only returns {@link XyHelper#defaultLang} for now.
      *
      * @param senderName Name of the {@link CommandSender} whose lang will be fetched.
      */
@@ -167,7 +165,7 @@ public class LangHelper {
      * @param senderName Who will receive this message (for choosing languages) or "CONSOLE" to choose {@link XyHelper#defaultLang}.
      * @param pluginId   The plugin providing this file
      *
-     * @return A localised string or <code>locId</code> on failure.
+     * @return A localised string or {@code locId} on failure.
      */
     public static String localiseString(String locId, String senderName, String pluginId) {
         String chLang = LangHelper.getSenderChosenLang(senderName);
@@ -239,9 +237,9 @@ public class LangHelper {
 
     /**
      * Localises a String and sends it to
-     * <code>sender</code>, prefixed with the result of getChatPrefix() for
-     * <code>plug</code>, using getName() of
-     * <code>plug</code> as plugin key.
+     * {@code sender}, prefixed with the result of getChatPrefix() for
+     * {@code plug}, using getName() of
+     * {@code plug} as plugin key.
      *
      * @see LangHelper#localiseString(String, String, String)
      */

@@ -17,8 +17,7 @@ public abstract class FireworkHelper
 {
     /**
      * Launches a random Firework at a random Location in 
-     * <code>radius</code> around <code>loc</code>.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
+     * {@code radius} around {@code loc}.
      */
     public static void launchRandomRocketNear(Location loc, int radius){
         loc = LocationHelper.randomiseLocation(loc, radius);
@@ -39,7 +38,6 @@ public abstract class FireworkHelper
     /**
      * There seems to not be a better way of doing this if not Reflection (but that's intensive)
      * Anyway returns a random {@link Color}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     private static Color randomColor()
     {

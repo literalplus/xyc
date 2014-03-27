@@ -58,7 +58,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      *
      * @param sender A {@link CommandSender}. (must be {@link Player} or {@link ConsoleCommandSender} or {@link BlockCommandSender})
      * @param ssql   SafeSql to use for storing the object.
-     * @throws ClassCastException If <code>sender</code> is not any of the expected types.
+     * @throws ClassCastException If {@code sender} is not any of the expected types.
      */
     protected PlayerWrapper(CommandSender sender, SafeSql ssql) {
         if (sender instanceof Player) {
@@ -194,10 +194,10 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     }
 
     /**
-     * Parses a colorified name for the player represented by this wrapper. Primarily intended for chat, rankings and the TAB list.
+     * Parses a colorized name for the player represented by this wrapper. Primarily intended for chat, rankings and the TAB list.
      *
      * @param sixteenCharLimit Whether to limit the output to 16 characters (I did not make that limitation!)
-     * @return The colorified display name of this player, using the color of the "default" group if a nickname is enabled.
+     * @return The colorized display name of this player, using the color of the "default" group if a nickname is enabled.
      */
     public String getColorizedDisplayName(boolean sixteenCharLimit) {
         String nameColor = this.getGroup().getNameColor();
@@ -242,9 +242,9 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
 
     /**
      * Returns the nickname the wrapped player has chosen or
-     * <code>null</code> if he/she has not (yet) chosen one. If the player has chosen a nickname, please try to use it as much as possible.
+     * {@code null} if he/she has not (yet) chosen one. If the player has chosen a nickname, please try to use it as much as possible.
      *
-     * @return nickname the wrapped player has chosen or <code>null</code> if none.
+     * @return nickname the wrapped player has chosen or {@code null} if none.
      * @see PlayerWrapper#getDisplayName()
      * @see PlayerWrapper#getColorizedDisplayName(boolean)
      */
@@ -286,16 +286,16 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     /**
      * Checks if this {@link PlayerWrapper} has a permission. If a {@link ConsoleCommandSender} or {@link BlockCommandSender} was wrapped using
      * {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)},
-     * <code>true</code> will always be returned.
+     * {@code true} will always be returned.
      *
      * Regular expressions can be used, for example:
-     * <code>game.admin.*</code> matches
-     * <code>game.admin</code> and, for example,
-     * <code>game.admin.awe</code>
+     * {@code game.admin.*} matches
+     * {@code game.admin} and, for example,
+     * {@code game.admin.awe}
      *
      * @param regex The permission to check for, RegEx are allowed.
      * @return if this {@link PlayerWrapper} is a {@link ConsoleCommandSender} or {@link BlockCommandSender} OR, if it's not, if this
-     * {@link PlayerWrapper}'s group has a permission <code>regex</code>.
+     * {@link PlayerWrapper}'s group has a permission {@code regex}.
      */
     public boolean hasPermission(String regex) {
         return this.isConsole || this.getGroup().hasPermission(regex);
@@ -343,7 +343,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     /**
      * Returns the unique ID of the player wrapped by this object, as in {@link Player#getUniqueId()}. If it is not obtainable (i.e. the player is
      * offline),
-     * <code>null</code> will be returned.
+     * {@code null} will be returned.
      *
      * @return The Mojang UUID of the wrapped player.
      * @see Player#getUniqueId()
@@ -372,7 +372,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
             this.xyFetch();
             return;//no need to fetch again ;)
         }
-        Validate.notNull(getUniqueId(), "Cannot refetch passes, no UUID!");
+        Validate.notNull(getUniqueId(), "Cannot re-fetch passes, no UUID!");
 
         try (QueryResult queryResult = ssql.executeQueryWithResult("SELECT passes_amount, passes_used FROM "
                 + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " WHERE uuid=?", getUniqueId().toString()).assertHasResultSet()) {
@@ -385,7 +385,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
             this.passesUsed = queryResult.rs().getInt("passes_used");
         } catch (SQLException e) {
             ssql.formatAndPrintException(e, "PlayerWrapper#refetchPasses()");
-            GameLib.plugs.get(0).setError("Exception when refetching passes. This is an error.", "PlayerWrapper#refetchPasses()");
+            GameLib.plugs.get(0).setError("Exception when re-fetching passes. This is an error.", "PlayerWrapper#refetchPasses()");
         }
     }
 
@@ -417,7 +417,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
     /**
      * Sets the nickname of this player.
      *
-     * @param nick New nickname for the wrapped player or <code>null</code> to disable.
+     * @param nick New nickname for the wrapped player or {@code null} to disable.
      * @see PlayerWrapper#getNick()
      * @see PlayerWrapper#getDisplayName()
      */
@@ -540,7 +540,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      * Returns the real user name for a provided String.
      *
      * @param name Name to seek.
-     * @return Name of the player currently owning this nickname or <code>name</code> if <code>name</code> is a real name or <code>null</code> if
+     * @return Name of the player currently owning this nickname or {@code name} if {@code name} is a real name or {@code null} if
      * there is no such user.
      */
     public static String getAnyName(String name) {
@@ -559,7 +559,7 @@ public abstract class PlayerWrapper<T>//TODO implement Player?
      * Gets the real name of an user by their nickname.
      *
      * @param nick Nickname to seek.
-     * @return Name of the player currently owning this nickname or <code>null</code> if this nickname has not been registered.
+     * @return Name of the player currently owning this nickname or {@code null} if this nickname has not been registered.
      */
     public static String getNameByNick(String nick) {
         try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(

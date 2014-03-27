@@ -162,9 +162,8 @@ public abstract class AbstractMapLoader {
 
         File uidDat = new File(Bukkit.getWorldContainer(), this.getWorldName() + "/uid.dat");
         if (uidDat.exists()) {
-            uidDat.delete();
+            assert uidDat.delete();
         }
-        uidDat = null;//bukkit will access this file later so we may as well close it
 
         WorldCreator creator = WorldCreator.name(this.getWorldName()).environment(Environment.NORMAL).type(WorldType.NORMAL);
         World result = Bukkit.createWorld(creator);
@@ -192,7 +191,7 @@ public abstract class AbstractMapLoader {
         result.setThundering(false);
         result.setWaterAnimalSpawnLimit(0);
 
-        result = this.teleport(result);
+        this.teleport(result);
 
         Bukkit.getConsoleSender().sendMessage(
                 this.getClass().getSimpleName() + "§eWorld " + this.mapName + " loaded to '" + this.getWorldName() + "'.");

@@ -3,6 +3,7 @@ package io.github.xxyy.common.games.kits;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +34,6 @@ public class KitInfo implements Comparable<KitInfo> {
      * Constructs a KitInfo and fetches all information from a file.
      *
      * @param path Where the kit is located.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     protected KitInfo(String path) {
         this.fl = new File(path);
@@ -92,14 +91,12 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * For internal purposes
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     private KitInfo() {
     }
 
     @Override
-    public int compareTo(KitInfo other) {
+    public int compareTo(@NotNull KitInfo other) {
         if (this.equals(other)) {
             return 0;
         }
@@ -142,8 +139,6 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * Saves the current change of this {@link KitInfo} to disk.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public void flush() {
         if (this.fl == null || this.cfg == null) {
@@ -158,7 +153,6 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * @return The armor contents for this {@link KitInfo}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack[] getArmor() {
         return this.armor;
@@ -173,7 +167,6 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * @return The {@link YamlConfiguration} backing this {@link KitInfo}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public YamlConfiguration getCfg() {
         return this.cfg;
@@ -181,7 +174,6 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * @return The inventory contents for this {@link KitInfo}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack[] getContents() {
         return this.contents;
@@ -189,7 +181,6 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * @return The icon that represents this {@link KitInfo} in a {@link KitSelector}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public ItemStack getIcon() {
         return this.icon;
@@ -197,7 +188,6 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * @return The name of this {@link KitInfo}.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     public String getName() {
         return this.name;
@@ -237,8 +227,6 @@ public class KitInfo implements Comparable<KitInfo> {
     /**
      * Constructs a dummy KitInfo for display - this can be used in special cases, i.e. when no KitInfo is available for loading. Dummy KitInfos can
      * NOT be saved.
-     *
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     protected static KitInfo constructDummy(String name, ItemStack icon, ItemStack[] armor, ItemStack[] contents) {
         Validate.notNull(icon);
@@ -250,7 +238,7 @@ public class KitInfo implements Comparable<KitInfo> {
         if (armor.length != 4) {
             throw new IllegalArgumentException("contents must have exactly 4 entries.");//definitely not spaghetti code
         }
-        KitInfo ki = new KitInfo();//ki =/= "Künstliche Intelligenz" (=AI)
+        KitInfo ki = new KitInfo();
         ki.name = name;
         ki.icon = icon;
         ki.armor = armor;

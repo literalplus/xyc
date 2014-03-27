@@ -40,7 +40,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * Constructs a new {@link SafeSql}.
      *
      * @param pl {@link SqlConnectable} providing login data
-     * @throws IllegalArgumentException If plug is <code>null</code>.
+     * @throws IllegalArgumentException If plug is {@code null}.
      */
     public SafeSql(SqlConnectable pl) {
         Validate.notNull(pl);
@@ -168,9 +168,9 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
     /**
      * Safely prepares a statement. Remember to close it afterwards. Insert values by using '?'.
-     * <p/>
+     *
      * Example:
-     * <code>
+     * {@code
      * PreparedStatement stmt = null;
      * try{
      * stmt = safesql.prepareStatement("UPDATE "+safesql.dbName+".users SET status = 0 AND some_string = ? WHERE user_id = ?");
@@ -180,7 +180,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * stmt.executeUpdate();
      * }finally{
      * try{ if(stmt != null){ stmt.close(); } }catch{ logAndThenPanic(); } }
-     * </code>
+     * }
      *
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
@@ -329,7 +329,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * Convenience method. Tries to close an {@link AutoCloseable}. If it could not be closed, logs the encountered exception.
      *
      * @param closeable What to close
-     * @return <code>false</code> if an Exception occurred while closing <code>closeable</code>, <code>true</code> otherwise.
+     * @return {@code false} if an Exception occurred while closing {@code closeable}, {@code true} otherwise.
      */
     public static boolean tryClose(AutoCloseable closeable) {
         if (closeable == null) {

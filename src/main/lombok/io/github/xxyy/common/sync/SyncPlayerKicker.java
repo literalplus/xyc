@@ -1,6 +1,6 @@
 package io.github.xxyy.common.sync;
 
-import io.github.xxyy.common.XyHelper;
+import io.github.xxyy.common.xyplugin.AbstractXyPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 
 /**
- * Class that helps with kicking {@link Player}s when operationg in an asyncronous environment.
+ * Class that helps with kicking {@link Player}s when operating in an asynchronous environment.
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
 public class SyncPlayerKicker implements Callable<Boolean>
@@ -41,7 +41,7 @@ public class SyncPlayerKicker implements Callable<Boolean>
      * @return Always true, for methods which want to return booleans in a single statement
      */
     public static boolean kick(Player plr, String message){
-        Bukkit.getScheduler().callSyncMethod(XyHelper.getPlugins().get(0), new SyncPlayerKicker(plr, message));
+        Bukkit.getScheduler().callSyncMethod(AbstractXyPlugin.getInstances().get(0), new SyncPlayerKicker(plr, message));
         return true;
     }
 }

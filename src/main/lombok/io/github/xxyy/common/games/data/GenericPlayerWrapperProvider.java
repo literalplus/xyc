@@ -13,13 +13,12 @@ import org.bukkit.entity.Player;
 @Deprecated
 public class GenericPlayerWrapperProvider implements PlayerWrapperProducer<GenericPlayerWrapper> {
 
-    @Deprecated //consitency! :)
+    @Deprecated //consistency! :)
     private static GenericPlayerWrapperProvider instance = null;
 //    private PlayerWrapperFactory<GenericPlayerWrapper> factory = new PlayerWrapperFactory<>(this);
 
     /**
      * @return The {@link PlayerWrapperFactory} used to create {@link PlayerWrapper}s.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
      */
     @Deprecated
     public PlayerWrapperFactory<?> getFactory(){

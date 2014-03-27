@@ -3,11 +3,9 @@ package io.github.xxyy.common.xyplugin;
 import io.github.xxyy.common.version.PluginVersion;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Server;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
@@ -23,7 +21,7 @@ import java.util.List;
  *
  * @author xxyy
  */
-public abstract class AbstractXyPlugin extends JavaPlugin implements XyPlugable {
+public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable {
 
     public AbstractXyPlugin(){
     }
@@ -34,7 +32,7 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPlugable 
 
     private static List<AbstractXyPlugin> INSTANCES = new ArrayList<>();
     private static List<AbstractXyPlugin> IMMUTABLE_INSTANCES = Collections.unmodifiableList(INSTANCES); //Changes with the wrapped List
-    // but this is used faaar more often.
+    // but this is used far more often.
     @Getter
     private final PluginVersion pluginVersion = PluginVersion.ofClass(getClass());
 
@@ -87,15 +85,6 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPlugable 
     protected final <T extends CommandExecutor> void setExec(final T exec, final String cmdName) {
         Validate.notNull(this.getCommand(cmdName), "Command "+cmdName+" is not registered for this plugin: "+this.toString());
         this.getCommand(cmdName).setExecutor(exec);
-    }
-
-    /**
-     * This method is used to access JavaPlugin#initialize(...) from XyPluginLoader. Do NOT invoke manually!
-     *
-     * @see JavaPlugin#initialize(org.bukkit.plugin.PluginLoader, org.bukkit.Server, org.bukkit.plugin.PluginDescriptionFile, java.io.File, java.io.File, java.lang.ClassLoader)
-     */
-    protected final void initialize0(final PluginLoader loader, final Server server, final PluginDescriptionFile description, final File dataFolder, final File file, final ClassLoader classLoader) {
-        super.initialize(loader, server, description, dataFolder, file, classLoader);
     }
 
     /**

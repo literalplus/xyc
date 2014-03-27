@@ -10,7 +10,7 @@ import org.bukkit.Location;
  */
 public abstract class LocationHelper {
     /**
-     * Determines if a location <code>toCheck</code> is between or
+     * Determines if a location {@code toCheck} is between or
      * located on one of the boundaries specified.
      * There is no special order of the boundaries required,
      * they can even be equal.
@@ -24,7 +24,7 @@ public abstract class LocationHelper {
     }
 
     /**
-     * Determines if a number <code>toCheck</code> is between or
+     * Determines if a number {@code toCheck} is between or
      * equal to one the boundaries specified.
      * There is no special order of the boundaries required,
      *
@@ -36,10 +36,10 @@ public abstract class LocationHelper {
     }
 
     /**
-     * Rendomises x,y and z coordinates of a Location, in a radius.
+     * Randomises x,y and z coordinates of a Location, in a radius.
      *
      * @param original Location to randomise
-     * @param radius   Maximum distace from the original location
+     * @param radius   Maximum distance from the original location
      */
     public static Location randomiseLocation(Location original, int radius) {
         int modX = RandomUtils.nextInt(radius);

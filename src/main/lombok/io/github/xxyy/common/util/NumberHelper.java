@@ -14,16 +14,16 @@ import java.util.Locale;
 public abstract class NumberHelper {
 
     static {
-        DecimalFormatSymbols syms = new DecimalFormatSymbols(Locale.GERMAN);
-        syms.setGroupingSeparator(' ');
-        syms.setDecimalSeparator(' ');//hacky!
-        SPACE_FORMAT = new DecimalFormat(",###", syms);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.GERMAN);
+        symbols.setGroupingSeparator(' ');
+        symbols.setDecimalSeparator(' ');//hacky!
+        SPACE_FORMAT = new DecimalFormat(",###", symbols);
     }
     private static final DecimalFormat SPACE_FORMAT;
     private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
     /**
-     * Formats a number with spaces as group seperator for use on signs. The number will be colored in black, if it's to short to actually
+     * Formats a number with spaces as group separator for use on signs. The number will be colored in black, if it's to short to actually
      * automatically be aligned right, it will be prefixed with grey underscores. Possible outputs: &amp;7________&amp;0123 123456789012345
      *
      * @param number The number to be formatted
@@ -40,12 +40,12 @@ public abstract class NumberHelper {
     /**
      * Tries to extract an int from a String. If the extraction fails (i.e. if a {@link NumberFormatException} is thrown by
      * {@link Integer#parseInt(String)}),
-     * <code>def</code> is returned.
+     * {@code def} is returned.
      *
      * @param source String to get the int from.
-     * @param def    int to return if <code>source</code> does not contain a valid int.
+     * @param def    int to return if {@code source} does not contain a valid int.
      *
-     * @return int contained in <code>source</code> or <code>def</code>.
+     * @return int contained in {@code source} or {@code def}.
      */
     public static int tryParseInt(final String source, final int def) {
         int result;

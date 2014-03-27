@@ -48,6 +48,7 @@ public final class TeamRegistry {
         return TEAM_MAP.get(teamName);
     }
 
+    @SuppressWarnings("unchecked") //The class is actually checked, so no errors can occur. Sorry, Mr. Compiler
     public static <T> T getTeam(@NonNull String teamName, Class<T> clazz){
         Team team = getTeam(teamName);
 
@@ -86,7 +87,7 @@ public final class TeamRegistry {
 
     /**
      * Add a listener that is called every time the team list changes.
-     * @param listener LIstener to add
+     * @param listener Listener to add
      */
     public static void addTeamListChangeListener(PropertyChangeListener listener){
         PROPERTY_CHANGE_SUPPORT.addPropertyChangeListener(listener);
@@ -94,7 +95,7 @@ public final class TeamRegistry {
 
     /**
      * Remove a listener that is called every time the team list changes.
-     * @param listener LIstener to remove
+     * @param listener Listener to remove
      */
     public static void removeTeamListChangeListener(PropertyChangeListener listener){
         PROPERTY_CHANGE_SUPPORT.removePropertyChangeListener(listener);

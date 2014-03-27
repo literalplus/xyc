@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 
 /**
- * Class that helps with sending messages to a {@link CommandSender} when operationg in an asyncronous environment.
+ * Class that helps with sending messages to a {@link CommandSender} when operating in an asynchronous environment.
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
 public class SyncCommandSenderMessage implements Callable<Boolean>

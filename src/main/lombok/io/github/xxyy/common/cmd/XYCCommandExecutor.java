@@ -29,15 +29,12 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
     @Override
     public final boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length >= 1 && args[0].equalsIgnoreCase("xyc")) {
-            CommandHelper.msg("§9▀▄▒▄▀ ▒█░░▒█ ▒█▀▀█ §eXyCommon Libary.\n"
+            CommandHelper.msg("§9▀▄▒▄▀ ▒█░░▒█ ▒█▀▀█ §eXyCommon Library.\n"
                     + "§9░▒█░░ ▒█▄▄▄█ ▒█░░░ §e" + XycConstants.versionString + "\n"
                     + "§9▄▀▒▀▄ ░░▒█░░ ▒█▄▄█ §ehttp://xxyy.github.io/\n"
                     + "§9### §eXyCommon...xxyy98 (Philipp Nowak) §9###", sender);
         }
-        if (!this.preCatch(sender, sender.getName(), cmd, label, args)) {
-            return true;
-        }
-        return this.catchCommand(sender, sender.getName(), cmd, label, args);
+        return !this.preCatch(sender, sender.getName(), cmd, label, args) || this.catchCommand(sender, sender.getName(), cmd, label, args);
     }
 
     /**

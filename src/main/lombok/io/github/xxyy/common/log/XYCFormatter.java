@@ -30,7 +30,7 @@ public class XYCFormatter extends Formatter {
      */
     public String logName;
     /**
-     * Wether to print calling method names for log entries.
+     * Whether to print calling method names for log entries.
      */
     public boolean printMethodName = false;
     /**
@@ -65,6 +65,7 @@ public class XYCFormatter extends Formatter {
         this.pluginName = pluginName; this.pluginVersion=pluginVersion; this.logName=logName;
         this.printMethodName=printMethodName;
     }
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Override
     public String format(LogRecord rec) {
         if(rec.getThrown() != null){

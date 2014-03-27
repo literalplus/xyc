@@ -41,7 +41,7 @@ public class BungeeCordHelper {
      * Sends a player to a specified BungeeCord server, after a specified amount of server ticks.
      *
      * @param plr        Player to target
-     * @param serverName destionation server
+     * @param serverName destination server
      * @param delay      Delay in server ticks.
      *
      * @see BungeeCordHelper#sendTo(Player, String)

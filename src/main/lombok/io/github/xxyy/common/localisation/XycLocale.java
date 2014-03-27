@@ -1,7 +1,7 @@
 package io.github.xxyy.common.localisation;
 
-import io.github.xxyy.common.XyHelper;
 import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.common.xyplugin.AbstractXyPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -35,10 +35,10 @@ public class XycLocale implements XyLocalizable {
                 map.put(lang, YamlConfiguration.loadConfiguration(destFl));
             } else {
                 try {
-                    destDir.mkdirs();
-                    destFl.createNewFile();
+                    assert destDir.mkdirs();
+                    assert destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
-                    InputStream in = XyHelper.getPlugins().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
+                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
                     int read;
                     while ((read = in.read()) != -1) {
                         out.write(read);
@@ -74,11 +74,11 @@ public class XycLocale implements XyLocalizable {
                 File destFl = new File(dir, fl);
                 File destDir = new File(dir);
                 try {
-                    destDir.mkdirs();
-                    destFl.createNewFile();
+                    assert destDir.mkdirs();
+                    assert destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
-                    InputStream in = XyHelper.getPlugins().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
-                    int read = -1;
+                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
+                    int read;
                     while ((read = in.read()) != -1) {
                         out.write(read);
                     }
@@ -91,7 +91,7 @@ public class XycLocale implements XyLocalizable {
                     System.out.println("[MTC]Could not reset localization files from JAR: " + lang);
                     e.printStackTrace();
                 }
-                LangHelper.reloadLang(XyHelper.getPlugins().get(0), lang);
+                LangHelper.reloadLang(AbstractXyPlugin.getInstances().get(0), lang);
             }
 
             LangHelper.langCache.put("XYC", map);
@@ -106,8 +106,7 @@ public class XycLocale implements XyLocalizable {
      *
      * @param id         language key
      * @param senderName name of receiver
-     * @return Localised String or <code>id</code> on failure.
-     * @author <a href="http://xxyy.github.io/">xxyy</a>
+     * @return Localised String or {@code id} on failure.
      * @see LangHelper#localiseString(String, String, String)
      */
     public static String getString(String id, String senderName) {
