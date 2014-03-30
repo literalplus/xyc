@@ -99,6 +99,36 @@ public class QueryBuilder {
     }
 
     /**
+     * Adds a part to the query from a snapshot factory.
+     *
+     * @param factory where to get a snapshot from
+     * @return This object, for convenient construction.
+     */
+    @NonNull
+    public QueryBuilder addPart(@Nullable final QuerySnapshot.Factory factory){
+        if(factory == null){
+            return this;
+        }
+
+        return addPart(factory.produceSnapshot());
+    }
+
+    /**
+     * Adds parts to the query.
+     *
+     * @param parts Collection of the snapshots to be added
+     * @return This object, for convenient construction.
+     */
+    @NonNull
+    public QueryBuilder addParts(@NonNull final Collection<QuerySnapshot> parts){
+        for(QuerySnapshot snapshot : parts){
+            addPart(snapshot);
+        }
+
+        return this;
+    }
+
+    /**
      * Builds an update query from this builder. (Using SQL {@code INSERT ON DUPLICATE KEY UPDATE})
      * Will use arguments to infer values.
      *
