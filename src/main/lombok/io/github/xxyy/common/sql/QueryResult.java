@@ -48,10 +48,25 @@ public class QueryResult implements AutoCloseable {
      * @throws java.lang.IllegalStateException If this result does not have a {@link java.sql.ResultSet} associated with it.
      * @see #rs()
      * @see #getResultSet()
+     * @see #vouchForResultSet()
      */
     public QueryResult assertHasResultSet(){
         if(resultSet == null){
             throw new IllegalStateException("QueryResult does not have ResultSet when required!");
+        }
+
+        return this;
+    }
+
+    /**
+     * Makes sure that this object has a ResultSet associated with it.
+     * @return This object for convenient call chaining
+     * @throws SQLException If this objects does not have a ResultSet associated with it.
+     * @see #assertHasResultSet()
+     */
+    public QueryResult vouchForResultSet() throws SQLException {
+        if(resultSet == null){
+           throw new SQLException("No ResultSet associated with QueryResult when asked to vouch!");
         }
 
         return this;

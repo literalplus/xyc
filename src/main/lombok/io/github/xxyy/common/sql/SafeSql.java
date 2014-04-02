@@ -20,6 +20,8 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      */
     public static boolean debug = false;
 
+    private static final Logger LOGGER = Logger.getLogger(SafeSql.class.getName());
+
     public final String dbName;
     /**
      * Connection maintained by this SafeSql.
@@ -37,7 +39,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public Logger errLogger = null;
 
     /**
-     * Constructs a new {@link SafeSql}.
+     * Constructs a new instance.
      *
      * @param pl {@link SqlConnectable} providing login data
      * @throws IllegalArgumentException If plug is {@code null}.
@@ -46,6 +48,10 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
         Validate.notNull(pl);
         this.authDataProvider = pl;
         this.dbName = authDataProvider.getSqlDb();
+    }
+
+    public static Logger getLogger(){
+        return LOGGER;
     }
 
     /**
@@ -194,7 +200,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     }
 
     /**
-     * Tries to close any open {@link Connection} managed by this {@link SafeSql}.
+     * Tries to close any open {@link Connection} managed by this object.
      */
     public void preReload() {
         tryClose(this);
