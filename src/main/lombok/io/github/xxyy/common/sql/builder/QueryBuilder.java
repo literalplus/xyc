@@ -87,7 +87,7 @@ public class QueryBuilder {
      */
     @NonNull
     public QueryBuilder addUniqueIdentifier(@NonNull final QuerySnapshot identifier) {
-        Validate.isTrue(identifier.getType() == QuerySnapshot.Type.OBJECT_UPDATE, "Identifier type must be object update!");
+        Validate.isTrue(identifier.getType() == QuerySnapshot.Type.OBJECT_IDENTIFIER, "Identifier type must be object identifier!");
 
         if (this.uniqueIdentifiers == null) {
             this.uniqueIdentifiers = new LinkedBlockingQueue<>();
