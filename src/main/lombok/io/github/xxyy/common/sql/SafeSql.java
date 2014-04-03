@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.logging.Level;
@@ -192,6 +193,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
      */
+    @Nullable
     public PreparedStatement prepareStatement(@NonNull String query) throws SQLException {
         PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
         if (SafeSql.debug) {
@@ -291,7 +293,11 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     }
 
     @NonNull
-    public PreparedStatement fillStatement(@NonNull PreparedStatement stmt, @NonNull Object[] objects) throws SQLException {
+    public PreparedStatement fillStatement(@Nullable PreparedStatement stmt, @NonNull Object[] objects) throws SQLException {
+        if(stmt == null){
+            return null;
+        }
+
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] == null) {
                 stmt.setNull(i + 1, Types.OTHER);
