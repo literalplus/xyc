@@ -6,11 +6,13 @@ import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.QueryBuilder;
 import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
+import lombok.NonNull;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
@@ -83,10 +85,11 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * Only use this if you don't have anything else, stuff will break very badly if there's no database entry for this UUID.
      *
      * @param uuid UUID of the player to wrap
+     * @param plrName Name of the player to wrap (May be null if not available)
      * @param ssql SafeSql to use for storing the object.
      */
-    protected PlayerWrapper(UUID uuid, SafeSql ssql) {
-        super(ssql);
+    protected PlayerWrapper(@NonNull UUID uuid, @Nullable String plrName, @NonNull SafeSql ssql) {
+        this(plrName, ssql);
         this.uuid.updateValue(uuid);
 
         this.xyFetch();
