@@ -51,7 +51,7 @@ public @interface SqlValueCache {
             public SqlValueHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
                                                   @NonNull Field sourceField, @NonNull SqlValueCache annotation,
                                                   @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(!SqlValueHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlValueHolder! (Given %s)", sourceField.getType());
+                Validate.isTrue(SqlValueHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlValueHolder! (Given %s)", sourceField.getType());
 
                 if(!sourceField.isAccessible()){
                     sourceField.setAccessible(true);
@@ -83,7 +83,7 @@ public @interface SqlValueCache {
             public ConcurrentSqlIntHolder createHolder(@NonNull Set<SqlValueHolder<?>> set,
                                                        @NonNull Field sourceField, @NonNull SqlValueCache annotation,
                                                        @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(!ConcurrentSqlIntHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend ConcurrentSqlIntHolder! (Given %s)", sourceField.getType());
+                Validate.isTrue(ConcurrentSqlIntHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend ConcurrentSqlIntHolder! Given: ", sourceField.getType());
 
                 if(!sourceField.isAccessible()){
                     sourceField.setAccessible(true);
@@ -115,7 +115,7 @@ public @interface SqlValueCache {
             public ConcurrentSqlDoubleHolder createHolder(@NonNull Set<SqlValueHolder<?>> set,
                                                           @NonNull Field sourceField, @NonNull SqlValueCache annotation,
                                                           @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(!ConcurrentSqlDoubleHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend ConcurrentSqlDoubleHolder! (Given %s)", sourceField.getType());
+                Validate.isTrue(ConcurrentSqlDoubleHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend ConcurrentSqlDoubleHolder! Given: ", sourceField.getType());
 
                 if(!sourceField.isAccessible()){
                     sourceField.setAccessible(true);
@@ -146,7 +146,7 @@ public @interface SqlValueCache {
             public SqlIdentifierHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
                                                        @NonNull Field sourceField, @NonNull SqlValueCache annotation,
                                                        @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(!SqlIdentifierHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlIdentifierHolder! (Given %s)", sourceField.getType());
+                Validate.isTrue(SqlIdentifierHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlIdentifierHolder! Given: ", sourceField.getType());
 
                 if(!sourceField.isAccessible()){
                     sourceField.setAccessible(true);
@@ -177,7 +177,7 @@ public @interface SqlValueCache {
             public SqlIdentifierHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
                                                        @NonNull Field sourceField, @NonNull SqlValueCache annotation,
                                                        @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(!SqlUUIDHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlUUIDHolder! (Given %s)", sourceField.getType());
+                Validate.isTrue(SqlUUIDHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlUUIDHolder! (Given %s)", sourceField.getType());
 
                 if(!sourceField.isAccessible()){
                     sourceField.setAccessible(true);

@@ -86,7 +86,7 @@ public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
 
     @Override
     public Object getSnapshot() {
-        return getModifier();
+        return consumeModifier();
     }
 
     @Override
