@@ -94,7 +94,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @see #updateValue(Object)
      * @see #supportsOverride()
      */
-    public void setValue(@NonNull T newValue) {
+    public void setValue(@Nullable T newValue) {
         markModified();
         updateValue(newValue);
     }
@@ -142,7 +142,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @see #setValue(Object)
      * @see #supportsOverride()
      */
-    public void updateValue(@NonNull T newValue) {
+    public void updateValue(@Nullable T newValue) {
         this.value = newValue;
         this.setFetched(true);
     }
