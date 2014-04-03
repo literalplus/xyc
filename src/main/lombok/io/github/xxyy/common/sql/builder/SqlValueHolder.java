@@ -114,7 +114,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @return value of the represented database column or {@code null} if not available.
      */
     public T getValue() {
-        if (!isFetched() && this.getDataSource() != null) {
+        if (this.value == null && !isFetched() && this.getDataSource() != null) {
             getDataSource().select(this);
         }
 

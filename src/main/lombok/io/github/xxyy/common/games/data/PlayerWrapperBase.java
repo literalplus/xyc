@@ -318,11 +318,11 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     }
 
     private boolean tryFetchByUUID() { //Returns true if it got the data
-        return getUniqueId() != null && tryFetchByIdentifier(this.uuid);
+        return this.uuid.isFetched() && getUniqueId() != null && tryFetchByIdentifier(this.uuid);
     }
 
     private boolean tryFetchByName() { //Returns true if it got the data
-        return plrName != null && tryFetchByIdentifier(this.plrName);
+        return plrName.getValue() != null && tryFetchByIdentifier(this.plrName);
     }
 
     /**

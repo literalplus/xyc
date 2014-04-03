@@ -48,6 +48,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
     public void updateValue(@NonNull T newValue) {
         if(supportsOverride()){
             super.updateValue(newValue);
+            return;
         }
 
         throw new UnsupportedOperationException("Cannot change value of an identifier column!");
@@ -55,7 +56,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
 
     @Override
     public boolean supportsOverride(){
-        return getSnapshot() == null;
+        return this.value == null;
     }
 
     @Override
