@@ -25,7 +25,6 @@ public interface PlayerWrapperProducer<T extends PlayerWrapper>
     /**
      * @param plr {@link Player} to wrap.
      * @return a new T.
-     * @see PlayerWrapper#PlayerWrapper(org.bukkit.entity.Player, io.github.xxyy.common.sql.SafeSql)
      */
     public T newWrapper(Player plr);
     
