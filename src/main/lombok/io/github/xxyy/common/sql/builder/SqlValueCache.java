@@ -2,6 +2,7 @@ package io.github.xxyy.common.sql.builder;
 
 import lombok.NonNull;
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.ElementType;
@@ -37,38 +38,26 @@ public @interface SqlValueCache {
      */
     boolean skip() default false;
 
-    public enum Type {
+    public enum Type { //Yes, I know this thing is abusing generix very awfully..Dunno how to do it in any other way ._.
         /**
          * Updates objects with overriding values.
          *
          * @see io.github.xxyy.common.sql.builder.SqlValueHolder
          */
         OBJECT_UPDATE {
-            @NonNull
+            @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
+                return (Class<T>) SqlValueHolder.class;
+            }
+
             @Override
-            public SqlValueHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
-                                                  @NonNull Field sourceField, @NonNull SqlValueCache annotation,
-                                                  @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(SqlValueHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlValueHolder! (Given %s)", sourceField.getType());
-
-                if (!sourceField.isAccessible()) {
-                    sourceField.setAccessible(true);
-                }
-
-                SqlValueHolder<?> holder = (SqlValueHolder<?>) sourceField.get(accessorInstance);
-
-                if (holder == null) {
-                    holder = SqlValueHolder.fromAnnotation(annotation);
-                    holder.setDataSource(dataSource);
-
-                    if (!Modifier.isFinal(sourceField.getModifiers())) {
-                        sourceField.set(accessorInstance, holder);
+            protected <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory() {
+                return new AnnotationToHolderFactory<T>() {
+                    @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+                    public T fromAnnotation(@NotNull SqlValueCache annotation) {
+                        return (T) SqlValueHolder.fromAnnotation(annotation);
                     }
-                }
-
-                set.add(holder);
-
-                return holder;
+                };
             }
         },
         /**
@@ -78,31 +67,19 @@ public @interface SqlValueCache {
          * @see io.github.xxyy.common.sql.builder.ConcurrentSqlIntHolder
          */
         INTEGER_MODIFICATION {
-            @NonNull
+            @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
+                return (Class<T>) ConcurrentSqlIntHolder.class;
+            }
+
             @Override
-            public ConcurrentSqlIntHolder createHolder(@NonNull Set<SqlValueHolder<?>> set,
-                                                       @NonNull Field sourceField, @NonNull SqlValueCache annotation,
-                                                       @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(ConcurrentSqlIntHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend ConcurrentSqlIntHolder! Given: ", sourceField.getType());
-
-                if (!sourceField.isAccessible()) {
-                    sourceField.setAccessible(true);
-                }
-
-                ConcurrentSqlIntHolder holder = (ConcurrentSqlIntHolder) sourceField.get(accessorInstance);
-
-                if (holder == null) {
-                    holder = ConcurrentSqlIntHolder.fromAnnotation(annotation);
-                    holder.setDataSource(dataSource);
-
-                    if (!Modifier.isFinal(sourceField.getModifiers())) {
-                        sourceField.set(accessorInstance, holder);
+            protected <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory() {
+                return new AnnotationToHolderFactory<T>() {
+                    @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+                    public T fromAnnotation(@NotNull SqlValueCache annotation) {
+                        return (T) ConcurrentSqlIntHolder.fromAnnotation(annotation);
                     }
-                }
-
-                set.add(holder);
-
-                return holder;
+                };
             }
         },
         /**
@@ -112,31 +89,19 @@ public @interface SqlValueCache {
          * @see io.github.xxyy.common.sql.builder.ConcurrentSqlIntHolder
          */
         DOUBLE_MODIFICATION {
-            @NonNull
+            @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
+                return (Class<T>) ConcurrentSqlDoubleHolder.class;
+            }
+
             @Override
-            public ConcurrentSqlDoubleHolder createHolder(@NonNull Set<SqlValueHolder<?>> set,
-                                                          @NonNull Field sourceField, @NonNull SqlValueCache annotation,
-                                                          @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(ConcurrentSqlDoubleHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend ConcurrentSqlDoubleHolder! Given: ", sourceField.getType());
-
-                if (!sourceField.isAccessible()) {
-                    sourceField.setAccessible(true);
-                }
-
-                ConcurrentSqlDoubleHolder holder = (ConcurrentSqlDoubleHolder) sourceField.get(accessorInstance);
-
-                if (holder == null) {
-                    holder = ConcurrentSqlDoubleHolder.fromAnnotation(annotation);
-                    holder.setDataSource(dataSource);
-
-                    if (!Modifier.isFinal(sourceField.getModifiers())) {
-                        sourceField.set(accessorInstance, holder);
+            protected <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory() {
+                return new AnnotationToHolderFactory<T>() {
+                    @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+                    public T fromAnnotation(@NotNull SqlValueCache annotation) {
+                        return (T) ConcurrentSqlDoubleHolder.fromAnnotation(annotation);
                     }
-                }
-
-                set.add(holder);
-
-                return holder;
+                };
             }
         },
         /**
@@ -145,31 +110,19 @@ public @interface SqlValueCache {
          * @see io.github.xxyy.common.sql.builder.SqlIdentifierHolder
          */
         OBJECT_IDENTIFIER {
-            @NonNull
+            @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
+                return (Class<T>) SqlIdentifierHolder.class;
+            }
+
             @Override
-            public SqlIdentifierHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
-                                                       @NonNull Field sourceField, @NonNull SqlValueCache annotation,
-                                                       @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(SqlIdentifierHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlIdentifierHolder! Given: ", sourceField.getType());
-
-                if (!sourceField.isAccessible()) {
-                    sourceField.setAccessible(true);
-                }
-
-                SqlIdentifierHolder<?> holder = (SqlIdentifierHolder<?>) sourceField.get(accessorInstance);
-
-                if (holder == null) {
-                    holder = SqlIdentifierHolder.fromAnnotation(annotation);
-                    holder.setDataSource(dataSource);
-
-                    if (!Modifier.isFinal(sourceField.getModifiers())) {
-                        sourceField.set(accessorInstance, holder);
+            protected <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory() { //dat language syntax overhead thing... Can't wait for Lambdas <3
+                return new AnnotationToHolderFactory<T>() {
+                    @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+                    public T fromAnnotation(@NotNull SqlValueCache annotation) {
+                        return (T) SqlIdentifierHolder.fromAnnotation(annotation);
                     }
-                }
-
-                set.add(holder);
-
-                return holder;
+                };
             }
         },
         /**
@@ -178,33 +131,52 @@ public @interface SqlValueCache {
          * @see io.github.xxyy.common.sql.builder.SqlIdentifierHolder
          */
         UUID_IDENTIFIER {
-            @NonNull
+            @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
+                return (Class<T>) SqlUUIDHolder.class;
+            }
+
             @Override
-            public SqlIdentifierHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
-                                                       @NonNull Field sourceField, @NonNull SqlValueCache annotation,
-                                                       @Nullable Object accessorInstance, SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-                Validate.isTrue(SqlUUIDHolder.class.isAssignableFrom(sourceField.getType()), "Field type must extend SqlUUIDHolder! (Given %s)", sourceField.getType());
-
-                if (!sourceField.isAccessible()) {
-                    sourceField.setAccessible(true);
-                }
-
-                SqlUUIDHolder holder = (SqlUUIDHolder) sourceField.get(accessorInstance);
-                holder.setDataSource(dataSource);
-
-                if (holder == null) {
-                    holder = SqlUUIDHolder.fromAnnotation(annotation);
-
-                    if (!Modifier.isFinal(sourceField.getModifiers())) {
-                        sourceField.set(accessorInstance, holder);
+            protected <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory() {
+                return new AnnotationToHolderFactory<T>() {
+                    @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
+                    public T fromAnnotation(@NotNull SqlValueCache annotation) {
+                        return (T) SqlUUIDHolder.fromAnnotation(annotation);
                     }
-                }
-
-                set.add(holder);
-
-                return holder;
+                };
             }
         };
+
+        protected abstract <T extends SqlValueHolder<?>> Class<T> getExpectedClass();
+
+        protected abstract <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory();
+
+        private static <T extends SqlValueHolder<?>> T skeletonCreateHolder(Set<SqlValueHolder<?>> set, Field sourceField, 
+                                                                   SqlValueCache annotation, Object accessorInstance,
+                                                                   SqlValueHolder.DataSource dataSource, Class<?> expectedClass,
+                                                                   @NonNull AnnotationToHolderFactory<T> factory) throws IllegalAccessException {
+            Validate.isTrue(expectedClass.isAssignableFrom(sourceField.getType()), "Field is of invalid type! (Given %s)", sourceField.getType());
+
+            if (!sourceField.isAccessible()) {
+                sourceField.setAccessible(true);
+            }
+
+            @SuppressWarnings("unchecked") //Checked above - See Validate.isTrue(...)
+            T holder = (T) sourceField.get(accessorInstance);
+
+            if (holder == null) {
+                holder = factory.fromAnnotation(annotation);
+                holder.setDataSource(dataSource);
+
+                if (!Modifier.isFinal(sourceField.getModifiers())) {
+                    sourceField.set(accessorInstance, holder);
+                }
+            }
+
+            set.add(holder);
+
+            return holder;
+        }
 
         /**
          * Creates a new implementation corresponding to this type, if the given Field does not already contain one.
@@ -217,8 +189,18 @@ public @interface SqlValueCache {
          * @return An instance of {@link io.github.xxyy.common.sql.builder.SqlValueHolder} corresponding to the this type and Field.
          */
         @NonNull
-        public abstract SqlValueHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set, //TODO spaghetti code
-                                                       @NonNull Field sourceField, @NonNull SqlValueCache annotation,
-                                                       @Nullable Object accessorInstance, @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException;
+        public SqlValueHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
+                                              @NonNull Field sourceField, @NonNull SqlValueCache annotation,
+                                              @Nullable Object accessorInstance, @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
+            return skeletonCreateHolder(set, sourceField, annotation, accessorInstance, dataSource, getExpectedClass(), getFactory()); //generix hax, kthx
+        }
+    }
+
+    /**
+     * Makes {@link io.github.xxyy.common.sql.builder.SqlValueHolder}s from annotations.
+     */
+    static interface AnnotationToHolderFactory<T> {
+        @NotNull
+        T fromAnnotation(@NotNull SqlValueCache annotation);
     }
 }
