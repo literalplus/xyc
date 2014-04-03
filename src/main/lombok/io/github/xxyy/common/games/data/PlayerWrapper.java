@@ -63,7 +63,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * return null.
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     * <p/>
+     *
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
      *
      * @param plrName Player to wrap (by name)
@@ -79,9 +79,9 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * return null.
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     * <p/>
+     *
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
-     * <p/>
+     *
      * Only use this if you don't have anything else, stuff will break very badly if there's no database entry for this UUID.
      *
      * @param uuid UUID of the player to wrap

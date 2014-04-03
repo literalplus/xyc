@@ -143,7 +143,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Checks if this {@link io.github.xxyy.common.games.data.PlayerWrapper} has a permission. If a {@link org.bukkit.command.ConsoleCommandSender} or {@link org.bukkit.command.BlockCommandSender} was wrapped using
      * {@link io.github.xxyy.common.games.data.PlayerWrapper#PlayerWrapper(org.bukkit.command.CommandSender, io.github.xxyy.common.sql.SafeSql)},
      * {@code true} will always be returned.
-     * <p/>
+     * 
      * Regular expressions can be used, for example:
      * {@code game.admin.*} matches
      * {@code game.admin} and, for example,
