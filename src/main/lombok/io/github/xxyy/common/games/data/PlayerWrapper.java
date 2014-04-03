@@ -45,12 +45,12 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
 
         if (sender instanceof Player) {
             this.weakPlr = new WeakReference<>((Player) sender);
-            this.plrName.setValue(sender.getName());
-            this.uuid.setValue(((Player) sender).getUniqueId());
+            this.plrName.updateValue(sender.getName());
+            this.uuid.updateValue(((Player) sender).getUniqueId());
         } else {
             if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender) {
-                this.plrName.setValue(sender.getName());
-                this.uuid.setValue(CONSOLE_UUID);
+                this.plrName.updateValue(sender.getName());
+                this.uuid.updateValue(CONSOLE_UUID);
                 this.isConsole = true;
             } else {
                 throw new ClassCastException("That is neither a Player nor a Console nor a CommandBlock.");
@@ -71,7 +71,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      */
     protected PlayerWrapper(String plrName, SafeSql ssql) {
         super(ssql);
-        this.plrName.setValue(plrName);
+        this.plrName.updateValue(plrName);
     }
 
     /**

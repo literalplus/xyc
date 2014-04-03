@@ -267,7 +267,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
                 Profile[] matchedProfiles = HTTP_PROFILE_REPOSITORY.findProfilesByCriteria(new ProfileCriteria(name(), "minecraft"));
 
                 if (matchedProfiles.length == 1) { //Which Profile should we choose if there's multiple? So shut up.
-                    this.uuid.setValue(io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(matchedProfiles[0].getId()));
+                    this.uuid.updateValue(io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(matchedProfiles[0].getId()));
                     sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=? " +
                             "ON DUPLICATE KEY UPDATE username=?, uuid=?", name(), this.uuid, name(), this.uuid);
                     tryFetchByUUID();
