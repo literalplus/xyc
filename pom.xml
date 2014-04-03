@@ -153,6 +153,10 @@
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>
+
+                <configuration>
+                    <addOutputDirectory>false</addOutputDirectory>
+                </configuration>
             </plugin>
             
             <plugin>
@@ -215,6 +219,27 @@
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>package</phase>
+
+                        <configuration>
+                            <target>
+                                <delete dir="target/generated-sources/delombok" />
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
