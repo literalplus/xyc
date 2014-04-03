@@ -79,7 +79,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
 
     public PlayerWrapperBase(SafeSql ssql) {
         try {
-            this.valueHolders = SqlHolders.processClass(getClass(), this, this);
+            this.valueHolders = SqlHolders.processClass(PlayerWrapperBase.class, this, this); //Process base stuff - implementation have to do this themselves to avoid complication with inheritance
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             throw new AssertionError("Could not access some field of "+getClass().getName()+"! This is probably a compile-time failure...Cannot recover.", e);
