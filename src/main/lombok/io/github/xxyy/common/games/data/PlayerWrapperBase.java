@@ -63,15 +63,15 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @SqlValueCache("groupname")
     protected SqlValueHolder<String> groupName;
 
-    @SqlValueCache(value = "coins", type = DOUBLE_MODIFICATION)
+    @SqlValueCache(value = "coins", type = DOUBLE_MODIFICATION) @Getter
     protected ConcurrentSqlDoubleHolder coinsAmount;
-    @SqlValueCache(value = "points", type = INTEGER_MODIFICATION)
+    @SqlValueCache(value = "points", type = INTEGER_MODIFICATION) @Getter
     protected ConcurrentSqlIntHolder globalPoints;
-    @SqlValueCache(value = "playtime", type = INTEGER_MODIFICATION)
+    @SqlValueCache(value = "playtime", type = INTEGER_MODIFICATION) @Getter
     protected ConcurrentSqlIntHolder playtime;
-    @SqlValueCache(value = "kills", type = INTEGER_MODIFICATION)
+    @SqlValueCache(value = "kills", type = INTEGER_MODIFICATION) @Getter
     protected ConcurrentSqlIntHolder kills;
-    @SqlValueCache(value = "deaths", type = INTEGER_MODIFICATION)
+    @SqlValueCache(value = "deaths", type = INTEGER_MODIFICATION) @Getter
     protected ConcurrentSqlIntHolder deaths;
 
     protected Collection<SqlValueHolder<?>> valueHolders;
@@ -135,6 +135,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         if (!this.xyFetched) {
             this.xyFetch();
         }
+
         return this.group;
     }
 
