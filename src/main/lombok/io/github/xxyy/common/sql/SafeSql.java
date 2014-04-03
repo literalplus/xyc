@@ -2,6 +2,7 @@ package io.github.xxyy.common.sql;
 
 import io.github.xxyy.common.util.CommandHelper;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.apache.commons.lang.Validate;
 
@@ -191,7 +192,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
      */
-    public PreparedStatement prepareStatement(String query) throws SQLException {
+    public PreparedStatement prepareStatement(@NonNull String query) throws SQLException {
         PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
         if (SafeSql.debug) {
             CommandHelper.sendMessageToOpsAndConsole("§ePreparing Statement: " + query);
@@ -289,7 +290,8 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
         return new QueryResult(stmt, stmt.executeUpdate());
     }
 
-    public PreparedStatement fillStatement(PreparedStatement stmt, Object[] objects) throws SQLException {
+    @NonNull
+    public PreparedStatement fillStatement(@NonNull PreparedStatement stmt, @NonNull Object[] objects) throws SQLException {
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] == null) {
                 stmt.setNull(i + 1, Types.OTHER);
