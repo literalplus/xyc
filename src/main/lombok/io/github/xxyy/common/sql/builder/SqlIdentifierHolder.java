@@ -39,9 +39,14 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
         throw new UnsupportedOperationException("Cannot change value of an identifier column!");
     }
 
+    @NonNull @Override
+    public QuerySnapshot produceSnapshot() {
+        return this; //Have to ignore #isModified()
+    }
+
     @Override
     public void updateValue(@NonNull T newValue) {
-        if(getValue() == null){
+        if(supportsOverride()){
             super.updateValue(newValue);
         }
 
@@ -50,7 +55,12 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
 
     @Override
     public boolean supportsOverride(){
-        return getValue() == null;
+        return getSnapshot() == null;
+    }
+
+    @Override
+    public Type getType(){
+        return Type.OBJECT_IDENTIFIER;
     }
 
     /**
@@ -59,7 +69,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
      * @return The created object
      */
     @NonNull
-    public static <T> SqlIdentifierHolder<T> fromAnnotation(@NonNull final SqlValueCache source, @NonNull final Class<T> clazz){
+    public static <T> SqlIdentifierHolder<T> fromAnnotation(@NonNull final SqlValueCache source){
         return new SqlIdentifierHolder<>(source.value());
     }
 }

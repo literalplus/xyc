@@ -1,6 +1,5 @@
 package io.github.xxyy.common.sql.builder;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,30 +8,28 @@ import org.jetbrains.annotations.Nullable;
  * Represents a snapshot of a value intended to be written to a SQL database.
  * Note that this is just a snapshot and might change immediately after,
  * so it is required to be written to a database as soon as possible.
- * If it is of type {@link io.github.xxyy.common.sql.builder.QuerySnapshot.Type#INTEGER_MODIFICATION},
+ * If it is of type {@link QuerySnapshot.Type#NUMBER_MODIFICATION},
  * the source might have reset its write-cache and therefore the remote will be in an invalid state if the snapshot is not written.
+ * Values might change over time depending on implementation.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
- * @since 23.3.14
+ * @since 2.4.14
  */
-@Data
-public class QuerySnapshot {
+public interface QuerySnapshot {
     /**
-     * Name of the column this snapshot belongs to.
+     * @return the name of the column this snapshot belongs to.
      */
-    @NonNull
-    private final String columnName;
+    String getColumnName();
+
     /**
-     * Value to be written or added to the column.
-     * @see #getType()
+     * @return the value to be written to the column associated with this snapshot.
      */
-    @Nullable
-    private final Object objectValue;
+    Object getSnapshot();
+
     /**
-     * Type of this snapshot.
+     * @return the kind of value to be written.
      */
-    @NonNull
-    private final Type type;
+    Type getType();
 
     /**
      * Represents a type of query.
@@ -41,17 +38,22 @@ public class QuerySnapshot {
         /**
          * Represents an addition to an integer.
          */
-        INTEGER_MODIFICATION("%1$s=%1$s+?"),
+        NUMBER_MODIFICATION("%1$s=%1$s+?"),
         /**
          * Represents an update of any column, meaning the previous value is lost.
          */
-        OBJECT_UPDATE("%s=?");
+        OBJECT_UPDATE("%s=?"),
+        /**
+         * Represents an object used to identify a column where other data is fetched from or written to.
+         */
+        OBJECT_IDENTIFIER("%s=?");
 
         /**
          * This returns an operator string.
          * <b>Call {@link String#format(String, Object...)} with arg1 being the column name on this</b>
          */
-        @Getter @NonNull
+        @Getter
+        @NonNull
         private final String operator;
 
         public String getOperator(String columnName){
@@ -69,7 +71,7 @@ public class QuerySnapshot {
     public interface Factory {
         /**
          * This produces a query snapshot that is to be written to a SQL database.
-         * Note that this snapshot is required to be written to a database as soon as possible. For additional information, see the JavaDoc of {@link io.github.xxyy.common.sql.builder.QuerySnapshot}.
+         * Note that this snapshot is required to be written to a database as soon as possible. For additional information, see the JavaDoc of {@link io.github.xxyy.common.sql.builder.SimpleQuerySnapshot}.
          * This may return {@code null} if no changes are to be written.
          *
          * @return A snapshot of the current state of the thing this factory belongs to.

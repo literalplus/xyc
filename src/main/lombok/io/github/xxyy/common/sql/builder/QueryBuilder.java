@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Builds a MySQL query from {@link io.github.xxyy.common.sql.builder.QuerySnapshot}s, a table name,
+ * Builds a MySQL query from {@link SimpleQuerySnapshot}s, a table name,
  * identification column and a lot of duct tape.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
@@ -37,7 +37,7 @@ public class QueryBuilder {
     private Queue<QuerySnapshot> uniqueIdentifiers = null;
 
     /**
-     * {@link io.github.xxyy.common.sql.builder.QuerySnapshot}s to be applied to the remote database.
+     * {@link SimpleQuerySnapshot}s to be applied to the remote database.
      * If this is null, no query will be executed.
      */
     @Getter
@@ -55,13 +55,35 @@ public class QueryBuilder {
     }
 
     /**
+     * Adds given snapshots to this builder. Snapshots are added to identifiers or parts based on their {@link QuerySnapshot#getType()}.
+     *
+     * @param snapshots       Snapshots to add
+     * @param omitIdentifiers If this is set to {@code true}, identifiers are ignored.
+     * @return This object, for convenient construction.
+     * @see #addPart(QuerySnapshot)
+     * @see #addUniqueIdentifier(QuerySnapshot)
+     */
+    @NonNull
+    public QueryBuilder addAll(@NonNull final Collection<? extends QuerySnapshot> snapshots, boolean omitIdentifiers) {
+        for (QuerySnapshot snapshot : snapshots) {
+            if (snapshot.getType() == QuerySnapshot.Type.OBJECT_IDENTIFIER && !omitIdentifiers) {
+                addUniqueIdentifier(snapshot);
+            } else {
+                addPart(snapshot);
+            }
+        }
+
+        return this;
+    }
+
+    /**
      * Adds an unique identifier to the query, used for identification of the target row(s).
      * Identifiers are FIFO (first-in-first-out), i.e. the first identifier to be registered is going
      * to be the first one checked. If the first one does not return any rows, the next one is tried.
      *
      * @param identifier snapshot of the column to be used as an identifier.
      * @return This object, for convenient construction.
-     * @throws java.lang.IllegalArgumentException If {@link QuerySnapshot#getType()} does not return {@link io.github.xxyy.common.sql.builder.QuerySnapshot.Type#OBJECT_UPDATE} for {@code identifier}.
+     * @throws java.lang.IllegalArgumentException If {@link SimpleQuerySnapshot#getType()} does not return {@link QuerySnapshot.Type#OBJECT_UPDATE} for {@code identifier}.
      */
     @NonNull
     public QueryBuilder addUniqueIdentifier(@NonNull final QuerySnapshot identifier) {
@@ -72,6 +94,35 @@ public class QueryBuilder {
         }
 
         this.uniqueIdentifiers.add(identifier);
+
+        return this;
+    }
+
+    /**
+     * Consumes the first identifier added to the identifier queue.
+     *
+     * @return This object, for convenient construction.
+     * @see java.util.Queue#poll()
+     */
+    @NonNull
+    public QueryBuilder pollUniqueIdentifier() {
+        if (this.uniqueIdentifiers != null) {
+            this.uniqueIdentifiers.poll();
+        }
+
+        return this;
+    }
+
+    /**
+     * Clears the queue of unique identifiers maintained by this builder.
+     *
+     * @return This object, for convenient construction.
+     */
+    @NonNull
+    public QueryBuilder clearUniqueIdentifiers() {
+        if (this.uniqueIdentifiers != null) {
+            this.uniqueIdentifiers.clear();
+        }
 
         return this;
     }
@@ -105,8 +156,8 @@ public class QueryBuilder {
      * @return This object, for convenient construction.
      */
     @NonNull
-    public QueryBuilder addPart(@Nullable final QuerySnapshot.Factory factory){
-        if(factory == null){
+    public QueryBuilder addPart(@Nullable final QuerySnapshot.Factory factory) {
+        if (factory == null) {
             return this;
         }
 
@@ -120,8 +171,8 @@ public class QueryBuilder {
      * @return This object, for convenient construction.
      */
     @NonNull
-    public QueryBuilder addParts(@NonNull final Collection<QuerySnapshot> parts){
-        for(QuerySnapshot snapshot : parts){
+    public QueryBuilder addParts(@NonNull final Collection<QuerySnapshot> parts) {
+        for (QuerySnapshot snapshot : parts) {
             addPart(snapshot);
         }
 
@@ -129,8 +180,22 @@ public class QueryBuilder {
     }
 
     /**
+     * Clears the list of query parts maintained by this builder.
+     *
+     * @return This object, for convenient construction.
+     */
+    @NonNull
+    public QueryBuilder clearParts() {
+        if (this.queryParts != null) {
+            this.queryParts.clear();
+        }
+
+        return this;
+    }
+
+    /**
      * Builds an update query from this builder. (Using SQL {@code INSERT ON DUPLICATE KEY UPDATE})
-     * Will use arguments to infer values.
+     * Will use ? arguments to infer values.
      *
      * @param statementFactory Where to get the statement from
      * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts have been defined.
@@ -151,21 +216,72 @@ public class QueryBuilder {
         }
 
         for (QuerySnapshot snapshot : snapshots) {
-            queryStringBuilder.append(QuerySnapshot.Type.OBJECT_UPDATE.getOperator(snapshot.getColumnName()))
-                    .append(','); //INTEGER_MODIFICATION has name=name+value, which is not allowed in INSERT
-            args.add(snapshot.getObjectValue());
+            if (snapshot != null) {
+                queryStringBuilder.append(QuerySnapshot.Type.OBJECT_UPDATE.getOperator(snapshot.getColumnName()))
+                        .append(','); //NUMBER_MODIFICATION has name=name+value, which is not allowed in INSERT
+                args.add(snapshot.getSnapshot());
+            }
         }
 
         queryStringBuilder.deleteCharAt(queryStringBuilder.length() - 1) //Last char will always be ','
                 .append(" ON DUPLICATE KEY UPDATE ");
 
         for (QuerySnapshot snapshot : snapshots) {
-            queryStringBuilder.append(snapshot.getType().getOperator(snapshot.getColumnName()))
-                    .append(",");
-            args.add(snapshot.getObjectValue());
+            if (snapshot != null) {
+                queryStringBuilder.append(snapshot.getType().getOperator(snapshot.getColumnName()))
+                        .append(",");
+                args.add(snapshot.getSnapshot());
+            }
         }
 
         queryStringBuilder.deleteCharAt(queryStringBuilder.length() - 1); //Last char will always be ',';
+
+        final PreparedStatement stmt = statementFactory.prepareStatement(queryStringBuilder.toString());
+        statementFactory.fillStatement(stmt, args.toArray());
+        return stmt;
+    }
+
+    /**
+     * Builds a true update query from this builder. (Using pure SQL {@code UPDATE})
+     * Will use ? arguments to infer values.
+     * This uses less Text than {@link #buildUpdate(io.github.xxyy.common.sql.PreparedStatementFactory)}, but will fail (silently)
+     * if there is no row matched by the identifiers.
+     * <b>This will return null if no identifiers are specified to prevent accidental destruction of whole tables. Use an identifier of 1=1 to circumvent that.</b>
+     *
+     * @param statementFactory Where to get the statement from
+     * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts or identifiers have been defined.
+     */
+    @Nullable
+    public PreparedStatement buildTrueUpdate(@NonNull final PreparedStatementFactory statementFactory) throws SQLException {
+        if ((this.queryParts == null || this.queryParts.isEmpty()) || (this.uniqueIdentifiers == null || this.uniqueIdentifiers.isEmpty())) {
+            return null; //Nothing to do then
+        }
+
+        StringBuilder queryStringBuilder = new StringBuilder("UPDATE ").append(getTableName()).append(" SET ");
+        List<Object> args = new LinkedList<>();
+
+        for (QuerySnapshot snapshot : this.queryParts) {
+            if (snapshot != null) {
+                queryStringBuilder.append(QuerySnapshot.Type.OBJECT_UPDATE.getOperator(snapshot.getColumnName()))
+                        .append(','); //NUMBER_MODIFICATION has name=name+value, which is not allowed in INSERT
+                args.add(snapshot.getSnapshot());
+            }
+        }
+
+        queryStringBuilder.deleteCharAt(queryStringBuilder.length() - 1) //Last char will always be ','
+                .append(" WHERE ");
+
+        boolean prependAnd = false;
+        for (QuerySnapshot snapshot : this.uniqueIdentifiers) {
+            if (prependAnd) {
+                queryStringBuilder.append(" AND ");
+            }
+
+            queryStringBuilder.append(snapshot.getType().getOperator(snapshot.getColumnName()));
+            args.add(snapshot.getSnapshot());
+
+            prependAnd = true;
+        }
 
         final PreparedStatement stmt = statementFactory.prepareStatement(queryStringBuilder.toString());
         statementFactory.fillStatement(stmt, args.toArray());
@@ -195,6 +311,28 @@ public class QueryBuilder {
     }
 
     /**
+     * Executes this query builder as an UPDATE statement.
+     * The builder can be reused after this operation.
+     * This will close the created {@link java.sql.PreparedStatement}.
+     *
+     * @param statementFactory Where to get a statement from
+     * @return (1) The number of rows affected (2) 0 for statements that return nothing (3) -1 if this builder did not contain sufficient information to build a statement.
+     * @throws SQLException If a SQL error occurs.
+     * @see java.sql.PreparedStatement#executeUpdate()
+     * @see #buildTrueUpdate(io.github.xxyy.common.sql.PreparedStatementFactory)
+     */
+    public int executeTrueUpdate(@NonNull final PreparedStatementFactory statementFactory) throws SQLException {
+        PreparedStatement statement = buildUpdate(statementFactory);
+        if (statement == null) {
+            return -1;
+        }
+
+        int rtrn = statement.executeUpdate();
+        statement.close();
+        return rtrn;
+    }
+
+    /**
      * Builds a select query from this builder. (Using SQL {@code SELECT}).
      * Will use arguments to infer values.
      * If parts or identifiers are present, only these columns are selected.  (This behaviour can be overwritten by setting {@code selectStar} to {@code true})
@@ -202,7 +340,7 @@ public class QueryBuilder {
      * If identifiers are present, these will be included in a {@code WHERE} clause.
      *
      * @param statementFactory Where to get the statement from
-     * @param selectStar If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
+     * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
      * @return a {@link java.sql.PreparedStatement} derived from the current state of this builder.
      */
     @Nullable
@@ -233,16 +371,16 @@ public class QueryBuilder {
         queryStringBuilder.append(" FROM ")
                 .append(this.tableName);
 
-        if (this.uniqueIdentifiers != null && !this.uniqueIdentifiers.isEmpty()){
+        if (this.uniqueIdentifiers != null && !this.uniqueIdentifiers.isEmpty()) {
             queryStringBuilder.append(" WHERE ");
             boolean prependAnd = false;
-            for(QuerySnapshot snapshot : this.uniqueIdentifiers){
-                if(prependAnd){
+            for (QuerySnapshot snapshot : this.uniqueIdentifiers) {
+                if (prependAnd) {
                     queryStringBuilder.append(" AND ");
                 }
 
                 queryStringBuilder.append(snapshot.getType().getOperator(snapshot.getColumnName()));
-                args.add(snapshot.getObjectValue());
+                args.add(snapshot.getSnapshot());
 
                 prependAnd = true;
             }
@@ -256,8 +394,9 @@ public class QueryBuilder {
     /**
      * This executes the select statement derived from this builder. (See {@link #buildSelect(io.github.xxyy.common.sql.PreparedStatementFactory, boolean)} JavaDoc for details on that)
      * <b>This will NOT close the {@link java.sql.PreparedStatement}! Make sure to ALWAYS close that!</b>
+     *
      * @param statementFactory Where to get the statement from
-     * @param selectStar If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
+     * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
      * @return A {@link io.github.xxyy.common.sql.QueryResult} created by the request, or {@code null} if {@link #buildSelect(io.github.xxyy.common.sql.PreparedStatementFactory, boolean)} returned {@code null}.
      * @throws SQLException
      */

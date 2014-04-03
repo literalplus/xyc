@@ -2,9 +2,10 @@ package io.github.xxyy.common.sql.builder;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents an integer database column that can be concurrently modified.
+ * Represents a double database column that can be concurrently modified.
  * It stores a modifier that can be applied to the remote value without overriding
  * it with a cached version.
  *
@@ -14,17 +15,17 @@ import lombok.NonNull;
  * @since 22.3.14
  */
 @Getter
-public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
+public class ConcurrentSqlDoubleHolder extends SqlValueHolder<Double> {
     /**
      * Modifier to be applied to the remote value.
      */
-    protected int modifier = 0;
+    protected double modifier = 0;
 
-    public ConcurrentSqlIntHolder(String columnName) {
+    public ConcurrentSqlDoubleHolder(String columnName) {
         super(columnName);
     }
 
-    public ConcurrentSqlIntHolder(String columnName, Integer initialValue) {
+    public ConcurrentSqlDoubleHolder(String columnName, Double initialValue) {
         super(columnName, initialValue);
     }
 
@@ -35,7 +36,7 @@ public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
      * @return This object, for convenient call chaining.
      */
     @NonNull
-    public SqlValueHolder modify(final int paramModifier) {
+    public SqlValueHolder modify(final double paramModifier) {
         this.modifier += paramModifier;
 
         if (getSnapshot() != null) {
@@ -52,8 +53,8 @@ public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
      *
      * @return {@link #getModifier()}
      */
-    protected int consumeModifier() {
-        int storedModifier = getModifier();
+    protected double consumeModifier() {
+        double storedModifier = getModifier();
         this.reset();
         return storedModifier;
     }
@@ -65,8 +66,8 @@ public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
      */
     @NonNull
     public SqlValueHolder reset() {
-        this.updateValue(0);
-        this.modifier = 0;
+        this.updateValue(0D);
+        this.modifier = 0D;
         return this;
     }
 
@@ -75,13 +76,29 @@ public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
         return modifier != 0;
     }
 
+    @Nullable
     @Override
-    public void setValue(@NonNull Integer newValue) {
+    public QuerySnapshot produceSnapshot() {
+        if (!isModified()) {
+            return null;
+        }
+
+        return new SimpleQuerySnapshot(getColumnName(), getModifier(), QuerySnapshot.Type.NUMBER_MODIFICATION);
+    }
+
+    @Override
+    public void setValue(@NonNull Double newValue) {
         if (getSnapshot() != null) {
             this.modify(newValue - getValue());
         } else {
             this.modify(newValue);
         }
+    }
+
+    @Override
+    public void updateValue(@NonNull Double newValue) {
+        this.modifier = 0D;
+        super.updateValue(newValue);
     }
 
     @Override
@@ -94,19 +111,13 @@ public class ConcurrentSqlIntHolder extends SqlValueHolder<Integer> {
         return Type.NUMBER_MODIFICATION;
     }
 
-    @Override
-    public void updateValue(@NonNull Integer newValue) {
-        this.modifier = 0;
-        super.updateValue(newValue);
-    }
-
     /**
      * Gets an concurrent sql integer holder from an annotation.
      * @param source Annotation to get the column name from
      * @return An instance corresponding to the given column name.
      */
     @NonNull
-    public static ConcurrentSqlIntHolder fromAnnotation(@NonNull final SqlValueCache source) {
-        return new ConcurrentSqlIntHolder(source.value());
+    public static ConcurrentSqlDoubleHolder fromAnnotation(@NonNull final SqlValueCache source) {
+        return new ConcurrentSqlDoubleHolder(source.value());
     }
 }

@@ -1,6 +1,6 @@
 package io.github.xxyy.common.games;
 
-import io.github.xxyy.common.games.data.PlayerWrapper;
+import io.github.xxyy.common.games.data.PlayerWrapperBase;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.xyplugin.SqlXyGamePlugin;
 import org.bukkit.Bukkit;
@@ -61,7 +61,7 @@ public abstract class GameLib {
         Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loading xxyy98's game library...");
 
         ssql = pl.getSql();
-        PlayerWrapper.initTable(pl.getSql());
+        PlayerWrapperBase.initTable(pl.getSql());
 
         Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loaded xxyy98's game library!");
         GameLib.isInit = true;
