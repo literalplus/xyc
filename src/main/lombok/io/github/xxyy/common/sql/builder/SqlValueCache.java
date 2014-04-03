@@ -46,8 +46,8 @@ public @interface SqlValueCache {
          */
         OBJECT_UPDATE {
             @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
-            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
-                return (Class<T>) SqlValueHolder.class;
+            protected <T extends SqlValueHolder<?>> Class getExpectedClass() { //Yea, this is totally valid and good practice!!!!!!1
+                return SqlValueHolder.class;
             }
 
             @Override
@@ -111,8 +111,8 @@ public @interface SqlValueCache {
          */
         OBJECT_IDENTIFIER {
             @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
-            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
-                return (Class<T>) SqlIdentifierHolder.class;
+            protected <T extends SqlValueHolder<?>> Class getExpectedClass() { //Yea, this is totally valid and good practice!!!!!!1
+                return SqlIdentifierHolder.class;
             }
 
             @Override
