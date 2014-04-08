@@ -1,27 +1,29 @@
-package io.github.xxyy.common.sql.builder;
+package io.github.xxyy.common.sql.builder.annotation;
 
+import io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder;
+import io.github.xxyy.common.sql.builder.SqlIdentifierHolder;
+import io.github.xxyy.common.sql.builder.SqlUUIDHolder;
+import io.github.xxyy.common.sql.builder.SqlValueHolder;
 import lombok.NonNull;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
 /**
  * This interface can be applied to fields which represent object values in a database.
- * This is intended to be used with {@link SqlValueHolder}.
+ * This is intended to be used with {@link io.github.xxyy.common.sql.builder.SqlValueHolder}.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 23.3.14
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Documented
 public @interface SqlValueCache {
     /**
      * @return the name of the column represented by the field.
@@ -64,12 +66,12 @@ public @interface SqlValueCache {
          * Stores modification of an integer and writes the modification to the remote,
          * allowing for concurrent modification.
          *
-         * @see io.github.xxyy.common.sql.builder.ConcurrentSqlIntHolder
+         * @see io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder
          */
-        INTEGER_MODIFICATION {
+        NUMBER_MODIFICATION {
             @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
-            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
-                return (Class<T>) ConcurrentSqlIntHolder.class;
+            protected <T extends SqlValueHolder<?>> Class getExpectedClass() {
+                return ConcurrentSqlNumberHolder.class;
             }
 
             @Override
@@ -77,29 +79,7 @@ public @interface SqlValueCache {
                 return new AnnotationToHolderFactory<T>() {
                     @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
                     public T fromAnnotation(@NotNull SqlValueCache annotation) {
-                        return (T) ConcurrentSqlIntHolder.fromAnnotation(annotation);
-                    }
-                };
-            }
-        },
-        /**
-         * Stores modification of a double and writes the modification to the remote,
-         * allowing for concurrent modification.
-         *
-         * @see io.github.xxyy.common.sql.builder.ConcurrentSqlIntHolder
-         */
-        DOUBLE_MODIFICATION {
-            @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
-            protected <T extends SqlValueHolder<?>> Class<T> getExpectedClass() {
-                return (Class<T>) ConcurrentSqlDoubleHolder.class;
-            }
-
-            @Override
-            protected <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory() {
-                return new AnnotationToHolderFactory<T>() {
-                    @NotNull @Override @SuppressWarnings("unchecked") //Need to fix this somehow?
-                    public T fromAnnotation(@NotNull SqlValueCache annotation) {
-                        return (T) ConcurrentSqlDoubleHolder.fromAnnotation(annotation);
+                        return (T) ConcurrentSqlNumberHolder.fromAnnotation(annotation);
                     }
                 };
             }

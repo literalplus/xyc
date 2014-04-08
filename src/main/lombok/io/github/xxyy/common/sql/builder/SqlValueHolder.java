@@ -1,10 +1,14 @@
 package io.github.xxyy.common.sql.builder;
 
+import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Stores a value from a SQL database.
@@ -21,9 +25,9 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @param columnName   Column to target
      * @param initialValue Initial value - This is assumed to be fetched from database and set using {@link #updateValue(Object)}
      */
-    public SqlValueHolder(final String columnName, final T initialValue) {
+    public SqlValueHolder(@NonNull final String columnName, @Nullable final T initialValue) {
         this(columnName);
-        this.updateValue(initialValue);
+        this.value = initialValue;
     }
 
     /**
@@ -33,7 +37,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @param initialValue Initial value - This is assumed to be fetched from database and set using {@link #updateValue(Object)}
      * @param dataSource   DataSource to use - May be null.
      */
-    public SqlValueHolder(final String columnName, final T initialValue, final DataSource dataSource) {
+    public SqlValueHolder(@NonNull final String columnName, @Nullable final T initialValue, @NonNull final DataSource dataSource) {
         this(columnName, initialValue);
         this.setDataSource(dataSource);
     }
@@ -96,13 +100,13 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      */
     public void setValue(@Nullable T newValue) {
         markModified();
-        updateValue(newValue);
+        this.value = newValue;
     }
 
     protected void markModified() {
         this.modified = true; //More efficient than storing a copy of the initial object
 
-        if(this.dataSource != null){
+        if (this.dataSource != null) {
             this.dataSource.registerChange(this);
         }
     }
@@ -148,6 +152,17 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
     }
 
     /**
+     * Processes data from a ResultSet and reads values corresponding to this holder into cache.
+     * This should only be called if it is certain that the ResultSet contains this holder's column.
+     * @param resultSet ResultSet to process
+     * @throws SQLException If a database error occurs
+     */
+    @SuppressWarnings("unchecked")
+    public void processResultSet(@NonNull ResultSet resultSet) throws SQLException {
+        this.updateValue((T) resultSet.getObject(this.getColumnName()));
+    }
+
+    /**
      * @return whether this implementation supports {@link #setValue(Object)} and {@link #updateValue(Object)}.
      */
     public boolean supportsOverride() {
@@ -171,6 +186,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
         /**
          * Called to notify the data source of a change in value,
          * fox example so it can schedule a write to the remote database.
+         *
          * @param holder Holder which issued the change
          */
         void registerChange(@NonNull SqlValueHolder<?> holder);

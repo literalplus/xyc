@@ -1,10 +1,14 @@
-package io.github.xxyy.common.util;
+package io.github.xxyy.common.util.math;
 
+import com.google.common.collect.ImmutableMap;
+import lombok.NonNull;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Class that provides some static methods to deal with numbers.
@@ -18,9 +22,28 @@ public abstract class NumberHelper {
         symbols.setGroupingSeparator(' ');
         symbols.setDecimalSeparator(' ');//hacky!
         SPACE_FORMAT = new DecimalFormat(",###", symbols);
+        CLASSES_TO_OPERATORS =
+                ImmutableMap.<Class<? extends Number>, MathOperator<? extends Number>>builder()
+                        .put(Integer.class, MathOperator.INTEGER_MATH_OPERATOR)
+                        .put(Long.class, MathOperator.LONG_MATH_OPERATOR)
+                        .put(Double.class, MathOperator.DOUBLE_MATH_OPERATOR)
+                        .put(Float.class, MathOperator.FLOAT_MATH_OPERATOR)
+                .build();
+
     }
     private static final DecimalFormat SPACE_FORMAT;
     private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
+    private static final Map<Class<? extends Number>, MathOperator<? extends Number>> CLASSES_TO_OPERATORS;
+
+    /**
+     * Tries to get a predefined {@link io.github.xxyy.common.util.math.MathOperator} for a class.
+     * @param clazz Target class - Must be the actual Object one, not the primitive.
+     * @return A MathOperator corresponding to {@code clazz}, if available.
+     */
+    @Nullable @SuppressWarnings("unchecked") //The Map is guaranteed to always have the corresponding object
+    public static <N extends Number> MathOperator<N> getOperator(@NonNull Class<N> clazz){
+        return (MathOperator<N>) CLASSES_TO_OPERATORS.get(clazz);
+    }
 
     /**
      * Formats a number with spaces as group separator for use on signs. The number will be colored in black, if it's to short to actually

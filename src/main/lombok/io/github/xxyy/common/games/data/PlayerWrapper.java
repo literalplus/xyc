@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  *
  * @author xxyy98
  */
-public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement Player?
+public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
 {
 
     public static final UUID CONSOLE_UUID = UUID.fromString("084b992e-5705-411a-9be0-9e91413fb23a");
@@ -64,7 +64,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
      *
-     * <b>Implementations must implement a constructor with the exact same arguments!!</b>
+     * <b>Implementations must implement a constructor wi"th the exact same arguments!!</b>
      *
      * @param plrName Player to wrap (by name)
      * @param ssql    SafeSql to use for storing the object.
@@ -148,7 +148,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @see PlayerWrapper#addPassUse()
      * @see PlayerWrapper#getPassesUsed()
      */
-    public int getPassesAmount() {
+    public long getPassesAmount() {
         return this.passesAmount.getValue();
     }
 
@@ -158,7 +158,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      *
      * @return The all-time count of passes used by the wrapped player.
      */
-    public int getPassesUsed() {
+    public long getPassesUsed() {
         return this.passesUsed.getValue();
     }
 
@@ -195,26 +195,14 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
                 this.passesAmount.updateValue(0);
                 this.passesUsed.updateValue(0);
                 Logger.getLogger(getClass().getName()).warning("Player " + name() + " had no table entry for passes!!");
-                this.passQueryBuilder.addUniqueIdentifier(this.plrName).executeUpdate(getSql());
-                this.passQueryBuilder.clearUniqueIdentifiers().addUniqueIdentifier(this.uuid);
+                this.passQueryBuilder.addUniqueIdentifier(this.plrName) //Add name for insertion
+                        .executeUpdate(getSql()); //Other fields have default values
+                this.passQueryBuilder.clearUniqueIdentifiers() //Clear identifiers to remove the name
+                        .addUniqueIdentifier(this.uuid); //Re-add UUID
             }
         } catch (SQLException e) {
             sql.formatAndPrintException(e, "PlayerWrapper#refetchPasses()");
         }
-
-//        try (QueryResult queryResult = sql.executeQueryWithResult("SELECT passes_amount, passes_used FROM "
-//                + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " WHERE uuid=?", getUniqueId().toString()).assertHasResultSet()) {
-//            if (!queryResult.rs().next()) {
-//                sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME +
-//                        " SET username=?, uuid=?", this.plrName, getUniqueId().toString());
-//                return;
-//            }
-//            this.passesAmount = queryResult.rs().getInt("passes_amount");
-//            this.passesUsed = queryResult.rs().getInt("passes_used");
-//        } catch (SQLException e) {
-//            sql.formatAndPrintException(e, "PlayerWrapper#refetchPasses()");
-//            GameLib.plugs.get(0).setError("Exception when re-fetching passes. This is an error.", "PlayerWrapper#refetchPasses()");
-//        }
     }
 
     /**

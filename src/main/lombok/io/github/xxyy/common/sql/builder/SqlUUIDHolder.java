@@ -1,7 +1,10 @@
 package io.github.xxyy.common.sql.builder;
 
+import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import lombok.NonNull;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 /**
@@ -31,8 +34,12 @@ public class SqlUUIDHolder extends SqlIdentifierHolder<UUID> {
         return true;
     }
 
-    public void updateValue(String uuidString){
-        this.updateValue(io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(uuidString));
+    @Override
+    public void processResultSet(@NonNull ResultSet resultSet) throws SQLException {
+        this.updateValue(io.github.xxyy.common.lib.net.minecraft.server.
+                UtilUUID.getFromString(
+                resultSet.getString(this.getColumnName())
+            ));
     }
 
     @NonNull

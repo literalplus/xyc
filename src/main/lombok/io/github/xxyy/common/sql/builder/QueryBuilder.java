@@ -209,7 +209,7 @@ public class QueryBuilder {
         StringBuilder queryStringBuilder = new StringBuilder("INSERT INTO ").append(getTableName()).append(" SET ");
         List<Object> args = new LinkedList<>();
 
-        List<QuerySnapshot> snapshots = new ArrayList<>(this.queryParts);
+        Set<QuerySnapshot> snapshots = new HashSet<>(this.queryParts);
 
         if (this.uniqueIdentifiers != null && !this.uniqueIdentifiers.isEmpty()) {
             snapshots.addAll(this.uniqueIdentifiers);

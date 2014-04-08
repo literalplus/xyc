@@ -7,6 +7,8 @@ import io.github.xxyy.common.lib.com.mojang.api.profiles.ProfileCriteria;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.*;
+import io.github.xxyy.common.sql.builder.annotation.SqlNumberCache;
+import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
@@ -19,7 +21,8 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static io.github.xxyy.common.sql.builder.SqlValueCache.Type.*;
+import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.OBJECT_IDENTIFIER;
+import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UUID_IDENTIFIER;
 
 /**
  * Base stuff of PlayerWrapper.
@@ -53,26 +56,26 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @SqlValueCache(value = "uuid", type = UUID_IDENTIFIER)
     protected SqlUUIDHolder uuid;
 
-    @SqlValueCache(value = "passes_used", type = INTEGER_MODIFICATION)
-    protected ConcurrentSqlIntHolder passesUsed;
-    @SqlValueCache(value = "passes_amount", type = INTEGER_MODIFICATION)
-    protected ConcurrentSqlIntHolder passesAmount;
+    @SqlNumberCache(value = "passes_used", numberType = Integer.class)
+    protected ConcurrentSqlNumberHolder<Integer> passesUsed;
+    @SqlNumberCache(value = "passes_amount", numberType = Integer.class)
+    protected ConcurrentSqlNumberHolder<Integer> passesAmount;
 
     @SqlValueCache("nickname")
     protected SqlValueHolder<String> nick;
     @SqlValueCache("groupname")
     protected SqlValueHolder<String> groupName;
 
-    @SqlValueCache(value = "coins", type = DOUBLE_MODIFICATION) @Getter
-    protected ConcurrentSqlDoubleHolder coinsAmount;
-    @SqlValueCache(value = "points", type = INTEGER_MODIFICATION) @Getter
-    protected ConcurrentSqlIntHolder globalPoints;
-    @SqlValueCache(value = "playtime", type = INTEGER_MODIFICATION) @Getter
-    protected ConcurrentSqlIntHolder playtime;
-    @SqlValueCache(value = "kills", type = INTEGER_MODIFICATION) @Getter
-    protected ConcurrentSqlIntHolder kills;
-    @SqlValueCache(value = "deaths", type = INTEGER_MODIFICATION) @Getter
-    protected ConcurrentSqlIntHolder deaths;
+    @SqlNumberCache(value = "coins", numberType = Float.class) @Getter
+    protected ConcurrentSqlNumberHolder<Float> coinsAmount;
+    @SqlNumberCache(value = "points", numberType = Integer.class) @Getter
+    protected ConcurrentSqlNumberHolder<Integer> globalPoints;
+    @SqlNumberCache(value = "playtime", numberType = Long.class) @Getter
+    protected ConcurrentSqlNumberHolder<Long> playtime;
+    @SqlNumberCache(value = "kills", numberType = Integer.class) @Getter
+    protected ConcurrentSqlNumberHolder<Integer> kills;
+    @SqlNumberCache(value = "deaths", numberType = Integer.class) @Getter
+    protected ConcurrentSqlNumberHolder<Integer> deaths;
 
     protected Collection<SqlValueHolder<?>> valueHolders;
     protected QueryBuilder queryBuilder;
@@ -184,7 +187,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         if (this.weakPlr == null) {
             Player plr;
             if(this.uuid.getValue() == null) {
-                plr = Bukkit.getPlayerExact(this.name());
+                plr = Bukkit.getServer().getPlayerExact(this.name()); //Bukkit#getPlayerExact() is currently deprecated on accident
             } else {
                 plr = Bukkit.getPlayer(this.uuid.getValue());
             }
@@ -280,26 +283,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     }
 
     private boolean tryFetchByIdentifier(SqlIdentifierHolder<?> identifier) { //Returns true if it got the data
-//        try (QueryResult queryResult = sql.executeQueryWithResult("SELECT username, passes_amount, passes_used, "
-//                + "nickname,groupname,uuid,username FROM " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " WHERE " + column + "=?", value)) {
-//            if (queryResult.rs().next()) {
-//                this.passesAmount = queryResult.rs().getInt("passes_amount");
-//                this.passesUsed = queryResult.rs().getInt("passes_used");
-//                this.group = GroupData.getByName(queryResult.rs().getString("groupname"), sql);
-//                this.nick = queryResult.rs().getString("nickname");
-//                this.uuid = io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(queryResult.rs().getString("uuid"));
-//                this.plrName = queryResult.rs().getString("username");
-//                this.xyFetched = true;
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        } catch (SQLException e) {
-//            sql.formatAndPrintException(e, "PlayerWrapper#tryFetchByIdentifier");
-//            this.xyFetched = false;
-//            return false;
-//        }
-
         try(QueryResult queryResult = this.queryBuilder.addUniqueIdentifier(identifier)
                 .executeSelect(getSql(), false).vouchForResultSet()){
             if(queryResult.rs().next()){
@@ -361,5 +344,16 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @Override
     public void registerChange(@NonNull SqlValueHolder<?> holder) {
         this.xyChanged = true; //TODO only update actually changed values! :)
+    }
+
+    /**
+     * Checks whether this object has a valid UUID stored, either by it being passed
+     * to a constructor or by it being fetched from a database.
+     * If this returns {@code false}, {@link #getUniqueId()} will try to fetch the UUID from database, but can
+     * return {@code null} if an error occurs.
+     * @return whether this object has an UUID stored.
+     */
+    public boolean hasUniqueId(){
+        return this.uuid.isFetched();
     }
 }

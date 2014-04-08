@@ -1,6 +1,8 @@
 package io.github.xxyy.common.sql.builder;
 
 import com.google.common.collect.Lists;
+import io.github.xxyy.common.sql.builder.annotation.SqlNumberCache;
+import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,14 +22,14 @@ import java.util.*;
 public class SqlHolders {
     /**
      * Adds all annotated SqlHolders of a class to a set and populates the fields with the
-     * {@link io.github.xxyy.common.sql.builder.SqlValueHolder} implementation corresponding to the annotated {@link SqlValueCache#type()}.
+     * {@link io.github.xxyy.common.sql.builder.SqlValueHolder} implementation corresponding to the annotated {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache#type()}.
      *
      * @param clazz            Class to process
      * @param accessorInstance Instance of clazz used to access and set fields.
-     *                         May be null if, and only if all {@link io.github.xxyy.common.sql.builder.SqlValueCache} annotated fields are static.
+     *                         May be null if, and only if all {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache} annotated fields are static.
      * @param dataSource Optional DataSource that can be used by SqlValueHolders to acquire data.
      * @return SqlHolders of {@code clazz}.
-     * @throws java.lang.NullPointerException If an {@link io.github.xxyy.common.sql.builder.SqlValueCache} annotated field is encountered and {@code accessorInstance} is null.
+     * @throws java.lang.NullPointerException If an {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache} annotated field is encountered and {@code accessorInstance} is null.
      * @throws java.lang.IllegalAccessException If an annotated field could not be accessed.
      */
     @NonNull
@@ -45,6 +47,15 @@ public class SqlHolders {
 
                     annotation.type().createHolder(result, field, annotation, accessorInstance, dataSource);
                 }
+            } else if(field.isAnnotationPresent(SqlNumberCache.class)) {
+                SqlNumberCache annotation = field.getAnnotation(SqlNumberCache.class);
+                if (!annotation.skip()) {
+                    if (accessorInstance == null && !Modifier.isStatic(field.getModifiers())) {
+                        throw new NullPointerException(String.format("Encountered a non-static field marked for processing, but no accessor instance given! (At field %s)", field.getName()));
+                    }
+
+                    SqlNumberCache.Type.createHolder(result, field, annotation, accessorInstance, dataSource);
+                }
             }
         }
 
@@ -61,9 +72,8 @@ public class SqlHolders {
         }
 
         for(SqlValueHolder holder : holders){ //Seems like the only solution that supports wildcards
-            if(holder != null && availableNames.contains(holder.getColumnName())){
-                holder.updateValue(resultSet.getObject(holder.getColumnName())); //TODO: What to do if the cast fails?
-                                                                                 //Current implementation saves comparing classes in this performance-critical part
+            if(holder != null && availableNames.contains(holder.getColumnName()) && holder.supportsOverride()){
+                holder.processResultSet(resultSet);
             }
         }
     }
