@@ -17,7 +17,6 @@ import java.util.logging.Logger;
  * Factory class that produces implementations of {@link PlayerWrapper} and stores the instances.
  *
  * @param <T> Implementation of {@link PlayerWrapper} that is produced by this factory.
- *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
 public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
@@ -80,10 +79,9 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
      * <b>Note the dangers when using {@link CommandSender} specified in {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)}!</b>
      *
      * @param sender {@link CommandSender} to be wrapped.
-     *
      * @return a T wrapping sender.
-     * @see PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)
      * @throws ClassCastException forwarded from {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)}
+     * @see PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)
      */
     public T getWrapper(CommandSender sender) {
         T rtrn = this.wrappers.get(sender.getName());
@@ -96,7 +94,7 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
             } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
-                        "Could not acquire instance - Missing T(CommandSender) constructor, probably.", ex);
+                        "Could not acquire instance - Missing T(CommandSender, SafeSql) constructor, probably.", ex);
             }
         }
         return rtrn;
@@ -106,7 +104,6 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
      * Wraps a player by name.
      *
      * @param plrName name of the wrapped player.
-     *
      * @return a T wrapping plrName.
      * @see PlayerWrapper#PlayerWrapper(String, SafeSql)
      */
@@ -121,7 +118,7 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
                 this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
             } catch (Exception ex) { //multi-catch seems to confuse proguard
                 Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
-                        "Could not acquire instance - Missing T(String) constructor, probably.", ex);
+                        "Could not acquire instance - Missing T(String, SafeSql) constructor, probably.", ex);
             }
         }
         return rtrn;
@@ -131,30 +128,26 @@ public class PlayerWrapperFactory<T extends PlayerWrapper<T>> {
      * Wraps a player by UUID.
      *
      * @param uuid UUID of the wrapped player.
-     *
      * @return a T wrapping plrName.
      * @see PlayerWrapper#PlayerWrapper(String, SafeSql)
      */
     public T getWrapper(UUID uuid) {
-        String plrName = this.uuidToNameMap.get(uuid);
-        T rtrn = null;
-        if(plrName != null) {
-            rtrn = getWrapper(plrName);
+        try {
+            Constructor<T> constructor = clazz.getDeclaredConstructor(UUID.class, SafeSql.class);
+            constructor.setAccessible(true);
+
+            T rtrn = constructor.newInstance(uuid, ssql);
+
+            this.wrappers.put(rtrn.name(), rtrn);
+            this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
+
+            return rtrn;
+        } catch (Exception ex) { //multi-catch seems to confuse proguard
+            Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
+                    "Could not acquire instance - Missing T(UUID, SafeSql) constructor, probably.", ex);
         }
 
-        if (rtrn == null) {
-            try {
-                Constructor<T> constructor = clazz.getDeclaredConstructor(UUID.class, SafeSql.class);
-                constructor.setAccessible(true);
-                rtrn = constructor.newInstance(uuid, ssql);
-                this.wrappers.put(rtrn.name(), rtrn);
-                this.uuidToNameMap.put(rtrn.getUniqueId(), rtrn.name());
-            } catch (Exception ex) { //multi-catch seems to confuse proguard
-                Logger.getLogger(PlayerWrapperFactory.class.getName()).log(Level.SEVERE,
-                        "Could not acquire instance - Missing T(UUID, SafeSql) constructor, probably.", ex);
-            }
-        }
-        return rtrn;
+        return null;
     }
 
     /**

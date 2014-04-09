@@ -43,7 +43,7 @@ public final class ScoreboardHelper {
                 CACHED_OFFLINE_PLAYERS.put(displayName, fakePlayer);
             }
         }
-        
+
         objective.getScore(fakePlayer).setScore(score);
     }
 
@@ -75,7 +75,7 @@ public final class ScoreboardHelper {
             return false; //Ignore this, won't hurt
         }
 
-        @Override
+        @Override @Deprecated
         public void setBanned(boolean b) {
             //Ignore this, won't hurt
         }
