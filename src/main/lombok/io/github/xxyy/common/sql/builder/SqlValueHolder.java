@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
@@ -181,7 +182,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
          * @param holder Holder to fetch
          * @return {@code true} if the holder has been populated with data.
          */
-        boolean select(@NonNull SqlValueHolder<?> holder);
+        boolean select(@NotNull SqlValueHolder<?> holder);
 
         /**
          * Called to notify the data source of a change in value,
@@ -189,6 +190,6 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
          *
          * @param holder Holder which issued the change
          */
-        void registerChange(@NonNull SqlValueHolder<?> holder);
+        void registerChange(@NotNull SqlValueHolder<?> holder);
     }
 }

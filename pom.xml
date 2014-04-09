@@ -275,11 +275,17 @@
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
                     <detectLinks>true</detectLinks>
                     <doctitle>xy_common ${project.version} API - Do not distribute!</doctitle>
-                    <remoteRepositories>
-                        <remoteRepository>http://server.nowak-at.net/repo/all-all/</remoteRepository>
-                    </remoteRepositories>
-                    <outputDirectory>${basedir}</outputDirectory>
+                    <reportOutputDirectory>${project.basedir}/target/site/apidocs</reportOutputDirectory>
+                    <sourcepath>${basedir}/target/generated-sources/delombok/</sourcepath>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.7</version>
             </plugin>
         </plugins>
 
