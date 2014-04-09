@@ -2,8 +2,6 @@ package io.github.xxyy.common.games.data;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.ProfileCriteria;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.*;
@@ -19,7 +17,6 @@ import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.OBJECT_IDENTIFIER;
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UUID_IDENTIFIER;
@@ -225,7 +222,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         if (this.uuid.getValue() == null) {
             Player plr = plr();
 
-            if (plr == null) {
+            if (plr == null) { //TODO: Names are no longer unique
                 this.tryFetchByName();
             } else {
                 this.uuid.updateValue(plr.getUniqueId());
@@ -263,22 +260,25 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             tryFetchByUUID();
         }
 
-        if (getUniqueId() == null) { //This should actually never happen, except for really offline players..
-            if (name() != null) {
-                Logger.getLogger(getClass().getName()).warning("Fetching UUID for " + name() + " from Mojang!");
+        if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
+            throw new AssertionError("Could not find UUID! This is very bad..." +
+                    "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
 
-                Profile[] matchedProfiles = HTTP_PROFILE_REPOSITORY.findProfilesByCriteria(new ProfileCriteria(name(), "minecraft"));
-
-                if (matchedProfiles.length == 1) { //Which Profile should we choose if there's multiple? So shut up.
-                    this.uuid.updateValue(io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(matchedProfiles[0].getId()));
-                    sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=? " +
-                            "ON DUPLICATE KEY UPDATE username=?, uuid=?", name(), this.uuid, name(), this.uuid);
-                    tryFetchByUUID();
-                    return;
-                }
-            }
-
-            throw new IllegalStateException("Could not fetch UUID! Can not continue for name=" + name());
+//            if (name() != null) {
+//                Logger.getLogger(getClass().getName()).warning("Fetching UUID for " + name() + " from Mojang!");
+//
+//                Profile[] matchedProfiles = HTTP_PROFILE_REPOSITORY.findProfilesByCriteria(new ProfileCriteria(name(), "minecraft"));
+//
+//                if (matchedProfiles.length == 1) { //Which Profile should we choose if there's multiple? So shut up.
+//                    this.uuid.updateValue(io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(matchedProfiles[0].getId()));
+//                    sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=? " +
+//                            "ON DUPLICATE KEY UPDATE username=?, uuid=?", name(), this.uuid, name(), this.uuid);
+//                    tryFetchByUUID();
+//                    return;
+//                }
+//            }
+//
+//            throw new IllegalStateException("Could not fetch UUID! Can not continue for name=" + name());
         }
     }
 
@@ -325,14 +325,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-//        sql.safelyExecuteUpdate("UPDATE " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET "
-//                        + "passes_amount=" + this.passesAmount + ","
-//                        + "passes_used=" + this.passesUsed + ","
-//                        + "nickname=?, groupname=? "
-//                        + "WHERE uuid=?",
-//                this.nick, this.group.getName(), getUniqueId().toString()
-//        ); //If we have fetched, there must be an UUID
     }
 
     @Override
