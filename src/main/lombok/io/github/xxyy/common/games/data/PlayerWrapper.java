@@ -148,7 +148,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @see PlayerWrapper#addPassUse()
      * @see PlayerWrapper#getPassesUsed()
      */
-    public long getPassesAmount() {
+    public int getPassesAmount() {
         return this.passesAmount.getValue();
     }
 
@@ -158,7 +158,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      *
      * @return The all-time count of passes used by the wrapped player.
      */
-    public long getPassesUsed() {
+    public int getPassesUsed() {
         return this.passesUsed.getValue();
     }
 
