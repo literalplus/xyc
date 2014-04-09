@@ -285,6 +285,41 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
         this.nick.setValue(nick);
     }
 
+    /**
+     * @return the amount of coins the wrapped player has, fetching if necessary.
+     */
+    public double getCoinsAmount(){
+        return this.coins.getValue();
+    }
+
+    /**
+     * @return the amount of points the wrapped player has, fetching if necessary.
+     */
+    public int getGlobalPointsAmount(){
+        return this.globalPoints.getValue();
+    }
+
+    /**
+     * @return the tracked (i.e. approximate!) play time of the wrapped player, in minutes.
+     */
+    public long getPlayTimeMinutes(){
+        return this.playtime.getValue();
+    }
+
+    /**
+     * @return the amount of other players the wrapped player has killed.
+     */
+    public int getKillsAmount(){
+        return this.kills.getValue();
+    }
+
+    /**
+     * @return how often the wrapped player has died, on the whole network.
+     */
+    public int getDeathsAmount(){
+        return this.deaths.getValue();
+    }
+
 ////////////////////////// STATIC UTILITY METHODS //////////////////////////////////////////////////////////////////////
 
     /**

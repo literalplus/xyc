@@ -63,15 +63,15 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @SqlValueCache("groupname")
     protected SqlValueHolder<String> groupName;
 
-    @SqlNumberCache(value = "coins", numberType = Float.class) @Getter
-    protected ConcurrentSqlNumberHolder<Float> coinsAmount;
-    @SqlNumberCache(value = "points", numberType = Integer.class) @Getter
+    @SqlNumberCache(value = "coins", numberType = Float.class)
+    protected ConcurrentSqlNumberHolder<Float> coins;
+    @SqlNumberCache(value = "points", numberType = Integer.class)
     protected ConcurrentSqlNumberHolder<Integer> globalPoints;
-    @SqlNumberCache(value = "playtime", numberType = Long.class) @Getter
+    @SqlNumberCache(value = "playtime", numberType = Long.class)
     protected ConcurrentSqlNumberHolder<Long> playtime;
-    @SqlNumberCache(value = "kills", numberType = Integer.class) @Getter
+    @SqlNumberCache(value = "kills", numberType = Integer.class)
     protected ConcurrentSqlNumberHolder<Integer> kills;
-    @SqlNumberCache(value = "deaths", numberType = Integer.class) @Getter
+    @SqlNumberCache(value = "deaths", numberType = Integer.class)
     protected ConcurrentSqlNumberHolder<Integer> deaths;
 
     protected Collection<SqlValueHolder<?>> valueHolders;
@@ -263,22 +263,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
             throw new AssertionError("Could not find UUID! This is very bad..." +
                     "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
-
-//            if (name() != null) {
-//                Logger.getLogger(getClass().getName()).warning("Fetching UUID for " + name() + " from Mojang!");
-//
-//                Profile[] matchedProfiles = HTTP_PROFILE_REPOSITORY.findProfilesByCriteria(new ProfileCriteria(name(), "minecraft"));
-//
-//                if (matchedProfiles.length == 1) { //Which Profile should we choose if there's multiple? So shut up.
-//                    this.uuid.updateValue(io.github.xxyy.common.lib.net.minecraft.server.UtilUUID.getFromString(matchedProfiles[0].getId()));
-//                    sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=? " +
-//                            "ON DUPLICATE KEY UPDATE username=?, uuid=?", name(), this.uuid, name(), this.uuid);
-//                    tryFetchByUUID();
-//                    return;
-//                }
-//            }
-//
-//            throw new IllegalStateException("Could not fetch UUID! Can not continue for name=" + name());
         }
     }
 
