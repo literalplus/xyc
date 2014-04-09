@@ -8,8 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,6 +21,7 @@ import java.util.UUID;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ScoreboardHelper {
+    private static final Map<String, NamedOfflinePlayer> CACHED_OFFLINE_PLAYERS = new HashMap<>();
 
     /**
      * Sets a fake score with a specified display name. Does not call {@link org.bukkit.Bukkit#getOfflinePlayer(String)}, but creates
@@ -28,10 +29,22 @@ public final class ScoreboardHelper {
      * @param objective Objective to set
      * @param displayName Name to display
      * @param score Score to set
+     * @param addToCache Whether to store the created {@link io.github.xxyy.common.util.ScoreboardHelper.NamedOfflinePlayer} in a static data structure, to
+     *                   prevent having to create new ones - this is especially helpful for multiple Scoreboards/Objectives using the same display name
+     *                   for all players.
      */
-    public static void setFakeScore(final Objective objective, final String displayName, final int score) {
-        Score fakeScr = objective.getScore(new NamedOfflinePlayer(displayName));
-        fakeScr.setScore(score);
+    public static void setFakeScore(final Objective objective, final String displayName, final int score, final boolean addToCache) {
+        NamedOfflinePlayer fakePlayer = CACHED_OFFLINE_PLAYERS.get(displayName);
+
+        if(fakePlayer == null){
+            fakePlayer = new NamedOfflinePlayer(displayName);
+
+            if(addToCache){
+                CACHED_OFFLINE_PLAYERS.put(displayName, fakePlayer);
+            }
+        }
+        
+        objective.getScore(fakePlayer).setScore(score);
     }
 
     /**
