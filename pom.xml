@@ -193,6 +193,7 @@
                         <includes>
                             <include>com.google.code.gson:gson</include>
                             <include>com.intellij:annotations</include>
+                            <include>io.github.xxyy:*</include>
                         </includes>
                     </artifactSet>
                     <relocations>
