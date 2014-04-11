@@ -1,7 +1,6 @@
 package io.github.xxyy.common.games.data;
 
 import io.github.xxyy.common.games.GameLib;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.*;
@@ -28,12 +27,9 @@ import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UU
  * @since 2.4.14
  */
 public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
-    /**
-     * Full table name used to store common data. Defaults to {@value io.github.xxyy.common.games.GameLib#XY_DB_NAME}.game_users.
-     */
-    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
+//    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
     public static final String FULL_CENTRAL_USER_TABLE_NAME = GameLib.CENTRAL_DB_NAME + ".user";
-    public static final HttpProfileRepository HTTP_PROFILE_REPOSITORY = new HttpProfileRepository();
+//    public static final HttpProfileRepository HTTP_PROFILE_REPOSITORY = new HttpProfileRepository();
 
     /**
      * SafeSql object used by this wrapper to communicate to a database.
@@ -97,16 +93,35 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      */
     public static void initTable(SafeSql ssql) {
         ssql.executeUpdate("CREATE DATABASE IF NOT EXISTS " + GameLib.XY_DB_NAME);
-        ssql.executeUpdate("CREATE TABLE IF NOT EXISTS " + PlayerWrapper.FULL_XY_TABLE_NAME + " (\n"
-                + "    `username` VARCHAR(30) NOT NULL,\n"
-                + "    `passes_amount` INT UNSIGNED NOT NULL DEFAULT '0',\n"
-                + "    `passes_used` INT UNSIGNED NOT NULL DEFAULT '0',\n"
-                + "    `nickname` VARCHAR(30) DEFAULT NULL,\n"
-                + "    `groupname` VARCHAR(30) NOT NULL DEFAULT 'default',\n"
-                + "    PRIMARY KEY (`username`)\n"
-                + ")\n"
-                + "COLLATE='utf8_unicode_ci'\n"
-                + "ENGINE=MyISAM;");
+        ssql.executeUpdate("CREATE TABLE `"+ PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME+"` (\n" +
+                "\t`uuid` VARCHAR(36) NOT NULL COMMENT 'Mojang has their UUID at 32 chars plain, 36 chars with dashes.' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`username` VARCHAR(16) NOT NULL COMMENT 'The name of the user at the last time he was here' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`password` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`salt` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`user_lastip` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`user_lastip_id` INT(11) NOT NULL DEFAULT '0',\n" +
+                "\t`premium` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`ign_p_msg` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`encrypted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "\t`passes_amount` INT(7) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`passes_used` INT(7) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`nickname` VARCHAR(48) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`groupname` VARCHAR(30) NOT NULL DEFAULT 'default' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`points` INT(11) NOT NULL DEFAULT '0',\n" +
+                "\t`coins` FLOAT NOT NULL DEFAULT '0',\n" +
+                "\t`skype` VARCHAR(32) NULL DEFAULT NULL COMMENT 'Skype restricts usernames to 32 chars' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`playtime` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`kills` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`deaths` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`chosen_language` VARCHAR(6) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`last_minecraft_language` VARCHAR(6) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\tPRIMARY KEY (`uuid`),\n" +
+                "\tUNIQUE INDEX `nickname` (`nickname`),\n" +
+                "\tINDEX `username` (`username`)\n" +
+                ")\n" +
+                "COLLATE='utf8_swedish_ci'\n" +
+                "ENGINE=InnoDB;\n");
     }
 
     /**

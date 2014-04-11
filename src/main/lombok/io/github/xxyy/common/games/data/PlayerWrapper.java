@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 /**
  * Wrapper for {@link Player} to be used by games to store data. The default implementation stores some common data in SQL table
- * {@value PlayerWrapper#FULL_XY_TABLE_NAME}.
+ * {@value PlayerWrapper#FULL_CENTRAL_USER_TABLE_NAME}.
  *
  * @author xxyy98
  */
