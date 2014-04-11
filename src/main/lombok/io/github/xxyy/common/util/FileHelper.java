@@ -30,7 +30,7 @@ public abstract class FileHelper
         {
             if(!dest.exists())
             {
-               assert dest.mkdir();
+               assert dest.mkdirs();
             }
      
             String files[] = src.list();

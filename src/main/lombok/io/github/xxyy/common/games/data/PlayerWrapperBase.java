@@ -133,7 +133,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      */
     public GroupData getGroup() {
         if (!this.xyFetched) {
-            this.xyFetch();
+            this.forceFullFetch();
         }
 
         return this.group;
@@ -264,6 +264,8 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             throw new AssertionError("Could not find UUID! This is very bad..." +
                     "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
         }
+
+        this.group = GroupData.getByName(this.groupName.getValue(), getSql());
     }
 
     private boolean tryFetchByIdentifier(SqlIdentifierHolder<?> identifier) { //Returns true if it got the data
