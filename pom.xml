@@ -148,6 +148,7 @@
 
                 <configuration>
                     <addOutputDirectory>false</addOutputDirectory>
+                    <outputDirectory>${project.basedir}/target/classes/</outputDirectory>
                 </configuration>
             </plugin>
             
@@ -193,7 +194,7 @@
                         <includes>
                             <include>com.google.code.gson:gson</include>
                             <include>com.intellij:annotations</include>
-                            <include>io.github.xxyy:*</include>
+                            <include>io.github.xxyy:common</include>
                         </includes>
                     </artifactSet>
                     <relocations>
