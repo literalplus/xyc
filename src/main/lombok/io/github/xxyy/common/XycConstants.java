@@ -1,31 +1,21 @@
 package io.github.xxyy.common;
 
+import io.github.xxyy.common.version.PluginVersion;
+
 /**
  * Class that provides some constants that are mostly outdated.
- * 
+ *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
 public class XycConstants {
     /**
-     * XYC major version
-     */
-    public static final String version="sqrt(-2)";
-    /**
-     * Build of XYC, as seen in package names.
-     */
-    public static final String build = "19";
-    /**
-     * Date of last change. Not updated automatically.
-     */
-    public static final String buildDate = "26.08.2013";
-    /**
      * A full version string.
      */
-    public static final String versionString=XycConstants.version+"_b"+XycConstants.build+" ("+XycConstants.buildDate+") \""+XycConstants.versionName+"\"";
+    public static final PluginVersion VERSION = PluginVersion.ofClass(XycConstants.class);
     /**
      * short name of XYC.
      */
-    public static final String pluginID="XYC";//not actually a plugin
+    public static final String pluginID = "XYC";//not actually a plugin
     /**
      * XYC chat prefix.
      */
@@ -33,8 +23,8 @@ public class XycConstants {
     /**
      * Codename of this version.
      */
-    public static final String versionName="Albert";
-    
+    public static final String versionName = "Albert";
+
     /**
      * An Unicode check mark, especially useful for ToDo-lists.
      */

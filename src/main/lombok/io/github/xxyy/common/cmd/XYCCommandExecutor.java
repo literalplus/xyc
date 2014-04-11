@@ -1,7 +1,9 @@
 package io.github.xxyy.common.cmd;
 
+import io.github.xxyy.common.XyHelper;
 import io.github.xxyy.common.XycConstants;
 import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.common.xyplugin.AbstractXyPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,10 +18,9 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
     /**
      * Called to catch commands. Some things have already been done!
      *
-     * @see CommandExecutor#onCommand(CommandSender, Command, String, String[])
      * @param senderName Pre-fetched to save dat line of code :)
-     *
      * @return Success
+     * @see CommandExecutor#onCommand(CommandSender, Command, String, String[])
      */
     public abstract boolean catchCommand(CommandSender sender, String senderName, Command cmd, String label, String[] args);
 
@@ -28,13 +29,10 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
      */
     @Override
     public final boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length >= 1 && args[0].equalsIgnoreCase("xyc")) {
-            CommandHelper.msg("§9▀▄▒▄▀ ▒█░░▒█ ▒█▀▀█ §eXyCommon Library.\n"
-                    + "§9░▒█░░ ▒█▄▄▄█ ▒█░░░ §e" + XycConstants.versionString + "\n"
-                    + "§9▄▀▒▀▄ ░░▒█░░ ▒█▄▄█ §ehttp://xxyy.github.io/\n"
-                    + "§9### §eXyCommon...xxyy98 (Philipp Nowak) §9###", sender);
-        }
-        return !this.preCatch(sender, sender.getName(), cmd, label, args) || this.catchCommand(sender, sender.getName(), cmd, label, args);
+        return this.handleXycSubcommand(args, sender, label) || //Handle XYC tools
+                !this.preCatch(sender, sender.getName(), cmd, label, args) //Handle pre-catch
+                || this.catchCommand(sender, sender.getName(), cmd, label, args); //Catch
+
     }
 
     /**
@@ -44,6 +42,44 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
      * @return Whether execution should continue
      */
     public boolean preCatch(CommandSender sender, String senderName, Command cmd, String label, String[] args) {
+        return true;
+    }
+
+    private boolean handleXycSubcommand(String[] args, CommandSender sender, String label) {
+        if (args.length == 0 || !args[0].equalsIgnoreCase("xyc")) {
+            return false;
+        }
+
+        if (args.length == 1 || args[1].equalsIgnoreCase("version")) {
+            CommandHelper.msg(
+                      "§9▀▄▒▄▀ ▒█░░▒█ ▒█▀▀█ §eXyCommon Library.\n"
+                    + "§9░▒█░░ ▒█▄▄▄█ ▒█░░░ §eby xxyy (Philipp Nowak)\n"
+                    + "§9▄▀▒▀▄ ░░▒█░░ ▒█▄▄█ §ehttp://xxyy.github.io/\n"
+                    + "§9### §e" + XycConstants.VERSION.toString() + " §9###", sender);
+        } else {
+            if (CommandHelper.checkPermAndMsg(sender, "xyc.command", label + "xyc")) {
+                switch (args[1].toLowerCase()) {
+                    case "rstlng":
+                        XyHelper.getLocale().resetLang();
+                        //noinspection SpellCheckingInspection
+                        sender.sendMessage("§aI haz reset da langz!");
+                        break;
+                    case "plugins":
+                        int i = 0;
+                        for (AbstractXyPlugin pl : AbstractXyPlugin.getInstances()) {
+                            sender.sendMessage(pl.getDescription().getName() + " @ " + pl.getDescription().getVersion()
+                                    + " by " + CommandHelper.CSCollection(pl.getDescription().getAuthors()));
+                            i++;
+                        }
+                        sender.sendMessage("§e" + i + " XyPlugins loaded.");
+                        break;
+                    default:
+                        sender.sendMessage("§eUsage: /"+label+"xyc [rstlng|plugins|version]");
+                        break;
+                }
+            }
+        }
+
         return true;
     }
 }
