@@ -97,6 +97,7 @@ public abstract class AbstractMapLoader {
             FileHelper.copyFolder(sourceDir, destDir);
         } catch (IOException e) {
             Bukkit.getConsoleSender().sendMessage(this.getClass().getSimpleName() + "§cException while copying!");
+            e.printStackTrace();
             return false;
         }
         Bukkit.getConsoleSender().sendMessage(this.getClass().getSimpleName() + "§bSuccessfully copied!");
