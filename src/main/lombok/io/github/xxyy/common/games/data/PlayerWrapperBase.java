@@ -93,7 +93,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      */
     public static void initTable(SafeSql ssql) {
         ssql.executeUpdate("CREATE DATABASE IF NOT EXISTS " + GameLib.XY_DB_NAME);
-        ssql.executeUpdate("CREATE TABLE `"+ PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME+"` (\n" +
+        ssql.executeUpdate("CREATE TABLE IF NOT EXISTS `"+ PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME+"` (\n" +
                 "\t`uuid` VARCHAR(36) NOT NULL COMMENT 'Mojang has their UUID at 32 chars plain, 36 chars with dashes.' COLLATE 'utf8_swedish_ci',\n" +
                 "\t`username` VARCHAR(16) NOT NULL COMMENT 'The name of the user at the last time he was here' COLLATE 'utf8_swedish_ci',\n" +
                 "\t`password` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
