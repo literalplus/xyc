@@ -35,6 +35,10 @@ public abstract class FileHelper {
             }
 
         } else {
+            if(!src.exists()){
+                return; //This seems to be a thing now
+            }
+
             if (!dest.exists()) {
                 assert dest.createNewFile();
             }
