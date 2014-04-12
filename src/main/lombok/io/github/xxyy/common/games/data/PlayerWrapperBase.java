@@ -16,6 +16,7 @@ import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.OBJECT_IDENTIFIER;
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UUID_IDENTIFIER;
@@ -73,6 +74,12 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     protected Collection<SqlValueHolder<?>> valueHolders;
     protected QueryBuilder queryBuilder;
 
+    /**
+     * Lock used to lock database operations on this wrapper.
+     * The default implementations of {@link #xyFetch()} and {@link #xyFlush()} use this.
+     */
+    protected final ReentrantLock databaseLock = new ReentrantLock(false);
+
     public PlayerWrapperBase(SafeSql ssql) {
         try {
             this.valueHolders = SqlHolders.processClass(PlayerWrapperBase.class, this, this); //Process base stuff - implementation have to do this themselves to avoid complication with inheritance
@@ -128,8 +135,14 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Forces a full (re-)fetch of all data. This is equivalent to calling {@link io.github.xxyy.common.games.data.PlayerWrapper#impFetch()} and {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()}.
      */
     public void forceFullFetch() {
-        this.xyFetch();
-        this.impFetch();
+        this.databaseLock.lock();
+
+        try {
+            this.xyFetch();
+            this.impFetch();
+        } finally {
+            this.databaseLock.unlock();
+        }
     }
 
     /**
@@ -137,8 +150,14 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()}.
      */
     public void forceFullFlush() {
-        this.xyFlush();
-        this.impFlush();
+        this.databaseLock.lock();
+
+        try {
+            this.xyFlush();
+            this.impFlush();
+        } finally {
+            this.databaseLock.unlock();
+        }
     }
 
     /**
@@ -249,6 +268,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
 
     /**
      * Method to be overwritten by implementations. Will be called in {@link io.github.xxyy.common.games.data.PlayerWrapper#forceFullFetch()}. Shall (re-)fetch implementation data.
+     * Implementations are expected to lock their database I/O with {@link #databaseLock}.
      *
      * @see io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()
      */
@@ -257,6 +277,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     /**
      * Method to be overwritten by implementations. Will be called in {@link io.github.xxyy.common.games.data.PlayerWrapper#forceFullFlush()}. Shall save implementation data stored in
      * this object to database.
+     * Implementations are expected to lock their database I/O with {@link #databaseLock}.
      *
      * @see io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()
      */
@@ -267,20 +288,26 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * It is recommended to call this async.
      */
     final void xyFetch() {
-        this.xyFetched = true;
+        this.databaseLock.lock(); //Locks twice for fullFetch - Should not hurt though.
 
-        if (!tryFetchByUUID() && !tryFetchByName() &&
-                getUniqueId() != null && name() != null) {
-            sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId().toString());
-            tryFetchByUUID();
+        try {
+            this.xyFetched = true;
+
+            if (!tryFetchByUUID() && !tryFetchByName() &&
+                    getUniqueId() != null && name() != null) {
+                sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId().toString());
+                tryFetchByUUID();
+            }
+
+            if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
+                throw new AssertionError("Could not find UUID! This is very bad..." +
+                        "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
+            }
+
+            this.group = GroupData.getByName(this.groupName.getValue(), getSql());
+        } finally {
+            this.databaseLock.unlock();
         }
-
-        if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
-            throw new AssertionError("Could not find UUID! This is very bad..." +
-                    "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
-        }
-
-        this.group = GroupData.getByName(this.groupName.getValue(), getSql());
     }
 
     private boolean tryFetchByIdentifier(SqlIdentifierHolder<?> identifier) { //Returns true if it got the data
@@ -318,6 +345,8 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             return;
         }
 
+        this.databaseLock.lock(); //Locks twice for fullFlush - Should not hurt though.
+
         try {
             this.queryBuilder.addUniqueIdentifier(this.uuid)
                     .executeTrueUpdate(getSql());
@@ -325,6 +354,8 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             this.xyChanged = false;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            this.databaseLock.unlock();
         }
     }
 

@@ -19,7 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 23.3.14
  */
-public class QueryBuilder {
+public class QueryBuilder { //TODO make concurrent
     /**
      * Name of the table this query is targeted to.
      */
