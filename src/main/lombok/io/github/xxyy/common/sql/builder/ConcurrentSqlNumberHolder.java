@@ -88,7 +88,7 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
 
 //        try {
             T storedModifier = getModifierInternal();
-            this.updateValueInternal(mathOperator.getZero()); //Does not lock
+            this.modifier = mathOperator.getZero();
             return storedModifier;
 
 //        } finally {

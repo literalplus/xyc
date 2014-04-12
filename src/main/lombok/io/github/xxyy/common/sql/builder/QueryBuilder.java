@@ -230,9 +230,9 @@ public class QueryBuilder { //TODO make concurrent
             if (snapshot != null) {
                 queryStringBuilder.append(snapshot.getType().getOperator(snapshot.getColumnName()))
                         .append(",");
-                args.add(snapshot.getSnapshot());
             }
         }
+        args.addAll(args);
 
         queryStringBuilder.deleteCharAt(queryStringBuilder.length() - 1); //Last char will always be ',';
 
