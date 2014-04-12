@@ -39,8 +39,8 @@ public abstract class FileHelper {
                 return; //This seems to be a thing now
             }
 
-            if (!dest.exists()) {
-                assert dest.createNewFile();
+            if (!dest.getParentFile().exists()) {
+                assert dest.getParentFile().mkdirs();
             }
 
             try (InputStream in = new FileInputStream(src);
