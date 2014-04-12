@@ -88,7 +88,7 @@ public class XYCFormatter extends Formatter {
         return "******************** XYC LOG FILE ********************\n" +
         		" * Start: "+(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTimeInMillis())+"\n" +
         		" * Bukkit Version: "+Bukkit.getVersion()+"\n" +
-        		" * XYC Version: "+XycConstants.versionString+"\n" +
+        		" * XYC Version: "+XycConstants.VERSION.toString()+"\n" +
         		" * Encoding: "+h.getEncoding()+"\n" +
         		" * Plugin Name: "+this.pluginName+"\n" +
         		" * Plugin Version: "+this.pluginVersion+"\n" +
