@@ -16,7 +16,7 @@ import java.sql.SQLException;
  * Represents an integer database column that can be concurrently modified.
  * It stores a modifier that can be applied to the remote value without overriding
  * it with a cached version.
- * 
+ *
  * Please be careful with whom you share instances.
  *
  * This class is considered thread-safe and does lock all read/write operations.

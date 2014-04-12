@@ -63,7 +63,6 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * return null.
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     *
      * <b>Implementations must implement a constructor wi"th the exact same arguments!!</b>
      *
      * @param plrName Player to wrap (by name)
@@ -79,14 +78,12 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * return null.
      * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
      * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     *
      * <b>Implementations must implement a constructor with the exact same arguments!!</b>
-     *
      * Only use this if you don't have anything else, stuff will break very badly if there's no database entry for this UUID.
      *
-     * @param uuid UUID of the player to wrap
+     * @param uuid    UUID of the player to wrap
      * @param plrName Name of the player to wrap (May be null if not available)
-     * @param ssql SafeSql to use for storing the object.
+     * @param ssql    SafeSql to use for storing the object.
      */
     protected PlayerWrapper(@NonNull UUID uuid, @Nullable String plrName, @NonNull SafeSql ssql) {
         this(plrName, ssql);
@@ -288,36 +285,56 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
     /**
      * @return the amount of coins the wrapped player has, fetching if necessary.
      */
-    public double getCoinsAmount(){
+    public double getCoinsAmount() {
         return this.coins.getValue();
     }
 
     /**
      * @return the amount of points the wrapped player has, fetching if necessary.
      */
-    public int getGlobalPointsAmount(){
+    public int getGlobalPointsAmount() {
         return this.globalPoints.getValue();
     }
 
     /**
      * @return the tracked (i.e. approximate!) play time of the wrapped player, in minutes.
      */
-    public long getPlayTimeMinutes(){
+    public long getPlayTimeMinutes() {
         return this.playtime.getValue();
     }
 
     /**
      * @return the amount of other players the wrapped player has killed.
      */
-    public int getKillsAmount(){
+    public int getKillsAmount() {
         return this.kills.getValue();
     }
 
     /**
      * @return how often the wrapped player has died, on the whole network.
      */
-    public int getDeathsAmount(){
+    public int getDeathsAmount() {
         return this.deaths.getValue();
+    }
+
+    public void modifyCoinsAmount(float modifier) {
+        this.coins.modify(modifier);
+    }
+
+    public void modifyGlobalPointsAmount(int modifier) {
+        this.globalPoints.modify(modifier);
+    }
+
+    public void modifyPlayTimeMinutes(long modifier) {
+        this.playtime.modify(modifier);
+    }
+
+    public void modifyKillsAmount(int modifier) {
+        this.kills.modify(modifier);
+    }
+
+    public void modifyDeathsAmount(int modifier){
+        this.deaths.modify(modifier);
     }
 
 ////////////////////////// STATIC UTILITY METHODS //////////////////////////////////////////////////////////////////////
