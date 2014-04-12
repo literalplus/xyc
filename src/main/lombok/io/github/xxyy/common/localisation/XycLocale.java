@@ -1,6 +1,7 @@
 package io.github.xxyy.common.localisation;
 
 import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.common.util.FileHelper;
 import io.github.xxyy.common.xyplugin.AbstractXyPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -35,8 +36,9 @@ public class XycLocale implements XyLocalizable {
                 map.put(lang, YamlConfiguration.loadConfiguration(destFl));
             } else {
                 try {
-                    assert destDir.mkdirs();
-                    assert destFl.createNewFile();
+                    FileHelper.mkdirsWithException(destDir);
+                    //noinspection ResultOfMethodCallIgnored
+                    destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
                     InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
                     int read;
@@ -72,10 +74,10 @@ public class XycLocale implements XyLocalizable {
                 String dir = "plugins/XYC/lang/";
                 String fl = lang + ".lng.yml";
                 File destFl = new File(dir, fl);
-                File destDir = new File(dir);
                 try {
-                    assert destDir.mkdirs();
-                    assert destFl.createNewFile();
+                    FileHelper.mkdirsWithException(new File(dir));
+                    //noinspection ResultOfMethodCallIgnored
+                    destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
                     InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
                     int read;

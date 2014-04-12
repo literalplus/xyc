@@ -1,6 +1,7 @@
 package io.github.xxyy.common.games.kits;
 
 import com.google.common.collect.Lists;
+import io.github.xxyy.common.util.FileHelper;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Material;
@@ -167,13 +168,8 @@ public class KitLoader {
      */
     public void load() {
         this.loaded = true;
-        File fl = new File(this.path);
-        if (!fl.exists()) {
-            assert fl.mkdirs();
-        }
-        if (!fl.isDirectory()) {
-            throw new IllegalStateException("path is no directory");
-        }
+        File fl = FileHelper.mkdirsWithException(new File(this.path));
+
         this.kits = new ArrayList<>();
         for (String path : fl.list(new KitFilenameFilter())) {
             this.kits.add(new KitInfo(this.path + "/" + path));

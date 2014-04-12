@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -70,7 +71,7 @@ public abstract class AbstractMapLoader {
             return true;
         }
         try {
-            FileHelper.deleteAll(toDelete);
+            FileHelper.deleteWithException(toDelete);
         } catch (IOException e) {
             e.printStackTrace();
             this.plugin.setError(this.getClass().getSimpleName() + "§cCould not clear world!", "AbstractMapLoader.clearWorld#1");
@@ -163,7 +164,11 @@ public abstract class AbstractMapLoader {
 
         File uidDat = new File(Bukkit.getWorldContainer(), this.getWorldName() + "/uid.dat");
         if (uidDat.exists()) {
-            assert uidDat.delete();
+            try {
+                Files.delete(uidDat.toPath());
+            } catch (IOException e) {
+                throw new IllegalStateException("Could not delete uid.dat", e);
+            }
         }
 
         WorldCreator creator = WorldCreator.name(this.getWorldName()).environment(Environment.NORMAL).type(WorldType.NORMAL);

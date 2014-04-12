@@ -22,9 +22,7 @@ public abstract class FileHelper {
      */
     public static void copyFolder(File src, File dest) throws IOException {
         if (src.isDirectory()) {
-            if (!dest.exists()) {
-                assert dest.mkdirs();
-            }
+            FileHelper.mkdirsWithException(dest);
 
             String files[] = src.list();
 
@@ -35,13 +33,7 @@ public abstract class FileHelper {
             }
 
         } else {
-            if(!src.exists()){
-                return; //This seems to be a thing now
-            }
-
-            if (!dest.getParentFile().exists()) {
-                assert dest.getParentFile().mkdirs();
-            }
+            FileHelper.mkdirsWithException(dest.getParentFile());
 
             try (InputStream in = new FileInputStream(src);
                  OutputStream out = new FileOutputStream(dest)) {
@@ -65,7 +57,7 @@ public abstract class FileHelper {
      * @param pathToDir a {@link Path} pointing to the directory to be deleted.
      * @throws java.io.IOException If a file could not be deleted.
      */
-    public static void deleteAll(Path pathToDir) throws IOException {
+    public static void deleteWithException(Path pathToDir) throws IOException {
         Files.walkFileTree(pathToDir, new SimpleFileVisitor<Path>() {
 
             @Override
@@ -84,5 +76,24 @@ public abstract class FileHelper {
             }
 
         });
+    }
+
+    /**
+     * Creates a directory and any necessary parent directories, throwing an exception if the operation failed.
+     * If the passed File does not represent a directory, the same exception is thrown.
+     * This is necessary because {@link java.io.File#mkdirs()} does not throw exceptions.
+     * If you prefer checked exceptions, take a look at {@link Files#createDirectories(java.nio.file.Path, java.nio.file.attribute.FileAttribute[])}.
+     *
+     * @param file File representing the directory to create.
+     * @return The passed file, for convenient construction
+     * @throws java.lang.IllegalStateException If {@link java.io.File#mkdirs()} returned false.
+     * @see java.io.File#mkdirs()
+     */
+    public static File mkdirsWithException(File file) {
+        if (!file.exists() && !file.mkdirs()) {
+            throw new IllegalStateException("Could not create directory: " + file.getAbsolutePath());
+        }
+
+        return file;
     }
 }
