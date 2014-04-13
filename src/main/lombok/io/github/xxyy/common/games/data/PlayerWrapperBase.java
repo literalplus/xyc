@@ -15,7 +15,8 @@ import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.*;
 
@@ -77,7 +78,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Lock used to lock database operations on this wrapper.
      * The default implementations of {@link #xyFetch()} and {@link #xyFlush()} use this.
      */
-    protected final ReentrantLock databaseLock = new ReentrantLock(false);
+    protected final ReadWriteLock databaseLock = new ReentrantReadWriteLock(false);
 
     public PlayerWrapperBase(SafeSql ssql) {
         try {
@@ -96,13 +97,13 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Forces a full (re-)fetch of all data. This is equivalent to calling {@link io.github.xxyy.common.games.data.PlayerWrapper#impFetch()} and {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()}.
      */
     public void forceFullFetch() {
-        this.databaseLock.lock();
+        this.databaseLock.writeLock().lock();
 
         try {
             this.xyFetch();
             this.impFetch();
         } finally {
-            this.databaseLock.unlock();
+            this.databaseLock.writeLock().unlock();
         }
     }
 
@@ -111,13 +112,13 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()}.
      */
     public void forceFullFlush() {
-        this.databaseLock.lock();
+        this.databaseLock.writeLock().lock();
 
         try {
             this.xyFlush();
             this.impFlush();
         } finally {
-            this.databaseLock.unlock();
+            this.databaseLock.writeLock().unlock();
         }
     }
 
@@ -127,11 +128,16 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * @return {@link io.github.xxyy.common.games.data.GroupData} the wrapped player is in.
      */
     public GroupData getGroup() {
-        if (!this.xyFetched) {
-            this.forceFullFetch();
-        }
+        this.databaseLock.readLock().lock();
+        try {
+            if (!this.xyFetched) {
+                this.forceFullFetch();
+            }
 
-        return this.group;
+            return this.group;
+        } finally {
+            this.databaseLock.readLock().unlock();
+        }
     }
 
     /**
@@ -176,6 +182,20 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @Nullable
     public Player plr() {
         if (this.weakPlr == null) {
+            return tryGetPlayer();
+        }
+
+        Player plr = this.weakPlr.get();
+        if (plr == null) {
+            return tryGetPlayer(); //throw new PlayerOfflineException();
+        }
+        return plr;
+    }
+
+    private Player tryGetPlayer() {
+        this.databaseLock.readLock().lock();
+
+        try {
             Player plr;
             if (this.uuid.getValue() == null) {
                 plr = Bukkit.getServer().getPlayerExact(this.name()); //Bukkit#getPlayerExact() is currently deprecated on accident
@@ -194,12 +214,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             this.weakPlr = new WeakReference<>(plr);
 
             return plr;
+        } finally {
+            this.databaseLock.readLock().unlock();
         }
-        Player plr = this.weakPlr.get();
-        if (plr == null) {
-            return null; //throw new PlayerOfflineException();
-        }
-        return plr;
     }
 
     /**
@@ -215,11 +232,16 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     public UUID getUniqueId() {
         if (this.uuid.getValue() == null) {
             Player plr = plr();
+            this.databaseLock.writeLock().lock();
 
-            if (plr == null) { //TODO: Names are no longer unique
-                this.tryFetchByName();
-            } else {
-                this.uuid.updateValue(plr.getUniqueId());
+            try {
+                if (plr == null) { //TODO: Names are no longer unique
+                    this.tryFetchByName();
+                } else {
+                    this.uuid.updateValue(plr.getUniqueId());
+                }
+            } finally {
+                this.databaseLock.writeLock().unlock();
             }
         }
 
@@ -248,7 +270,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * It is recommended to call this async.
      */
     final void xyFetch() {
-        this.databaseLock.lock(); //Locks twice for fullFetch - Should not hurt though.
+        this.databaseLock.writeLock().lock(); //Locks twice for fullFetch - Should not hurt though.
 
         try {
             this.xyFetched = true;
@@ -266,7 +288,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
 
             this.group = GroupData.getByName(this.groupName.getValue(), getSql());
         } finally {
-            this.databaseLock.unlock();
+            this.databaseLock.writeLock().unlock();
         }
     }
 
@@ -305,7 +327,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             return;
         }
 
-        this.databaseLock.lock(); //Locks twice for fullFlush - Should not hurt though.
+        this.databaseLock.writeLock().lock(); //Locks twice for fullFlush - Should not hurt though.
 
         try {
             this.queryBuilder.addUniqueIdentifier(this.uuid)
@@ -315,7 +337,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            this.databaseLock.unlock();
+            this.databaseLock.writeLock().unlock();
         }
     }
 

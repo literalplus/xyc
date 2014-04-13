@@ -87,7 +87,8 @@ public class QueryBuilder { //TODO make concurrent
      */
     @NonNull
     public QueryBuilder addUniqueIdentifier(@NonNull final QuerySnapshot identifier) {
-        Validate.isTrue(identifier.getType() == QuerySnapshot.Type.OBJECT_IDENTIFIER, "Identifier type must be object identifier!");
+        Validate.isTrue(identifier.getType() == QuerySnapshot.Type.OBJECT_IDENTIFIER ||
+                identifier.getType() == QuerySnapshot.Type.NEGATED_OBJECT_IDENTIFIER, "Identifier type must be object identifier!");
 
         if (this.uniqueIdentifiers == null) {
             this.uniqueIdentifiers = new LinkedBlockingQueue<>();
@@ -262,7 +263,7 @@ public class QueryBuilder { //TODO make concurrent
 
         for (QuerySnapshot snapshot : this.queryParts) {
             if (snapshot != null) {
-                queryStringBuilder.append(QuerySnapshot.Type.OBJECT_UPDATE.getOperator(snapshot.getColumnName()))
+                queryStringBuilder.append(snapshot.getType().getOperator(snapshot.getColumnName()))
                         .append(','); //NUMBER_MODIFICATION has name=name+value, which is not allowed in INSERT
                 args.add(snapshot.getSnapshot());
             }
@@ -322,7 +323,7 @@ public class QueryBuilder { //TODO make concurrent
      * @see #buildTrueUpdate(io.github.xxyy.common.sql.PreparedStatementFactory)
      */
     public int executeTrueUpdate(@NonNull final PreparedStatementFactory statementFactory) throws SQLException {
-        PreparedStatement statement = buildUpdate(statementFactory);
+        PreparedStatement statement = buildTrueUpdate(statementFactory);
         if (statement == null) {
             return -1;
         }

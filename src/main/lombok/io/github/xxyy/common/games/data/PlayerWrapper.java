@@ -3,6 +3,7 @@ package io.github.xxyy.common.games.data;
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
+import io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder;
 import io.github.xxyy.common.sql.builder.QueryBuilder;
 import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
@@ -318,23 +319,33 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
     }
 
     public void modifyCoinsAmount(float modifier) {
-        this.coins.modify(modifier);
+        lockedModify(this.coins, modifier);
+    }
+
+    protected <N extends Number> void lockedModify(ConcurrentSqlNumberHolder<N> holder, N modifier) {
+        this.databaseLock.readLock().lock();
+
+        try {
+            holder.modify(modifier);
+        } finally {
+            this.databaseLock.readLock().unlock();
+        }
     }
 
     public void modifyGlobalPointsAmount(int modifier) {
-        this.globalPoints.modify(modifier);
+        lockedModify(this.globalPoints, modifier);
     }
 
     public void modifyPlayTimeMinutes(long modifier) {
-        this.playtime.modify(modifier);
+        lockedModify(this.playtime, modifier);
     }
 
     public void modifyKillsAmount(int modifier) {
-        this.kills.modify(modifier);
+        lockedModify(this.kills, modifier);
     }
 
     public void modifyDeathsAmount(int modifier){
-        this.deaths.modify(modifier);
+        lockedModify(this.deaths, modifier);
     }
 
 ////////////////////////// STATIC UTILITY METHODS //////////////////////////////////////////////////////////////////////

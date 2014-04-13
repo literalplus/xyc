@@ -11,14 +11,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Represents an integer database column that can be concurrently modified.
  * It stores a modifier that can be applied to the remote value without overriding
  * it with a cached version.
- *
+ * <p/>
  * Please be careful with whom you share instances.
- *
+ * <p/>
  * This class is considered thread-safe and does lock all read/write operations.
  * All locked operations use the same {@link java.util.concurrent.locks.ReentrantReadWriteLock}.
  *
@@ -34,7 +35,7 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
     @Getter
     private final MathOperator<T> mathOperator;
 
-//    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(false);
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(false);
 
     @Override
     public void processResultSet(@NonNull ResultSet resultSet) throws SQLException {
@@ -59,20 +60,20 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      */
     @NonNull
     public SqlValueHolder modify(final T paramModifier) {
-//        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
-//        writeLock.lock();
+        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+        writeLock.lock();
 
-//        try {
-        this.modifier = mathOperator.add(this.getModifierInternal(), paramModifier);
+        try {
+            this.modifier = mathOperator.add(this.getModifierInternal(), paramModifier);
 
-        if (getValue() != null) {
-            super.setValue(mathOperator.add(this.getValue(), paramModifier));
-        } else {
-            super.setValue(paramModifier);
+            if (getValue() != null) {
+                super.setValue(mathOperator.add(this.getValue(), paramModifier));
+            } else {
+                super.setValue(paramModifier);
+            }
+        } finally {
+            writeLock.unlock();
         }
-//        } finally {
-//            writeLock.unlock();
-//        }
 
         return this;
     }
@@ -83,17 +84,17 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      * @return {@link #getModifier()}
      */
     protected T consumeModifier() {
-//        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
-//        writeLock.lock();
+        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+        writeLock.lock();
 
-//        try {
+        try {
             T storedModifier = getModifierInternal();
             this.modifier = mathOperator.getZero();
             return storedModifier;
 
-//        } finally {
-//            writeLock.unlock();
-//        }
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     /**
@@ -109,14 +110,14 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
 
     @Override
     public boolean isModified() {
-//        ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
-//        readLock.unlock();
-//
-//        try {
+        ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+        readLock.unlock();
+
+        try {
             return !modifier.equals(mathOperator.getZero());
-//        } finally {
-//            readLock.unlock();
-//        }
+        } finally {
+            readLock.unlock();
+        }
     }
 
     /**
@@ -142,14 +143,7 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
 
     @Override
     public Object getSnapshot() {
-//        ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
-//        readLock.lock();
-//
-//        try {
-            return consumeModifier();
-//        } finally {
-//            readLock.unlock();
-//        }
+            return consumeModifier(); //Aquires write lock
     }
 
     @Override
@@ -161,14 +155,14 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      * @return the difference between the last remote value and the stored value.
      */
     public T getModifier() {
-//        ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
-//        readLock.lock();
-//
-//        try {
+        ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+        readLock.lock();
+
+        try {
             return getModifierInternal();
-//        } finally {
-//            readLock.unlock();
-//        }
+        } finally {
+            readLock.unlock();
+        }
     }
 
     protected T getModifierInternal() { //DOES NOT LOCK!! DO NOT USE IF NO READ LOCK IS PRESENT!
@@ -177,14 +171,14 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
 
     @Override
     public void updateValue(@Nullable T newValue) {
-//        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
-//        writeLock.lock();
-//
-//        try {
+        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+        writeLock.lock();
+
+        try {
             updateValueInternal(newValue);
-//        } finally {
-//            writeLock.unlock();
-//        }
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     protected void updateValueInternal(T newValue) { //DOES NOT LOCK!! DO NOT USE IF NO WRITE LOCK IS PRESENT
@@ -198,8 +192,9 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      * @param source Annotation to get the column name from
      * @return An instance corresponding to the given column name.
      */
-    @NonNull @Deprecated
-    @SuppressWarnings("unchecked") //pls generic annotations
+    @NonNull
+    @Deprecated
+    @SuppressWarnings({"unchecked", "deprecation"}) //pls generic annotations
     public static ConcurrentSqlNumberHolder<?> fromAnnotation(@NonNull final SqlNumberCache source) {
         MathOperator<?> mathOperator = NumberHelper.getOperator(source.numberType());
 

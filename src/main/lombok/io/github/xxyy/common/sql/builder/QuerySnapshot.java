@@ -46,7 +46,12 @@ public interface QuerySnapshot {
         /**
          * Represents an object used to identify a column where other data is fetched from or written to.
          */
-        OBJECT_IDENTIFIER("%s=?");
+        OBJECT_IDENTIFIER("%s=?"),
+        /**
+         * Represents an object used to identify a column where other data is fetched from or written to.
+         * This is used to select columns where the value is distinct from {@link #getSnapshot()}.
+         */
+        NEGATED_OBJECT_IDENTIFIER("%s!=?");
 
         /**
          * This returns an operator string.
