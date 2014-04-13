@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Set;
 
 /**
  * This interface can be applied to fields which represent object values in a database.
@@ -34,6 +33,13 @@ public @interface SqlValueCache {
      * @return The type of this cache.
      */
     @NonNull SqlValueCache.Type type() default Type.OBJECT_UPDATE;
+
+    /**
+     * This is kept here to erase the need for a second annotation (and checking for it!).
+     * It helps doubling performance, ok?
+     * @return Expected number type for the holder, if {@link io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder} and {@link Type#NUMBER_MODIFICATION}.
+     */
+    @NonNull Class<? extends Number> numberType() default Integer.class;
 
     /**
      * @return whether annotation processors shall skip this field.
@@ -63,7 +69,7 @@ public @interface SqlValueCache {
             }
         },
         /**
-         * Stores modification of an integer and writes the modification to the remote,
+         * Stores modification of a number and writes the modification to the remote,
          * allowing for concurrent modification.
          *
          * @see io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder
@@ -131,15 +137,11 @@ public @interface SqlValueCache {
 
         protected abstract <T extends SqlValueHolder<?>> AnnotationToHolderFactory<T> getFactory();
 
-        private static <T extends SqlValueHolder<?>> T skeletonCreateHolder(Set<SqlValueHolder<?>> set, Field sourceField, 
+        private static <T extends SqlValueHolder<?>> T skeletonCreateHolder(Field sourceField,
                                                                    SqlValueCache annotation, Object accessorInstance,
                                                                    SqlValueHolder.DataSource dataSource, Class<?> expectedClass,
                                                                    @NonNull AnnotationToHolderFactory<T> factory) throws IllegalAccessException {
             Validate.isTrue(expectedClass.isAssignableFrom(sourceField.getType()), "Field is of invalid type! (Given %s)", sourceField.getType());
-
-            if (!sourceField.isAccessible()) {
-                sourceField.setAccessible(true);
-            }
 
             @SuppressWarnings("unchecked") //Checked above - See Validate.isTrue(...)
             T holder = (T) sourceField.get(accessorInstance);
@@ -153,8 +155,6 @@ public @interface SqlValueCache {
                 }
             }
 
-            set.add(holder);
-
             return holder;
         }
 
@@ -164,15 +164,13 @@ public @interface SqlValueCache {
          * Also populates the given Field with the created instance (if {@link Field#get(Object)} returns a non-null value)
          * and puts the created instance into a Set.
          *
-         * @param set         Set to save the instance to
          * @param sourceField Field to populate and get information from
          * @return An instance of {@link io.github.xxyy.common.sql.builder.SqlValueHolder} corresponding to the this type and Field.
          */
         @NonNull
-        public SqlValueHolder<?> createHolder(@NonNull Set<SqlValueHolder<?>> set,
-                                              @NonNull Field sourceField, @NonNull SqlValueCache annotation,
+        public SqlValueHolder<?> createHolder(@NonNull Field sourceField, @NonNull SqlValueCache annotation,
                                               @Nullable Object accessorInstance, @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
-            return skeletonCreateHolder(set, sourceField, annotation, accessorInstance, dataSource, getExpectedClass(), getFactory()); //generix hax, kthx
+            return skeletonCreateHolder(sourceField, annotation, accessorInstance, dataSource, getExpectedClass(), getFactory()); //generix hax, kthx
         }
     }
 

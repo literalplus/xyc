@@ -14,10 +14,12 @@ import java.util.Set;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 3.4.14
+ * @deprecated Merged into {@link SqlValueCache} for performance reasons.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Documented
+@Deprecated
 public @interface SqlNumberCache {
     /**
      * @return the name of the column represented by the field.

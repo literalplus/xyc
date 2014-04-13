@@ -72,6 +72,6 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
      */
     @NonNull
     public static <T> SqlIdentifierHolder<T> fromAnnotation(@NonNull final SqlValueCache source){
-        return new SqlIdentifierHolder<>(source.value());
+        return new SqlIdentifierHolder<>(source.value().intern());
     }
 }

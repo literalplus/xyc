@@ -1,9 +1,8 @@
 package io.github.xxyy.common.sql.builder;
 
 import com.google.common.collect.Lists;
-import io.github.xxyy.common.sql.builder.annotation.SqlNumberCache;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
-import lombok.NonNull;
+import lombok.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -27,12 +26,14 @@ public class SqlHolders {
      * @param clazz            Class to process
      * @param accessorInstance Instance of clazz used to access and set fields.
      *                         May be null if, and only if all {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache} annotated fields are static.
-     * @param dataSource Optional DataSource that can be used by SqlValueHolders to acquire data.
+     * @param dataSource       Optional DataSource that can be used by SqlValueHolders to acquire data.
      * @return SqlHolders of {@code clazz}.
-     * @throws java.lang.NullPointerException If an {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache} annotated field is encountered and {@code accessorInstance} is null.
+     * @throws java.lang.NullPointerException   If an {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache} annotated field is encountered and {@code accessorInstance} is null.
      * @throws java.lang.IllegalAccessException If an annotated field could not be accessed.
+     * @deprecated Use {@link io.github.xxyy.common.sql.builder.SqlHolders.CacheBuilder}.
+     * @see #processClassStructure(Class)
      */
-    @NonNull
+    @NonNull @Deprecated
     public static Set<SqlValueHolder<?>> processClass(@NonNull Class<?> clazz, @Nullable Object accessorInstance,
                                                       @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
         Set<SqlValueHolder<?>> result = new LinkedHashSet<>();
@@ -45,21 +46,35 @@ public class SqlHolders {
                         throw new NullPointerException(String.format("Encountered a non-static field marked for processing, but no accessor instance given! (At field %s)", field.getName()));
                     }
 
-                    annotation.type().createHolder(result, field, annotation, accessorInstance, dataSource);
-                }
-            } else if(field.isAnnotationPresent(SqlNumberCache.class)) {
-                SqlNumberCache annotation = field.getAnnotation(SqlNumberCache.class);
-                if (!annotation.skip()) {
-                    if (accessorInstance == null && !Modifier.isStatic(field.getModifiers())) {
-                        throw new NullPointerException(String.format("Encountered a non-static field marked for processing, but no accessor instance given! (At field %s)", field.getName()));
+                    if(!field.isAccessible()){
+                        field.setAccessible(true);
                     }
 
-                    SqlNumberCache.Type.createHolder(result, field, annotation, accessorInstance, dataSource);
+                    result.add(annotation.type().createHolder(field, annotation, accessorInstance, dataSource));
                 }
             }
         }
 
         return result;
+    }
+
+    /**
+     * Discovers {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache} annotated class members and saves them to a Set.
+     *
+     * @param clazz Class to process
+     * @return {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache}s of {@code clazz}.
+     */
+    @NonNull
+    public static CacheBuilder processClassStructure(@NonNull Class<?> clazz) {
+        CacheBuilder builder = new CacheBuilder();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(SqlValueCache.class)) {
+                builder.put(field);
+            }
+        }
+
+        return builder;
     }
 
     public static void updateFromResultSet(@NonNull Collection<SqlValueHolder<?>> holders, @NonNull ResultSet resultSet) throws SQLException {
@@ -71,10 +86,47 @@ public class SqlHolders {
             availableNames.add(rsmd.getColumnName(i));
         }
 
-        for(SqlValueHolder holder : holders){ //Seems like the only solution that supports wildcards
-            if(holder != null && availableNames.contains(holder.getColumnName()) && holder.supportsOverride()){
+        for (SqlValueHolder holder : holders) { //Seems like the only solution that supports wildcards
+            if (holder != null && availableNames.contains(holder.getColumnName()) && holder.supportsOverride()) {
                 holder.processResultSet(resultSet);
             }
+        }
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class CacheBuilder {
+        private Map<Field, SqlValueCache> targetFields;
+
+        protected void put(Field field){
+            SqlValueCache annotation = field.getAnnotation(SqlValueCache.class);
+
+            if(!field.isAccessible()){
+                field.setAccessible(true);
+            }
+
+            this.targetFields.put(field, annotation);
+        }
+
+        @NonNull
+        public List<SqlValueHolder<?>> build(@Nullable Object accessorInstance, @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
+            List<SqlValueHolder<?>> result = new ArrayList<>(targetFields.size());
+
+            for(Map.Entry<Field, SqlValueCache> entry : targetFields.entrySet()){
+                SqlValueCache annotation = entry.getValue();
+                Field field = entry.getKey();
+
+                if (!annotation.skip()) {
+                    if (accessorInstance == null && !Modifier.isStatic(field.getModifiers())) {
+                        throw new NullPointerException(String.format("Encountered a non-static field marked for processing, but no accessor instance given! (At field %s)", field.getName()));
+                    }
+
+                    annotation.type().createHolder(field, annotation, accessorInstance, dataSource);
+                }
+            }
+
+            return result;
         }
     }
 }

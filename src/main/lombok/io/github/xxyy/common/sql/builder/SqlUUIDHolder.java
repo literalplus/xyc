@@ -36,6 +36,7 @@ public class SqlUUIDHolder extends SqlIdentifierHolder<UUID> {
 
     @Override
     public void processResultSet(@NonNull ResultSet resultSet) throws SQLException {
+        //noinspection UnnecessaryFullyQualifiedName
         this.updateValue(io.github.xxyy.common.lib.net.minecraft.server.
                 UtilUUID.getFromString(
                 resultSet.getString(this.getColumnName())
@@ -44,6 +45,6 @@ public class SqlUUIDHolder extends SqlIdentifierHolder<UUID> {
 
     @NonNull
     public static SqlUUIDHolder fromAnnotation(@NonNull SqlValueCache annotation){
-        return new SqlUUIDHolder(annotation.value());
+        return new SqlUUIDHolder(annotation.value().intern());
     }
 }

@@ -198,18 +198,22 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      * @param source Annotation to get the column name from
      * @return An instance corresponding to the given column name.
      */
-    @NonNull
+    @NonNull @Deprecated
     @SuppressWarnings("unchecked") //pls generic annotations
     public static ConcurrentSqlNumberHolder<?> fromAnnotation(@NonNull final SqlNumberCache source) {
         MathOperator<?> mathOperator = NumberHelper.getOperator(source.numberType());
 
         Validate.notNull(mathOperator, "Invalid Number class specified: " + source.numberType().getName());
 
-        return new ConcurrentSqlNumberHolder(source.value(), mathOperator);
+        return new ConcurrentSqlNumberHolder(source.value().intern(), mathOperator);
     }
 
     @NonNull
-    public static ConcurrentSqlNumberHolder fromAnnotation(@NonNull final SqlValueCache source) {
-        throw new UnsupportedOperationException("Pls, this is the wrong annotation type for this class.");
+    public static ConcurrentSqlNumberHolder<?> fromAnnotation(@NonNull final SqlValueCache source) {
+        MathOperator<? extends Number> mathOperator = NumberHelper.getOperator(source.numberType());
+
+//        Validate.notNull(mathOperator, "Invalid Number class specified: ", source.numberType().getName());
+
+        return new ConcurrentSqlNumberHolder<>(source.value().intern(), mathOperator);
     }
 }

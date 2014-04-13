@@ -4,12 +4,11 @@ import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.*;
-import io.github.xxyy.common.sql.builder.annotation.SqlNumberCache;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import lombok.Getter;
-import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
@@ -18,8 +17,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.OBJECT_IDENTIFIER;
-import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UUID_IDENTIFIER;
+import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.*;
 
 /**
  * Base stuff of PlayerWrapper.
@@ -28,8 +26,9 @@ import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UU
  * @since 2.4.14
  */
 public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
-//    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
+    //    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
     public static final String FULL_CENTRAL_USER_TABLE_NAME = GameLib.CENTRAL_DB_NAME + ".user";
+    private static SqlHolders.CacheBuilder BASE_CACHE_BUILDER;
 //    public static final HttpProfileRepository HTTP_PROFILE_REPOSITORY = new HttpProfileRepository();
 
     /**
@@ -50,9 +49,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @SqlValueCache(value = "uuid", type = UUID_IDENTIFIER)
     protected SqlUUIDHolder uuid;
 
-    @SqlNumberCache(value = "passes_used", numberType = Integer.class)
+    @SqlValueCache(value = "passes_used", numberType = Integer.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Integer> passesUsed;
-    @SqlNumberCache(value = "passes_amount", numberType = Integer.class)
+    @SqlValueCache(value = "passes_amount", numberType = Integer.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Integer> passesAmount;
 
     @SqlValueCache("nickname")
@@ -60,15 +59,15 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @SqlValueCache("groupname")
     protected SqlValueHolder<String> groupName;
 
-    @SqlNumberCache(value = "coins", numberType = Float.class)
+    @SqlValueCache(value = "coins", numberType = Float.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Float> coins;
-    @SqlNumberCache(value = "points", numberType = Integer.class)
+    @SqlValueCache(value = "points", numberType = Integer.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Integer> globalPoints;
-    @SqlNumberCache(value = "playtime", numberType = Long.class)
+    @SqlValueCache(value = "playtime", numberType = Long.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Long> playtime;
-    @SqlNumberCache(value = "kills", numberType = Integer.class)
+    @SqlValueCache(value = "kills", numberType = Integer.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Integer> kills;
-    @SqlNumberCache(value = "deaths", numberType = Integer.class)
+    @SqlValueCache(value = "deaths", numberType = Integer.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Integer> deaths;
 
     protected Collection<SqlValueHolder<?>> valueHolders;
@@ -82,53 +81,15 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
 
     public PlayerWrapperBase(SafeSql ssql) {
         try {
-            this.valueHolders = SqlHolders.processClass(PlayerWrapperBase.class, this, this); //Process base stuff - implementation have to do this themselves to avoid complication with inheritance
+            this.valueHolders = getCacheBuilder().build(this, this);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            throw new AssertionError("Could not access some field of "+getClass().getName()+"! This is probably a compile-time failure...Cannot recover.", e);
+            throw new AssertionError("Could not access some field of PlayerWrapperBase! This is probably a compile-time failure...Cannot recover.", e);
         }
 
         this.queryBuilder = new QueryBuilder(FULL_CENTRAL_USER_TABLE_NAME).addAll(valueHolders, true);
 
         this.sql = ssql;
-    }
-
-    /**
-     * Initialises tables used by this class.
-     *
-     * @param ssql SafeSql to use to query the database.
-     */
-    public static void initTable(SafeSql ssql) {
-        ssql.executeUpdate("CREATE DATABASE IF NOT EXISTS " + GameLib.XY_DB_NAME);
-        ssql.executeUpdate("CREATE TABLE IF NOT EXISTS `"+ PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME+"` (\n" +
-                "\t`uuid` VARCHAR(36) NOT NULL COMMENT 'Mojang has their UUID at 32 chars plain, 36 chars with dashes.' COLLATE 'utf8_swedish_ci',\n" +
-                "\t`username` VARCHAR(16) NOT NULL COMMENT 'The name of the user at the last time he was here' COLLATE 'utf8_swedish_ci',\n" +
-                "\t`password` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`salt` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`user_lastip` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`user_lastip_id` INT(11) NOT NULL DEFAULT '0',\n" +
-                "\t`premium` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`ign_p_msg` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`encrypted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
-                "\t`passes_amount` INT(7) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`passes_used` INT(7) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`nickname` VARCHAR(48) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`groupname` VARCHAR(30) NOT NULL DEFAULT 'default' COLLATE 'utf8_swedish_ci',\n" +
-                "\t`points` INT(11) NOT NULL DEFAULT '0',\n" +
-                "\t`coins` FLOAT NOT NULL DEFAULT '0',\n" +
-                "\t`skype` VARCHAR(32) NULL DEFAULT NULL COMMENT 'Skype restricts usernames to 32 chars' COLLATE 'utf8_swedish_ci',\n" +
-                "\t`playtime` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`kills` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`deaths` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`chosen_language` VARCHAR(6) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`last_minecraft_language` VARCHAR(6) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\tPRIMARY KEY (`uuid`),\n" +
-                "\tUNIQUE INDEX `nickname` (`nickname`),\n" +
-                "\tINDEX `username` (`username`)\n" +
-                ")\n" +
-                "COLLATE='utf8_swedish_ci'\n" +
-                "ENGINE=InnoDB;\n");
     }
 
     /**
@@ -177,7 +138,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Checks if this {@link io.github.xxyy.common.games.data.PlayerWrapper} has a permission. If a {@link org.bukkit.command.ConsoleCommandSender} or {@link org.bukkit.command.BlockCommandSender} was wrapped using
      * {@link io.github.xxyy.common.games.data.PlayerWrapper#PlayerWrapper(org.bukkit.command.CommandSender, io.github.xxyy.common.sql.SafeSql)},
      * {@code true} will always be returned.
-     *
+     * <p/>
      * Regular expressions can be used, for example:
      * {@code game.admin.*} matches
      * {@code game.admin} and, for example,
@@ -217,7 +178,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     public Player plr() {
         if (this.weakPlr == null) {
             Player plr;
-            if(this.uuid.getValue() == null) {
+            if (this.uuid.getValue() == null) {
                 plr = Bukkit.getServer().getPlayerExact(this.name()); //Bukkit#getPlayerExact() is currently deprecated on accident
             } else {
                 plr = Bukkit.getPlayer(this.uuid.getValue());
@@ -227,7 +188,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
                 return null;//throw new PlayerOfflineException();
             }
 
-            if(this.uuid.getValue() == null){
+            if (this.uuid.getValue() == null) {
                 this.uuid.updateValue(plr.getUniqueId());
             }
 
@@ -311,9 +272,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     }
 
     private boolean tryFetchByIdentifier(SqlIdentifierHolder<?> identifier) { //Returns true if it got the data
-        try(QueryResult queryResult = this.queryBuilder.addUniqueIdentifier(identifier)
-                .executeSelect(getSql(), false).vouchForResultSet()){
-            if(queryResult.rs().next()){
+        try (QueryResult queryResult = this.queryBuilder.addUniqueIdentifier(identifier)
+                .executeSelect(getSql(), false).vouchForResultSet()) {
+            if (queryResult.rs().next()) {
                 SqlHolders.updateFromResultSet(this.valueHolders, queryResult.rs());
                 return true;
             } else {
@@ -360,13 +321,13 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     }
 
     @Override
-    public boolean select(@NonNull SqlValueHolder<?> holder) {
+    public boolean select(@NotNull SqlValueHolder<?> holder) {
         forceFullFetch();
         return true;
     }
 
     @Override
-    public void registerChange(@NonNull SqlValueHolder<?> holder) {
+    public void registerChange(@NotNull SqlValueHolder<?> holder) {
         this.xyChanged = true; //TODO only update actually changed values! :)
     }
 
@@ -375,9 +336,57 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * to a constructor or by it being fetched from a database.
      * If this returns {@code false}, {@link #getUniqueId()} will try to fetch the UUID from database, but can
      * return {@code null} if an error occurs.
+     *
      * @return whether this object has an UUID stored.
      */
-    public boolean hasUniqueId(){
+    public boolean hasUniqueId() {
         return this.uuid.isFetched();
+    }
+
+    //lazy init of CacheBuilder
+    protected static SqlHolders.CacheBuilder getCacheBuilder() {
+        if (BASE_CACHE_BUILDER == null) {
+            BASE_CACHE_BUILDER = SqlHolders.processClassStructure(PlayerWrapperBase.class);
+        }
+
+        return BASE_CACHE_BUILDER;
+    }
+
+    /**
+     * Initialises tables used by this class.
+     *
+     * @param ssql SafeSql to use to query the database.
+     */
+    public static void initTable(SafeSql ssql) {
+        ssql.executeUpdate("CREATE DATABASE IF NOT EXISTS " + GameLib.XY_DB_NAME);
+        ssql.executeUpdate("CREATE TABLE IF NOT EXISTS `" + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + "` (\n" +
+                "\t`uuid` VARCHAR(36) NOT NULL COMMENT 'Mojang has their UUID at 32 chars plain, 36 chars with dashes.' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`username` VARCHAR(16) NOT NULL COMMENT 'The name of the user at the last time he was here' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`password` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`salt` VARCHAR(200) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`user_lastip` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`user_lastip_id` INT(11) NOT NULL DEFAULT '0',\n" +
+                "\t`premium` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`ign_p_msg` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`encrypted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "\t`passes_amount` INT(7) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`passes_used` INT(7) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`nickname` VARCHAR(48) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`groupname` VARCHAR(30) NOT NULL DEFAULT 'default' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`points` INT(11) NOT NULL DEFAULT '0',\n" +
+                "\t`coins` FLOAT NOT NULL DEFAULT '0',\n" +
+                "\t`skype` VARCHAR(32) NULL DEFAULT NULL COMMENT 'Skype restricts usernames to 32 chars' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`playtime` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`kills` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`deaths` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`chosen_language` VARCHAR(6) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`last_minecraft_language` VARCHAR(6) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\tPRIMARY KEY (`uuid`),\n" +
+                "\tUNIQUE INDEX `nickname` (`nickname`),\n" +
+                "\tINDEX `username` (`username`)\n" +
+                ")\n" +
+                "COLLATE='utf8_swedish_ci'\n" +
+                "ENGINE=InnoDB;\n");
     }
 }

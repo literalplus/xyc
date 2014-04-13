@@ -77,7 +77,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      */
     @NonNull
     public static <T> SqlValueHolder<T> fromAnnotation(@NonNull final SqlValueCache source) {
-        return new SqlValueHolder<>(source.value(), null);
+        return new SqlValueHolder<>(source.value().intern(), null);
     }
 
     @Override
