@@ -99,8 +99,13 @@ public class SqlHolders {
     public static class CacheBuilder {
         private Map<Field, SqlValueCache> targetFields;
 
-        protected void put(Field field){
+        protected void put(@NonNull Field field){
+            if(targetFields == null){
+                targetFields = new HashMap<>();
+            }
+
             SqlValueCache annotation = field.getAnnotation(SqlValueCache.class);
+            assert annotation != null;
 
             if(!field.isAccessible()){
                 field.setAccessible(true);
