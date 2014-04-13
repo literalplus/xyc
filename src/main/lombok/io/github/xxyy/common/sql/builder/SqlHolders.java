@@ -127,7 +127,7 @@ public class SqlHolders {
                         throw new NullPointerException(String.format("Encountered a non-static field marked for processing, but no accessor instance given! (At field %s)", field.getName()));
                     }
 
-                    annotation.type().createHolder(field, annotation, accessorInstance, dataSource);
+                    result.add(annotation.type().createHolder(field, annotation, accessorInstance, dataSource));
                 }
             }
 
