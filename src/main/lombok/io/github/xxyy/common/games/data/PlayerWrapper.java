@@ -1,9 +1,9 @@
 package io.github.xxyy.common.games.data;
 
 import io.github.xxyy.common.games.GameLib;
+import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
-import io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder;
 import io.github.xxyy.common.sql.builder.QueryBuilder;
 import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
@@ -30,6 +30,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
 {
 
     public static final UUID CONSOLE_UUID = UUID.fromString("084b992e-5705-411a-9be0-9e91413fb23a");
+    public static HttpProfileRepository HTTP_PROFILE_REPOSITORY;
     private QueryBuilder passQueryBuilder;
 
     /**
@@ -59,20 +60,39 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
         }
     }
 
-    /**
-     * Wraps a player by name. Use this if you don't have access to a Player instance; If the player is not online, {@link PlayerWrapper#plr()} will
-     * return null.
-     * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
-     * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     * <b>Implementations must implement a constructor wi"th the exact same arguments!!</b>
-     *
-     * @param plrName Player to wrap (by name)
-     * @param ssql    SafeSql to use for storing the object.
-     */
-    protected PlayerWrapper(String plrName, SafeSql ssql) {
-        super(ssql);
-        this.plrName.updateValue(plrName);
-    }
+//    /**
+//     * Wraps a player by name. Use this if you don't have access to a Player instance; If the player is not online, {@link PlayerWrapper#plr()} will
+//     * return null.
+//     * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
+//     * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
+//     * <b>Implementations must implement a constructor wi"th the exact same arguments!!</b>
+//     *
+//     * @param plrName Player to wrap (by name)
+//     * @param ssql    SafeSql to use for storing the object.
+//     * @deprecated This is not reliable and should not be used. May also produce exceptions and WILL NOT WORK with xLogin Premium players!!
+//     */
+//    @Deprecated
+//    protected PlayerWrapper(String plrName, SafeSql ssql) {
+//        super(ssql);
+//        this.plrName.updateValue(plrName);
+//
+//        if (Bukkit.getOnlineMode()) {
+//            if (HTTP_PROFILE_REPOSITORY == null) {
+//                HTTP_PROFILE_REPOSITORY = new HttpProfileRepository();
+//            }
+//
+//            Profile[] profiles = HTTP_PROFILE_REPOSITORY.findProfilesByCriteria(new ProfileCriteria(plrName, "minecraft"));
+//
+//            if (profiles.length == 1) {
+//                this.uuid.updateValue(UtilUUID.getFromString(profiles[0].getId()));
+//            } else {
+//                throw new IllegalStateException("Could not get online-mode UUID from Mojang -> No UUID -> panic!!!" +
+//                        " (This constructor is fucking deprecated, what do you expect?)");
+//            }
+//        } else {
+//            this.uuid.updateValue(UUID.nameUUIDFromBytes(("OfflinePlayer:" + plrName).getBytes(Charsets.UTF_8)));
+//        }
+//    }
 
     /**
      * Wraps a player by UUID. Use this if you don't have access to a Player instance; If the player is not online, {@link PlayerWrapper#plr()} will
@@ -87,7 +107,8 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @param ssql    SafeSql to use for storing the object.
      */
     protected PlayerWrapper(@NonNull UUID uuid, @Nullable String plrName, @NonNull SafeSql ssql) {
-        this(plrName, ssql);
+        super(ssql);
+        this.plrName.updateValue(plrName);
         this.uuid.updateValue(uuid);
 
         this.xyFetch();
@@ -112,16 +133,19 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @return Whether the operation succeeded.
      */
     public boolean modifyPassesAmount(int modifier) {
-//        this.refetchPasses();//safety! // No longer needed since only a modifier is being written
+        this.databaseLock.readLock().lock();
 
-        if (modifier < 0 && ((this.passesAmount.getValue() + modifier) < 0)) {
-            return false; //pls stahp haxe
+        try {
+            if (modifier < 0 && ((this.passesAmount.getValue() + modifier) < 0)) {
+                return false; //pls stahp haxe
+            }
+
+            this.passesUsed.modify(-modifier);
+            this.passesAmount.modify(modifier);
+        } finally {
+            this.databaseLock.readLock().unlock();
         }
 
-        this.passesUsed.modify(-modifier);
-        this.passesAmount.modify(modifier);
-
-        this.xyChanged = true;
         this.xyFlush(); //safety!
 
         return true;
@@ -147,7 +171,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @see PlayerWrapper#getPassesUsed()
      */
     public int getPassesAmount() {
-        return this.passesAmount.getValue();
+        return lockedRead(this.passesAmount);
     }
 
     /**
@@ -157,7 +181,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @return The all-time count of passes used by the wrapped player.
      */
     public int getPassesUsed() {
-        return this.passesUsed.getValue();
+        return lockedRead(this.passesUsed);
     }
 
     /**
@@ -166,8 +190,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @param amount Can also be negative!
      */
     public void summonPasses(int amount) {
-//        this.refetchPasses();//safety! // No longer needed since only a modifier is being written
-        this.passesAmount.modify(amount);
+        lockedModify(this.passesAmount, amount);
         this.xyFlush();//safety!
     }
 
@@ -258,7 +281,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @see PlayerWrapper#getColorizedDisplayName(boolean)
      */
     public String getNick() {
-        return this.nick.getValue();
+        return lockedRead(this.nick);
     }
 
     /**
@@ -287,50 +310,41 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @return the amount of coins the wrapped player has, fetching if necessary.
      */
     public double getCoinsAmount() {
-        return this.coins.getValue();
+        return lockedRead(this.coins);
     }
 
     /**
      * @return the amount of points the wrapped player has, fetching if necessary.
      */
     public int getGlobalPointsAmount() {
-        return this.globalPoints.getValue();
+        return lockedRead(this.globalPoints);
     }
 
     /**
      * @return the tracked (i.e. approximate!) play time of the wrapped player, in minutes.
      */
     public long getPlayTimeMinutes() {
-        return this.playtime.getValue();
+        return lockedRead(this.playtime);
     }
 
     /**
      * @return the amount of other players the wrapped player has killed.
      */
     public int getKillsAmount() {
-        return this.kills.getValue();
+        return lockedRead(this.kills);
     }
 
     /**
      * @return how often the wrapped player has died, on the whole network.
      */
     public int getDeathsAmount() {
-        return this.deaths.getValue();
+        return lockedRead(this.deaths);
     }
 
     public void modifyCoinsAmount(float modifier) {
         lockedModify(this.coins, modifier);
     }
 
-    protected <N extends Number> void lockedModify(ConcurrentSqlNumberHolder<N> holder, N modifier) {
-        this.databaseLock.readLock().lock();
-
-        try {
-            holder.modify(modifier);
-        } finally {
-            this.databaseLock.readLock().unlock();
-        }
-    }
 
     public void modifyGlobalPointsAmount(int modifier) {
         lockedModify(this.globalPoints, modifier);
@@ -344,7 +358,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
         lockedModify(this.kills, modifier);
     }
 
-    public void modifyDeathsAmount(int modifier){
+    public void modifyDeathsAmount(int modifier) {
         lockedModify(this.deaths, modifier);
     }
 

@@ -155,6 +155,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
     /**
      * Processes data from a ResultSet and reads values corresponding to this holder into cache.
      * This should only be called if it is certain that the ResultSet contains this holder's column.
+     *
      * @param resultSet ResultSet to process
      * @throws SQLException If a database error occurs
      */
@@ -168,6 +169,16 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      */
     public boolean supportsOverride() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "columnName='" + columnName + '\'' +
+                ", value=" + value +
+                ", modified=" + modified +
+                ", fetched=" + fetched +
+                '}';
     }
 
     /**

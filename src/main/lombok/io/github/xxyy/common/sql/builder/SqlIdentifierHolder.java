@@ -3,6 +3,8 @@ package io.github.xxyy.common.sql.builder;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import lombok.NonNull;
 
+import javax.annotation.Nullable;
+
 /**
  * Stores an identifier column value.
  * Does not support overriding values for obvious reasons.
@@ -36,7 +38,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
     }
 
     @Override
-    public void setValue(@NonNull T newValue) {
+    public void setValue(@Nullable T newValue) {
         throw new UnsupportedOperationException("Cannot change value of an identifier column!");
     }
 
@@ -46,7 +48,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
     }
 
     @Override
-    public void updateValue(@NonNull T newValue) {
+    public void updateValue(@Nullable T newValue) {
         if(supportsOverride()){
             super.updateValue(newValue);
             return;

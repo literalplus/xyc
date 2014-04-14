@@ -8,6 +8,8 @@ import io.github.xxyy.common.sql.SafeSql;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * Example implementation of {@link PlayerWrapper}. Allows for access to the API, even if no own data needs to be saved.
  *
@@ -23,8 +25,8 @@ public class GenericPlayerWrapper extends PlayerWrapper<GenericPlayerWrapper> {
         super(plr, ssql);
     }
 
-    protected GenericPlayerWrapper(String plrName, SafeSql ssql) {
-        super(plrName, ssql);
+    protected GenericPlayerWrapper(UUID uuid, String plrName, SafeSql ssql) {
+        super(uuid, plrName, ssql);
     }
 
     @Override

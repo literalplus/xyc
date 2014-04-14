@@ -17,9 +17,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Represents an integer database column that can be concurrently modified.
  * It stores a modifier that can be applied to the remote value without overriding
  * it with a cached version.
- * <p/>
+ * <p></p>
  * Please be careful with whom you share instances.
- * <p/>
+ * <p></p>
  * This class is considered thread-safe and does lock all read/write operations.
  * All locked operations use the same {@link java.util.concurrent.locks.ReentrantReadWriteLock}.
  *

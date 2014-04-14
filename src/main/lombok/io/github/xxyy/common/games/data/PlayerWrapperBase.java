@@ -5,7 +5,9 @@ import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.*;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
+import io.github.xxyy.common.util.ThreadHelper;
 import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +17,6 @@ import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.*;
@@ -78,7 +79,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Lock used to lock database operations on this wrapper.
      * The default implementations of {@link #xyFetch()} and {@link #xyFlush()} use this.
      */
-    protected final ReadWriteLock databaseLock = new ReentrantReadWriteLock(false);
+    protected final ReentrantReadWriteLock databaseLock = new ReentrantReadWriteLock(false);
 
     public PlayerWrapperBase(SafeSql ssql) {
         try {
@@ -97,6 +98,19 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * Forces a full (re-)fetch of all data. This is equivalent to calling {@link io.github.xxyy.common.games.data.PlayerWrapper#impFetch()} and {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()}.
      */
     public void forceFullFetch() {
+        boolean relock = false;
+        if (this.databaseLock.getReadHoldCount() > 0) { //UNLOCK READ LOCKS - AVOID DEADLOCKS
+            try {
+                this.databaseLock.readLock().unlock();
+                relock = true;
+            } catch (IllegalMonitorStateException e) {
+                SafeSql.getLogger().warning("Could not unlock a ReadLock for " + this + "! - This thread does probably not hold that lock. Enjoy the following thread dump:");
+                ThreadHelper.printThreadDump(SafeSql.getLogger()); //FIXME debug info
+                SafeSql.getLogger().warning("If the server stops responding now, you know what caused it at least :) [A deadlock because of some read lock not conforming to a policy]");
+            }
+        }
+
+
         this.databaseLock.writeLock().lock();
 
         try {
@@ -104,6 +118,11 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
             this.impFetch();
         } finally {
             this.databaseLock.writeLock().unlock();
+        }
+
+
+        if (relock) { //RE-LOCK READ LOCKS
+            this.databaseLock.readLock().lock();
         }
     }
 
@@ -196,19 +215,10 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         this.databaseLock.readLock().lock();
 
         try {
-            Player plr;
-            if (this.uuid.getValue() == null) {
-                plr = Bukkit.getServer().getPlayerExact(this.name()); //Bukkit#getPlayerExact() is currently deprecated on accident
-            } else {
-                plr = Bukkit.getPlayer(this.uuid.getValue());
-            }
+            Player plr = Bukkit.getPlayer(this.uuid.getValue());
 
             if (plr == null) {
                 return null;//throw new PlayerOfflineException();
-            }
-
-            if (this.uuid.getValue() == null) {
-                this.uuid.updateValue(plr.getUniqueId());
             }
 
             this.weakPlr = new WeakReference<>(plr);
@@ -228,22 +238,22 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * @see org.bukkit.entity.Player#getUniqueId()
      * @see io.github.xxyy.common.games.data.PlayerWrapper#plr()
      */
-    @Nullable
+    @NonNull
     public UUID getUniqueId() {
-        if (this.uuid.getValue() == null) {
-            Player plr = plr();
-            this.databaseLock.writeLock().lock();
-
-            try {
-                if (plr == null) { //TODO: Names are no longer unique
-                    this.tryFetchByName();
-                } else {
-                    this.uuid.updateValue(plr.getUniqueId());
-                }
-            } finally {
-                this.databaseLock.writeLock().unlock();
-            }
-        }
+//        if (this.uuid.getValue() == null) {
+//            Player plr = plr();
+//            this.databaseLock.writeLock().lock();
+//
+//            try {
+//                if (plr == null) {
+//                    this.tryFetchByName();
+//                } else {
+//                    this.uuid.updateValue(plr.getUniqueId());
+//                }
+//            } finally {
+//                this.databaseLock.writeLock().unlock();
+//            }
+//        }
 
         return this.uuid.getValue();
     }
@@ -362,6 +372,31 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      */
     public boolean hasUniqueId() {
         return this.uuid.isFetched();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{name=" + this.name() + ", uuid=" + (hasUniqueId() ? getUniqueId() : "unknown") + "}";
+    }
+
+    protected <N> N lockedRead(SqlValueHolder<N> holder){
+        this.databaseLock.readLock().lock();
+
+        try {
+            return holder.getValue();
+        } finally {
+            this.databaseLock.readLock().unlock();
+        }
+    }
+
+    protected <N extends Number> void lockedModify(ConcurrentSqlNumberHolder<N> holder, N modifier) {
+        this.databaseLock.readLock().lock();
+
+        try {
+            holder.modify(modifier);
+        } finally {
+            this.databaseLock.readLock().unlock();
+        }
     }
 
     //lazy init of CacheBuilder
