@@ -264,7 +264,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      *
      * @see io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()
      */
-    protected abstract void impFetch();
+    protected void impFetch(){
+
+    }
 
     /**
      * Method to be overwritten by implementations. Will be called in {@link io.github.xxyy.common.games.data.PlayerWrapper#forceFullFlush()}. Shall save implementation data stored in
@@ -273,7 +275,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      *
      * @see io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()
      */
-    protected abstract void impFlush();
+    protected void impFlush(){
+
+    }
 
     /**
      * Re-fetches all data stored by native XYC implementation, i.e. everything included in {@link io.github.xxyy.common.games.data.PlayerWrapper}.

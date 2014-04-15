@@ -9,6 +9,7 @@ import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
 import lombok.NonNull;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -26,10 +27,11 @@ import java.util.logging.Logger;
  *
  * @author xxyy98
  */
-public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
+public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
 {
 
     public static final UUID CONSOLE_UUID = UUID.fromString("084b992e-5705-411a-9be0-9e91413fb23a");
+    public static final PlayerWrapper CONSOLE_WRAPPER = new PlayerWrapper(Bukkit.getConsoleSender(), GameLib.getSql());
     public static HttpProfileRepository HTTP_PROFILE_REPOSITORY;
     private QueryBuilder passQueryBuilder;
 
@@ -42,7 +44,7 @@ public abstract class PlayerWrapper<T> extends PlayerWrapperBase//TODO implement
      * @param ssql   SafeSql to use for storing the object.
      * @throws ClassCastException If {@code sender} is not any of the expected types.
      */
-    protected PlayerWrapper(CommandSender sender, SafeSql ssql) {
+    protected PlayerWrapper(@NonNull CommandSender sender, @NonNull SafeSql ssql) {
         super(ssql);
 
         if (sender instanceof Player) {

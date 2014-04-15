@@ -15,7 +15,7 @@ import java.util.UUID;
  *
  * @author xxyy
  */
-public class GenericPlayerWrapper extends PlayerWrapper<GenericPlayerWrapper> {
+public class GenericPlayerWrapper extends PlayerWrapper {
 
     protected GenericPlayerWrapper(final CommandSender sender, final SafeSql ssql) {
         super(sender, ssql);
