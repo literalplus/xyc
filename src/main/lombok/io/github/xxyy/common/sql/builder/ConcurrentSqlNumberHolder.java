@@ -1,12 +1,10 @@
 package io.github.xxyy.common.sql.builder;
 
-import io.github.xxyy.common.sql.builder.annotation.SqlNumberCache;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import io.github.xxyy.common.util.math.MathOperator;
 import io.github.xxyy.common.util.math.NumberHelper;
 import lombok.Getter;
 import lombok.NonNull;
-import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
@@ -193,23 +191,6 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
     protected void updateValueInternal(T newValue) { //DOES NOT LOCK!! DO NOT USE IF NO WRITE LOCK IS PRESENT
         this.modifier = mathOperator.getZero();
         super.updateValue(newValue);
-    }
-
-    /**
-     * Gets an concurrent sql integer holder from an annotation.
-     *
-     * @param source Annotation to get the column name from
-     * @return An instance corresponding to the given column name.
-     */
-    @NonNull
-    @Deprecated
-    @SuppressWarnings({"unchecked", "deprecation"}) //pls generic annotations
-    public static ConcurrentSqlNumberHolder<?> fromAnnotation(@NonNull final SqlNumberCache source) {
-        MathOperator<?> mathOperator = NumberHelper.getOperator(source.numberType());
-
-        Validate.notNull(mathOperator, "Invalid Number class specified: " + source.numberType().getName());
-
-        return new ConcurrentSqlNumberHolder(source.value().intern(), mathOperator);
     }
 
     @NonNull

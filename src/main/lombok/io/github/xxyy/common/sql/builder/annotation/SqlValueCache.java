@@ -41,11 +41,6 @@ public @interface SqlValueCache {
      */
     @NonNull Class<? extends Number> numberType() default Integer.class;
 
-    /**
-     * @return whether annotation processors shall skip this field.
-     */
-    boolean skip() default false;
-
     public enum Type { //Yes, I know this thing is abusing generix very awfully..Dunno how to do it in any other way ._.
         /**
          * Updates objects with overriding values.

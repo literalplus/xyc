@@ -25,8 +25,7 @@ import java.util.logging.Logger;
  */
 public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements PlayerWrapperFactory<T> {
 
-    private static final PlayerWrapperFactory<GenericPlayerWrapper> GENERIC_FACTORY = new ReflectionPlayerWrapperFactory<>(GenericPlayerWrapper.class, GameLib.
-            getSql());
+    private static final PlayerWrapperFactory<PlayerWrapper> GENERIC_FACTORY = new DefaultPlayerWrapperFactory(GameLib.getSql());
     Map<UUID, T> wrappers = new ConcurrentHashMap<>(15, 0.75F, 2);
     final Class<T> clazz;
     final SafeSql ssql;
@@ -127,11 +126,11 @@ public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements 
     }
 
     /**
-     * Returns an example factory instance for use with {@link GenericPlayerWrapper}.
+     * Returns an example factory instance for use with {@link io.github.xxyy.common.games.data.PlayerWrapper}.
      *
-     * @return factory for {@link GenericPlayerWrapper}s.
+     * @return factory for {@link io.github.xxyy.common.games.data.PlayerWrapper}s.
      */
-    public static PlayerWrapperFactory<GenericPlayerWrapper> getGenericFactory() {
+    public static PlayerWrapperFactory<PlayerWrapper> getGenericFactory() {
         return GENERIC_FACTORY;
     }
 }
