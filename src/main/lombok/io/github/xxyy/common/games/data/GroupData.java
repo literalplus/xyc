@@ -23,7 +23,7 @@ public class GroupData {
     /**
      * Provides the full table name that is used for storing permissions. Constant, default value is {@value GameLib#XY_DB_NAME}.game_permissions.
      */
-    public static final String FULL_XY_PERM_TABLE = GameLib.CENTRAL_DB_NAME + ".group_permissions";
+    public static final String FULL_XY_PERM_TABLE = GameLib.CENTRAL_DB_NAME + ".groups_permissions";
     /**
      * Provides the full table name that is used for storing group meta. Constant, default value is {@value GameLib#XY_DB_NAME}.game_permissions.
      */
