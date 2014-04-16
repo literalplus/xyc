@@ -120,6 +120,15 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
         }
     }
 
+    @Override
+    public T getValue() {
+        if((this.value == null || this.value.equals(this.mathOperator.getZero())) && this.getDataSource() != null){
+            this.getDataSource().select(this);
+        }
+
+        return super.getValue();
+    }
+
     /**
      * This sets the value of this object, indirectly.
      * It gets the difference between current and new value and sets that as modifier.
