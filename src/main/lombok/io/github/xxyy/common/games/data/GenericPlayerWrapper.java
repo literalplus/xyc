@@ -14,7 +14,10 @@ import java.util.UUID;
  * Example implementation of {@link PlayerWrapper}. Allows for access to the API, even if no own data needs to be saved.
  *
  * @author xxyy
+ *
+ * @deprecated No longer necessary. Use {@link io.github.xxyy.common.games.data.PlayerWrapper}.
  */
+@Deprecated
 public class GenericPlayerWrapper extends PlayerWrapper {
 
     protected GenericPlayerWrapper(final CommandSender sender, final SafeSql ssql) {
