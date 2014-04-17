@@ -56,9 +56,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
     @SqlValueCache(value = "passes_amount", numberType = Integer.class, type = NUMBER_MODIFICATION)
     protected ConcurrentSqlNumberHolder<Integer> passesAmount;
 
-    @SqlValueCache("nickname")
+    @SqlValueCache(value = "nickname", type = OBJECT_UPDATE)
     protected SqlValueHolder<String> nick;
-    @SqlValueCache("groupname")
+    @SqlValueCache(value = "groupname", type = OBJECT_UPDATE)
     protected SqlValueHolder<String> groupName;
 
     @SqlValueCache(value = "coins", numberType = Float.class, type = NUMBER_MODIFICATION)
