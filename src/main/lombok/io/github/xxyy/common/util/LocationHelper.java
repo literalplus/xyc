@@ -1,7 +1,11 @@
 package io.github.xxyy.common.util;
 
+import lombok.NonNull;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * A class providing some static methods to deal with {@link Location}s.
@@ -58,5 +62,19 @@ public abstract class LocationHelper {
                 original.getBlockX() + modX, // create new object so that
                 original.getBlockY() + modY, // original can be reused
                 original.getBlockZ() + modZ);
+    }
+
+    /**
+     * Gets a Location from a ConfigurationSection.
+     * The section must contain {@code x},{@code y} and {@code z} (int) and {@code world} (String).
+     * @param section Configuration to read from
+     * @return The read Location.
+     * @throws java.lang.IllegalArgumentException If the section does not contain all values.
+     */
+    public static Location fromConfiguration(@NonNull ConfigurationSection section){
+        Validate.isTrue(section.contains("world") && section.contains("x") && section.contains("y") && section.contains("z"),
+                "The given section does not contain all of x,y and z!");
+
+        return new Location(Bukkit.getWorld(section.getString("world")), section.getInt("x"), section.getInt("y"), section.getInt("z"));
     }
 }
