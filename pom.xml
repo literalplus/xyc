@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.7.5-R0.1-SNAPSHOT</version>
+            <version>1.7.9-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -248,27 +248,6 @@
                     <charset>UTF-8</charset>
                     <docencoding>UTF-8</docencoding>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <phase>package</phase>
-
-                        <configuration>
-                            <target>
-                                <delete dir="target/generated-sources/delombok" />
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
