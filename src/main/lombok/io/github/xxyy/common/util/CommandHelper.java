@@ -119,7 +119,8 @@ public class CommandHelper {
      *
      * @param input An Iterable to separate
      *
-     * @return Element1,Element2,Element3 OR {@code defaultVal} @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
+     * @return Element1,Element2,Element3 OR "{empty}"
+     * @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
      */
     public static String CSCollection(Iterable<?> input) {
         return CSCollection(input, "{empty}");
