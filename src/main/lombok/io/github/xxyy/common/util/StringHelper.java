@@ -5,6 +5,7 @@
  */
 package io.github.xxyy.common.util;
 
+import io.github.xxyy.common.util.math.NumberHelper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.ChatColor;
@@ -37,5 +38,12 @@ public final class StringHelper {
             text = ChatColor.translateAlternateColorCodes('&', text);
         }
         return text;
+    }
+
+    /**
+     * @return A random String, created with 130 bytes. Considered to be "securely" random.
+     */
+    public static String randomString() {
+        return NumberHelper.randomInteger().toString(32);
     }
 }

@@ -21,7 +21,7 @@ public final class ChatHelper {
      * @param sender CommandSender to analyse
      * @return {@code true} if sender is not a player.
      */
-    public final boolean kickConsoleFromMethod(CommandSender sender) {
+    public static boolean kickConsoleFromMethod(CommandSender sender) {
         if(!(sender instanceof ProxiedPlayer)) {
             sender.sendMessage(new ComponentBuilder("Du kannst diesen Befehl nur als Spieler verwenden!")
                     .color(ChatColor.RED).create());

@@ -5,6 +5,8 @@ import lombok.NonNull;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -31,6 +33,8 @@ public abstract class NumberHelper {
                 .build();
 
     }
+
+    public static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final DecimalFormat SPACE_FORMAT;
     private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
     private static final Map<Class<? extends Number>, MathOperator<? extends Number>> CLASSES_TO_OPERATORS;
@@ -96,5 +100,12 @@ public abstract class NumberHelper {
             hexChars[j * 2 + 1] = HEX_CHARS[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    /**
+     * @return A random integer. Considered to be "securely" random.
+     */
+    public static BigInteger randomInteger(){
+        return BigInteger.probablePrime(130, SECURE_RANDOM);
     }
 }
