@@ -127,13 +127,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public Connection makeConnection() {
         Connection c = null;
         try {
-            String sqlHost = this.authDataProvider.getSqlHost();
-            if (sqlHost == null) {
-                System.err.println("!! SAFESQL: plug.getHost is null!");
-                return null;
-            }
-            sqlHost = (sqlHost.contains(this.authDataProvider.getSqlDb()) ? sqlHost : ((sqlHost.endsWith("/")) ? sqlHost + this.authDataProvider.
-                    getSqlDb() : sqlHost + "/" + this.authDataProvider.getSqlDb()));
+            String sqlHost = SqlConnectables.getHostString(this.authDataProvider);
 
             c = DriverManager.getConnection(sqlHost, this.authDataProvider.getSqlUser(), this.authDataProvider.getSqlPwd());
 
