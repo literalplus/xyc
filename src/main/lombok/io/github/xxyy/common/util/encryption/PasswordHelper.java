@@ -73,6 +73,10 @@ public final class PasswordHelper {
         return NumberHelper.bytesToHex(hash);
     }
 
+    /**
+     * Generates a random salt using the SHA-512 encryption.
+     * @return Random salt
+     */
     public static String generateSalt() {
         try {
             return generateSalt(MessageDigest.getInstance("SHA-512"));
