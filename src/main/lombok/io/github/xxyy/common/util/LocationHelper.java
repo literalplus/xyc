@@ -5,6 +5,7 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -70,13 +71,16 @@ public abstract class LocationHelper {
      *
      * @param section Configuration to read from
      * @return The read Location.
-     * @throws java.lang.IllegalArgumentException If the section does not contain all values.
+     * @throws java.lang.IllegalArgumentException If the section does not contain all values or the world is not found.
      */
     public static Location fromConfiguration(@NonNull ConfigurationSection section) {
         Validate.isTrue(section.contains("world") && section.contains("x") && section.contains("y") && section.contains("z"),
                 "The given section does not contain all of x,y, world and z!");
 
-        return new Location(Bukkit.getWorld(section.getString("world")), section.getInt("x"), section.getInt("y"), section.getInt("z"));
+        World world = Bukkit.getWorld(section.getString("world"));
+        Validate.notNull(world, "World is null");
+
+        return new Location(world, section.getInt("x"), section.getInt("y"), section.getInt("z"));
     }
 
     /**
