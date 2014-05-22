@@ -67,14 +67,34 @@ public abstract class LocationHelper {
     /**
      * Gets a Location from a ConfigurationSection.
      * The section must contain {@code x},{@code y} and {@code z} (int) and {@code world} (String).
+     *
      * @param section Configuration to read from
      * @return The read Location.
      * @throws java.lang.IllegalArgumentException If the section does not contain all values.
      */
-    public static Location fromConfiguration(@NonNull ConfigurationSection section){
+    public static Location fromConfiguration(@NonNull ConfigurationSection section) {
         Validate.isTrue(section.contains("world") && section.contains("x") && section.contains("y") && section.contains("z"),
-                "The given section does not contain all of x,y and z!");
+                "The given section does not contain all of x,y, world and z!");
 
         return new Location(Bukkit.getWorld(section.getString("world")), section.getInt("x"), section.getInt("y"), section.getInt("z"));
+    }
+
+    /**
+     * Gets a Location from a ConfigurationSection.
+     * The section must contain {@code x},{@code y} and {@code z} (int) and {@code pitch}, {@code yaw} (float) and {@code world} (String).
+     *
+     * @param section Configuration to read from
+     * @return The read Location.
+     * @throws java.lang.IllegalArgumentException If the section does not contain all values.
+     */
+    public static Location fromDetailedConfiguration(@NonNull ConfigurationSection section) {
+        Validate.isTrue(section.contains("pitch") && section.contains("yaw"),
+                "The given section does not contain pitch and yaw!");
+
+        Location location = fromConfiguration(section);
+        location.setPitch(((Double) section.getDouble("pitch")).floatValue());
+        location.setYaw(((Double) section.getDouble("yaw")).floatValue());
+
+        return location;
     }
 }
