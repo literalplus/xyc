@@ -31,4 +31,38 @@ public final class SqlConnectables {
         return sqlHost.contains(connectable.getSqlDb()) ? sqlHost : ((sqlHost.endsWith("/")) ? sqlHost + connectable.
                 getSqlDb() : sqlHost + "/" + connectable.getSqlDb());
     }
+
+    /**
+     * Creates a simple SqlConnectable that simply returns the connection credentials provided.
+     * @param host {@link SqlConnectable#getSqlHost()}
+     * @param database {@link SqlConnectable#getSqlDb()}
+     * @param user {@link SqlConnectable#getSqlUser()}
+     * @param password {@link SqlConnectable#getSqlPwd()}
+     * @return A simple SqlConnectable matching provided arguments.
+     */
+    @NonNull
+    public static SqlConnectable fromCredentials(@NonNull final String host, @NonNull final String database,
+                                                 @NonNull final String user, @NonNull final String password) {
+        return new SqlConnectable() {
+            @Override
+            public String getSqlDb() {
+                return database;
+            }
+
+            @Override
+            public String getSqlHost() {
+                return host;
+            }
+
+            @Override
+            public String getSqlPwd() {
+                return password;
+            }
+
+            @Override
+            public String getSqlUser() {
+                return user;
+            }
+        };
+    }
 }
