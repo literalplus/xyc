@@ -80,7 +80,7 @@ public abstract class LocationHelper {
         World world = Bukkit.getWorld(section.getString("world"));
         Validate.notNull(world, "World is null");
 
-        return new Location(world, section.getInt("x"), section.getInt("y"), section.getInt("z"));
+        return new Location(world, section.getInt("x") + 0.5D, section.getInt("y") + 0.5D, section.getInt("z"));
     }
 
     /**
