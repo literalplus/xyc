@@ -68,9 +68,9 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
         try {
             PreparedStatement stmnt = this.getAnyConnection().prepareStatement(query);
             ResultSet rtrn = stmnt.executeQuery();
-            if (SafeSql.debug) {
-                CommandHelper.sendMessageToOpsAndConsole("§6Query: " + query);
-            }
+//            if (SafeSql.debug) {
+////                CommandHelper.sendMessageToOpsAndConsole("§6Query: " + query);
+//            }
             return rtrn;
         } catch (SQLException e) {
             this.formatAndPrintException(e, "§cException while trying to execute Query: '" + query + "'");
@@ -90,9 +90,9 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
         try {
             stmnt = this.getAnyConnection().prepareStatement(query);
             stmnt.executeUpdate();
-            if (SafeSql.debug) {
-                CommandHelper.sendMessageToOpsAndConsole("§6Update: " + query);
-            }
+//            if (SafeSql.debug) {
+//                CommandHelper.sendMessageToOpsAndConsole("§6Update: " + query);
+//            }
             return true;
         } catch (SQLException e) {
             this.formatAndPrintException(e, "§cException while trying to execute update: '" + query + "'");
@@ -110,10 +110,10 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      *                  7s!)
      */
     public void formatAndPrintException(SQLException e, String firstLine) {
-        CommandHelper.sendMessageToOpsAndConsole(firstLine);
-        CommandHelper.sendMessageToOpsAndConsole("§4SQL Error " + e.getErrorCode() + ": " + e.getLocalizedMessage());
+        System.out.println(firstLine);
+        System.out.println("§4SQL Error " + e.getErrorCode() + ": " + e.getLocalizedMessage());
         if (this.errLogger != null) {
-            this.errLogger.log(Level.WARNING, "{0}\nSQL ERROR: {1}: {2}", new Object[]{firstLine, e.getErrorCode(), e.getLocalizedMessage()});
+            System.out.printf("%s\nSQL ERROR: %s: %s", firstLine, e.getErrorCode(), e.getLocalizedMessage());
         }
         e.printStackTrace();
     }
@@ -132,7 +132,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
             c = DriverManager.getConnection(sqlHost, this.authDataProvider.getSqlUser(), this.authDataProvider.getSqlPwd());
 
             if (c == null || !c.isValid(5)) {
-                CommandHelper.sendMessageToOpsAndConsole("§4§l[SEVERE] Could not establish database connection.");// Everybody panic.
+//                CommandHelper.sendMessageToOpsAndConsole("§4§l[SEVERE] Could not establish database connection.");// Everybody panic.
                 CommandHelper.printAndOrLog("[XYC] Connection to " + sqlHost + " failed.", this.errLogger, Level.SEVERE);
             } else {
                 DatabaseMetaData meta = c.getMetaData();
@@ -191,7 +191,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public PreparedStatement prepareStatement(@NonNull String query) throws SQLException {
         PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
         if (SafeSql.debug) {
-            CommandHelper.sendMessageToOpsAndConsole("§ePreparing Statement: " + query);
+//            CommandHelper.sendMessageToOpsAndConsole("§ePreparing Statement: " + query);
         }
         return stmt;
     }
