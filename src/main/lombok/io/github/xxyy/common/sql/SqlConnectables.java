@@ -32,7 +32,7 @@ public final class SqlConnectables {
     }
 
     /**
-     * Returns the host string for the given paramaeters. The host string consists of
+     * Returns the host string for the given parameters. The host string consists of
      * the database URL, as returned by {@link SqlConnectable#getSqlHost()}, of a slash (/)
      * and the database name, as returned by {@link SqlConnectable#getSqlDb()}.
      * If the database name is already appended to the host, it will not be appended another time.
@@ -41,7 +41,7 @@ public final class SqlConnectables {
      * @return Host string, as accepted by database drivers.
      */
     public static String getHostString(String database, String sqlHost) {
-        return sqlHost.contains(database) ? sqlHost : (sqlHost.endsWith("/") ? sqlHost + database : sqlHost + "/" + database);
+        return sqlHost.contains(database) ? sqlHost : (sqlHost.endsWith("/") ? (sqlHost + database) : (sqlHost + "/" + database));
     }
 
     /**
@@ -97,6 +97,6 @@ public final class SqlConnectables {
             sqlHost = hostname;
         }
 
-        return getHostString(sqlHost, database);
+        return getHostString(database, sqlHost);
     }
 }
