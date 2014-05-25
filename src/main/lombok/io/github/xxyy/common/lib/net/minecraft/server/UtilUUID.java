@@ -1,5 +1,7 @@
 package io.github.xxyy.common.lib.net.minecraft.server;
 
+import com.google.common.base.Charsets;
+
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -34,5 +36,9 @@ public class UtilUUID {
 
             return null;
         }
+    }
+
+    public static UUID offlineUUID(String offlineName) {
+        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + offlineName).getBytes(Charsets.UTF_8));
     }
 }
