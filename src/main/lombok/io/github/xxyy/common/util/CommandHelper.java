@@ -144,7 +144,7 @@ public class CommandHelper {
         if (!i.hasNext()) {
             return defaultVal;
         }
-        final StringBuilder rtrnBuilder = new StringBuilder(i.next().toString());
+        final StringBuilder rtrnBuilder = new StringBuilder(String.valueOf(i.next()));
         while (i.hasNext()) {
             rtrnBuilder.append(", ")
                     .append(i.next());
