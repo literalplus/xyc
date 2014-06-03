@@ -41,6 +41,12 @@ public final class SqlConnectables {
      * @return Host string, as accepted by database drivers.
      */
     public static String getHostString(String database, String sqlHost) {
+        if(sqlHost == null) {
+            throw new NullPointerException("sqlHost");
+        }
+        if(database == null) {
+            throw new NullPointerException("database");
+        }
         return sqlHost.contains(database) ? sqlHost : (sqlHost.endsWith("/") ? (sqlHost + database) : (sqlHost + "/" + database));
     }
 
