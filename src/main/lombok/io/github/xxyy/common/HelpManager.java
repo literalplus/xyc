@@ -5,6 +5,7 @@ import io.github.xxyy.common.xyplugin.GenericXyPlugin;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -30,7 +31,7 @@ public class HelpManager {
 	 * i.e. for /xyc test, the mapping would be as follows:
 	 * "test" =&gt; "An example of a sub-command."
 	 */
-	public HashMap<String,String> subCmds;
+	public Map<String,String> subCmds;
 	
 	/**
 	 * Constructs a new {@link HelpManager}.
@@ -38,7 +39,7 @@ public class HelpManager {
 	 * @param cmdDescLines A few lines to describe this command to be displayed on the first help page.
 	 * @param subCmds see: {@link HelpManager#subCmds}
 	 */
-	public HelpManager(String cmdName,String[] cmdDescLines,HashMap<String,String> subCmds){
+	public HelpManager(String cmdName,String[] cmdDescLines,Map<String,String> subCmds){
 		this.helpPageTitle=cmdName; this.subCmds=subCmds; 
 		this.cmdDescLines=cmdDescLines;
 	}

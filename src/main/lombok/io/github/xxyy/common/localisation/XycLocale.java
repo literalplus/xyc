@@ -29,7 +29,7 @@ public class XycLocale implements XyLocalizable {
         HashMap<String, YamlConfiguration> map = new HashMap<>();
         for (String lang : this.getShippedLocales()) {
             String dir = "plugins/XYC/lang/";
-            String fl = lang + ".lng.yml";
+            String fl = lang + LangHelper.LANG_FILE_EXTENSION;
             File destFl = new File(dir + fl);
             File destDir = new File(dir);
             if (destFl.exists()) {
@@ -40,7 +40,7 @@ public class XycLocale implements XyLocalizable {
                     //noinspection ResultOfMethodCallIgnored
                     destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
-                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
+                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + LangHelper.LANG_FILE_EXTENSION);
                     int read;
                     while ((read = in.read()) != -1) {
                         out.write(read);
@@ -72,14 +72,14 @@ public class XycLocale implements XyLocalizable {
             HashMap<String, YamlConfiguration> map = new HashMap<>();
             for (String lang : (this.getShippedLocales())) {
                 String dir = "plugins/XYC/lang/";
-                String fl = lang + ".lng.yml";
+                String fl = lang + LangHelper.LANG_FILE_EXTENSION;
                 File destFl = new File(dir, fl);
                 try {
                     FileHelper.mkdirsWithException(new File(dir));
                     //noinspection ResultOfMethodCallIgnored
                     destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
-                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + ".lng.yml");
+                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + LangHelper.LANG_FILE_EXTENSION);
                     int read;
                     while ((read = in.read()) != -1) {
                         out.write(read);

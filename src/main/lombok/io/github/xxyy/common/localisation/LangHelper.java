@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
  */
 public class LangHelper {
 
+    public static final String LANG_FILE_EXTENSION = ".lng.yml";
     static HashMap<String, HashMap<String, YamlConfiguration>> langCache = new HashMap<>();
     @SuppressWarnings("unused")
     private static HashMap<String, String> chosenLangCache = new HashMap<>();
@@ -83,12 +84,12 @@ public class LangHelper {
 
         for (String language : loc.getShippedLocales()) {
             try {
-                File destinationFile = new File(plugin.getDataFolder().getAbsolutePath()+"/lang/", language + ".lng.yml");
+                File destinationFile = new File(plugin.getDataFolder().getAbsolutePath()+"/lang/", language + LANG_FILE_EXTENSION);
                 Files.createParentDirs(destinationFile);
                 YamlConfiguration loadedCfg = YamlConfiguration.loadConfiguration(destinationFile);
 
                 if (destinationFile.exists()) {
-                    InputStream in = plugin.getResource("lang/" + language + ".lng.yml");
+                    InputStream in = plugin.getResource("lang/" + language + LANG_FILE_EXTENSION);
                     YamlConfiguration defaultCfg = YamlConfiguration.loadConfiguration(in);
                     SafeSql.tryClose(in);
                     updateLanguageFile(loadedCfg, defaultCfg, destinationFile, plugin);
@@ -99,7 +100,7 @@ public class LangHelper {
                     }
                     InputStream in;
                     try (FileOutputStream out = new FileOutputStream(destinationFile)) {
-                        in = plugin.getResource("lang/" + language + ".lng.yml");
+                        in = plugin.getResource("lang/" + language + LANG_FILE_EXTENSION);
                         int read;
                         while ((read = in.read()) != -1) {
                             out.write(read);
@@ -227,7 +228,7 @@ public class LangHelper {
                         + pl.getName() + ": No such language!");
                 return;
             }
-            cfg.load("plugins/XYC/lang/" + pl.getName() + "/" + lng + ".lng.yml");
+            cfg.load("plugins/XYC/lang/" + pl.getName() + "/" + lng + LANG_FILE_EXTENSION);
         } catch (IOException | InvalidConfigurationException | NullPointerException e) {
             CommandHelper.sendMessageToOpsAndConsole("§4[XYC] WARNING: Could not reload " + lng + " from "
                     + pl.getName());
