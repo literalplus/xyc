@@ -1,8 +1,6 @@
 package io.github.xxyy.common.sql;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
+import org.jetbrains.annotations.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,17 +11,15 @@ import java.sql.SQLException;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 12/02/14
  */
-@AllArgsConstructor
 public class QueryResult implements AutoCloseable {
-    @Getter
+    @Nullable
     private PreparedStatement preparedStatement;
-    @Getter
+    @Nullable
     private ResultSet resultSet;
     /**
      * Return value of {@link java.sql.PreparedStatement#executeUpdate()}.
      * Set to -1 if the statement was a query.
      */
-    @Getter
     private int updateReturn;
 
     public QueryResult(PreparedStatement statement, int updateReturn){
@@ -32,6 +28,12 @@ public class QueryResult implements AutoCloseable {
 
     public QueryResult(PreparedStatement statement, ResultSet rs){
         this(statement, rs, -1);
+    }
+
+    public QueryResult(@Nullable PreparedStatement preparedStatement, @Nullable ResultSet resultSet, int updateReturn) {
+        this.preparedStatement = preparedStatement;
+        this.resultSet = resultSet;
+        this.updateReturn = updateReturn;
     }
 
     /**
@@ -96,5 +98,18 @@ public class QueryResult implements AutoCloseable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public PreparedStatement getPreparedStatement() {
+        return this.preparedStatement;
+    }
+
+    @Nullable
+    public ResultSet getResultSet() {
+        return this.resultSet;
+    }
+
+    public int getUpdateReturn() {
+        return this.updateReturn;
     }
 }
