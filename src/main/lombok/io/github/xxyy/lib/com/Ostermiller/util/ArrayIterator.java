@@ -16,7 +16,7 @@
  * See LICENSE.txt for details.
  */
 
-package com.Ostermiller.util;
+package io.github.xxyy.lib.com.Ostermiller.util;
 
 import java.util.*;
 
