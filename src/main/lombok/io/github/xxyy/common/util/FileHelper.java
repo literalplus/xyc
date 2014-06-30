@@ -13,7 +13,11 @@ import java.nio.file.attribute.BasicFileAttributes;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
-public abstract class FileHelper {
+public final class FileHelper {
+    private FileHelper() {
+
+    }
+
     /**
      * Copies a file or directory {@code src} (and all its contents, if any)
      * to a new destination {@code dest}.
