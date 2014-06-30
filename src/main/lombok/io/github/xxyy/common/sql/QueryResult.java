@@ -100,6 +100,7 @@ public class QueryResult implements AutoCloseable {
         }
     }
 
+    @Nullable
     public PreparedStatement getPreparedStatement() {
         return this.preparedStatement;
     }

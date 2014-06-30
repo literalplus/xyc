@@ -67,11 +67,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public ResultSet executeQuery(String query) {
         try {
             PreparedStatement stmnt = this.getAnyConnection().prepareStatement(query);
-            ResultSet rtrn = stmnt.executeQuery();
-//            if (SafeSql.debug) {
-////                CommandHelper.sendMessageToOpsAndConsole("§6Query: " + query);
-//            }
-            return rtrn;
+            return stmnt.executeQuery();
         } catch (SQLException e) {
             this.formatAndPrintException(e, "§cException while trying to execute Query: '" + query + "'");
         }
@@ -187,12 +183,10 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
      */
-    @Nullable
+    @NonNull
     public PreparedStatement prepareStatement(@NonNull String query) throws SQLException {
         PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
-        if (SafeSql.debug) {
-//            CommandHelper.sendMessageToOpsAndConsole("§ePreparing Statement: " + query);
-        }
+        Validate.notNull(stmt);
         return stmt;
     }
 
@@ -216,6 +210,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public ResultSet safelyExecuteQuery(String query, int... ints) {
         try {
             PreparedStatement stmnt = this.prepareStatement(query);
+            Validate.notNull(stmnt);
             int i = 1;
             for (int nr : ints) {
                 stmnt.setInt(i, nr);
@@ -242,6 +237,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public ResultSet safelyExecuteQuery(String query, String... strings) {
         try {
             PreparedStatement stmnt = this.prepareStatement(query);
+            Validate.notNull(stmnt);
             int i = 1;
             for (String str : strings) {
                 stmnt.setString(i, str);
@@ -267,7 +263,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
         fillStatement(stmt, objects);
 
-        return new QueryResult(stmt, stmt.executeQuery());
+        return new QueryResult(stmt, stmt != null ? stmt.executeQuery() : null);
     }
 
     /**
@@ -283,7 +279,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
         fillStatement(stmt, objects);
 
-        return new QueryResult(stmt, stmt.executeUpdate());
+        return new QueryResult(stmt, stmt != null ? stmt.executeUpdate() : 0);
     }
 
     @NonNull

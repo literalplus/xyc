@@ -94,7 +94,7 @@ public abstract class LogHelper
         {
             LogHelper.instance = this;
         }
-        (new File(fileName)).getParentFile().mkdirs();
+        (new File(fileName)).getParentFile().mkdirs(); //REFACTOR   Result of File.mkdirs() is ignored at line 76
         FileHandler hdlr = new FileHandler(fileName);
         hdlr.setLevel(Level.FINEST);
         hdlr.setFormatter(formatter);
