@@ -16,6 +16,9 @@ import java.util.List;
  * @author xxyy98
  */
 public class XyHelper { //TODO logger
+    static {
+        initialise();
+    }
 
     private static final File cfgFile = new File("plugins/XYC", "xyc.cfg.yml");
     private static YamlConfiguration xycConfiguration = YamlConfiguration.loadConfiguration(XyHelper.cfgFile);
@@ -36,8 +39,6 @@ public class XyHelper { //TODO logger
      */
     public static String codeChatCol = "§3";
     private static XycLocale locale;
-    @Deprecated
-    private static boolean isSql = true;
 
     /**
      * Common {@link SafeSql} if you don't make your own using SqlXyPlugin.
@@ -58,7 +59,7 @@ public class XyHelper { //TODO logger
         return XyHelper.locale;
     }
 
-    protected static void initialise() {
+    private static void initialise() {
 
         //config
         XyHelper.xycConfiguration.options().header("XYC....use valid YAML!");
