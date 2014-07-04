@@ -26,6 +26,9 @@ import java.util.regex.Pattern;
  * A class that provides some static methods to deal with localising XyPlugins.
  */
 public class LangHelper {
+    static {
+        XyHelper.getLocale(); //Ensure that class is loaded and the global locale is registered
+    }
 
     public static final String LANG_FILE_EXTENSION = ".lng.yml";
     static HashMap<String, HashMap<String, YamlConfiguration>> langCache = new HashMap<>();
