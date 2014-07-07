@@ -75,6 +75,11 @@
             <artifactId>bungeecord-api</artifactId>
             <version>1.7-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
   
     <build>
@@ -200,6 +205,7 @@
                             <include>com.google.code.gson:gson</include>
                             <include>com.intellij:annotations</include>
                             <include>io.github.xxyy:common</include>
+                            <include>commons-collections:commons-collections</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -215,7 +221,19 @@
                             <pattern>org.jetbrains.annotations</pattern>
                             <shadedPattern>io.github.xxyy.common.lib.com.intellij.annotations</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons</pattern>
+                            <shadedPattern>io.github.xxyy.common.lib.org.apache.commons</shadedPattern>
+                        </relocation>
                     </relocations>
+                    <filters>
+                        <filter>
+                            <artifactId>commons-collections:commons-collections</artifactId>
+                            <includes>
+                                <include>org/apache/**</include>
+                            </includes>
+                        </filter>
+                    </filters>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
             </plugin>
