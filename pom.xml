@@ -229,7 +229,7 @@
                     </relocations>
                     <filters>
                         <filter>
-                            <artifactId>net.sf.trove4j:trove4j</artifactId>
+                            <artifact>net.sf.trove4j:trove4j</artifact>
                             <includes>
                                 <include>gnu/trove/**</include>
                             </includes>
