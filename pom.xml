@@ -76,9 +76,10 @@
             <version>1.7-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <groupId>net.sf.trove4j</groupId>
+            <artifactId>trove4j</artifactId>
+            <version>3.0.3</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
   
@@ -205,7 +206,7 @@
                             <include>com.google.code.gson:gson</include>
                             <include>com.intellij:annotations</include>
                             <include>io.github.xxyy:common</include>
-                            <include>commons-collections:commons-collections</include>
+                            <include>net.sf.trove4j:trove4j</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -222,15 +223,15 @@
                             <shadedPattern>io.github.xxyy.common.lib.com.intellij.annotations</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.apache.commons</pattern>
-                            <shadedPattern>io.github.xxyy.common.lib.org.apache.commons</shadedPattern>
+                            <pattern>gnu.trove</pattern>
+                            <shadedPattern>io.github.xxyy.common.lib.gnu.trove</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
                         <filter>
-                            <artifactId>commons-collections:commons-collections</artifactId>
+                            <artifactId>net.sf.trove4j:trove4j</artifactId>
                             <includes>
-                                <include>org/apache/**</include>
+                                <include>gnu/trove/**</include>
                             </includes>
                         </filter>
                     </filters>
