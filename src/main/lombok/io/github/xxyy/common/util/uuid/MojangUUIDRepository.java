@@ -7,6 +7,7 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
@@ -42,6 +43,7 @@ public class MojangUUIDRepository implements UUIDRepository {
                 }
             });
 
+    @NotNull
     private UUIDRepository parent = EmptyUUIDRepository.INSTANCE;
 
 
@@ -65,7 +67,7 @@ public class MojangUUIDRepository implements UUIDRepository {
             return uuidCache.get(name);
         } catch (ExecutionException e) {
             if (e.getCause() instanceof UnknownKeyException) {
-                return parent.forNameChecked(name);
+                return getParent().forNameChecked(name);
             } else if (e.getCause() instanceof InvalidResultException) {
                 throw (InvalidResultException) e.getCause();
             } else {
@@ -82,16 +84,21 @@ public class MojangUUIDRepository implements UUIDRepository {
             }
         }
 
-        return parent.getName(uuid);
+        return getParent().getName(uuid);
     }
 
     @Override
+    @NotNull
     public UUIDRepository getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(UUIDRepository newParent) {
-        parent = newParent;
+    public void setParent(@Nullable UUIDRepository newParent) {
+        if (newParent == null) {
+            parent = EmptyUUIDRepository.INSTANCE;
+        } else {
+            parent = newParent;
+        }
     }
 }

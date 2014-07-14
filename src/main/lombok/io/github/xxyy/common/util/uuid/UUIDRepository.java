@@ -52,16 +52,16 @@ public interface UUIDRepository {
 
     /**
      * Gets the parent repository of this object. The parent is queried when a request for a UUID doesn't return any results.
-     * @return The parent
+     * @return The parent or {@link EmptyUUIDRepository#INSTANCE} if no parent is set.
      */
-    @Nullable
+    @NotNull
     UUIDRepository getParent();
 
     /**
-     * Sets the parent repository of this repo.
+     * Sets the parent repository of this repo. If NULL is passed, {@link EmptyUUIDRepository#INSTANCE} is used.
      * @param newParent new parent of this repo.
      */
-    void setParent(UUIDRepository newParent);
+    void setParent(@Nullable UUIDRepository newParent);
 
     public static class UnknownKeyException extends Exception {
 
@@ -87,7 +87,16 @@ public interface UUIDRepository {
      */
     public static class EmptyUUIDRepository implements UUIDRepository {
 
+        @SuppressWarnings("deprecation") //It's fine
         public static final EmptyUUIDRepository INSTANCE = new EmptyUUIDRepository();
+
+        /**
+         * @deprecated Use {@link #INSTANCE}
+         */
+        @Deprecated
+        public EmptyUUIDRepository() {
+
+        }
 
         @Nullable
         @Override
@@ -107,10 +116,10 @@ public interface UUIDRepository {
             return null;
         }
 
-        @Nullable
+        @NotNull
         @Override
         public UUIDRepository getParent() {
-            return null;
+            return this;
         }
 
         @Override
