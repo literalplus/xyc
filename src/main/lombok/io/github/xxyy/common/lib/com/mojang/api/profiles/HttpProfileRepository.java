@@ -34,10 +34,10 @@ public class HttpProfileRepository implements ProfileRepository {
 
     @Override
     public Profile[] findProfilesByNames(String... names) {
-        List<Profile> profiles = new ArrayList<Profile>();
+        List<Profile> profiles = new ArrayList<>();
         try {
 
-            List<HttpHeader> headers = new ArrayList<HttpHeader>();
+            List<HttpHeader> headers = new ArrayList<>();
             headers.add(new HttpHeader("Content-Type", "application/json"));
 
             int namesCount = names.length;
@@ -70,7 +70,7 @@ public class HttpProfileRepository implements ProfileRepository {
 
     private Profile[] post(URL url, HttpBody body, List<HttpHeader> headers) throws IOException {
         String response = client.post(url, body, headers);
-        return gson.fromJson(response, Profile[].class);
+        return gson.fromJson(response, MojangProfile[].class);
     }
 
     private static HttpBody getHttpBody(String... namesBatch) {
