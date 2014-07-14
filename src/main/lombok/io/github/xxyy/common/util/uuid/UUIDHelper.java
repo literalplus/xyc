@@ -67,6 +67,11 @@ public final class UUIDHelper {
         return uuidRepository.forNameChecked(userName);
     }
 
+    /**
+     * Adds a new repository to the repository chain. New repositories are checked before delegating the call to existing ones.
+     * A {@link io.github.xxyy.common.util.uuid.MojangUUIDRepository} is at top of the chain by default.
+     * @param newRepo New repository to add to the chain
+     */
     public static void addRepository(UUIDRepository newRepo) {
         newRepo.setParent(uuidRepository);
         uuidRepository = newRepo;
