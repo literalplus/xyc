@@ -1,5 +1,9 @@
 package io.github.xxyy.common.lib.com.mojang.api.profiles;
 
+import io.github.xxyy.common.lib.net.minecraft.server.UtilUUID;
+
+import java.util.UUID;
+
 public class Profile {
     private String id;
     private String name;
@@ -13,6 +17,10 @@ public class Profile {
         this.id = id;
     }
 
+    public UUID getUniqueId() {
+        return UtilUUID.getFromString(getId());
+    }
+
     public String getName() {
         return name;
     }
@@ -21,7 +29,7 @@ public class Profile {
         this.name = name;
     }
 
-    public boolean getDemo() {
+    public boolean isDemo() {
         return demo;
     }
 
