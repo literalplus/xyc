@@ -16,12 +16,12 @@ import java.util.List;
  * @author xxyy98
  */
 public class XyHelper { //TODO logger
+    private static final File cfgFile = new File("plugins/XYC", "xyc.cfg.yml");
+    private static YamlConfiguration xycConfiguration = YamlConfiguration.loadConfiguration(XyHelper.cfgFile);
+
     static {
         initialise();
     }
-
-    private static final File cfgFile = new File("plugins/XYC", "xyc.cfg.yml");
-    private static YamlConfiguration xycConfiguration = YamlConfiguration.loadConfiguration(XyHelper.cfgFile);
     /**
      * Default language used by {@link io.github.xxyy.common.localisation.LangHelper}.
      */
