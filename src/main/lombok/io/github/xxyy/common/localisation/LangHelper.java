@@ -26,15 +26,15 @@ import java.util.regex.Pattern;
  * A class that provides some static methods to deal with localising XyPlugins.
  */
 public class LangHelper {
-    static {
-        XyHelper.getLocale(); //Ensure that class is loaded and the global locale is registered
-    }
-
     public static final String LANG_FILE_EXTENSION = ".lng.yml";
     static HashMap<String, HashMap<String, YamlConfiguration>> langCache = new HashMap<>();
     @SuppressWarnings("unused")
     private static HashMap<String, String> chosenLangCache = new HashMap<>();
     public static final Pattern PATTERN = Pattern.compile("`([^` ]+)`");
+
+    static {
+        XyHelper.getLocale(); //Ensure that class is loaded and the global locale is registered
+    }
 
     /**
      * Parses a String so that a) {@link ChatColor} is parsed with '&amp;' instead of the paragraph sign b) html entities are replaced with their unicode representations.
