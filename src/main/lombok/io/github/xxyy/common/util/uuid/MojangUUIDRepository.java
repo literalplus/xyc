@@ -15,8 +15,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A {@link io.github.xxyy.common.util.uuid.UUIDRepository} backed by the Mojang Name->UUID SOAP API.
- * This impl only supports Name->UUID lookup, reverse lookup can only be provided in a limited manner, by
+ * A {@link io.github.xxyy.common.util.uuid.UUIDRepository} backed by the Mojang Name→UUID SOAP API.
+ * This impl only supports Name→UUID lookup, reverse lookup can only be provided in a limited manner, by
  * checking cached UUIDs.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>

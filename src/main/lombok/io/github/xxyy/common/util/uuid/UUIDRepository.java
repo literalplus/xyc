@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 /**
- * A repository containing name -> UUID mappings.
+ * A repository containing name → UUID mappings.
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 14.7.14
  */
