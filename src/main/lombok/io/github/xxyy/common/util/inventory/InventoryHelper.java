@@ -1,11 +1,17 @@
 package io.github.xxyy.common.util.inventory;
 
+import io.github.xxyy.common.util.CommandHelper;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Collection;
 
 /**
  * Static utility class that helps when dealing with {@link org.bukkit.inventory.Inventory}s.
@@ -180,5 +186,49 @@ public final class InventoryHelper {
      */
     public static boolean isPlaceAction(final InventoryAction action) {
         return action.name().startsWith(ACTION_PREFIX_PLACE);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Checks if a Player's Inventory is currently empty (i.e. all slots, including armor, are either null or Material.AIR)
+     *
+     * @param plr Player to check
+     * @return whether the Player's Inventory is currently empty.
+     */
+    public static boolean isInventoryEmpty(Player plr) {
+        for (ItemStack item : plr.getInventory().getContents()) {
+            if (item != null && item.getType() != Material.AIR) {
+                return false;
+            }
+        }
+        for (ItemStack item : plr.getInventory().getArmorContents()) {
+            if (item != null && item.getType() != Material.AIR) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Clears the Inventory of a provided {@link org.bukkit.entity.Player}, including armor slots.
+     *
+     * @param plr whose Inventory to clear
+     */
+    public static void clearInventory(Player plr) {
+        plr.getInventory().clear();
+        plr.getInventory().setArmorContents(new ItemStack[]{null, null, null, null});
+    }
+
+    /**
+     * Clears a list of player inventories, including armor slots.
+     *
+     * @param plrs target players
+     * @see CommandHelper#clearInv(org.bukkit.entity.Player)
+     */
+    public static void clearInventories(final Collection<Player> plrs) {
+        for (Player plr : plrs) {
+            CommandHelper.clearInv(plr);
+        }
     }
 }

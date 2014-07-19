@@ -8,12 +8,12 @@ package io.github.xxyy.common.util;
 import com.google.common.base.Preconditions;
 import io.github.xxyy.common.XycConstants;
 import io.github.xxyy.common.localisation.XycLocale;
+import io.github.xxyy.common.util.inventory.InventoryHelper;
+import io.github.xxyy.common.util.math.NumberHelper;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -30,7 +30,6 @@ public class CommandHelper {
      *
      * @param msg        Message to send
      * @param permission Players with that permission will receive {@code msg}
-     *
      * @see Bukkit#broadcast(String, String)
      */
     public static void broadcast(String msg, String permission) {
@@ -48,7 +47,6 @@ public class CommandHelper {
      * @param sender     CommandSender to check for permission and to send message to
      * @param permission Permission to require
      * @param action     Short description of the action that needs permission, shown to {@code sender} if permission check returns false.
-     *
      * @return Whether {@code sender} had the permission required.
      */
     public static boolean checkActionPermAndMsg(CommandSender sender, String permission, String action) {
@@ -66,7 +64,6 @@ public class CommandHelper {
      * @param sender     CommandSender to check for permission and to send message to
      * @param permission Permission to require
      * @param label      Label of the command that needs permission, shown to {@code sender} if permission check returns false.
-     *
      * @return If sender has permission.
      */
     public static boolean checkPermAndMsg(CommandSender sender, String permission, String label) {
@@ -82,32 +79,33 @@ public class CommandHelper {
      * Clears the Inventory of a provided Player.
      *
      * @param plr Target Player
+     * @deprecated Use {@link io.github.xxyy.common.util.inventory.InventoryHelper#clearInventory(org.bukkit.entity.Player)}
      */
+    @Deprecated
     public static void clearInv(Player plr) {
-        plr.getInventory().clear();
-        plr.getInventory().setArmorContents(new ItemStack[] {null, null, null, null});
+        InventoryHelper.clearInventory(plr);
     }
 
     /**
      * Clears a list of inventories.
      *
      * @param plrs Target Players
-     *
      * @see CommandHelper#clearInv(org.bukkit.entity.Player)
+     * @deprecated Use {@link io.github.xxyy.common.util.inventory.InventoryHelper#clearInventory(org.bukkit.entity.Player)}.
      */
+    @Deprecated
     public static void clearInvList(final List<Player> plrs) {
-        for (Player plr : plrs) {
-            CommandHelper.clearInv(plr);
-        }
+        InventoryHelper.clearInventories(plrs);
     }
 
     /**
      * Safely gets the size of a collection, avoiding {@link NullPointerException}s.
+     *
      * @param collection Collection to count, May be {@code null}
      * @return Amount of items in {@code collection}, or -1 if {@code collection} is {@code null}.
      */
-    public static int safeSize(Collection<?> collection){
-        if(collection == null){
+    public static int safeSize(Collection<?> collection) {
+        if (collection == null) {
             return -1;
         }
 
@@ -118,8 +116,7 @@ public class CommandHelper {
      * Comma separates a Collection's contents' String representations. This is the same as calling {@link CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)} with "{empty}" as default.
      *
      * @param input An Iterable to separate
-     *
-     * @return Element1,Element2,Element3 OR "{empty}"
+     * @return Element1, Element2, Element3 OR "{empty}"
      * @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
      */
     public static String CSCollection(Iterable<?> input) {
@@ -131,12 +128,11 @@ public class CommandHelper {
      *
      * @param input      An Iterable to separate
      * @param defaultVal value to be returned if {@code col} is empty.
-     *
-     * @return Element1,Element2,Element3 OR {@code defaultVal}
+     * @return Element1, Element2, Element3 OR {@code defaultVal}
      * @see CommandHelper#CSCollection(java.lang.Iterable)
      */
     public static String CSCollection(Iterable<?> input, String defaultVal) {
-        if(input == null){
+        if (input == null) {
             return "~~~null~~~";
         }
 
@@ -156,8 +152,7 @@ public class CommandHelper {
      * Comma separates a Collection's children's ShortString representations.
      *
      * @param input An Iterable to separate
-     *
-     * @return Element1,Element2,Element3 OR {@code defaultVal}
+     * @return Element1, Element2, Element3 OR {@code defaultVal}
      * @see CommandHelper#CSCollection(java.lang.Iterable, java.lang.String)
      * @see CommandHelper#CSCollection(java.lang.Iterable)
      */
@@ -178,7 +173,7 @@ public class CommandHelper {
      * Formats {@code seconds} for a human-readable output in german. If {@code seconds &gt;= 60}, the output will be formatted like this:
      * <i>x Minuten und y Sekunden</i>
      * <b>Notice:</b> Currently, there is no support for hours.
-     *
+     * <p>
      * <b>Examples:</b>
      * 1 -&gt; <i>1 Sekunde</i>
      * 46 -&gt; <i>46 Sekunden</i>
@@ -189,9 +184,7 @@ public class CommandHelper {
      * 125 -&gt; <i>2 Minuten und 5 Sekunden</i>
      *
      * @param seconds Time to be formatted, in seconds.
-     *
      * @return a human-readable time string <b>in German</b>.
-     *
      * @deprecated Implemented for a specific language, with no possibility to change locale. Deprecated without replacement.
      */
     @SuppressWarnings("SpellCheckingInspection")
@@ -212,7 +205,6 @@ public class CommandHelper {
      * @param maxLength how long the string shall be.
      * @param values    values.
      * @param max       The highest value in {@code values}.
-     *
      * @return 1111112222233333
      * @deprecated Implementation not clean, not generic enough
      */
@@ -237,9 +229,8 @@ public class CommandHelper {
     /**
      * Returns the names of all online Players as a List. Actually kinda useful because it returns the NAMES and not the corresponding objects.
      *
-     * @see Bukkit#getOnlinePlayers()
-     *
      * @return A List of all online Players' names.
+     * @see Bukkit#getOnlinePlayers()
      */
     public static List<String> getOnlinePlayerNames() {
         final List<String> rtrn = new ArrayList<>();
@@ -258,7 +249,6 @@ public class CommandHelper {
      * @param maxLength How many characters the bar will take up.
      * @param value     the current progress
      * @param max       the goal (100%)
-     *
      * @return A nice ASCII art bar using ASCII blocks.
      */
     public static String getProgressBar(int maxLength, int value, int max) {
@@ -274,21 +264,12 @@ public class CommandHelper {
      * Checks if a Player's Inventory is currently empty (i.e. all slots, including armor, are either null or Material.AIR)
      *
      * @param plr Target Player
-     *
      * @return Whether the Player's Inventory is currently empty.
+     * @deprecated Use {@link io.github.xxyy.common.util.inventory.InventoryHelper#isInventoryEmpty(org.bukkit.entity.Player)}.
      */
+    @Deprecated
     public static boolean isInventoryEmpty(Player plr) {
-        for (ItemStack item : plr.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                return false;
-            }
-        }
-        for (ItemStack item : plr.getInventory().getArmorContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                return false;
-            }
-        }
-        return true;
+        return InventoryHelper.isInventoryEmpty(plr);
     }
 
     /**
@@ -298,17 +279,12 @@ public class CommandHelper {
      * @param toCheck   Target integer
      * @param boundary1 One of the boundaries
      * @param boundary2 One of the boundaries
-     *
      * @return {@code true}, If {@code toCheck} is between boundary1 and boundary2.
+     * @deprecated Use {@link io.github.xxyy.common.util.math.NumberHelper#isNumberBetween(int, int, int)}.
      */
+    @Deprecated
     public static boolean isNumberBetween(int toCheck, int boundary1, int boundary2) {
-        if (boundary1 > boundary2) {
-            return boundary2 <= toCheck && toCheck <= boundary1;
-        } else if (boundary1 < boundary2) {
-            return boundary1 <= toCheck && toCheck <= boundary2;
-        } else {
-            return toCheck == boundary1;
-        }
+        return NumberHelper.isNumberBetween(toCheck, boundary1, boundary2);
     }
 
     /**
@@ -316,7 +292,6 @@ public class CommandHelper {
      *
      * @param sender Who to check
      * @param label  Command name
-     *
      * @return true, if sender is CONSOLE
      */
     public static boolean kickConsoleFromMethod(CommandSender sender, String label) {
@@ -344,7 +319,6 @@ public class CommandHelper {
      *
      * @param msg    Message to be sent, preferably multi-line (use /n)
      * @param sender Receiver of the message
-     *
      * @return always {@code true} for use with commands.
      */
     public static boolean msg(String msg, CommandSender sender) {
@@ -360,7 +334,6 @@ public class CommandHelper {
      * @param message Message to print
      * @param lgr     The logger to print it to, can be {@code null}.
      * @param lvl     {@link Level} to use
-     *
      */
     public static void printAndOrLog(String message, Logger lgr, Level lvl) {
         System.out.println(message);
@@ -400,7 +373,6 @@ public class CommandHelper {
      * returns a set with just {@code t} in it.
      *
      * @param t Element to put and type argument
-     *
      * @return Set of type T with {@code t} in it.
      * @deprecated Use {@link com.google.common.collect.Sets#newHashSet(java.lang.Object...)} instead
      */
@@ -418,7 +390,6 @@ public class CommandHelper {
      *
      * @param input       String to colorize
      * @param colorString Color to use
-     *
      * @return A String with a maximal length of 16 characters. Even if {@code input} is longer than that.
      */
     public static String sixteenCharColorize(final String input, final String colorString) {
@@ -438,9 +409,7 @@ public class CommandHelper {
      * Returns {@code input}. If it is longer than 16 characters, returns a shortened version (cuts the end off)
      *
      * @param input String to limit
-     *
      * @return {@code input}, trimmed to 16 chars in necessary (trimming tail)
-     *
      */
     public static String sixteenCharLimit(final String input) {
         if (input == null) {
@@ -459,7 +428,6 @@ public class CommandHelper {
      *
      * @param args Arguments already entered by the user.
      * @param rtrn A list of Strings with tabComplete suggestions.
-     *
      * @return {@code rtrn}, with all elements not starting with the last element of {@code args} removed.
      */
     public static List<String> tabCompleteArgs(final String[] args, final List<String> rtrn) {
@@ -484,7 +452,6 @@ public class CommandHelper {
 
     /**
      * @param input Iterable to use.
-     *
      * @return A list of the String representations of all objects in a Collection.
      */
     public static List<String> toStringAll(Iterable<?> input) {
@@ -507,7 +474,6 @@ public class CommandHelper {
      *
      * @param <T>   Type of the input Object.
      * @param input Object whose String representation is to be printed.
-     *
      * @return {@code t}, completely untouched.
      */
     public static <T> T writeAndPass(T input) {

@@ -17,7 +17,11 @@ import java.util.Map;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
-public abstract class NumberHelper {
+public final class NumberHelper {
+
+    private NumberHelper() {
+
+    }
 
     static {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.GERMAN);
@@ -107,5 +111,25 @@ public abstract class NumberHelper {
      */
     public static BigInteger randomInteger(){
         return BigInteger.probablePrime(130, SECURE_RANDOM);
+    }
+
+    /**
+     * Determines if a number {@code toCheck} is between or equal to one the boundaries specified. There is no special order of the boundaries
+     * required, they can even be equal.
+     *
+     * @param toCheck   Target integer
+     * @param boundary1 One of the boundaries
+     * @param boundary2 One of the boundaries
+     *
+     * @return {@code true}, If {@code toCheck} is between boundary1 and boundary2.
+     */
+    public static boolean isNumberBetween(int toCheck, int boundary1, int boundary2) {
+        if (boundary1 > boundary2) {
+            return boundary2 <= toCheck && toCheck <= boundary1;
+        } else if (boundary1 < boundary2) {
+            return boundary1 <= toCheck && toCheck <= boundary2;
+        } else {
+            return toCheck == boundary1;
+        }
     }
 }
