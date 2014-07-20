@@ -156,15 +156,32 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
                 .setMessage(TeleportFailureReason.DAMAGED, "§cYour teleport was cancelled because you took damage!");
 
         private final EnumMap<TeleportFailureReason, String> messages = new EnumMap<>(TeleportFailureReason.class);
+        private TeleportCompleteHandler parent;
         private String successMessage;
 
         public MessageTeleportCompleteHandler() {
 
         }
 
+        public MessageTeleportCompleteHandler(TeleportCompleteHandler parent) {
+            this.parent = parent;
+        }
+
         public MessageTeleportCompleteHandler(MessageTeleportCompleteHandler toCopy) {
             messages.putAll(toCopy.messages);
             successMessage = toCopy.successMessage;
+        }
+
+        /**
+         * Sets this object's parent. The parent is called after this handler's logic. Regardless of if a message has been sent.
+         *
+         * @param parent Parent to set
+         * @return this object for convenient construction
+         */
+        public MessageTeleportCompleteHandler parent(TeleportCompleteHandler parent) {
+            this.parent = parent;
+
+            return this;
         }
 
         /**
@@ -195,6 +212,10 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
         public void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason) {
             if (cause.getPlayer() != null) {
                 cause.getPlayer().sendMessage(getMessage(failureReason));
+            }
+
+            if (parent != null) {
+                parent.handleTeleport(cause, failureReason);
             }
         }
 
