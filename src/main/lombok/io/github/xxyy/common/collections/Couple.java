@@ -3,6 +3,7 @@ package io.github.xxyy.common.collections;
 import com.google.common.base.Objects;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -42,19 +43,19 @@ public class Couple<V> {
      */
     @Nullable
     public V getOther(@Nullable V element) {
-        if(left == null && right == null) {
+        if (left == null && right == null) {
             return null;
         }
 
-        if(element == null) {
+        if (element == null) {
             return left == null ? right : left;
         }
 
-        if(left == null || !left.equals(element)) {
+        if (left == null || !left.equals(element)) {
             return left;
         }
 
-        if(right == null || !right.equals(element)) {
+        if (right == null || !right.equals(element)) {
             return right;
         }
 
@@ -64,10 +65,22 @@ public class Couple<V> {
     /**
      * Creates a Stream out of this Couple's elements.
      * Left will always be the first element.
+     *
      * @return A Stream of this Couple's elements.
      */
     public Stream<V> stream() {
         return Stream.of(left, right);
+    }
+
+    /**
+     * Applies a Consumer to this Couple's elements.
+     *
+     * @param consumer Consumer to use
+     * @see Stream#forEach(java.util.function.Consumer)
+     */
+    public void forEach(Consumer<? super V> consumer) {
+        consumer.accept(left);
+        consumer.accept(right);
     }
 
     @Override
