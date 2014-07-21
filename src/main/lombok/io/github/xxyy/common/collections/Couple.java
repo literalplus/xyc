@@ -1,6 +1,5 @@
 package io.github.xxyy.common.collections;
 
-import com.google.common.base.Objects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -12,25 +11,10 @@ import java.util.stream.Stream;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 21.7.14
  */
-public class Couple<V> {
-    @Nullable
-    private final V left;
-    @Nullable
-    private final V right;
+public class Couple<V> extends Pair<V, V> {
 
     public Couple(@Nullable V left, @Nullable V right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    @Nullable
-    public V getLeft() {
-        return left;
-    }
-
-    @Nullable
-    public V getRight() {
-        return right;
+        super(left, right);
     }
 
     /**
@@ -76,41 +60,10 @@ public class Couple<V> {
      * Applies a Consumer to this Couple's elements.
      *
      * @param consumer Consumer to use
-     * @see Stream#forEach(java.util.function.Consumer)
+     * @see java.util.stream.Stream#forEach(java.util.function.Consumer)
      */
-    public void forEach(Consumer<? super V> consumer) {
+    public void forEach(Consumer<V> consumer) {
         consumer.accept(left);
         consumer.accept(right);
-    }
-
-    @Override
-    @SuppressWarnings("RedundantIfStatement")
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        Couple couple = (Couple) o;
-
-        if (left != null ? !left.equals(couple.left) : couple.left != null) return false;
-        if (right != null ? !right.equals(couple.right) : couple.right != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (left != null ? left.hashCode() : 0);
-        result = 31 * result + (right != null ? right.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return Objects.toStringHelper(this)
-                .add("left", left)
-                .add("right", right)
-                .toString();
     }
 }
