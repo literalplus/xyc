@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.xxyy</groupId>
     <artifactId>common</artifactId>
-    <version>2.3.6-SNAPSHOT</version>
+    <version>2.3.7-SNAPSHOT</version>
     <name>xy_common Implementation</name>
     <description>xy_common (Spigot)</description>
     <inceptionYear>2013</inceptionYear>
@@ -274,8 +274,7 @@
                     <excludePackageNames>*.lib.*</excludePackageNames>
                     <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
-                    <detectLinks>true</detectLinks>
-                    <doctitle>xy_common ${project.version} API - Do not distribute!</doctitle>
+                    <doctitle>xy_common ${project.version}</doctitle>
                     <reportOutputDirectory>${project.basedir}/target/site/apidocs</reportOutputDirectory>
                     <sourcepath>${basedir}/target/generated-sources/delombok/</sourcepath>
                     <charset>UTF-8</charset>
