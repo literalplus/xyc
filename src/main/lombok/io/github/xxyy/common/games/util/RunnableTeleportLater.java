@@ -224,8 +224,28 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             }
         }
 
+        /**
+         * Creates a handler with default messages for given locale.
+         * If there are no default messages available for given locale, english messages are used.
+         *
+         * @param locale Locale to get a handler for
+         * @return a copy of the default handler for that locale.
+         */
         public static MessageTeleportCompleteHandler getHandler(Locale locale) { //TODO This should use some kind of file to store languages or so
-            return locale.getLanguage().equals(Locale.GERMAN.getLanguage()) ? DEFAULT_DE : DEFAULT_EN;
+            return new MessageTeleportCompleteHandler(locale.getLanguage().equals(Locale.GERMAN.getLanguage()) ? DEFAULT_DE : DEFAULT_EN);
+        }
+
+        /**
+         * Creates a handler with default messages for given locale and a parent.
+         * If there are no default messages available for given locale, english messages are used.
+         *
+         * @param locale Locale to get a handler for
+         * @param parent the parent to set
+         * @return a copy of the default handler for that locale.
+         * @see #parent(io.github.xxyy.common.games.util.RunnableTeleportLater.TeleportCompleteHandler)
+         */
+        public static MessageTeleportCompleteHandler getHandler(Locale locale, TeleportCompleteHandler parent) {
+            return new MessageTeleportCompleteHandler(getHandler(locale)).parent(parent);
         }
     }
 }
