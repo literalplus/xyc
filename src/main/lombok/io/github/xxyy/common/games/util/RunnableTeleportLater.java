@@ -94,15 +94,15 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             failureReason = TeleportFailureReason.MOVED;
         }
 
+        boolean lastTry = ++failedAttemptCount >= getAttemptsAllowed();
+
         if (this.handler != null) {
-            handler.handleTeleport(this, failureReason);
+            handler.handleTeleport(this, failureReason, lastTry);
         }
 
-        if (failureReason != null) { //if teleport failed
-            if (++failedAttemptCount < getAttemptsAllowed()) {
-                resetFailureReasons();
-                return; //Continue allowing executions
-            }
+        if (failureReason != null && !lastTry) { //If teleport didn't succeed and this is not the last try
+            resetFailureReasons();
+            return; //Continue allowing executions
         }
 
         this.tryCancel(); //This is only reached if the teleport succeeded or the amount of allowed attempts is exceeded.
@@ -135,9 +135,10 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
          * Handles an (attempted) teleport. This is called regardless of whether the teleport succeeded.
          *
          * @param cause         Runnable which caused this event
-         * @param failureReason Reason of the teleport failureReason or NULL if the teleport succeeded.
+         * @param failureReason Reason of the teleport failureReason or NULL if the teleport succeeded
+         * @param lastTry       whether this is the last time this teleport attempted
          */
-        void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason);
+        void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason, boolean lastTry);
     }
 
     public enum TeleportFailureReason {
@@ -214,13 +215,13 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
         }
 
         @Override
-        public void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason) {
+        public void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason, boolean lastTry) {
             if (cause.getPlayer() != null) {
                 cause.getPlayer().sendMessage(getMessage(failureReason));
             }
 
             if (parent != null) {
-                parent.handleTeleport(cause, failureReason);
+                parent.handleTeleport(cause, failureReason, lastTry);
             }
         }
 
