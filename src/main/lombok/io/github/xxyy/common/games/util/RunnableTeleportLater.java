@@ -73,9 +73,13 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
 
         this.plr = plr;
         this.to = to;
+        resetFailureReasons();
+        this.failedAttemptCount = 0;
+    }
+
+    private void resetFailureReasons() {
         this.from = plr.getLocation();
         this.initialHealth = plr.getHealth();
-        this.failedAttemptCount = 0;
     }
 
     @Override
@@ -96,6 +100,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
 
         if (failureReason != null) { //if teleport failed
             if (++failedAttemptCount < getAttemptsAllowed()) {
+                resetFailureReasons();
                 return; //Continue allowing executions
             }
         }
