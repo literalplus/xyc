@@ -279,6 +279,7 @@
                     <sourcepath>${basedir}/target/generated-sources/delombok/</sourcepath>
                     <charset>UTF-8</charset>
                     <docencoding>UTF-8</docencoding>
+                    <quiet>true</quiet>
                 </configuration>
             </plugin>
 
