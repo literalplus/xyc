@@ -100,9 +100,13 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             handler.handleTeleport(this, failureReason, lastTry);
         }
 
-        if (failureReason != null && !lastTry) { //If teleport didn't succeed and this is not the last try
-            resetFailureReasons();
-            return; //Continue allowing executions
+        if (failureReason != null) {
+            if (!lastTry) { //If teleport didn't succeed and this is not the last try
+                resetFailureReasons();
+                return; //Continue allowing executions
+            }
+        } else {
+            plr.teleport(to);
         }
 
         this.tryCancel(); //This is only reached if the teleport succeeded or the amount of allowed attempts is exceeded.
