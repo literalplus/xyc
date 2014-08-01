@@ -5,10 +5,11 @@
  */
 package io.github.xxyy.common.util;
 
-import io.github.xxyy.common.util.math.NumberHelper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.ChatColor;
+
+import io.github.xxyy.common.util.math.NumberHelper;
 
 /**
  * Class that provides static utility methods for dealing with Strings.
