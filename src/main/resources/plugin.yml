@@ -1,0 +1,7 @@
+name: XYC
+version: ${project.version}
+author: xxyy
+website: http://xxyy.github.io/
+
+main: io.github.xxyy.common.CommonPlugin
+
