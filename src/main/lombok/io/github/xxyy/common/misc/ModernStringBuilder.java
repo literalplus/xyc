@@ -1,5 +1,7 @@
 package io.github.xxyy.common.misc;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.stream.IntStream;
 
 /**
@@ -12,10 +14,36 @@ import java.util.stream.IntStream;
 public class ModernStringBuilder implements Appendable, CharSequence {
     private StringBuilder proxy;
 
+    /**
+     * Creates a new ModernStringBuilder, using {@link StringBuilder}'s default constructor.
+     * @see StringBuilder#StringBuilder()
+     */
+    public ModernStringBuilder() {
+        this(new StringBuilder());
+    }
+
+    /**
+     * Creates a new ModernStringBuilder, using {@link StringBuilder}'s constructor with a single String argument.
+     * @see StringBuilder#StringBuilder(String)
+     */
+    public ModernStringBuilder(String initial) {
+        this(new StringBuilder(initial));
+    }
+
+    /**
+     * Creates a new ModernStringBuilder, using a provided {@link StringBuilder}.
+     * @param proxy the StringBuilder to proxy
+     */
     public ModernStringBuilder(StringBuilder proxy) {
         this.proxy = proxy;
     }
 
+    /**
+     * Appends a CharSequence to this builder if a certain condition is met.
+     * @param condition the required condition
+     * @param sequence the sequence to append if {@code condition} is TRUE.
+     * @return this object
+     */
     public ModernStringBuilder appendIf(boolean condition, CharSequence sequence) {
         if(condition) {
             append(sequence);
@@ -258,5 +286,10 @@ public class ModernStringBuilder implements Appendable, CharSequence {
     public ModernStringBuilder insert(int offset, double d) {
         proxy.insert(offset, d);
         return this;
+    }
+
+    @Override @NotNull
+    public String toString() {
+        return proxy.toString();
     }
 }
