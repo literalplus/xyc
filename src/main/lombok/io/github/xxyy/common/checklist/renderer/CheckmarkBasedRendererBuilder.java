@@ -37,10 +37,23 @@ public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRend
      * @param uncheckedEmpty whether unchecked items will be not checked using a space instead of an X mark.
      * @return this builder
      */
-    public CheckmarkBasedRendererBuilder<T> umcheckedEmpty(boolean uncheckedEmpty) {
+    public CheckmarkBasedRendererBuilder<T> uncheckedEmpty(boolean uncheckedEmpty) {
         validateNoCustomMarks();
         this.uncheckedEmpty = uncheckedEmpty;
         return this;
+    }
+
+    /**
+     * Sets the "unchecked empty" value for this builder.
+     *
+     * @param uncheckedEmpty whether unchecked items will be not checked using a space instead of an X mark.
+     * @return this builder
+     * @see #uncheckedEmpty(boolean)
+     * @deprecated Typo in method name. Use the correctly-spelled version.
+     */
+    @Deprecated
+    public CheckmarkBasedRendererBuilder<T> umcheckedEmpty(boolean uncheckedEmpty) {
+        return uncheckedEmpty(uncheckedEmpty);
     }
 
     /**
