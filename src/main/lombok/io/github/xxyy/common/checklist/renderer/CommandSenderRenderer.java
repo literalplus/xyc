@@ -31,6 +31,10 @@ public class CommandSenderRenderer extends CheckmarkBasedRenderer {
         return true;
     }
 
+    /**
+     * Builder for {@link io.github.xxyy.common.checklist.renderer.CommandSenderRenderer}.
+     * Note to call the most specific methods (e.g. {@link #checkedColor(ChatColor)} first to prevent casting back.
+     */
     public static class Builder extends CheckmarkBasedRendererBuilder<CommandSenderRenderer> {
         private ChatColor checkedColor = ChatColor.DARK_GREEN; //TODO: Find some solution for BungeeCord's separate ChatColor enum
         private ChatColor uncheckedColor = ChatColor.DARK_RED;

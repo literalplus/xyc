@@ -5,17 +5,26 @@ import java.util.function.Function;
 /**
  * Builds checkmark-based renderers.
  *
-* @author <a href="http://xxyy.github.io/">xxyy</a>
-* @since 3.8.14
-*/
+ * @param <T> Product of the builder
+ * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @since 3.8.14
+ */
 public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRenderer> {
-    /** Renders UTF-8 checkmarks surrounded by brackets. Unchecked items will result in a X mark. */
+    /**
+     * Renders UTF-8 checkmarks surrounded by brackets. Unchecked items will result in a X mark.
+     */
     protected static final Function<Boolean, String> BRACKET_CHECKMARK_RENDERER = (ckd) -> ckd ? "[✓]" : "[✗]";
-    /** Renders UTF-8 checkmarks surrounded by brackets. Unchecked items will result in an empty mark. */
+    /**
+     * Renders UTF-8 checkmarks surrounded by brackets. Unchecked items will result in an empty mark.
+     */
     protected static final Function<Boolean, String> BRACKET_EMPTY_CHECKMARK_RENDERER = (ckd) -> ckd ? "[✓]" : "[ ]";
-    /** Renders simple UTF-8 checkmarks, not surrounded by brackets. Unchecked items will result in a X mark. */
+    /**
+     * Renders simple UTF-8 checkmarks, not surrounded by brackets. Unchecked items will result in a X mark.
+     */
     protected static final Function<Boolean, String> CHECKMARK_RENDERER = (ckd) -> ckd ? "✓" : "✗";
-    /** Renders simple UTF-8 checkmarks, not surrounded by brackets. Unchecked items will result in a space. */
+    /**
+     * Renders simple UTF-8 checkmarks, not surrounded by brackets. Unchecked items will result in a space.
+     */
     protected static final Function<Boolean, String> EMPTY_CHECKMARK_RENDERER = (ckd) -> ckd ? "✓" : " ";
 
     private boolean uncheckedEmpty = false; //When changing these defaults, make sure to also change the values in
@@ -24,10 +33,11 @@ public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRend
 
     /**
      * Sets the "unchecked empty" value for this builder.
+     *
      * @param uncheckedEmpty whether unchecked items will be not checked using a space instead of an X mark.
      * @return this builder
      */
-    public CheckmarkBasedRendererBuilder umcheckedEmpty(boolean uncheckedEmpty) {
+    public CheckmarkBasedRendererBuilder<T> umcheckedEmpty(boolean uncheckedEmpty) {
         validateNoCustomMarks();
         this.uncheckedEmpty = uncheckedEmpty;
         return this;
@@ -35,10 +45,11 @@ public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRend
 
     /**
      * Sets whether the resulting renderer will use brackets [] to wrap checkmarks.
+     *
      * @param brackets whether checkmarks will be wrapped in brackets.
      * @return this builder
      */
-    public CheckmarkBasedRendererBuilder brackets(boolean brackets) {
+    public CheckmarkBasedRendererBuilder<T> brackets(boolean brackets) {
         validateNoCustomMarks();
         this.brackets = brackets;
         return this;
@@ -46,11 +57,12 @@ public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRend
 
     /**
      * Sets a custom checkmark factory for this builder.
+     *
      * @param checkmarkRenderer the custom checkmark builder to set
      * @return this builder
      */
-    public CheckmarkBasedRendererBuilder customCheckmarks(Function<Boolean, String> checkmarkRenderer) {
-        if(uncheckedEmpty || !brackets) { //Not matching defaults -> definitely changed
+    public CheckmarkBasedRendererBuilder<T> customCheckmarks(Function<Boolean, String> checkmarkRenderer) {
+        if (uncheckedEmpty || !brackets) { //Not matching defaults -> definitely changed
             throw new IllegalStateException("Cannot set custom checkmark renderer when default renderer properties are set!");
         }
         this.customRenderer = checkmarkRenderer;
@@ -59,11 +71,12 @@ public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRend
 
     /**
      * Builds an object using this builder's parameters.
+     *
      * @return the resulting object
      */
     public T build() {
         Function<Boolean, String> finalRenderer;
-        if(customRenderer != null) {
+        if (customRenderer != null) {
             finalRenderer = customRenderer;
         } else {
             finalRenderer = getCheckmarkRenderer(brackets, uncheckedEmpty);
@@ -74,13 +87,14 @@ public abstract class CheckmarkBasedRendererBuilder<T extends CheckmarkBasedRend
 
     /**
      * Gets an instance of the built type.
+     *
      * @param renderer the renderer the returned instance will use
      * @return an instance of the built type corresponding to the argument
      */
     protected abstract T getInstance(Function<Boolean, String> renderer);
 
     private void validateNoCustomMarks() {
-        if(customRenderer != null) {
+        if (customRenderer != null) {
             throw new IllegalStateException("Cannot set default checkmark property when a custom renderer is set!");
         }
     }
