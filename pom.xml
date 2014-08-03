@@ -36,7 +36,7 @@
             <url>http://server.nowak-at.net/repo/xxyy-private/</url>
         </repository>
     </distributionManagement>
-  
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -87,7 +87,7 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-  
+
     <build>
         <plugins>
             <plugin>
@@ -167,7 +167,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
@@ -196,7 +196,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -273,7 +273,8 @@
                 </executions>
                 <configuration>
                     <excludePackageNames>*.lib.*</excludePackageNames>
-                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
+                    <bottom>
+                        <![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
                     <doctitle>xy_common ${project.version}</doctitle>
                     <reportOutputDirectory>${project.basedir}/target/site/apidocs</reportOutputDirectory>
@@ -305,20 +306,11 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <includes>
-                    <include>**/version.txt</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/version.txt</exclude>
-                </excludes>
             </resource>
         </resources>
 
-        <finalName>xyc_imp.xy</finalName> <!-- xyc_imp.xy.jar - To save me from having to rename this every time -->
+        <finalName>xyc_imp.xy</finalName>
+        <!-- xyc_imp.xy.jar - To save me from having to rename this every time -->
     </build>
 
     <reporting>
