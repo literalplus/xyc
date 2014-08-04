@@ -26,10 +26,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class MojangUUIDRepository implements UUIDRepository {
     private static final HttpProfileRepository HTTP_PROFILE_REPOSITORY = new HttpProfileRepository("minecraft");
-    private final LoadingCache<String, UUID> uuidCache = (LoadingCache<String, UUID>) CacheBuilder.newBuilder() //compilation error "incompatible types" when omitting cast
-            .expireAfterWrite(30, TimeUnit.MINUTES)
-            .maximumSize(4_200)
-            .build(new CacheLoader<String, UUID>() {
+    private final LoadingCache<String, UUID> uuidCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(60, TimeUnit.MINUTES)
+            .maximumSize(4_200L)
+            .<String, UUID>build(new CacheLoader<String, UUID>() {
                 @Override
                 @NotNull
                 public UUID load(@NotNull String name) throws UnknownKeyException, InvalidResultException {
