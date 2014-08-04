@@ -1,4 +1,4 @@
-package io.github.xxyy.common;
+package io.github.xxyy.common.misc;
 
 import java.util.Calendar;
 

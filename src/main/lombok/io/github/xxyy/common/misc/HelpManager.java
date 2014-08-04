@@ -1,5 +1,6 @@
-package io.github.xxyy.common;
+package io.github.xxyy.common.misc;
 
+import io.github.xxyy.common.XyHelper;
 import io.github.xxyy.common.localisation.XycLocale;
 import io.github.xxyy.common.xyplugin.GenericXyPlugin;
 import org.bukkit.command.CommandSender;
@@ -131,7 +132,7 @@ public class HelpManager {
 		try{
 			HelpManager helpMan = HelpManager.getHelpManager(commandKey);
 			if(helpMan == null){
-				sender.sendMessage(GenericXyPlugin.pluginPrefix+"Konnte Hilfe für "+XyHelper.codeChatCol+commandKey+XyHelper.priChatCol+" nicht laden!");
+				sender.sendMessage(GenericXyPlugin.pluginPrefix+"Konnte Hilfe für "+ XyHelper.codeChatCol+commandKey+XyHelper.priChatCol+" nicht laden!");
 				return false;
 			}
 			helpMan.printHelpToSender(sender, label, pageNum, helpCmdLabel);

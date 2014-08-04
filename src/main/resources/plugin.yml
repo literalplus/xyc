@@ -1,7 +1,9 @@
 name: XYC
 version: ${project.version}
+description: Provides some utilities for plugins to hook into.
 author: xxyy
 website: http://xxyy.github.io/
+load: STARTUP
 
-main: io.github.xxyy.common.CommonPlugin
+main: io.github.xxyy.common.internal.CommonPlugin
 
