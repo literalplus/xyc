@@ -16,4 +16,18 @@ public abstract class MiscHelper
         T[] values = clazz.getEnumConstants();//each call copies an array!
         return values[RandomUtils.nextInt(values.length)];
     }
+
+    /**
+     * Inverts a comparator result, i.e. if the value passed is positive, -1 will be returned and if it's negative,
+     * +1 will be returned. 0 values will be returned directly.
+     * @param i the comparator result to invert
+     * @return the inverted comparator result of the parameter
+     */
+    public static int invertCompare(int i) {
+        if(i == 0) {
+            return i;
+        }
+
+        return i > 0 ? -1 : 1;
+    }
 }
