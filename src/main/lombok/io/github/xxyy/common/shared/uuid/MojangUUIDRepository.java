@@ -1,13 +1,15 @@
-package io.github.xxyy.common.util.uuid;
+package io.github.xxyy.common.shared.uuid;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
+import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
+import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
 
 import java.util.Map;
 import java.util.UUID;
@@ -15,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A {@link io.github.xxyy.common.util.uuid.UUIDRepository} backed by the Mojang Name→UUID SOAP API.
+ * A {@link io.github.xxyy.common.shared.uuid.UUIDRepository} backed by the Mojang Name→UUID SOAP API.
  * This impl only supports Name→UUID lookup, reverse lookup can only be provided in a limited manner, by
  * checking cached UUIDs.
  *
@@ -100,5 +102,10 @@ public class MojangUUIDRepository implements UUIDRepository {
         } else {
             parent = newParent;
         }
+    }
+
+    @Override
+    public ServicePriority getPriority() {
+        return ServicePriority.Lowest;
     }
 }

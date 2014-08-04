@@ -1,8 +1,10 @@
-package io.github.xxyy.common.util.uuid;
+package io.github.xxyy.common.shared.uuid;
 
-import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
+import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
 
 import java.util.UUID;
 
@@ -63,6 +65,11 @@ public interface UUIDRepository {
      */
     void setParent(@Nullable UUIDRepository newParent);
 
+    /**
+     * @return the priority of this repository
+     */
+    ServicePriority getPriority();
+
     public static class UnknownKeyException extends Exception {
 
     }
@@ -87,14 +94,9 @@ public interface UUIDRepository {
      */
     public static class EmptyUUIDRepository implements UUIDRepository {
 
-        @SuppressWarnings("deprecation") //It's fine
         public static final EmptyUUIDRepository INSTANCE = new EmptyUUIDRepository();
 
-        /**
-         * @deprecated Use {@link #INSTANCE}
-         */
-        @Deprecated
-        public EmptyUUIDRepository() {
+        private EmptyUUIDRepository() {
 
         }
 
@@ -125,6 +127,11 @@ public interface UUIDRepository {
         @Override
         public void setParent(UUIDRepository newParent) {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public ServicePriority getPriority() {
+            return ServicePriority.Lowest;
         }
     }
 }
