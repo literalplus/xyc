@@ -3,8 +3,8 @@ package io.github.xxyy.common.internal;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.xxyy.common.XyHelper;
+import io.github.xxyy.common.XycConstants;
 import io.github.xxyy.common.shared.uuid.UUIDRepositories;
-import io.github.xxyy.common.version.PluginVersion;
 
 /**
  * Bukkit plugin interface for XYC.
@@ -14,7 +14,7 @@ import io.github.xxyy.common.version.PluginVersion;
  * @since 3.8.14
  */
 public final class CommonPlugin extends JavaPlugin {
-    public static final PluginVersion PLUGIN_VERSION = PluginVersion.ofClass(CommonPlugin.class);
+
     private static CommonPlugin instance = null;
 
     @Override
@@ -23,7 +23,7 @@ public final class CommonPlugin extends JavaPlugin {
 
         UUIDRepositories.addRepository(UUIDRepositories.MOJANG_UUID_REPOSITORY, this);
 
-        getLogger().info("XYC version " + PLUGIN_VERSION);
+        getLogger().info("XYC version " + XycConstants.VERSION);
         XyHelper.getLocale(); //Force init
     }
 

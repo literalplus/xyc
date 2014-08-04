@@ -1,11 +1,15 @@
 package io.github.xxyy.common;
 
+import io.github.xxyy.common.version.PluginVersion;
+
 /**
  * Class that provides some constants that are mostly outdated.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
 public class XycConstants {
+    public static final PluginVersion VERSION = PluginVersion.ofClass(XycConstants.class);
+
     /**
      * short name of XYC.
      */
