@@ -57,6 +57,13 @@ public final class UUIDRepositories {
             plugin.getLogger().warning("[XYC] UUIDRepository registrations won't interface with other plugins when shaded to a different place!");
         }
 
+        if(!(newRepo instanceof MojangUUIDRepository) && getRepository() == null) {
+            addRepository(MOJANG_UUID_REPOSITORY, CommonPlugin.hasInstance() ? CommonPlugin.instance() : plugin);
+            if(!CommonPlugin.hasInstance()) {
+                plugin.getLogger().warning("[XYC] Registering UUIDRepository "+newRepo+" with non-XYC plugin - This may cause conflicts with plugin reloaders!");
+            }
+        }
+
         CommonPlugin.instance().getServer().getServicesManager()
                 .register(UUIDRepository.class, newRepo, plugin, newRepo.getPriority());
     }
