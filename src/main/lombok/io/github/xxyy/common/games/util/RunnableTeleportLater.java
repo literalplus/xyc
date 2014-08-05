@@ -1,10 +1,11 @@
 package io.github.xxyy.common.games.util;
 
-import io.github.xxyy.common.util.task.NonAsyncBukkitRunnable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import io.github.xxyy.common.util.task.NonAsyncBukkitRunnable;
 
 import java.util.EnumMap;
 import java.util.Locale;
@@ -96,6 +97,10 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
 
         boolean lastTry = ++failedAttemptCount >= getAttemptsAllowed();
 
+        if(failureReason == null && !plr.teleport(to)) {
+            failureReason = TeleportFailureReason.SYSTEM;
+        }
+
         if (this.handler != null) {
             handler.handleTeleport(this, failureReason, lastTry);
         }
@@ -105,8 +110,6 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
                 resetFailureReasons();
                 return; //Continue allowing executions
             }
-        } else {
-            plr.teleport(to);
         }
 
         this.tryCancel(); //This is only reached if the teleport succeeded or the amount of allowed attempts is exceeded.
@@ -148,7 +151,13 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
     public enum TeleportFailureReason {
         MOVED,
         DAMAGED,
-        LEFT
+        LEFT,
+        /**
+         * If the teleport failed for some other reason (e.g. {@link Player#teleport(org.bukkit.Location)} returned false)
+         *
+         * @since 2.5.1
+         */
+        SYSTEM
     }
 
     /**
@@ -159,15 +168,20 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
         private static final MessageTeleportCompleteHandler DEFAULT_DE = new MessageTeleportCompleteHandler()
                 .setMessage(null, "§aDu wurdest erfolgreich teleportiert!")
                 .setMessage(TeleportFailureReason.MOVED, "§cDu hast dich bewegt und konntest daher nicht teleportiert werden!")
-                .setMessage(TeleportFailureReason.DAMAGED, "§cDu hast Schaden erhalten und konntest daher nicht teleportiert werden!");
+                .setMessage(TeleportFailureReason.DAMAGED, "§cDu hast Schaden erhalten und konntest daher nicht teleportiert werden!")
+                .setMessage(TeleportFailureReason.SYSTEM, "§cInterner Fehler. Du konntest nicht teleportiert werden.")
+                .setRetryMessage("§eDie Teleportation wird jetzt wiederholt...");
         private static final MessageTeleportCompleteHandler DEFAULT_EN = new MessageTeleportCompleteHandler()
                 .setMessage(null, "§aYou were successfully teleported!")
                 .setMessage(TeleportFailureReason.MOVED, "§cYour teleport was cancelled because you moved!")
-                .setMessage(TeleportFailureReason.DAMAGED, "§cYour teleport was cancelled because you took damage!");
+                .setMessage(TeleportFailureReason.DAMAGED, "§cYour teleport was cancelled because you took damage!")
+                .setMessage(TeleportFailureReason.SYSTEM, "§cInternal error. You could not be teleported.")
+                .setRetryMessage("§eTrying to teleport you once more...");
 
         private final EnumMap<TeleportFailureReason, String> messages = new EnumMap<>(TeleportFailureReason.class);
         private TeleportCompleteHandler parent;
         private String successMessage;
+        private String retryMessage;
 
         public MessageTeleportCompleteHandler() {
 
@@ -218,11 +232,29 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             return failureReason == null ? successMessage : messages.get(failureReason);
         }
 
+        /**
+         * Sets the message sent to a player when their teleport is being attempted again.
+         *
+         * @param retryMessage the message to send, or NULL for none.
+         * @return this object
+         * @since 2.5.1
+         */
+        public MessageTeleportCompleteHandler setRetryMessage(String retryMessage) {
+            this.retryMessage = retryMessage;
+
+            return this;
+        }
+
         @Override
         public void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason, boolean lastTry) {
             if (cause.getPlayer() != null) {
-                cause.getPlayer().sendMessage(getMessage(failureReason));
+                cause.getPlayer().sendMessage(getMessage(failureReason)); //null is ignored
+
+                if (failureReason != null && !lastTry) {
+                    cause.getPlayer().sendMessage(retryMessage);
+                }
             }
+
 
             if (parent != null) {
                 parent.handleTeleport(cause, failureReason, lastTry);
