@@ -7,6 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.xxyy.common.util.math.NumberHelper;
 
 /**
  * A class providing some static methods to deal with {@link Location}s.
@@ -20,12 +23,12 @@ public abstract class LocationHelper {
      * There is no special order of the boundaries required,
      * they can even be equal.
      *
-     * @see CommandHelper#isNumberBetween(int, int, int)
+     * @see NumberHelper#isNumberBetween(int, int, int)
      */
     public static boolean isBlockBetween(Location toCheck, Location boundary1, Location boundary2) {
-        return CommandHelper.isNumberBetween(toCheck.getBlockX(), boundary1.getBlockX(), boundary2.getBlockX()) &&
-                CommandHelper.isNumberBetween(toCheck.getBlockY(), boundary1.getBlockY(), boundary2.getBlockY()) &&
-                CommandHelper.isNumberBetween(toCheck.getBlockZ(), boundary1.getBlockZ(), boundary2.getBlockZ());
+        return NumberHelper.isNumberBetween(toCheck.getBlockX(), boundary1.getBlockX(), boundary2.getBlockX()) &&
+                NumberHelper.isNumberBetween(toCheck.getBlockY(), boundary1.getBlockY(), boundary2.getBlockY()) &&
+                NumberHelper.isNumberBetween(toCheck.getBlockZ(), boundary1.getBlockZ(), boundary2.getBlockZ());
     }
 
     /**
@@ -33,11 +36,11 @@ public abstract class LocationHelper {
      * equal to one the boundaries specified.
      * There is no special order of the boundaries required,
      *
-     * @deprecated Use {@link CommandHelper#isNumberBetween(int, int, int)} instead
+     * @deprecated Use {@link NumberHelper#isNumberBetween(int, int, int)} instead
      */
     @Deprecated
     public static boolean isNumberBetween(int toCheck, int boundary1, int boundary2) {
-        return CommandHelper.isNumberBetween(toCheck, boundary1, boundary2);
+        return NumberHelper.isNumberBetween(toCheck, boundary1, boundary2);
     }
 
     /**
@@ -100,5 +103,16 @@ public abstract class LocationHelper {
         location.setYaw(((Double) section.getDouble("yaw")).floatValue());
 
         return location;
+    }
+
+    /**
+     * Creates a string representing a given location, featuring integer values of x,y and z as well as the world name.
+     * @param loc the location to pretty-print
+     * @return a string representing the location
+     */
+    public static String prettyPrint(@Nullable Location loc) {
+        return loc == null ? "null" :
+                String.format("x=%d,y=%d,z=%d in %s",
+                        loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName());
     }
 }
