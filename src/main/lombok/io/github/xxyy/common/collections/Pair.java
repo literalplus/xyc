@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.stream.Stream;
 
 /**
- * A class storing an <b>immutable</b> pair of two objects relatd to each other.
+ * A class storing an <b>immutable</b> pair of two objects related to each other.
  * Useful fpr storage in Collections.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
