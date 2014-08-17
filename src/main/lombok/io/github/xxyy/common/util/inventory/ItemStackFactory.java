@@ -37,6 +37,17 @@ public final class ItemStackFactory {
      */
     public ItemStackFactory(@NotNull final ItemStack source) {
         base = source;
+        materialData = source.getData();
+
+        if(source.hasItemMeta()) {
+            meta = source.getItemMeta();
+            if(meta.hasDisplayName()) {
+                displayName = meta.getDisplayName();
+            }
+            if(meta.hasLore()) {
+                lore = meta.getLore();
+            }
+        }
     }
 
     /**
