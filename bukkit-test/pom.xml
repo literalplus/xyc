@@ -26,4 +26,8 @@
             <artifactId>mockito-all</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>xyc-bukkit-test</finalName>
+    </build>
 </project>
