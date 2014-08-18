@@ -1,0 +1,125 @@
+/*
+ * Copyright (c) 2014 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ *
+ * Any usage, including, but not limited to, compiling, running, redistributing, printing, copying and reverse-engineering is strictly prohibited without permission from the original author and may result in legal steps being taken.
+ */
+
+package io.github.xxyy.common.util;
+
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.xxyy.common.util.math.NumberHelper;
+
+/**
+ * A class providing some static methods to deal with {@link Location}s.
+ *
+ * @author <a href="http://xxyy.github.io/">xxyy</a>
+ */
+public abstract class LocationHelper {
+    /**
+     * Determines if a location {@code toCheck} is between or
+     * located on one of the boundaries specified.
+     * There is no special order of the boundaries required,
+     * they can even be equal.
+     *
+     * @see io.github.xxyy.common.util.math.NumberHelper#isNumberBetween(int, int, int)
+     */
+    public static boolean isBlockBetween(Location toCheck, Location boundary1, Location boundary2) {
+        return NumberHelper.isNumberBetween(toCheck.getBlockX(), boundary1.getBlockX(), boundary2.getBlockX()) &&
+                NumberHelper.isNumberBetween(toCheck.getBlockY(), boundary1.getBlockY(), boundary2.getBlockY()) &&
+                NumberHelper.isNumberBetween(toCheck.getBlockZ(), boundary1.getBlockZ(), boundary2.getBlockZ());
+    }
+
+    /**
+     * Determines if a number {@code toCheck} is between or
+     * equal to one the boundaries specified.
+     * There is no special order of the boundaries required,
+     *
+     * @deprecated Use {@link NumberHelper#isNumberBetween(int, int, int)} instead
+     */
+    @Deprecated
+    public static boolean isNumberBetween(int toCheck, int boundary1, int boundary2) {
+        return NumberHelper.isNumberBetween(toCheck, boundary1, boundary2);
+    }
+
+    /**
+     * Randomises x,y and z coordinates of a Location, in a radius.
+     *
+     * @param original Location to randomise
+     * @param radius   Maximum distance from the original location
+     */
+    public static Location randomiseLocation(Location original, int radius) {
+        int modX = RandomUtils.nextInt(radius);
+        int modY = RandomUtils.nextInt(radius);
+        int modZ = RandomUtils.nextInt(radius);
+        if (RandomUtils.nextBoolean()) {
+            modX = modX * -1;
+        } // so that randomisation goes
+        if (RandomUtils.nextBoolean()) {
+            modY = modY * -1;
+        } // in both directions!!
+        if (RandomUtils.nextBoolean()) {
+            modZ = modZ * -1;
+        } // ^^^^^^^^^^^^^^^^
+        return new Location(original.getWorld(),
+                original.getBlockX() + modX, // create new object so that
+                original.getBlockY() + modY, // original can be reused
+                original.getBlockZ() + modZ);
+    }
+
+    /**
+     * Gets a Location from a ConfigurationSection.
+     * The section must contain {@code x},{@code y} and {@code z} (int) and {@code world} (String).
+     *
+     * @param section Configuration to read from
+     * @return The read Location.
+     * @throws java.lang.IllegalArgumentException If the section does not contain all values or the world is not found.
+     */
+    public static Location fromConfiguration(@NotNull ConfigurationSection section) {
+        Validate.isTrue(section.contains("world") && section.contains("x") && section.contains("y") && section.contains("z"),
+                "The given section does not contain all of x,y, world and z!");
+
+        World world = Bukkit.getWorld(section.getString("world"));
+        Validate.notNull(world, "World is null");
+
+        return new Location(world, section.getInt("x") + 0.5D, section.getInt("y") + 0.5D, section.getInt("z"));
+    }
+
+    /**
+     * Gets a Location from a ConfigurationSection.
+     * The section must contain {@code x},{@code y} and {@code z} (int) and {@code pitch}, {@code yaw} (float) and {@code world} (String).
+     *
+     * @param section Configuration to read from
+     * @return The read Location.
+     * @throws java.lang.IllegalArgumentException If the section does not contain all values.
+     */
+    public static Location fromDetailedConfiguration(@NotNull ConfigurationSection section) {
+        Validate.isTrue(section.contains("pitch") && section.contains("yaw"),
+                "The given section does not contain pitch and yaw!");
+
+        Location location = fromConfiguration(section);
+        location.setPitch(((Double) section.getDouble("pitch")).floatValue());
+        location.setYaw(((Double) section.getDouble("yaw")).floatValue());
+
+        return location;
+    }
+
+    /**
+     * Creates a string representing a given location, featuring integer values of x,y and z as well as the world name.
+     *
+     * @param loc the location to pretty-print
+     * @return a string representing the location
+     */
+    public static String prettyPrint(@Nullable Location loc) {
+        return loc == null ? "null" :
+                String.format("x=%d,y=%d,z=%d in %s",
+                        loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName());
+    }
+}

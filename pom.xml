@@ -1,13 +1,24 @@
+<!--
+  ~ Copyright (c) 2014 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+  ~
+  ~ Any usage, including, but not limited to, compiling, running, redistributing, printing, copying and reverse-engineering is strictly prohibited without permission from the original author and may result in legal steps being taken.
+  -->
+
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.github.xxyy</groupId>
-    <artifactId>common</artifactId>
-    <version>2.5.4-SNAPSHOT</version>
-    <name>xy_common Implementation</name>
-    <description>xy_common (Spigot)</description>
+    <groupId>io.github.xxyy.common</groupId>
+    <artifactId>xyc-parent</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+    <modules>
+        <module>bukkit</module>
+        <module>core</module>
+        <module>bungee</module>
+        <module>games</module>
+    </modules>
+    <name>XYC Parent</name>
     <inceptionYear>2013</inceptionYear>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,6 +27,8 @@
         <spigot.version>${minecraft.version}.9-R0.2-SNAPSHOT</spigot.version>
         <bungee.version>${minecraft.version}-SNAPSHOT</bungee.version>
         <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
     <scm>
@@ -30,83 +43,102 @@
     </ciManagement>
 
     <distributionManagement>
-        <downloadUrl>http://server.nowak-at.net/jenkins/view/XYCI/job/xyca~Deploy%20Stage</downloadUrl>
+        <downloadUrl>http://server.nowak-at.net/jenkins/view/XYCI/job/xyca~Commit%20and%20Test%20Stage</downloadUrl>
         <repository>
             <id>xxyy-artifactory</id>
             <url>http://server.nowak-at.net/repo/xxyy-private/</url>
         </repository>
     </distributionManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.12.2</version>
-            <scope>provided</scope> <!-- We don't need lombok at runtime since we're delomboking -->
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>annotations</artifactId>
-            <version>9.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>${bungee.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.trove4j</groupId>
-            <artifactId>trove4j</artifactId>
-            <version>3.0.3</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.6</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>17.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.spigotmc</groupId>
+                <artifactId>spigot-api</artifactId>
+                <version>${spigot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+            <!--<dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.12.2</version>
+                <scope>provided</scope> &lt;!&ndash; We don't need lombok at runtime since we're delomboking &ndash;&gt;
+            </dependency>-->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.intellij</groupId>
+                <artifactId>annotations</artifactId>
+                <version>9.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>net.md-5</groupId>
+                <artifactId>bungeecord-api</artifactId>
+                <version>${bungee.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
+                </exclusions>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.trove4j</groupId>
+                <artifactId>trove4j</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>xyc-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>xyc-bukkit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
+
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
@@ -126,31 +158,10 @@
             </plugin>
 
             <plugin>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok-maven-plugin</artifactId>
-                <version>1.12.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>delombok</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
+
                 <configuration>
                     <archive>
                         <manifest>
@@ -160,67 +171,6 @@
                             <Implementation-Build>${buildNumber}</Implementation-Build>
                         </manifestEntries>
                     </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>com.google.code.gson:gson</include>
-                            <include>com.intellij:annotations</include>
-                            <include>io.github.xxyy:common</include>
-                            <include>net.sf.trove4j:trove4j</include>
-                            <include>com.google.guava:guava</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.google.gson</pattern>
-                            <shadedPattern>io.github.xxyy.lib.gson</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.intellij.lang.annotations</pattern>
-                            <shadedPattern>io.github.xxyy.lib.intellij_annotations</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.jetbrains.annotations</pattern>
-                            <shadedPattern>io.github.xxyy.lib.intellij_annotations</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>gnu.trove</pattern>
-                            <shadedPattern>io.github.xxyy.lib.gnu.trove</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>com.google.common</pattern>
-                            <shadedPattern>io.github.xxyy.lib.guava17</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <filters>
-                        <filter>
-                            <artifact>net.sf.trove4j:trove4j</artifact>
-                            <includes>
-                                <include>gnu/trove/**</include>
-                            </includes>
-                        </filter>
-                        <filter>
-                            <artifact>com.google.guava:guava</artifact>
-                            <includes>
-                                <include>com/google/common/**</include>
-                            </includes>
-                        </filter>
-                    </filters>
                 </configuration>
             </plugin>
 
@@ -239,7 +189,6 @@
                 <version>2.9.1</version>
                 <executions>
                     <execution>
-                        <id>woa-javadoc</id>
                         <goals>
                             <goal>javadoc</goal>
                         </goals>
@@ -247,13 +196,13 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludePackageNames>*.lib.*,*.internal.*</excludePackageNames>
+                    <excludePackageNames>*.internal.*</excludePackageNames>
                     <bottom>
                         <![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp}, <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak). Do not distribute or otherwise use without explicit written permission from the author.]]></bottom>
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
                     <doctitle>xy_common ${project.version}</doctitle>
                     <reportOutputDirectory>${project.basedir}/target/site/apidocs</reportOutputDirectory>
-                    <sourcepath>${basedir}/target/generated-sources/delombok/</sourcepath>
+                    <!--<sourcepath>${basedir}/target/generated-sources/delombok/</sourcepath>-->
                     <charset>UTF-8</charset>
                     <docencoding>UTF-8</docencoding>
                     <quiet>true</quiet>
@@ -273,6 +222,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>2.3</version>
                 </plugin>
             </plugins>
         </pluginManagement>
