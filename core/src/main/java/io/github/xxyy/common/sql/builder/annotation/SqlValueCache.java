@@ -166,7 +166,7 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
          * @param annotation       the annotation providing information about what kind of holder to generate
          * @param dataSource       the data source to use to fetch data from a database
          * @return An instance of {@link SqlValueHolder} corresponding to the this type and Field.
-         * @throws java.lang.IllegalArgumentException if the field couldn't be accessed
+         * @throws java.lang.IllegalAccessException if the field couldn't be accessed
          */
         @NotNull
         public SqlValueHolder<?> createHolder(@NotNull Field sourceField, @NotNull SqlValueCache annotation,
