@@ -1,7 +1,9 @@
 /*
- * Copyright (c) 2014 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2014 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
  *
- * Any usage, including, but not limited to, compiling, running, redistributing, printing, copying and reverse-engineering is strictly prohibited without permission from the original author and may result in legal steps being taken.
+ * Any usage, including, but not limited to, compiling, running, redistributing, printing,
+ *  copying and reverse-engineering is strictly prohibited without permission from the
+ *  original author and may result in legal steps being taken.
  */
 
 package io.github.xxyy.common.games.data;
@@ -53,7 +55,7 @@ public interface PlayerWrapperFactory<T extends PlayerWrapper> {
     /**
      * Wraps a player by name and uuid.
      *
-     * @param uuid the unique id of the wrapped player
+     * @param uuid    the unique id of the wrapped player
      * @param plrName name of the wrapped player.
      * @return a T wrapping plrName.
      * @see io.github.xxyy.common.games.data.PlayerWrapper#PlayerWrapper(java.util.UUID, String, io.github.xxyy.common.sql.SafeSql)
