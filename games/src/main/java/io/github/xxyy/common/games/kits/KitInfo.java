@@ -60,6 +60,17 @@ public class KitInfo implements Comparable<KitInfo> {
 
     /**
      * Constructs a KitInfo and saves it to a file.
+     *
+     * @param armor       the armor contents of the new KitInfo
+     * @param name        the name of the new KitInfo
+     * @param icon        the icon stack
+     * @param contents    the inventory contents
+     * @param authorName  a string informing about who created this kit
+     * @param id          the integer id of this kit
+     * @param objNeeded   a string denoting the objective players need to complete in order to be able to use this kit
+     * @param objAmount   the amount parameter to pass to the objective
+     * @param path        the absolute or relative file path of the kit
+     * @param unavailIcon the icon displayed to players who cannot access this kit
      */
     protected KitInfo(String name, ItemStack icon, ItemStack unavailIcon, ItemStack[] contents, ItemStack[] armor,
                       String objNeeded, String objAmount, String path, String authorName, int id) {
@@ -96,9 +107,6 @@ public class KitInfo implements Comparable<KitInfo> {
         this.flush();
     }
 
-    /**
-     * For internal purposes
-     */
     private KitInfo() {
     }
 
@@ -234,6 +242,12 @@ public class KitInfo implements Comparable<KitInfo> {
     /**
      * Constructs a dummy KitInfo for display - this can be used in special cases, i.e. when no KitInfo is available for loading. Dummy KitInfos can
      * NOT be saved.
+     *
+     * @param armor    the armor contents of the dummy
+     * @param contents the inventory contents of the dummy
+     * @param icon     the icon stack of the dummy
+     * @param name     the name of the dummy
+     * @return a dummy KitInfo corresponding to the arguments
      */
     protected static KitInfo constructDummy(String name, ItemStack icon, ItemStack[] armor, ItemStack[] contents) {
         Validate.notNull(icon);

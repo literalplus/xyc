@@ -396,7 +396,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
         return getClass().getName() + "{name=" + this.name() + ", uuid=" + (hasUniqueId() ? getUniqueId() : "unknown") + "}";
     }
 
-    protected <T> T lockedRead(SqlValueHolder<T> holder) {
+    protected <V> V lockedRead(SqlValueHolder<V> holder) {
         this.databaseLock.readLock().lock();
 
         try {

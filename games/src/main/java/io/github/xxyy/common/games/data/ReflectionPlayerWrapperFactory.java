@@ -41,6 +41,9 @@ public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements 
     /**
      * Creates a new factory that is capable of managing
      * {@code T extends {@link PlayerWrapper}} instances and delegating construction of these.
+     *
+     * @param clazz the class to generate instances of
+     * @param ssql  the SafeSql to use to get data (passed to constructor)
      */
     public ReflectionPlayerWrapperFactory(Class<T> clazz, SafeSql ssql) {
         this.clazz = clazz;

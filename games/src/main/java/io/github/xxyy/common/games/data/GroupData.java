@@ -48,6 +48,7 @@ public class GroupData {
      * Constructs a {@link GroupData} by its name.
      *
      * @param name Name of the group that this {@link GroupData} object represents.
+     * @param ssql the SafeSql to get data from
      */
     protected GroupData(String name, SafeSql ssql) {
         this.name = name;

@@ -164,6 +164,7 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * Revokes a pass use safely, re-fetching passes and saving immediately afterwards. This is the reverse operation of
      * {@link PlayerWrapper#addPassUse()}.
      *
+     * @return whether the pass use was successfully revoked
      * @deprecated Magic value. Use {@link #modifyPassesAmount(int)}
      */
     @Deprecated
@@ -319,7 +320,7 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * @return the amount of coins the wrapped player has, fetching if necessary.
      */
     public double getCoinsAmount() {
-        return lockedRead(this.coins);
+        return lockedRead(this.coins).doubleValue();
     }
 
     /**

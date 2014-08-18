@@ -204,14 +204,14 @@ public class KitFactory {
     }
 
     /**
-     * Sets the armor of the kit.
+     * @param armor the armor of the kit.
      */
     public void setArmor(ItemStack[] armor) {
         this.armor = armor;
     }
 
     /**
-     * Sets the contents of the kit, excluding armor.
+     * @param contents the contents of the kit, excluding armor.
      *
      * @see KitFactory#setArmor(ItemStack[])
      */
@@ -220,28 +220,28 @@ public class KitFactory {
     }
 
     /**
-     * Sets the icon to be displayed in a {@link KitLoader} to represent the kit to be produced.
+     * @param icon the icon to be displayed in a {@link KitLoader} to represent the kit to be produced.
      */
     public void setIcon(ItemStack icon) {
         this.icon = icon;
     }
 
     /**
-     * Sets the name of the objective to be completed by an user in order to use this kit.
+     * @param objectiveNeeded the name of the objective to be completed by an user in order to use this kit.
      */
     public void setObjectiveNeeded(String objectiveNeeded) {
         this.objectiveNeeded = objectiveNeeded;
     }
 
     /**
-     * Sets the amount of the objective to be completed by an user in order to use this kit. What this is is objective-implementation-specific.
+     * @param objectiveNeededAmount the amount of the objective to be completed by an user in order to use this kit. What this is is objective-implementation-specific.
      */
     public void setObjectiveNeededAmount(String objectiveNeededAmount) {
         this.objectiveNeededAmount = objectiveNeededAmount;
     }
 
     /**
-     * Sets the icon to be displayed in a {@link KitLoader} to represent the kit to be produced if the objective is not fulfilled by an user.
+     * @param unavailIcon the icon to be displayed in a {@link KitLoader} to represent the kit to be produced if the objective is not fulfilled by an user.
      */
     public void setUnavailIcon(ItemStack unavailIcon) {
         this.unavailIcon = unavailIcon;

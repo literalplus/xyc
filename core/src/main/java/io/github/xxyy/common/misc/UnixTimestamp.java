@@ -9,7 +9,7 @@ package io.github.xxyy.common.misc;
 import java.util.Calendar;
 
 /**
- * Simple class to manage unix timestamps.
+ * Simple class to manage unix timestam
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */

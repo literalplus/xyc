@@ -51,8 +51,9 @@ public interface PlayerWrapperFactory<T extends PlayerWrapper> {
     T getWrapper(CommandSender sender);
 
     /**
-     * Wraps a player by name.
+     * Wraps a player by name and uuid.
      *
+     * @param uuid the unique id of the wrapped player
      * @param plrName name of the wrapped player.
      * @return a T wrapping plrName.
      * @see io.github.xxyy.common.games.data.PlayerWrapper#PlayerWrapper(java.util.UUID, String, io.github.xxyy.common.sql.SafeSql)

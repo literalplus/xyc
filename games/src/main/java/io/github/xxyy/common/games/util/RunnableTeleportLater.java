@@ -17,12 +17,12 @@ import java.util.EnumMap;
 import java.util.Locale;
 
 /**
- * Teleports a Player to another location at a later time, providing they haven't moved and haven't took any damage.
+ * <p>Teleports a Player to another location at a later time, providing they haven't moved and haven't took any damage.
  * This class supports an optional {@link io.github.xxyy.common.games.util.RunnableTeleportLater.TeleportCompleteHandler}.
- * <p/>
+ * </p><p>
  * Note that {@code attemptsAllowed} does not re-schedule the task automatically - use {@link #runTaskTimer(org.bukkit.plugin.Plugin, long, long)}
  * for that. If the teleport completes successfully, the task is cancelled automatically.
- * <p/>
+ * </p>
  * <b>This class is NOT thread-safe and any calls to runTask(...)Asynchronously will result in exceptions!</b>
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>

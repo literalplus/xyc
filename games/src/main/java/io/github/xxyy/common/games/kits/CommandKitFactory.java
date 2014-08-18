@@ -311,6 +311,7 @@ public class CommandKitFactory extends XYCCommandExecutor implements TabComplete
         /**
          * Gets a {@code KitLoader} by a Player.
          *
+         * @param plr the player to get a loader for
          * @return KitLoader OR null on failure !! You have to print out error messages yourself!
          */
         public abstract KitLoader getKitLoader(Player plr);

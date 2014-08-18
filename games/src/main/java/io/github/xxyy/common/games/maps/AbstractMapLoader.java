@@ -137,7 +137,8 @@ public abstract class AbstractMapLoader {
     /**
      * Returns a YamlConfiguration for a map available in this {@link AbstractMapLoader}.
      *
-     * @param mapName The map to use.
+     * @param mapName  The map to use.
+     * @param fileName the name of the meta file, relative to the map folder
      * @return A YamlConfiguration in the folder of the chosen map, with the given file name.
      */
     public YamlConfiguration getMapMetaYaml(String mapName, String fileName) {
