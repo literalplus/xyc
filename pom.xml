@@ -179,6 +179,22 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+
+                <configuration>
+                    <excludePackageNames>*.internal.*</excludePackageNames>
+                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak).
+                    Do not distribute or otherwise use without explicit written permission from the author. See the LICENSE file for details.]]></bottom>
+                    <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
+                    <doctitle>XYC ${project.artifactId} ${project.version} API docs</doctitle>
+                    <outputDirectory>${project.basedir}/target/apidocs</outputDirectory>
+                    <quiet>true</quiet>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8</version>
                 <configuration>
@@ -217,35 +233,4 @@
 
         <finalName>xyc</finalName>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-
-                <configuration>
-                    <excludePackageNames>*.internal.*</excludePackageNames>
-                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak).
-                    Do not distribute or otherwise use without explicit written permission from the author. See the LICENSE file for details.]]></bottom>
-                    <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
-                    <doctitle>XYC ${project.artifactId} ${project.version} API docs</doctitle>
-                    <reportOutputDirectory>${project.basedir}/target/apidocs</reportOutputDirectory>
-                    <outputDirectory>${project.basedir}/target/apidocs</outputDirectory>
-                    <quiet>true</quiet>
-                </configuration>
-
-                <reportSets>
-                    <reportSet>
-                        <id>aggregate</id>
-                        <reports>
-                            <report>aggregate</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
-
 </project>
