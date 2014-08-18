@@ -49,7 +49,7 @@
     <distributionManagement>
         <downloadUrl>http://server.nowak-at.net/jenkins/view/XYCI/job/xyca~Commit%20and%20Test%20Stage</downloadUrl>
         <repository>
-            <id>xxyy-artifactory</id>
+            <id>xxyy-repo</id>
             <url>http://server.nowak-at.net/repo/xxyy-private/</url>
         </repository>
     </distributionManagement>
