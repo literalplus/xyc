@@ -77,6 +77,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * Gets an instance from an annotation.
      *
      * @param source Annotation to get data from
+     * @param <T>    generic type to be held by the resulting holder
      * @return The created object
      */
     @NotNull

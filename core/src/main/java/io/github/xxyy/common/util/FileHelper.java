@@ -33,6 +33,8 @@ public final class FileHelper {
      * Copies a file or directory {@code src} (and all its contents, if any)
      * to a new destination {@code dest}.
      *
+     * @param src  Source file or directory.
+     * @param dest If src is a directory, destination folder of the source file. Destination file otherwise.
      * @throws IOException If something went wrong while copying
      */
     public static void copyFolder(File src, File dest) throws IOException {

@@ -210,6 +210,7 @@ public class QueryBuilder { //TODO make concurrent
      *
      * @param statementFactory Where to get the statement from
      * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts have been defined.
+     * @throws java.sql.SQLException if a sql error occurs
      */
     @Nullable
     public PreparedStatement buildUpdate(@NotNull final PreparedStatementFactory statementFactory) throws SQLException {
@@ -261,6 +262,7 @@ public class QueryBuilder { //TODO make concurrent
      *
      * @param statementFactory Where to get the statement from
      * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts or identifiers have been defined.
+     * @throws java.sql.SQLException if a database error occurs
      */
     @Nullable
     public PreparedStatement buildTrueUpdate(@NotNull final PreparedStatementFactory statementFactory) throws SQLException {
@@ -353,6 +355,7 @@ public class QueryBuilder { //TODO make concurrent
      * @param statementFactory Where to get the statement from
      * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
      * @return a {@link java.sql.PreparedStatement} derived from the current state of this builder.
+     * @throws java.sql.SQLException if a database error occurs
      */
     @Nullable
     public PreparedStatement buildSelect(@NotNull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
@@ -409,7 +412,7 @@ public class QueryBuilder { //TODO make concurrent
      * @param statementFactory Where to get the statement from
      * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
      * @return A {@link io.github.xxyy.common.sql.QueryResult} created by the request, or {@code null} if {@link #buildSelect(io.github.xxyy.common.sql.PreparedStatementFactory, boolean)} returned {@code null}.
-     * @throws SQLException
+     * @throws SQLException if a database error occurs
      */
     public QueryResult executeSelect(@NotNull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
         PreparedStatement statement = buildSelect(statementFactory, selectStar);

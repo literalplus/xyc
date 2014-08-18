@@ -25,7 +25,7 @@ import java.lang.reflect.Modifier;
 
 /**
  * This interface can be applied to fields which represent object values in a database.
- * This is intended to be used with {@link io.github.xxyy.common.sql.builder.SqlValueHolder}.
+ * This is intended to be used with {@link SqlValueHolder}.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 23.3.14
@@ -57,7 +57,7 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
         /**
          * Updates objects with overriding values.
          *
-         * @see io.github.xxyy.common.sql.builder.SqlValueHolder
+         * @see SqlValueHolder
          */
         OBJECT_UPDATE {
             @Override
@@ -159,8 +159,12 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
          * Also populates the given Field with the created instance (if {@link Field#get(Object)} returns a non-null value)
          * and puts the created instance into a Set.
          *
-         * @param sourceField Field to populate and get information from
-         * @return An instance of {@link io.github.xxyy.common.sql.builder.SqlValueHolder} corresponding to the this type and Field.
+         * @param sourceField      Field to populate and get information from
+         * @param accessorInstance the instance required to access the class holding given field, or NULL if the field is static
+         * @param annotation       the annotation providing information about what kind of holder to generate
+         * @param dataSource       the data source to use to fetch data from a database
+         * @return An instance of {@link SqlValueHolder} corresponding to the this type and Field.
+         * @throws java.lang.IllegalArgumentException if the field couldn't be accessed
          */
         @NotNull
         public SqlValueHolder<?> createHolder(@NotNull Field sourceField, @NotNull SqlValueCache annotation,
@@ -170,7 +174,7 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
     }
 
     /**
-     * Makes {@link io.github.xxyy.common.sql.builder.SqlValueHolder}s from annotations.
+     * Makes {@link SqlValueHolder}s from annotations.
      */
     static interface AnnotationToHolderFactory<T> {
         @NotNull

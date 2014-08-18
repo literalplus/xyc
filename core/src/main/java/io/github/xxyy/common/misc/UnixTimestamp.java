@@ -36,20 +36,25 @@ public class UnixTimestamp {
 
     /**
      * Gets a new {@link UnixTimestamp} from a amount of milliseconds that passed since 1.1.1970.
+     *
+     * @param millis the amount of milliseconds since Jan 1 1970 for this timestamp
+     * @return a unix timestamp object with the specified parameters
      */
     public static UnixTimestamp fromMillis(long millis) {
         return new UnixTimestamp(millis / 1000);
     }
 
     /**
-     * Gets a new {@link UnixTimestamp} from a amount of milliseconds that passed since 1.1.1970.
+     * Gets a new {@link UnixTimestamp} from a amount of seconds that passed since 1.1.1970.
+     * @param seconds the amount of seconds since Jan 1 1970 for this timestamp
+     * @return a unix timestamp object with the specified parameters
      */
     public static UnixTimestamp fromSeconds(long seconds) {
         return new UnixTimestamp(seconds);
     }
 
     /**
-     * Gets the current {@link UnixTimestamp}.
+     * @return the current {@link UnixTimestamp}.
      */
     public static UnixTimestamp now() {
         return new UnixTimestamp(Calendar.getInstance().getTimeInMillis() / 1000);

@@ -5,9 +5,10 @@ import java.util.NoSuchElementException;
 
 /**
  * Converts an array to an iterator.
- * <p/>
+ * <p>
  * More information about this class is available from <a target="_top" href=
  * "http://ostermiller.org/utils/Iterator_Enumeration.html">ostermiller.org</a>.
+ * </p>
  *
  * @param <ElementType> Type of array over which to iterate
  * @author Stephen Ostermiller http://ostermiller.org/contact.pl?regarding=Java+Utilities

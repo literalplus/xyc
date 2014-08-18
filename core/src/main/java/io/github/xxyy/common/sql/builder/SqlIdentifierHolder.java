@@ -80,6 +80,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
      * Gets an instance from an annotation.
      *
      * @param source Annotation to get data from
+     * @param <T>    the generic type of the newly generated holder
      * @return The created object
      */
     @NotNull

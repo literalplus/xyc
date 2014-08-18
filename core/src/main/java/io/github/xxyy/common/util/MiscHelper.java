@@ -15,6 +15,8 @@ import org.apache.commons.lang.math.RandomUtils;
  */
 public abstract class MiscHelper {
     /**
+     * @param clazz Class object of the enum class to get an  element from
+     * @param <T> Enum class to get a random element from
      * @return a semi-random element from {@code clazz}.
      */
     public static <T extends Enum<?>> T randomEnumElement(Class<T> clazz) {

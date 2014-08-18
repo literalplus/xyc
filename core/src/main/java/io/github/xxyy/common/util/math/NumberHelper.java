@@ -53,6 +53,7 @@ public final class NumberHelper {
      * Tries to get a predefined {@link MathOperator} for a class.
      *
      * @param clazz Target class - Must be the actual Object one, not the primitive.
+     * @param <N>   number class to get an operator for
      * @return A MathOperator corresponding to {@code clazz}, if available.
      */
     @Nullable
@@ -63,9 +64,10 @@ public final class NumberHelper {
 
     /**
      * Formats a number with spaces as group separator for use on signs. The number will be colored in black, if it's to short to actually
-     * automatically be aligned right, it will be prefixed with grey underscores. Possible outputs: &amp;7________&amp;0123 123456789012345
+     * automatically be aligned right, it will be prefixed with grey underscores. Possible outputs: §7________§0123 123456789012345
      *
      * @param number The number to be formatted
+     * @return A string to be used on Minecraft signs representing the input, aligned to the right.
      */
     public static String formatForSignRightAligned(int number) {
 //        String rtrn = NumberFormat.getInstance(Locale.GERMAN).format(number);

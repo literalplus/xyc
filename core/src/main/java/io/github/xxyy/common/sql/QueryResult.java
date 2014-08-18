@@ -46,6 +46,7 @@ public class QueryResult implements AutoCloseable {
     /**
      * Shortcut for {@link QueryResult#getResultSet()}.
      *
+     * @return the ResultSet associated with this query result
      * @see #getResultSet()
      */
     public ResultSet rs() {

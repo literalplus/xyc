@@ -165,6 +165,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     }
 
     /**
+     * @return a newly made connection.
      * @see #makeConnection()
      * @deprecated Ambiguous name. Kept for compatibility with previous code.
      */
@@ -175,7 +176,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
     /**
      * Safely prepares a statement. Remember to close it afterwards. Insert values by using '?'.
-     * <p/>
+     * <p>
      * Example:
      * {@code
      * PreparedStatement stmt = null;
@@ -187,7 +188,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * stmt.executeUpdate();
      * }finally{
      * try{ if(stmt != null){ stmt.close(); } }catch{ logAndThenPanic(); } }
-     * }
+     * }</p>
      *
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
