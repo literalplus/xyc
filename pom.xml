@@ -43,11 +43,11 @@
 
     <ciManagement>
         <system>jenkins</system>
-        <url>http://server.nowak-at.net/jenkins/job/xyca~Commit%20and%20Test%20Stage/</url>
+        <url>http://ci.nowak-at.net/job/xyca~XYC_compile/</url>
     </ciManagement>
 
     <distributionManagement>
-        <downloadUrl>http://server.nowak-at.net/jenkins/view/XYCI/job/xyca~Commit%20and%20Test%20Stage</downloadUrl>
+        <downloadUrl>http://ci.nowak-at.net/job/xyca~XYC_compile/</downloadUrl>
         <repository>
             <id>xxyy-repo</id>
             <url>http://server.nowak-at.net/repo/xxyy-private/</url>
