@@ -57,6 +57,7 @@ public final class UUIDRepositories {
      * A {@link io.github.xxyy.common.shared.uuid.MojangUUIDRepository} is at top of the chain by default.
      *
      * @param newRepo New repository to add to the chain
+     * @param plugin  the plugin to use if xyc isn't running standalone
      */
     public static void addRepository(UUIDRepository newRepo, Plugin plugin) {
         if (!UUIDRepositories.class.getName().startsWith("io.github.xxyy.common.shared")) {

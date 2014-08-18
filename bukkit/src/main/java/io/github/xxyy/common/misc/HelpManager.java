@@ -122,6 +122,7 @@ public class HelpManager {
     /**
      * Gets a {@link HelpManager} by its key in {@link HelpManager#helpMans}.
      *
+     * @param helpManId the unique help manager key
      * @return a {@link HelpManager} or {@code null} if no such entry exists.
      */
     public static HelpManager getHelpManager(String helpManId) {

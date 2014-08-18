@@ -54,14 +54,14 @@ public class XyHelper { //TODO logger
     public static final SafeSql commonSql = new SafeSql(new XycSqlDataManager());
 
     /**
-     * Gets the XYC config as {@link YamlConfiguration}.
+     * @return the XYC config as {@link YamlConfiguration}.
      */
     public static YamlConfiguration getCfg() {
         return XyHelper.xycConfiguration;
     }
 
     /**
-     * Gets the internal locale storage.
+     * @return the internal locale storage.
      */
     public static XycLocale getLocale() {
         return XyHelper.locale;
@@ -89,6 +89,7 @@ public class XyHelper { //TODO logger
     }
 
     /**
+     * @return a list of plugins registered with XYC
      * @deprecated Use {@link AbstractXyPlugin#getInstances()}.
      */
     @Deprecated

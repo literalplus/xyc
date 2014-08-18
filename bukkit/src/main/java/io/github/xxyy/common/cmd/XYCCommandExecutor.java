@@ -26,14 +26,15 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
      * Called to catch commands. Some things have already been done!
      *
      * @param senderName Pre-fetched to save dat line of code :)
+     * @param args       an array of the string arguments passed to the command
+     * @param cmd        the command object handling the command
+     * @param label      the alias the command was called with
+     * @param sender     the object which caused this command execution
      * @return Success
      * @see CommandExecutor#onCommand(CommandSender, Command, String, String[])
      */
     public abstract boolean catchCommand(CommandSender sender, String senderName, Command cmd, String label, String[] args);
 
-    /**
-     * Please DO NOT OVERRIDE. That's not good practice. Oh, you can't!
-     */
     @Override
     public final boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return this.handleXycSubcommand(args, sender, label) || //Handle XYC tools
@@ -46,6 +47,11 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
      * This allows for implementations to specify something to be executed before {@link XYCCommandExecutor#catchCommand(CommandSender, String, Command, String, String[])}. This is especially if you
      * want to undo AFK states, display mails and so on. (Also to specify your very own credit message)
      *
+     * @param label      the alias the command was called with
+     * @param sender     the object which caused this command execution
+     * @param cmd        the command object handling the command
+     * @param args       an array of the string arguments passed to the command
+     * @param senderName the name of the command sender for convenience
      * @return Whether execution should continue
      */
     @SuppressWarnings("UnusedParameters")

@@ -53,7 +53,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     }
 
     /**
-     * SafeSql instance managed by this plugin.
+     * @return the SafeSql instance managed by this plugin.
      */
     public SafeSql getSql() {
         return this.ssql;

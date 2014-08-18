@@ -46,6 +46,7 @@ public class UnixTimestamp {
 
     /**
      * Gets a new {@link UnixTimestamp} from a amount of seconds that passed since 1.1.1970.
+     *
      * @param seconds the amount of seconds since Jan 1 1970 for this timestamp
      * @return a unix timestamp object with the specified parameters
      */

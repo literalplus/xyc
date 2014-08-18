@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
-public abstract class LogHelper {
+public abstract class LogHelper { //TODO this shouldn't be static and accept a plugin instance. And the JavaDoc is um..bad
 
     protected static LogHelper instance;
     private List<Logger> loggers = new ArrayList<>();
@@ -41,12 +41,12 @@ public abstract class LogHelper {
     public abstract void initLoggers();
 
     /**
-     * Flushes all loggers an then releases the
+     * <p>Flushes all loggers an then releases the
      * associated file locks.
-     * <p/>
-     * Especially helpful when disabling your
+     * </p>
+     * <p>Especially helpful when disabling your
      * plugin.
-     * <p/>
+     * </p>
      * <b>Heads up!</b> Other plugins may invoke
      * this method too, so be careful when using
      * your loggers in {@link AbstractXyPlugin#disable()}.
@@ -74,9 +74,10 @@ public abstract class LogHelper {
      * Tries to initialize a new logger.
      * Prints a message to console in case of failure.
      *
-     * @param lgr       Logger to initialize
-     * @param fileName  file to write to (creates a new {@link FileHandler})
-     * @param formatter formatter used to format the log (preferably {@link XYCFormatter})
+     * @param lgr        Logger to initialize
+     * @param fileName   file to write to (creates a new {@link FileHandler})
+     * @param formatter  formatter used to format the log (preferably {@link XYCFormatter})
+     * @param loggerName the nice name of the logger
      * @see LogHelper#initLogger(java.util.logging.Logger, String, java.util.logging.Formatter)
      */
     protected void tryInitLogger(Logger lgr, String fileName, String loggerName, Formatter formatter) {

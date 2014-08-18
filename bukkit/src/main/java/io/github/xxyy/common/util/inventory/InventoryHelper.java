@@ -94,6 +94,7 @@ public final class InventoryHelper {
      *
      * @param humanEntity HumanEntity to target
      * @param delay       Time, in ticks, to wait before the inventory is closed
+     * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#closeInventory()
      * @see InventoryHelper#closeInventoryLater(org.bukkit.entity.HumanEntity, org.bukkit.plugin.Plugin)
      */
@@ -106,6 +107,7 @@ public final class InventoryHelper {
      * Convenience method, uses 1L as delay (in ticks), as this is used very often.
      *
      * @param humanEntity HumanEntity to target
+     * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#closeInventory()
      * @see InventoryHelper#closeInventoryLater(org.bukkit.entity.HumanEntity, long, org.bukkit.plugin.Plugin)
      */
@@ -120,6 +122,8 @@ public final class InventoryHelper {
      *
      * @param delay       Time, in ticks, to wait before the action is executed
      * @param humanEntity HumanEntity to target
+     * @param inventory   the inventory to open
+     * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#openInventory(org.bukkit.inventory.Inventory)
      * @see InventoryHelper#openInventoryLater(org.bukkit.entity.HumanEntity, org.bukkit.inventory.Inventory, org.bukkit.plugin.Plugin)
      */
@@ -132,6 +136,8 @@ public final class InventoryHelper {
      * Convenience method, uses 1L as delay (in ticks), as this is used very often.
      *
      * @param humanEntity HumanEntity to target
+     * @param inventory   the inventory to open
+     * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#openInventory(org.bukkit.inventory.Inventory)
      * @see InventoryHelper#openInventoryLater(org.bukkit.entity.HumanEntity, org.bukkit.inventory.Inventory, long, org.bukkit.plugin.Plugin)
      */

@@ -29,6 +29,10 @@ public abstract class LocationHelper {
      * There is no special order of the boundaries required,
      * they can even be equal.
      *
+     * @param toCheck   the location to check
+     * @param boundary1 the first boundary of the rectangle region toCheck has to be in
+     * @param boundary2 the second boundary of the rectangle region toCheck has to be in
+     * @return whether toCheck is in the rectangle represented by the boundaries
      * @see io.github.xxyy.common.util.math.NumberHelper#isNumberBetween(int, int, int)
      */
     public static boolean isBlockBetween(Location toCheck, Location boundary1, Location boundary2) {
@@ -38,22 +42,11 @@ public abstract class LocationHelper {
     }
 
     /**
-     * Determines if a number {@code toCheck} is between or
-     * equal to one the boundaries specified.
-     * There is no special order of the boundaries required,
-     *
-     * @deprecated Use {@link NumberHelper#isNumberBetween(int, int, int)} instead
-     */
-    @Deprecated
-    public static boolean isNumberBetween(int toCheck, int boundary1, int boundary2) {
-        return NumberHelper.isNumberBetween(toCheck, boundary1, boundary2);
-    }
-
-    /**
-     * Randomises x,y and z coordinates of a Location, in a radius.
+     * Randomises x,y and z coordinates of a Location, in a (square!) radius.
      *
      * @param original Location to randomise
      * @param radius   Maximum distance from the original location
+     * @return a random location with at most radius distance from the original location
      */
     public static Location randomiseLocation(Location original, int radius) {
         int modX = RandomUtils.nextInt(radius);

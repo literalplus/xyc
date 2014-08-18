@@ -183,10 +183,10 @@ public class CommandHelper {
     }
 
     /**
-     * Formats {@code seconds} for a human-readable output in german. If {@code seconds &gt;= 60}, the output will be formatted like this:
+     * <p>Formats {@code seconds} for a human-readable output in german. If {@code seconds &gt;= 60}, the output will be formatted like this:
      * <i>x Minuten und y Sekunden</i>
      * <b>Notice:</b> Currently, there is no support for hours.
-     * <p/>
+     * </p>
      * <b>Examples:</b>
      * 1 -&gt; <i>1 Sekunde</i>
      * 46 -&gt; <i>46 Sekunden</i>
@@ -318,7 +318,9 @@ public class CommandHelper {
     /**
      * Returns a List with only {@code t} in it.
      *
-     * @deprecated Use {@link com.google.common.collect.Lists#newArrayList(java.lang.Object...)}
+     * @param t   the element to add
+     * @param <T> the generic type of the resulting list
+     * @deprecated Use {@link com.google.common.collect.Lists#newArrayList(java.lang.Object...)} or {@link com.google.common.collect.ImmutableList#of()}
      */
     @Deprecated
     public static <T> List<T> list(T t) {
@@ -385,7 +387,8 @@ public class CommandHelper {
     /**
      * returns a set with just {@code t} in it.
      *
-     * @param t Element to put and type argument
+     * @param t   Element to put and type argument
+     * @param <T> the generic type of the resulting set
      * @return Set of type T with {@code t} in it.
      * @deprecated Use {@link com.google.common.collect.Sets#newHashSet(java.lang.Object...)} instead
      */
@@ -477,6 +480,9 @@ public class CommandHelper {
 
     /**
      * An Array-based version of {@link CommandHelper#toStringAll(java.lang.Iterable)}
+     *
+     * @param arr an array with elements to stringify
+     * @return A list of the String representations of arr's elements
      */
     public static List<String> toStringAll(final Object[] arr) {
         return toStringAll(Arrays.asList(arr));

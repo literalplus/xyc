@@ -47,6 +47,7 @@ public class LangHelper {
      * Parses a String so that a) {@link ChatColor} is parsed with '&amp;' instead of the paragraph sign b) html entities are replaced with their unicode representations.
      *
      * @param str String to process
+     * @return the parsed string
      */
     public static String applyCodes(String str) {
         return ChatColor.translateAlternateColorCodes('&', StringEscapeUtils.unescapeHtml(str));
@@ -132,6 +133,8 @@ public class LangHelper {
     /**
      * Gets the {@link YamlConfiguration} object that represents a specific language file of a specific plugin.
      *
+     * @param lang     the language id to get the file for
+     * @param pluginId the id of the plugin to get the file for
      * @return {@link YamlConfiguration} or {@code null} if not found.
      */
     public static YamlConfiguration getLangFile(String lang, String pluginId) {
@@ -209,6 +212,9 @@ public class LangHelper {
 
     /**
      * Prints a full dump of the keys loaded for this file and plugin to {@link System#out}.
+     *
+     * @param lang the language key to dump
+     * @param pl   the plugin id to dump
      */
     public static void printDebug(String pl, String lang) {
         HashMap<String, YamlConfiguration> map = LangHelper.langCache.get(pl);
@@ -252,6 +258,9 @@ public class LangHelper {
      * {@code plug}, using getName() of
      * {@code plug} as plugin key.
      *
+     * @param locId  the message id to send
+     * @param sender the receiver of the message
+     * @param plug   the plugin to get the message for
      * @see LangHelper#localiseString(String, String, String)
      */
     public static void sendLocalizedStringWithPrefix(String locId, CommandSender sender, AbstractXyPlugin plug) {

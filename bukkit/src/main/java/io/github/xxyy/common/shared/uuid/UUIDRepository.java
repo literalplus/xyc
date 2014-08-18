@@ -48,9 +48,9 @@ public interface UUIDRepository {
     UUID forNameChecked(String name) throws UnknownKeyException, InvalidResultException;
 
     /**
-     * Gets the first name associated with a given UUID. This lookup direction is much slower than {@link #forName(String)}
+     * <p>Gets the first name associated with a given UUID. This lookup direction is much slower than {@link #forName(String)}
      * since it uses reverse lookup and should only be used in rare cases.
-     * <p/>
+     * </p>
      * Some implementations may also only return names for UUIDs that were fetched using {@link #forName(String)} because
      * not all backends support reverse lookup.
      *

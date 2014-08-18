@@ -23,6 +23,9 @@ public abstract class FireworkHelper {
     /**
      * Launches a random Firework at a random Location in
      * {@code radius} around {@code loc}.
+     *
+     * @param loc    the base location of where to launch a rocket
+     * @param radius the radius in which the rocket will spawn from loc
      */
     public static void launchRandomRocketNear(Location loc, int radius) {
         loc = LocationHelper.randomiseLocation(loc, radius);

@@ -47,7 +47,7 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
     }
 
     /**
-     * Returns the chat prefix for this XyPlugin. This is used by xy_common on multiple points.
+     * @return the chat prefix for this XyPlugin. This is used by xy_common at multiple points.
      */
     public abstract String getChatPrefix();
 
@@ -84,6 +84,10 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
 
     /**
      * This sets the CommandExecutor for a command, using exec for both. Convenience method.
+     *
+     * @param cmdName the name of the base command to set the executor for
+     * @param exec    the executor to set
+     * @param <T>     generic type of the executor
      */
     protected final <T extends CommandExecutor> void setExec(final T exec, final String cmdName) {
         Validate.notNull(this.getCommand(cmdName), "Command " + cmdName + " is not registered for this plugin: " + this.toString());
@@ -92,6 +96,10 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
 
     /**
      * This sets the TabCompleter and CommandExecutor for a command, using exec for both. Convenience method.
+     *
+     * @param cmdName the name of the base command to set the executor and completer for
+     * @param exec    the executor and completer to set
+     * @param <T>     generic type of the executor and completer
      */
     protected final <T extends CommandExecutor & TabCompleter> void setExecAndCompleter(final T exec, final String cmdName) {
         this.setExec(exec, cmdName);
