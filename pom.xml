@@ -187,7 +187,7 @@
                     <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak).
                     Do not distribute or otherwise use without explicit written permission from the author. See the LICENSE file for details.]]></bottom>
                     <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
-                    <doctitle>XYC ${project.artifactId} ${project.version} API docs</doctitle>
+                    <doctitle>XYC ${project.version} JavaDocs</doctitle>
                     <outputDirectory>${project.basedir}/target/apidocs</outputDirectory>
                     <quiet>true</quiet>
                 </configuration>
