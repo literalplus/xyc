@@ -23,6 +23,8 @@ as well as several utility classes.
 
 Obviously, this requires you to have Bukkit or Spigot-API in your classpath.
 
+Oh yeah, and you can run this as a Bukkit plugin to avoid shading everything into your plugin.
+
 ### xyc-bungee
 This module currently only provides a single utility class for BungeeCord, but is probably going to be extended in the
 future. You need BungeeCord-API in your classpath to use this.
@@ -37,6 +39,8 @@ improvement), a framework for saving and loading kits from YAML files, some clas
 a Bukkit task that lets you easily teleport people to another location while making sure that they don't move, etc.
 
 You need xyc-bukkit in your classpath for this to work.
+
+You can run this as a Bukkit plugin too if you want. (Use the standalone distribution)
 
 Documentation
 -------------

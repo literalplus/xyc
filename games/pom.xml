@@ -33,7 +33,7 @@
 
     <build>
         <plugins>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
 
@@ -52,8 +52,11 @@
                             <include>io.github.xxyy.common:xyc-bukkit</include>
                         </includes>
                     </artifactSet>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>standalone</shadedClassifierName>
+                    <finalName>xyc-games-standalone</finalName>
                 </configuration>
-            </plugin>-->
+            </plugin>
         </plugins>
 
         <finalName>xyc-games</finalName>
