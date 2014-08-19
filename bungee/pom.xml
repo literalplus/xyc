@@ -17,7 +17,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bungee</artifactId>
+    <artifactId>xyc-bungee</artifactId>
     <name>XYC BungeeCord Utilities</name>
 
     <dependencies>
