@@ -139,4 +139,22 @@ public abstract class LocationHelper {
                 .append(loc.getBlockZ()).append(" ")
                 .toString();
     }
+
+    /**
+     * Checks that two locations are in the same world and their integer block values are equal. This is here because
+     * {@link org.bukkit.Location#equals(Object)} uses exact floating point values and such precision is rarely required.
+     *
+     * @param a the first location
+     * @param b the location to compare
+     * @return whether both locations are in the same world and their x,y,z blocks are the same.
+     */
+    public static boolean softEqual(Location a, Location b) {
+        if (a.getWorld() != b.getWorld() && (a.getWorld() != null && a.getWorld().equals(b.getWorld()))) {
+            return false;
+        }
+
+        return a.getBlockX() == b.getBlockX() &&
+                a.getBlockY() == b.getBlockY() &&
+                a.getBlockZ() == b.getBlockZ();
+    }
 }

@@ -11,6 +11,7 @@ package io.github.xxyy.common.games.util;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import io.github.xxyy.common.util.LocationHelper;
 import io.github.xxyy.common.util.task.NonAsyncBukkitRunnable;
 import io.github.xxyy.lib.intellij_annotations.NotNull;
 import io.github.xxyy.lib.intellij_annotations.Nullable;
@@ -99,7 +100,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             failureReason = TeleportFailureReason.LEFT;
         } else if (plr.getHealth() != initialHealth) {
             failureReason = TeleportFailureReason.DAMAGED;
-        } else if (plr.getLocation() != from) {
+        } else if (LocationHelper.softEqual(plr.getLocation(), from)) {
             failureReason = TeleportFailureReason.MOVED;
         }
 
