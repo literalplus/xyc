@@ -117,4 +117,26 @@ public abstract class LocationHelper {
                 String.format("x=%d,y=%d,z=%d in %s",
                         loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), loc.getWorld().getName());
     }
+
+    /**
+     * Generates a /minecraft:tp command string to teleport a player to a given location.
+     * If no target name is given, the command will be generated in such a way that it teleports the player executing it.
+     *
+     * @param loc        the location to teleport to
+     * @param targetName the name of the player to target or NULL for the command's executor
+     * @return a command string (including /) corresponding to the arguments
+     */
+    public static String createTpCommand(@NotNull Location loc, @Nullable String targetName) {
+        StringBuilder stringBuilder = new StringBuilder("/minecraft:tp ");
+
+        if (targetName != null) {
+            stringBuilder.append(targetName).append(" ");
+        }
+
+        return stringBuilder
+                .append(loc.getBlockX()).append(" ")
+                .append(loc.getBlockY()).append(" ")
+                .append(loc.getBlockZ()).append(" ")
+                .toString();
+    }
 }
