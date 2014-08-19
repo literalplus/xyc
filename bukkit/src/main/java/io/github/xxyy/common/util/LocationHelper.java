@@ -149,7 +149,7 @@ public abstract class LocationHelper {
      * @return whether both locations are in the same world and their x,y,z blocks are the same.
      */
     public static boolean softEqual(Location a, Location b) {
-        if (a.getWorld() != b.getWorld() && (a.getWorld() != null && a.getWorld().equals(b.getWorld()))) {
+        if (a.getWorld() != b.getWorld() && (a.getWorld() != null && !a.getWorld().equals(b.getWorld()))) {
             return false;
         }
 
