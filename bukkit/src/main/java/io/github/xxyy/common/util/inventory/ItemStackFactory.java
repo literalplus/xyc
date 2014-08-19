@@ -19,6 +19,8 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,6 +92,21 @@ public final class ItemStackFactory {
     }
 
     /**
+     * Sets the display name of this factory if the resulting stack would not have a custom display name.
+     * @param defaultDisplayName the display name to ste
+     * @return this object
+     */
+    public ItemStackFactory defaultDisplayName(final String defaultDisplayName) {
+        if (!(base.hasItemMeta() && base.getItemMeta().hasDisplayName()) || displayName == null) {
+            return displayName(defaultDisplayName);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the resulting item stack's lore, overriding any previous values.
+     *
      * @param lore Future lore of the product.
      * @return This object for chained calls.
      */
@@ -99,9 +116,26 @@ public final class ItemStackFactory {
     }
 
     /**
+     * Appends a collection of strings to the resulting item stack's lore, treating every element as a separate line.
+     * If this factory was constructed with a template item stack, this method will append to its existing lore, if any.
+     * @param loreToAppend the lines to add to the lore
+     * @return this object
+     */
+    public ItemStackFactory appendLore(final Collection<String> loreToAppend) {
+        if (this.lore == null) {
+            return lore(loreToAppend instanceof List ? (List<String>) loreToAppend : new ArrayList<>(loreToAppend));
+        }
+
+        this.lore.addAll(loreToAppend);
+
+        return this;
+    }
+
+    /**
      * This method adds a String to the lore of the product.
      * If given a simple String, it will be added as new line.
      * If given a String containing newlines, it will split the input by {@code \n} and add each result String to the lore.
+     * If the factory was constructed with a template item stack, this will be appended to its existing lore, if any.
      *
      * @param whatToAdd What to add to the future Lore of the product.
      * @return This object for chained calls.
