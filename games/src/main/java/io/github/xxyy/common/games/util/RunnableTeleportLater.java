@@ -104,7 +104,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             failureReason = TeleportFailureReason.LEFT;
         } else if (plr.getHealth() != initialHealth) {
             failureReason = TeleportFailureReason.DAMAGED;
-        } else if (LocationHelper.softEqual(plr.getLocation(), from)) {
+        } else if (!LocationHelper.softEqual(plr.getLocation(), from)) {
             failureReason = TeleportFailureReason.MOVED;
         }
 
