@@ -79,7 +79,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
      * @param to  Target location
      */
     public void reset(@NotNull Player plr, @NotNull Location to) {
-        this.cancel();
+        this.tryCancel();
 
         this.plr = plr;
         this.to = to;
@@ -94,6 +94,10 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
 
     @Override
     public void run() {
+        if (plr == null) {
+            return;
+        }
+
         TeleportFailureReason failureReason = null;
 
         if (!plr.isOnline()) {
