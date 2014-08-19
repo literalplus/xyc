@@ -24,8 +24,11 @@ public abstract class ImprovedBukkitRunnable extends BukkitRunnable {
      * @see #cancel()
      */
     public void tryCancel() {
-        if (this.getTaskId() != -1) {
+        try {
             this.cancel();
+        } catch(IllegalStateException ignore) {
+            //Bukkit won't even return a -1 task id - They'll just throw this and nothing to do about it
+            //This is totally how you API properly
         }
     }
 }

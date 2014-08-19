@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.xxyy.common</groupId>
     <artifactId>xyc-parent</artifactId>
-    <version>3.0.1.1-SNAPSHOT</version>
+    <version>3.0.1.2-SNAPSHOT</version>
     <modules>
         <module>bukkit</module>
         <module>core</module>
