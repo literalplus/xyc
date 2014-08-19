@@ -10,8 +10,8 @@ package io.github.xxyy.common.sql.builder;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.github.xxyy.common.lib.net.minecraft.server.UtilUUID;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
+import io.github.xxyy.common.util.UUIDHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,8 +46,7 @@ public class SqlUUIDHolder extends SqlIdentifierHolder<UUID> {
 
     @Override
     public void processResultSet(@NotNull ResultSet resultSet) throws SQLException {
-        //noinspection UnnecessaryFullyQualifiedName
-        this.updateValue(UtilUUID.getFromString(
+        this.updateValue(UUIDHelper.getFromString(
                 resultSet.getString(this.getColumnName())
         ));
     }

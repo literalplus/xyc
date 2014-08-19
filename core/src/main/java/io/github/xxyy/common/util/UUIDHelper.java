@@ -45,4 +45,29 @@ public class UUIDHelper {
     public static UUID getOfflineUUID(String offlineName) {
         return UUID.nameUUIDFromBytes(("OfflinePlayer:" + offlineName).getBytes(Charsets.UTF_8));
     }
+
+    /**
+     * Gets an UUID from a String. The input may or may not contain the dashes used by Java, since Mojang's API returns
+     * UUIDs without dashes at some points.
+     *
+     * @param input the input to convert
+     * @return an UUID corresponding to the input or NULL if the input is invalid
+     */
+    public static UUID getFromString(String input) {
+        if (input == null) {
+            return null;
+        } else if (isValidUUID(input)) {
+            return UUID.fromString(input);
+        } else {
+            if (input.length() == 32) {
+                String s1 = input.substring(0, 8) + "-" + input.substring(8, 12) + "-" + input.substring(12, 16) + "-" + input.substring(16, 20) + "-" + input.substring(20, 32);
+
+                if (isValidUUID(s1)) {
+                    return UUID.fromString(s1);
+                }
+            }
+
+            return null;
+        }
+    }
 }

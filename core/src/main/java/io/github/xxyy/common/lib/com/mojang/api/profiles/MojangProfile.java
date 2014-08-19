@@ -1,6 +1,6 @@
 package io.github.xxyy.common.lib.com.mojang.api.profiles;
 
-import io.github.xxyy.common.lib.net.minecraft.server.UtilUUID;
+import io.github.xxyy.common.util.UUIDHelper;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public class MojangProfile implements Profile {
 
     @Override
     public UUID getUniqueId() {
-        return UtilUUID.getFromString(getId());
+        return UUIDHelper.getFromString(getId());
     }
 
     @Override
