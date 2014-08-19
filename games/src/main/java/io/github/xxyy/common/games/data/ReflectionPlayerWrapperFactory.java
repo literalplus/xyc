@@ -8,14 +8,14 @@
 
 package io.github.xxyy.common.games.data;
 
-import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.SafeSql;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.Collection;
@@ -108,7 +108,7 @@ public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements 
     }
 
     @Override
-    public T getWrapper(@NonNull UUID uuid, @Nullable String plrName) {
+    public T getWrapper(@NotNull UUID uuid, @Nullable String plrName) {
         T rtrn = this.wrappers.get(uuid);
         if (rtrn == null) {
             try {

@@ -9,7 +9,8 @@
 package io.github.xxyy.common.games.teams;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+
+import io.github.xxyy.lib.intellij_annotations.NotNull;
 
 import java.util.Collection;
 

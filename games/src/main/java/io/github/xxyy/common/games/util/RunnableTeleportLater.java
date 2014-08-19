@@ -10,10 +10,10 @@ package io.github.xxyy.common.games.util;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.util.task.NonAsyncBukkitRunnable;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Locale;

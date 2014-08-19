@@ -29,16 +29,11 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.12.6</version>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
 
@@ -58,7 +53,7 @@
                         </includes>
                     </artifactSet>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
 
         <finalName>xyc-games</finalName>

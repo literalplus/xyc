@@ -8,12 +8,12 @@
 
 package io.github.xxyy.common.games.data;
 
-import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 
 import io.github.xxyy.common.sql.SafeSql;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,7 +64,7 @@ public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerW
     }
 
     @Override
-    public void free(@NonNull UUID wrpUniqueId) {
+    public void free(@NotNull UUID wrpUniqueId) {
         WRAPPER_CACHE_LOCK.lock();
 
         try {
@@ -98,7 +98,7 @@ public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerW
     }
 
     @Override
-    public PlayerWrapper getWrapper(@NonNull UUID uuid, @Nullable String plrName) {
+    public PlayerWrapper getWrapper(@NotNull UUID uuid, @Nullable String plrName) {
         WRAPPER_CACHE_LOCK.lock();
 
         try {
@@ -120,7 +120,7 @@ public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerW
      * @return A wrapper
      * @throws java.lang.NullPointerException If this player does not have a cached wrapper.
      */
-    public PlayerWrapper getWrapper(@NonNull String plrName) {
+    public PlayerWrapper getWrapper(@NotNull String plrName) {
         return getWrapper(nameToUuidMap.get(plrName), plrName); //Can't do anything else
     }
 

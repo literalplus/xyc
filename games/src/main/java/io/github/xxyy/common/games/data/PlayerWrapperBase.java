@@ -8,10 +8,8 @@
 
 package io.github.xxyy.common.games.data;
 
-import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
@@ -24,8 +22,9 @@ import io.github.xxyy.common.sql.builder.SqlUUIDHolder;
 import io.github.xxyy.common.sql.builder.SqlValueHolder;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import io.github.xxyy.common.util.ThreadHelper;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -253,7 +252,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
      * @see org.bukkit.entity.Player#getUniqueId()
      * @see io.github.xxyy.common.games.data.PlayerWrapper#plr()
      */
-    @NonNull
+    @NotNull
     public UUID getUniqueId() {
 //        if (this.uuid.getValue() == null) {
 //            Player plr = plr();

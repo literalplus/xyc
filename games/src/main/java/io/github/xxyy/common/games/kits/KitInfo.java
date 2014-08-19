@@ -11,7 +11,8 @@ package io.github.xxyy.common.games.kits;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
+import io.github.xxyy.lib.intellij_annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;

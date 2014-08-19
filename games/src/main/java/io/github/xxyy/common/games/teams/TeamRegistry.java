@@ -8,8 +8,9 @@
 
 package io.github.xxyy.common.games.teams;
 
-import lombok.NonNull;
 import org.apache.commons.lang.Validate;
+
+import io.github.xxyy.lib.intellij_annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -42,7 +43,7 @@ public final class TeamRegistry {
      *
      * @param team Team to register
      */
-    public static void registerTeam(@NonNull Team team) {
+    public static void registerTeam(@NotNull Team team) {
         TEAM_MAP.put(team.getName(), team);
 
         PROPERTY_CHANGE_SUPPORT.firePropertyChange("teams", null, team);
@@ -54,12 +55,12 @@ public final class TeamRegistry {
      * @param teamName Name of the team to get
      * @return A {@link io.github.xxyy.common.games.teams.Team} or null if there's no such team.
      */
-    public static Team getTeam(@NonNull String teamName) {
+    public static Team getTeam(@NotNull String teamName) {
         return TEAM_MAP.get(teamName);
     }
 
     @SuppressWarnings("unchecked") //The class is actually checked, so no errors can occur. Sorry, Mr. Compiler
-    public static <T> T getTeam(@NonNull String teamName, Class<T> clazz) {
+    public static <T> T getTeam(@NotNull String teamName, Class<T> clazz) {
         Team team = getTeam(teamName);
 
         if (team == null) {
@@ -77,7 +78,7 @@ public final class TeamRegistry {
      * @param teamName Name of the team to unregister.
      * @return Whether the team list changed as a result of this call.
      */
-    public static boolean unregisterTeam(@NonNull String teamName) {
+    public static boolean unregisterTeam(@NotNull String teamName) {
         Team oldValue = TEAM_MAP.remove(teamName);
 
         if (oldValue != null) {
@@ -93,7 +94,7 @@ public final class TeamRegistry {
      * @param team Team to unregister.
      * @return Whether the team list changed as a result of this call.
      */
-    public static boolean unregisterTeam(@NonNull Team team) {
+    public static boolean unregisterTeam(@NotNull Team team) {
         return unregisterTeam(team.getName());
     }
 

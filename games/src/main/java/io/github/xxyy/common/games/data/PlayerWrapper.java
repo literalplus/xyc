@@ -8,14 +8,12 @@
 
 package io.github.xxyy.common.games.data;
 
-import lombok.NonNull;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
@@ -24,6 +22,8 @@ import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.QueryBuilder;
 import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
@@ -53,7 +53,7 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * @param ssql   SafeSql to use for storing the object.
      * @throws ClassCastException If {@code sender} is not any of the expected types.
      */
-    protected PlayerWrapper(@NonNull CommandSender sender, @NonNull SafeSql ssql) {
+    protected PlayerWrapper(@NotNull CommandSender sender, @NotNull SafeSql ssql) {
         super(ssql);
 
         if (sender instanceof Player) {
@@ -117,7 +117,7 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * @param plrName Name of the player to wrap (May be null if not available)
      * @param ssql    SafeSql to use for storing the object.
      */
-    protected PlayerWrapper(@NonNull UUID uuid, @Nullable String plrName, @NonNull SafeSql ssql) {
+    protected PlayerWrapper(@NotNull UUID uuid, @Nullable String plrName, @NotNull SafeSql ssql) {
         super(ssql);
         this.plrName.updateValue(plrName);
         this.uuid.updateValue(uuid);

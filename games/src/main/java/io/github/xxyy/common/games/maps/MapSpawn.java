@@ -8,7 +8,6 @@
 
 package io.github.xxyy.common.games.maps;
 
-import lombok.NonNull;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,6 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import io.github.xxyy.common.games.teams.GameTeam;
 import io.github.xxyy.common.games.teams.TeamRegistry;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,13 +31,13 @@ public class MapSpawn implements ConfigurationSerializable {
     /**
      * Team this spawn belongs to.
      */
-    @NonNull
+    @NotNull
     private final GameTeam team;
 
     /**
      * Location this spawn is at.
      */
-    @NonNull
+    @NotNull
     private final Location location;
 
     @java.beans.ConstructorProperties({"team", "location"})
@@ -65,7 +65,7 @@ public class MapSpawn implements ConfigurationSerializable {
      * @throws java.lang.IllegalArgumentException If (a) The source map does not contain all necessary data (All data is necessary)
      *                                            (b) An unknown team is given (c) An unknown world is given (c) One of the location types is not a number.
      */
-    public static MapSpawn valueOf(@NonNull Map<String, Object> sourceMap) {
+    public static MapSpawn valueOf(@NotNull Map<String, Object> sourceMap) {
         Validate.isTrue(sourceMap.containsKey("team") &&
                 sourceMap.containsKey("location.x") &&
                 sourceMap.containsKey("location.y") &&
@@ -120,12 +120,12 @@ public class MapSpawn implements ConfigurationSerializable {
         return map;
     }
 
-    @NonNull
+    @NotNull
     public GameTeam getTeam() {
         return this.team;
     }
 
-    @NonNull
+    @NotNull
     public Location getLocation() {
         return this.location;
     }

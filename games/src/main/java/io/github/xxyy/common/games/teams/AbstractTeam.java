@@ -8,12 +8,11 @@
 
 package io.github.xxyy.common.games.teams;
 
-import lombok.NonNull;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import io.github.xxyy.common.games.maps.MapSpawn;
 import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +50,7 @@ public abstract class AbstractTeam implements GameTeam {
     }
 
     @Override
-    public Player getPlayer(@NotNull @NonNull String plrName) {
+    public Player getPlayer(@NotNull String plrName) {
         for (Player plr : getPlayers()) {
             if (plr != null && plrName.equals(plr.getName())) {
                 return plr;
@@ -67,17 +66,17 @@ public abstract class AbstractTeam implements GameTeam {
     }
 
     @Override
-    public boolean hasPlayer(@NotNull @NonNull String plrName) {
+    public boolean hasPlayer(@NotNull String plrName) {
         return getPlayer(plrName) != null;
     }
 
     @Override
-    public void removePlayer(@NotNull @NonNull Player plr) {
+    public void removePlayer(@NotNull Player plr) {
         playerMap.remove(plr);
     }
 
     @Override
-    public Player removePlayer(@NotNull @NonNull String plrName) {
+    public Player removePlayer(@NotNull String plrName) {
         for (Iterator<Player> iterator = getPlayers().iterator(); iterator.hasNext(); ) {
             Player plr = iterator.next();
             if (plr != null && plrName.equals(plr.getName())) {
@@ -100,7 +99,7 @@ public abstract class AbstractTeam implements GameTeam {
     }
 
     @Override
-    public void addSpawn(@NotNull @NonNull MapSpawn mapSpawn) {
+    public void addSpawn(@NotNull MapSpawn mapSpawn) {
         if (spawns == null) {
             spawns = new ArrayList<>();
         }

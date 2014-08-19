@@ -39,7 +39,7 @@
 
                 <executions>
                     <execution>
-                        <id>core-shade</id>
+                        <id>bungee-shade</id>
                         <goals>
                             <goal>shade</goal>
                         </goals>
@@ -52,6 +52,28 @@
                             <include>io.github.xxyy.common:xyc-core</include>
                         </includes>
                     </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.google.gson</pattern>
+                            <shadedPattern>io.github.xxyy.lib.gson</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.intellij.lang.annotations</pattern>
+                            <shadedPattern>io.github.xxyy.lib.intellij_annotations</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains.annotations</pattern>
+                            <shadedPattern>io.github.xxyy.lib.intellij_annotations</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>gnu.trove</pattern>
+                            <shadedPattern>io.github.xxyy.lib.gnu.trove</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.common</pattern>
+                            <shadedPattern>io.github.xxyy.lib.guava17</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
             </plugin>
         </plugins>
