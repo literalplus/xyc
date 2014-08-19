@@ -26,10 +26,10 @@ import io.github.xxyy.common.util.math.NumberHelper;
  */
 public abstract class LocationHelper {
     /**
-     * Determines if a location {@code toCheck} is between or
-     * located on one of the boundaries specified.
-     * There is no special order of the boundaries required,
-     * they can even be equal.
+     * Determines if a location {@code toCheck} is location in between or at one of the boundaries specified.
+     * There is no special order of the boundaries required, they can even be equal.
+     * This also requires all locations to be in the same world. (throwing an exception if the boundaries are in
+     * different worlds and returning FALSE if toCheck is in another world)
      *
      * @param toCheck   the location to check
      * @param boundary1 the first boundary of the rectangle region toCheck has to be in
@@ -37,8 +37,13 @@ public abstract class LocationHelper {
      * @return whether toCheck is in the rectangle represented by the boundaries
      * @see io.github.xxyy.common.util.math.NumberHelper#isNumberBetween(int, int, int)
      */
-    public static boolean isBlockBetween(Location toCheck, Location boundary1, Location boundary2) {
-        return NumberHelper.isNumberBetween(toCheck.getBlockX(), boundary1.getBlockX(), boundary2.getBlockX()) &&
+    public static boolean isBlockBetween(@NotNull Location toCheck, @NotNull Location boundary1, @NotNull Location boundary2) {
+        Validate.notNull(toCheck.getWorld(), "toCheck's world cannot be null!");
+        Validate.notNull(boundary1.getWorld(), "boundary1's world cannot be null!");
+        Validate.isTrue(boundary1.getWorld().equals(boundary2.getWorld()), "boundary worlds cannot be different!");
+
+        return toCheck.getWorld().equals(boundary1.getWorld()) &&
+                NumberHelper.isNumberBetween(toCheck.getBlockX(), boundary1.getBlockX(), boundary2.getBlockX()) &&
                 NumberHelper.isNumberBetween(toCheck.getBlockY(), boundary1.getBlockY(), boundary2.getBlockY()) &&
                 NumberHelper.isNumberBetween(toCheck.getBlockZ(), boundary1.getBlockZ(), boundary2.getBlockZ());
     }
