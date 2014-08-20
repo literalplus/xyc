@@ -73,7 +73,7 @@ public final class UUIDRepositories {
             }
         }
 
-        CommonPlugin.instance().getServer().getServicesManager()
+        (CommonPlugin.hasInstance() ? CommonPlugin.instance() : plugin).getServer().getServicesManager()
                 .register(UUIDRepository.class, newRepo, plugin, newRepo.getPriority());
     }
 
