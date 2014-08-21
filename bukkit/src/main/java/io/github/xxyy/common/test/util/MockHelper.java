@@ -47,9 +47,10 @@ public class MockHelper {
         Mockito.when(server.getName()).thenReturn("Spagt");
         Mockito.when(server.getBukkitVersion()).thenReturn("fuk of bukite");
         Mockito.when(server.getVersion()).thenReturn("infinity");
-        Mockito.when(server.getLogger()).thenReturn(Logger.getLogger(Server.class.getName()));
+        Logger logger = Logger.getLogger(Server.class.getName());
+        Mockito.when(server.getLogger()).thenReturn(logger);
 
-        CommandSender consoleSender = loggerSender(mock(ConsoleCommandSender.class), Bukkit.getServer().getLogger());
+        CommandSender consoleSender = loggerSender(mock(ConsoleCommandSender.class), logger);
         Mockito.when(server.getConsoleSender()).thenAnswer(invocation -> consoleSender);
         Mockito.when(server.getPlayer(Matchers.any(UUID.class))).then(id -> Arrays.asList(Bukkit.getServer().getOnlinePlayers()).stream()
                 .filter(plr -> plr.getUniqueId().equals(id.getArguments()[0]))
