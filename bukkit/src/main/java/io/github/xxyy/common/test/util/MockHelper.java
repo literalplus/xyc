@@ -13,12 +13,17 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="http://xxyy.github.io/">xxyy</a>
@@ -34,7 +39,7 @@ public class MockHelper {
         Server server = Bukkit.getServer();
 
         if (server == null) {
-            server = Mockito.mock(Server.class);
+            server = mock(Server.class);
         } else {
             Mockito.reset(server);
         }
@@ -44,7 +49,7 @@ public class MockHelper {
         Mockito.when(server.getVersion()).thenReturn("infinity");
         Mockito.when(server.getLogger()).thenReturn(Logger.getLogger(Server.class.getName()));
 
-        CommandSender consoleSender = loggerSender(Mockito.mock(ConsoleCommandSender.class), Bukkit.getServer().getLogger());
+        CommandSender consoleSender = loggerSender(mock(ConsoleCommandSender.class), Bukkit.getServer().getLogger());
         Mockito.when(server.getConsoleSender()).thenAnswer(invocation -> consoleSender);
         Mockito.when(server.getPlayer(Matchers.any(UUID.class))).then(id -> Arrays.asList(Bukkit.getServer().getOnlinePlayers()).stream()
                 .filter(plr -> plr.getUniqueId().equals(id.getArguments()[0]))
@@ -58,15 +63,23 @@ public class MockHelper {
     }
 
     public static Player mockPlayer(final UUID uuid, final String name) {
-        Player plr = Mockito.mock(Player.class);
+        Player plr = mock(Player.class);
         Mockito.when(plr.getUniqueId()).thenReturn(uuid);
         Mockito.when(plr.getName()).thenReturn(name);
         return plr;
     }
 
+    public static <T extends Plugin> T mockPlugin(Class<T> pluginClass, Server server) {
+        T plugin = mock(pluginClass);
+        when(plugin.getServer()).thenReturn(server);
+        when(plugin.getName()).thenReturn(pluginClass.getSimpleName());
+        when(plugin.getLogger()).thenReturn(server.getLogger());
+        return plugin;
+    }
+
     public static CommandSender printlnSender(CommandSender sender) {
         if (!Mockito.mockingDetails(sender).isMock()) {
-            sender = Mockito.spy(sender);
+            sender = spy(sender);
         }
 
         Mockito.doAnswer((invocation) -> {
@@ -79,7 +92,7 @@ public class MockHelper {
 
     public static CommandSender loggerSender(CommandSender sender, Logger logger) {
         if (!Mockito.mockingDetails(sender).isMock()) {
-            sender = Mockito.spy(sender);
+            sender = spy(sender);
         }
 
         Mockito.doAnswer((invocation) -> {
