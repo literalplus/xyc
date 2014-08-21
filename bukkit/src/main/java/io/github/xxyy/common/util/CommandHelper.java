@@ -18,6 +18,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.XycConstants;
 import io.github.xxyy.common.localisation.XycLocale;
@@ -43,16 +45,17 @@ public class CommandHelper {
     /**
      * Alternative to {@link Bukkit#broadcast(String, String)} that works with PermissionsEx.
      *
-     * @param msg        Message to send
-     * @param permission Players with that permission will receive {@code msg}
+     * @param msg        the message to send
+     * @param permission the permission required to receive the message or NULL to send to everyone
      * @see Bukkit#broadcast(String, String)
      */
-    public static void broadcast(String msg, String permission) {
+    public static void broadcast(@NotNull String msg, @Nullable String permission) {
         for (Player plr : Bukkit.getOnlinePlayers()) {
-            if (plr.hasPermission(permission)) {
+            if (permission == null || plr.hasPermission(permission)) {
                 plr.sendMessage(msg);
             }
         }
+        Bukkit.getLogger().info("[XYC] Broadcast: " + msg);
     }
 
     /**
