@@ -74,7 +74,8 @@ public class MockHelper {
         Plugin plugin = mock(Plugin.class);
         when(plugin.getServer()).thenReturn(server);
         when(plugin.getName()).thenReturn("SpagtPlugine");
-        when(plugin.getLogger()).thenReturn(server.getLogger());
+        Logger logger = server.getLogger();
+        when(plugin.getLogger()).thenReturn(logger);
         return plugin;
     }
 
