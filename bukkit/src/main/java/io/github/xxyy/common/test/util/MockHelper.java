@@ -70,10 +70,10 @@ public class MockHelper {
         return plr;
     }
 
-    public static <T extends Plugin> T mockPlugin(Class<T> pluginClass, Server server) {
-        T plugin = mock(pluginClass);
+    public static Plugin mockPlugin(Server server) {
+        Plugin plugin = mock(Plugin.class);
         when(plugin.getServer()).thenReturn(server);
-        when(plugin.getName()).thenReturn(pluginClass.getSimpleName());
+        when(plugin.getName()).thenReturn("SpagtPlugine");
         when(plugin.getLogger()).thenReturn(server.getLogger());
         return plugin;
     }
