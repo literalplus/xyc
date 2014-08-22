@@ -10,17 +10,17 @@ package io.github.xxyy.common.util;
 
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import io.github.xxyy.common.misc.XyLocation;
 import io.github.xxyy.common.util.math.NumberHelper;
 
 /**
  * A class providing some static methods to deal with {@link Location}s.
+ * All static methods of this class can also be accessed from instances of {@link io.github.xxyy.common.misc.XyLocation}.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
@@ -80,16 +80,10 @@ public abstract class LocationHelper {
      *
      * @param section Configuration to read from
      * @return The read Location.
-     * @throws java.lang.IllegalArgumentException If the section does not contain all values or the world is not found.
+     * @see io.github.xxyy.common.misc.XyLocation#deserialize(java.util.Map)
      */
     public static Location fromConfiguration(@NotNull ConfigurationSection section) {
-        Validate.isTrue(section.contains("world") && section.contains("x") && section.contains("y") && section.contains("z"),
-                "The given section does not contain all of x,y, world and z!");
-
-        World world = Bukkit.getWorld(section.getString("world"));
-        Validate.notNull(world, "World is null");
-
-        return new Location(world, section.getInt("x") + 0.5D, section.getInt("y") + 0.5D, section.getInt("z"));
+        return fromDetailedConfiguration(section);
     }
 
     /**
@@ -98,17 +92,10 @@ public abstract class LocationHelper {
      *
      * @param section Configuration to read from
      * @return The read Location.
-     * @throws java.lang.IllegalArgumentException If the section does not contain all values.
+     * @see io.github.xxyy.common.misc.XyLocation#deserialize(java.util.Map)
      */
     public static Location fromDetailedConfiguration(@NotNull ConfigurationSection section) {
-        Validate.isTrue(section.contains("pitch") && section.contains("yaw"),
-                "The given section does not contain pitch and yaw!");
-
-        Location location = fromConfiguration(section);
-        location.setPitch(((Double) section.getDouble("pitch")).floatValue());
-        location.setYaw(((Double) section.getDouble("yaw")).floatValue());
-
-        return location;
+        return XyLocation.deserialize(section.getValues(false));
     }
 
     /**
