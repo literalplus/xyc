@@ -20,7 +20,10 @@ import org.bukkit.plugin.Plugin;
 
 import io.github.xxyy.common.util.CommandHelper;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Static utility class that helps when dealing with {@link org.bukkit.inventory.Inventory}s.
@@ -233,5 +236,49 @@ public final class InventoryHelper {
      */
     public static void clearInventories(final Collection<Player> plrs) {
         plrs.forEach(InventoryHelper::clearInventory);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Clones all stacks in the input and sets their amount to 1 if it was 0.
+     * This is here because Bukkit sometimes serializes ItemStacks with amount=0.
+     * @param input the array containing the stacks to copy
+     * @return an array of clones of the input stacks
+     */
+    public static ItemStack[] cloneAll(ItemStack[] input) {
+        ItemStack[] result = new ItemStack[input.length];
+        for (int i = 0; i < input.length; i++) {
+            ItemStack stack = input[i];
+            if(stack != null && stack.getAmount() == 0) {
+                stack.setAmount(1);
+            }
+            result[i] = stack == null ? null : stack.clone();
+        }
+        return result;
+    }
+
+    /**
+     * Clones all stacks in the input and sets their amount to 1 if it was 0.
+     * This is here because Bukkit sometimes serializes ItemStacks with amount=0.
+     * @param input a collection containing the stacks to copy
+     * @return an array of clones of the input stacks
+     */
+    public static List<ItemStack> cloneAll(Collection<ItemStack> input) {
+        List<ItemStack> result = new ArrayList<>(input);
+
+        ListIterator<ItemStack> it = result.listIterator();
+
+        while(it.hasNext()) {
+            ItemStack stack = it.next();
+            if(stack != null) {
+                if(stack.getAmount() == 0) {
+                    stack.setAmount(1);
+                }
+                it.set(stack.clone());
+            }
+        }
+
+        return result;
     }
 }
