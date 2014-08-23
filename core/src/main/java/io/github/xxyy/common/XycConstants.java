@@ -10,6 +10,8 @@ package io.github.xxyy.common;
 
 import io.github.xxyy.common.version.PluginVersion;
 
+import java.util.UUID;
+
 /**
  * Class that provides some constants that are mostly outdated.
  *
@@ -35,4 +37,10 @@ public class XycConstants {
      * An Unicode ballot X, especially useful for To<a></a>Do-lists.
      */
     public static final String BALLOT_X = "✘";
+
+    /**
+     * The nil UUID - a special UUID which can be used to represent special values, such as the Minecraft server console.
+     * {@code 00000000-0000-0000-0000-000000000000}
+     */
+    public static final UUID NIL_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
 }
