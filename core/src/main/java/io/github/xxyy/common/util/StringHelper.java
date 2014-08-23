@@ -21,7 +21,7 @@ import io.github.xxyy.common.util.math.NumberHelper;
  * @author <a href="http://xxyy.github.io/">xxyy98</a>
  */
 public final class StringHelper {
-    public static final String VALID_FORMATTING_CODES = "0123456789abcdef";
+    public static final String VALID_FORMATTING_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
 
     private StringHelper() {
     }
