@@ -30,6 +30,13 @@ public class UpdateResult implements AutoCloseable {
         return generatedKeys;
     }
 
+    /**
+     * @return {@link #getGeneratedKeys()}
+     */
+    public ResultSet gk() {
+        return getGeneratedKeys();
+    }
+
     public int getAffectedRows() {
         return affectedRows;
     }
