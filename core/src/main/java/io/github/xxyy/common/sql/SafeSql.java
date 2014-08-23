@@ -20,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -285,13 +286,33 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @param objects Objects to fill the statement with
      * @return A QueryResult representing the executed update ({@link QueryResult#getResultSet()} will be {@code null}). Remember to always close this!
      * @throws SQLException When an error occurs while creating the statement, executing the statement or filling in the values.
+     * @deprecated Uses QueryResult instead of UpdateResult. Use {@link #executeUpdateWithGenKeys(String, Object...)}.
      */
+    @Deprecated
     public QueryResult executeUpdateWithResult(String query, Object... objects) throws SQLException {
         PreparedStatement stmt = this.prepareStatement(query);
 
         fillStatement(stmt, objects);
 
         return new QueryResult(stmt, stmt.executeUpdate());
+    }
+
+    /**
+     * Executes an update in the database by creating a {@link java.sql.PreparedStatement} and filling with the the given objects.
+     *
+     * @param query     Update to execute (? is filled out with the corresponding {@code objects} value)
+     * @param arguments Objects to fill the statement with
+     * @return A QueryResult representing the executed update ({@link QueryResult#getResultSet()} will be {@code null}). Remember to always close this!
+     * @throws SQLException When an error occurs while creating the statement, executing the statement or filling in the values.
+     */
+    @NotNull
+    public UpdateResult executeUpdateWithGenKeys(@NotNull String query, Object... arguments) throws SQLException {
+        PreparedStatement stmt = this.getAnyConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        Validate.notNull(stmt);
+
+        fillStatement(stmt, arguments);
+
+        return new UpdateResult(stmt.executeUpdate(), stmt.getGeneratedKeys());
     }
 
     @Nullable
