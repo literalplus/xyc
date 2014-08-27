@@ -17,13 +17,11 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
-import io.github.xxyy.common.util.CommandHelper;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * Static utility class that helps when dealing with {@link org.bukkit.inventory.Inventory}s.
@@ -232,7 +230,6 @@ public final class InventoryHelper {
      * Clears a list of player inventories, including armor slots.
      *
      * @param plrs target players
-     * @see CommandHelper#clearInv(org.bukkit.entity.Player)
      */
     public static void clearInventories(final Collection<Player> plrs) {
         plrs.forEach(InventoryHelper::clearInventory);
@@ -241,19 +238,29 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
+     * Clones an ItemStack and sets its amount to 1 if it was 0 previously (this prevents some weird glitches).
+     *
+     * @param input the stack to clone
+     * @return a clone of the input, with non-zero amount
+     */
+    public static ItemStack cloneSafely(@Nullable ItemStack input) {
+        if (input != null && input.getAmount() == 0) {
+            input.setAmount(1);
+        }
+        return input == null ? null : input.clone();
+    }
+
+    /**
      * Clones all stacks in the input and sets their amount to 1 if it was 0.
      * This is here because Bukkit sometimes serializes ItemStacks with amount=0.
+     *
      * @param input the array containing the stacks to copy
      * @return an array of clones of the input stacks
      */
     public static ItemStack[] cloneAll(ItemStack[] input) {
         ItemStack[] result = new ItemStack[input.length];
         for (int i = 0; i < input.length; i++) {
-            ItemStack stack = input[i];
-            if(stack != null && stack.getAmount() == 0) {
-                stack.setAmount(1);
-            }
-            result[i] = stack == null ? null : stack.clone();
+            result[i] = cloneSafely(input[i]);
         }
         return result;
     }
@@ -261,24 +268,13 @@ public final class InventoryHelper {
     /**
      * Clones all stacks in the input and sets their amount to 1 if it was 0.
      * This is here because Bukkit sometimes serializes ItemStacks with amount=0.
+     *
      * @param input a collection containing the stacks to copy
      * @return an array of clones of the input stacks
      */
     public static List<ItemStack> cloneAll(Collection<ItemStack> input) {
-        List<ItemStack> result = new ArrayList<>(input);
-
-        ListIterator<ItemStack> it = result.listIterator();
-
-        while(it.hasNext()) {
-            ItemStack stack = it.next();
-            if(stack != null) {
-                if(stack.getAmount() == 0) {
-                    stack.setAmount(1);
-                }
-                it.set(stack.clone());
-            }
-        }
-
-        return result;
+        return input.stream()
+                .map(InventoryHelper::cloneSafely)
+                .collect(Collectors.toList());
     }
 }
