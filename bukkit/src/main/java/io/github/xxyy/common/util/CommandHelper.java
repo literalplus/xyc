@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -503,5 +504,14 @@ public class CommandHelper {
     public static <T> T writeAndPass(T input) {
         System.out.println("output: " + input.toString());
         return input;
+    }
+
+    /**
+     * Returns the UUID of the sender, or {@link io.github.xxyy.common.XycConstants#NIL_UUID} if the sender does not have an UUID.
+     * @param sender the sender to target
+     * @return an UUID which can represent given sender
+     */
+    public static UUID getSenderId(CommandSender sender) {
+        return (sender != null && sender instanceof Player) ? ((Player) sender).getUniqueId() : XycConstants.NIL_UUID;
     }
 }

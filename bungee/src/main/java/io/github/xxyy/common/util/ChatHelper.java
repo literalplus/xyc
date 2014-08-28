@@ -13,6 +13,10 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import io.github.xxyy.common.XycConstants;
+
+import java.util.UUID;
+
 /**
  * helps dealing with chat on BungeeCord servers.
  *
@@ -38,5 +42,15 @@ public final class ChatHelper {
         }
 
         return false;
+    }
+
+    /**
+     * Returns the UUID of the sender, or {@link io.github.xxyy.common.XycConstants#NIL_UUID} if the sender does not have an UUID.
+     *
+     * @param sender the sender to target
+     * @return an UUID which can represent given sender
+     */
+    public static UUID getSenderId(CommandSender sender) {
+        return (sender != null && sender instanceof ProxiedPlayer) ? ((ProxiedPlayer) sender).getUniqueId() : XycConstants.NIL_UUID;
     }
 }
