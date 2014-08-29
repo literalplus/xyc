@@ -13,7 +13,13 @@
  */
 package io.github.xxyy.common.util;
 
+import com.google.common.collect.ImmutableMap;
+import org.jetbrains.annotations.NotNull;
+
 import io.github.xxyy.common.util.math.NumberHelper;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class that provides static utility methods for dealing with Strings.
@@ -21,7 +27,16 @@ import io.github.xxyy.common.util.math.NumberHelper;
  * @author <a href="http://xxyy.github.io/">xxyy98</a>
  */
 public final class StringHelper {
+    static {
+        ImmutableMap.Builder<Character, TimePeriod> mapBuilder = ImmutableMap.builder();
+        for (TimePeriod period : TimePeriod.values()) {
+            mapBuilder.put(period.getId(), period);
+        }
+        CHARS_TO_TIME_PERIODS = mapBuilder.build();
+    }
+
     public static final String VALID_FORMATTING_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
+    private static final Map<Character, TimePeriod> CHARS_TO_TIME_PERIODS;
 
     private StringHelper() {
     }
@@ -73,5 +88,93 @@ public final class StringHelper {
      */
     public static String randomString() {
         return NumberHelper.randomInteger().toString(32);
+    }
+
+    /**
+     * Converts a string representing a time period (without spaces) to a long representing milliseconds.
+     * Time units are defined by the identifiers of {@link io.github.xxyy.common.util.StringHelper.TimePeriod}, for example
+     * "2h42m3s" would represent 2 hours, 42 minutes and 3 seconds (9 723 000ms)
+     *
+     * @param input the input string to parse
+     * @return the amount of milliseconds represented by the input
+     * @throws java.lang.IllegalArgumentException If the input couldn't be parsed
+     */
+    public static long parseTimePeriod(@NotNull String input) {
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Empty input!");
+        }
+
+        StringBuilder numberBuilder = new StringBuilder();
+        long result = 0L;
+        for (int i = 0; i < input.length(); i++) {
+            char chr = input.charAt(i);
+            TimePeriod period = CHARS_TO_TIME_PERIODS.get(chr);
+            if (period != null) {
+                if (numberBuilder.length() == 0) {
+                    throw new IllegalArgumentException("Time period " + period.name() + " missing amount at index " + i);
+                }
+                result += TimeUnit.MILLISECONDS.convert(Long.parseLong(numberBuilder.toString()) * period.getMultiplier(), period.getUnit());
+                numberBuilder = new StringBuilder();
+            } else if (Character.isDigit(chr)) {
+                numberBuilder.append(chr);
+            } else {
+                throw new IllegalArgumentException("Unexpected symbol '" + chr + "' at index " + i);
+            }
+        }
+
+        return result;
+    }
+
+    public enum TimePeriod {
+        /**
+         * A second - 's'
+         */
+        SECONDS('s', TimeUnit.SECONDS),
+        /**
+         * A minute - 'm'
+         */
+        MINUTES('m', TimeUnit.MINUTES),
+        /**
+         * An hour - 'h'
+         */
+        HOURS('h', TimeUnit.HOURS),
+        /**
+         * A day - 'd'
+         */
+        DAYS('d', TimeUnit.DAYS),
+        /**
+         * A month - 'M' (30 days)
+         */
+        MONTHS('M', 30, TimeUnit.DAYS),
+        /**
+         * A year - 'y' (365 days)
+         */
+        YEARS('y', 365, TimeUnit.DAYS);
+
+        private final char id;
+        private final TimeUnit unit;
+        private long multiplier;
+
+        TimePeriod(char id, TimeUnit unit) {
+            this(id, 1, unit);
+        }
+
+        TimePeriod(char id, long multiplier, TimeUnit unit) {
+            this.id = id;
+            this.unit = unit;
+            this.multiplier = multiplier;
+        }
+
+        public TimeUnit getUnit() {
+            return unit;
+        }
+
+        public char getId() {
+            return id;
+        }
+
+        public long getMultiplier() {
+            return multiplier;
+        }
     }
 }
