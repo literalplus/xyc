@@ -17,7 +17,6 @@ import org.bukkit.plugin.Plugin;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -52,7 +51,8 @@ public class MockHelper {
 
         CommandSender consoleSender = loggerSender(mock(ConsoleCommandSender.class), logger);
         Mockito.when(server.getConsoleSender()).thenAnswer(invocation -> consoleSender);
-        Mockito.when(server.getPlayer(Matchers.any(UUID.class))).then(id -> Arrays.asList(Bukkit.getServer().getOnlinePlayers()).stream()
+        Mockito.when(server.getPlayer(Matchers.any(UUID.class)))
+                .then(id -> Bukkit.getServer().getOnlinePlayers().stream()
                 .filter(plr -> plr.getUniqueId().equals(id.getArguments()[0]))
                 .findAny().orElse(null));
 

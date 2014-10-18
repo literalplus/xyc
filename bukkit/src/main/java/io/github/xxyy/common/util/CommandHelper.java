@@ -380,7 +380,7 @@ public class CommandHelper {
      */
     public static void sendMessageToOpsAndConsole(String message) {
         Bukkit.getConsoleSender().sendMessage(message);
-        if (Bukkit.getOnlinePlayers().length == 0) {
+        if (Bukkit.getOnlinePlayers().size() == 0) {
             return;
         }
         for (Player plr : Bukkit.getOnlinePlayers()) {

@@ -26,7 +26,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
         <minecraft.version>1.7</minecraft.version>
-        <spigot.version>${minecraft.version}.9-R0.2-SNAPSHOT</spigot.version>
+        <spigot.version>${minecraft.version}.10-R0.1-SNAPSHOT</spigot.version>
         <bungee.version>${minecraft.version}-SNAPSHOT</bungee.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
