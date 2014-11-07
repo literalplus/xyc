@@ -110,7 +110,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
 
         boolean lastTry = ++failedAttemptCount >= getAttemptsAllowed();
 
-        if (failureReason == null && !plr.teleport(to)) {
+        if (failureReason == null && (plr.getVehicle() != null || !plr.teleport(to))) {
             failureReason = TeleportFailureReason.SYSTEM;
         }
 
