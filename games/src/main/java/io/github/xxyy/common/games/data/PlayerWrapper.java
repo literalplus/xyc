@@ -320,23 +320,29 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
 
     /**
      * @return the amount of coins the wrapped player has, fetching if necessary.
+     * @deprecated No longer used, always returns 0
      */
+    @Deprecated
     public double getCoinsAmount() {
-        return lockedRead(this.coins).doubleValue();
+        return 0d;
     }
 
     /**
      * @return the amount of points the wrapped player has, fetching if necessary.
+     * @deprecated No longer used, always returns 0
      */
+    @Deprecated
     public int getGlobalPointsAmount() {
-        return lockedRead(this.globalPoints);
+        return 0;
     }
 
     /**
      * @return the tracked (i.e. approximate!) play time of the wrapped player, in minutes.
+     * @deprecated No longer used, always returns 0
      */
+    @Deprecated
     public long getPlayTimeMinutes() {
-        return lockedRead(this.playtime);
+        return 0l;
     }
 
     /**
@@ -353,17 +359,28 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
         return lockedRead(this.deaths);
     }
 
+    /**
+     * @deprecated No longer used, currently no-op.
+     */
+    @Deprecated
     public void modifyCoinsAmount(float modifier) {
-        lockedModify(this.coins, modifier);
+
     }
 
-
+    /**
+     * @deprecated No longer used, currently no-op.
+     */
+    @Deprecated
     public void modifyGlobalPointsAmount(int modifier) {
-        lockedModify(this.globalPoints, modifier);
+
     }
 
+    /**
+     * @deprecated No longer used, currently no-op.
+     */
+    @Deprecated
     public void modifyPlayTimeMinutes(long modifier) {
-        lockedModify(this.playtime, modifier);
+
     }
 
     public void modifyKillsAmount(int modifier) {
