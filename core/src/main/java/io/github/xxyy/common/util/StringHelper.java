@@ -35,7 +35,7 @@ public final class StringHelper {
         CHARS_TO_TIME_PERIODS = mapBuilder.build();
     }
 
-    public static final String VALID_FORMATTING_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
+    public static final String VALID_FORMATTING_CODES = "0123456789abcdefklmnor";
     private static final Map<Character, TimePeriod> CHARS_TO_TIME_PERIODS;
 
     private StringHelper() {
@@ -63,17 +63,20 @@ public final class StringHelper {
 
     /**
      * Translates an alternate syntax for <a href="http://minecraftwiki.net/wiki/Formatting%20Codes">Minecraft's color codes</a>
-     * using {@code &} instead of {@code §} to to {@code §} notation accepted by the Minecraft client. This only translates
-     * actual formatting codes and ignores other instances of {@code &}.
+     * using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This only translates
+     * actual formatting codes (specified by {@code validCodes}) and ignores other instances of {@code &}.
      *
-     * @param text the text to translate
+     * @param text       the text to translate
+     * @param validCodes a String containing each valid color code in lower case
      * @return the input, with formatting codes as accepted by the Minecraft client
+     * @see #translateAlternateColorCodes(String)
      */
-    public static String translateAlternateColorCodes(String text) {
+    public static String translateAlternateColorCodes(String text, String validCodes) {
+        validCodes = validCodes.toLowerCase();
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '&' && VALID_FORMATTING_CODES.indexOf(text.charAt(i + 1)) != -1) {
+            if (text.charAt(i) == '&' && validCodes.indexOf(Character.toLowerCase(text.charAt(i + 1))) != -1) {
                 stringBuilder.append('§');
             } else {
                 stringBuilder.append(text.charAt(i));
@@ -81,6 +84,19 @@ public final class StringHelper {
         }
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Translates an alternate syntax for <a href="http://minecraftwiki.net/wiki/Formatting%20Codes">Minecraft's color codes</a>
+     * using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This only translates
+     * actual formatting codes and ignores other instances of {@code &}.
+     *
+     * @param text       the text to translate
+     * @return the input, with formatting codes as accepted by the Minecraft client
+     * @see #translateAlternateColorCodes(String, String)
+     */
+    public static String translateAlternateColorCodes(String text) {
+        return translateAlternateColorCodes(text, VALID_FORMATTING_CODES);
     }
 
     /**
