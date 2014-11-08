@@ -8,8 +8,6 @@
 
 package io.github.xxyy.common.games.data;
 
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.MultimapBuilder;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -26,6 +24,8 @@ import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.QueryBuilder;
 import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.lib.guava17.collect.ListMultimap;
+import io.github.xxyy.lib.guava17.collect.MultimapBuilder;
 import io.github.xxyy.lib.intellij_annotations.NotNull;
 import io.github.xxyy.lib.intellij_annotations.Nullable;
 
