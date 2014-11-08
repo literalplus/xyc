@@ -10,6 +10,7 @@ package io.github.xxyy.common.games.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.Metadatable;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
@@ -42,7 +43,7 @@ import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.UU
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2.4.14
  */
-public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource {
+public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Metadatable {
     //    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
     public static final String FULL_CENTRAL_USER_TABLE_NAME = GameLib.CENTRAL_DB_NAME + ".user";
     private static SqlHolders.CacheBuilder BASE_CACHE_BUILDER;

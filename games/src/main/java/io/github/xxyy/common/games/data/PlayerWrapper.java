@@ -8,12 +8,16 @@
 
 package io.github.xxyy.common.games.data;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
@@ -27,6 +31,7 @@ import io.github.xxyy.lib.intellij_annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -43,6 +48,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     public static final PlayerWrapper CONSOLE_WRAPPER = new PlayerWrapper(Bukkit.getConsoleSender(), GameLib.getSql());
     public static HttpProfileRepository HTTP_PROFILE_REPOSITORY;
     private QueryBuilder passQueryBuilder;
+    private final ListMultimap<String, MetadataValue> metadata =
+            MultimapBuilder.hashKeys().arrayListValues(1).build();
 
     /**
      * Gets a wrapper for a {@link CommandSender}. If it's a {@link ConsoleCommandSender}, internal things will happen. Use this method if you want to
@@ -430,4 +437,23 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
         return null;
     }
 
+    @Override
+    public void setMetadata(String key, MetadataValue value) {
+        metadata.put(key, value);
+    }
+
+    @Override
+    public List<MetadataValue> getMetadata(String metadataKey) {
+        return metadata.get(metadataKey);
+    }
+
+    @Override
+    public boolean hasMetadata(String metadataKey) {
+        return metadata.containsKey(metadataKey);
+    }
+
+    @Override
+    public void removeMetadata(String metadataKey, Plugin owningPlugin) {
+        metadata.removeAll(metadataKey);
+    }
 }
