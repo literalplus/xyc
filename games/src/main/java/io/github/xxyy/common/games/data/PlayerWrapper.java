@@ -454,6 +454,6 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
 
     @Override
     public void removeMetadata(String metadataKey, Plugin owningPlugin) {
-        metadata.removeAll(metadataKey);
+        metadata.values().removeIf(v -> v.getOwningPlugin().equals(owningPlugin));
     }
 }
