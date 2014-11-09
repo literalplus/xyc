@@ -12,6 +12,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import io.github.xxyy.common.sql.SafeSql;
+import io.github.xxyy.common.sql.SpigotSql;
 import io.github.xxyy.common.sql.SqlConnectable;
 import io.github.xxyy.common.util.CommandHelper;
 
@@ -20,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides JDBC SQL support for plugins out of the box, using {@link io.github.xxyy.common.sql.SafeSql}.
- * This also takes care of creating and destroying the managed SafeSql.
+ * Provides JDBC SQL support for plugins out of the box, using {@link io.github.xxyy.common.sql.SpigotSql}.
+ * This also takes care of creating and destroying the managed SpigotSql.
  * <p>
- * <b>You need to override {@link #getConnectable()}, it is currently left concrete for compatibility reasons.</b>
+ * <b>Note:</b> You need to override {@link #getConnectable()}, it is currently left concrete for compatibility reasons.
  * </p>
  *
  * @author xxyy
@@ -41,7 +42,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
      * @deprecated Was not intended to be exposed. Please use {@link SqlXyPlugin#getSql()}. Will be removed or marked protected in future updates.
      */
     @Deprecated
-    public SafeSql ssql;
+    public SpigotSql ssql;
 
     public SqlXyPlugin() {
 
@@ -73,7 +74,15 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     protected final void loadSql() {
         SqlXyPlugin.INSTANCES.add(this);
         SqlConnectable connectable = getConnectable();
-        this.ssql = new SafeSql(connectable == null ? this : connectable);
+        try {
+            this.ssql = new SpigotSql(connectable == null ? this : connectable, this);
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+            getLogger().severe("***************************************************");
+            getLogger().severe("As of the SqlXyPlugin class JavaDoc, you need to");
+            getLogger().severe("implement #getConnectable(). Sorry for the style.");
+            getLogger().severe("***************************************************");
+        }
 
         if (connectable == null) {
             getLogger().severe("***************************************************");
@@ -112,7 +121,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     @Override
     @Deprecated
     public String getSqlDb() {
-        return null;
+        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
     }
 
     /**
@@ -123,7 +132,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     @Override
     @Deprecated
     public String getSqlHost() {
-        return null;
+        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
     }
 
     /**
@@ -134,7 +143,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     @Override
     @Deprecated
     public String getSqlPwd() {
-        return null;
+        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
     }
 
     /**
@@ -145,6 +154,6 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     @Override
     @Deprecated
     public String getSqlUser() {
-        return null;
+        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
     }
 }

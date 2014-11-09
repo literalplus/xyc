@@ -94,18 +94,11 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @see #executeUpdateWithResult(String, Object...)
      */
     public boolean executeUpdate(String query) {
-        PreparedStatement stmnt = null;
-        try {
-            stmnt = this.getAnyConnection().prepareStatement(query);
+        try (PreparedStatement stmnt = this.getAnyConnection().prepareStatement(query)) {
             stmnt.executeUpdate();
-//            if (SafeSql.debug) {
-//                CommandHelper.sendMessageToOpsAndConsole("§6Update: " + query);
-//            }
             return true;
         } catch (SQLException e) {
             this.formatAndPrintException(e, "§cException while trying to execute update: '" + query + "'");
-        } finally {
-            tryClose(stmnt);
         }
         return false;
     }
@@ -114,8 +107,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * formats an exception, prints a line before it, then prints (to Ops &amp; console) &amp; logs it.
      *
      * @param e         Exception to use
-     * @param firstLine A line describing the error, normally class &amp; method name - more efficient than getting the caller (some methods take up to
-     *                  7s!)
+     * @param firstLine A line describing the error, normally class &amp; method name - more efficient than getting the caller
      */
     public void formatAndPrintException(SQLException e, String firstLine) {
         System.out.println(firstLine);
@@ -375,7 +367,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
         try {
             closeable.close();
         } catch (Exception exc) {
-            Logger.getLogger(SafeSql.class.getName()).log(Level.WARNING, "Could not close stuff.", exc);
+            Logger.getLogger(SafeSql.class.getName()).log(Level.WARNING, "Could not close something: " + closeable, exc);
             return false;
         }
         return true;
