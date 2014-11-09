@@ -11,7 +11,6 @@ package io.github.xxyy.common.xyplugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
-import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.SpigotSql;
 import io.github.xxyy.common.sql.SqlConnectable;
 import io.github.xxyy.common.util.CommandHelper;
@@ -66,7 +65,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
      * @return the SafeSql instance managed by this plugin.
      */
     @SuppressWarnings("deprecation")
-    public SafeSql getSql() {
+    public SpigotSql getSql() {
         return this.ssql;
     }
 
