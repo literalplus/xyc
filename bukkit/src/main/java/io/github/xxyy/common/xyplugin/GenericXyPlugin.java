@@ -11,14 +11,11 @@ package io.github.xxyy.common.xyplugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
-import io.github.xxyy.common.XyHelper;
-
 import java.io.File;
 
 
 /**
- * This can be used in actual plugins.
- * Registration in {@link XyHelper} has already been done.
+ * A generic extension of {@link io.github.xxyy.common.xyplugin.AbstractXyPlugin}, made for use in actual plugins.
  * Use {@link XyPluggable#enable()} for your JavaPlugin#onEnable() logic.
  * Use {@link XyPluggable#disable()} for your JavaPlugin#onDisable() logic.
  *

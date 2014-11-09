@@ -23,7 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Plugins SHOULD implement XyLocalizable for localization
+ * Abstract implementation of the {@link io.github.xxyy.common.xyplugin.XyPluggable} interface inheriting from
+ * {@link org.bukkit.plugin.java.JavaPlugin}.
  *
  * @author xxyy
  */

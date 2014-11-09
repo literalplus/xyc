@@ -8,6 +8,9 @@
 
 package io.github.xxyy.common.xyplugin;
 
+/**
+ * Common interface for plugins interfacing with XYC using the {@link io.github.xxyy.common.xyplugin.AbstractXyPlugin} API.
+ */
 public interface XyPluggable {
     public static String pluginPrefix = "§7[§8XYC§7]";
 
