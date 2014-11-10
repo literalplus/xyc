@@ -9,11 +9,13 @@
 package io.github.xxyy.common.util.inventory;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
@@ -184,6 +186,26 @@ public final class ItemStackFactory {
         Validate.isTrue(base.getType() == Material.WOOL, "Material of base stack must be WOOL (" + base.getType() + ')');
 
         materialData = new Wool(color);
+
+        return this;
+    }
+
+    /**
+     * Convenience method for making colored leather armor.
+     *
+     * @param color Future DyeColor of the product.
+     * @return This object for chained calls.
+     * @throws IllegalArgumentException If the base stack is not leather armor.
+     * @see ItemStackFactory#materialData(org.bukkit.material.MaterialData)
+     */
+    public ItemStackFactory leatherArmorColor(final Color color) {
+        if(meta == null) {
+            meta = base.getItemMeta();
+        }
+
+        Validate.isTrue(meta instanceof LeatherArmorMeta, "Base stack must be leather armor (" + base.getType() + ')');
+
+        ((LeatherArmorMeta) meta).setColor(color);
 
         return this;
     }
