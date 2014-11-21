@@ -58,7 +58,8 @@ public class HttpProfileRepository implements ProfileRepository {
                 i++;
             } while (start < namesCount);
         } catch (Exception e) {
-            // TODO: logging and allowing consumer to react?
+            //Mojang doesn't throw anything here
+            throw new IllegalStateException("Failed to query Mojang", e);
         }
 
         return profiles.toArray(new Profile[profiles.size()]);
