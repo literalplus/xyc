@@ -155,12 +155,12 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * @return {@link io.github.xxyy.common.games.data.GroupData} the wrapped player is in.
      */
     public GroupData getGroup() {
+        if (!this.xyFetched) {
+            this.forceFullFetch();
+        }
+
         this.databaseLock.readLock().lock();
         try {
-            if (!this.xyFetched) {
-                this.forceFullFetch();
-            }
-
             return this.group;
         } finally {
             this.databaseLock.readLock().unlock();

@@ -156,6 +156,9 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * @return Whether the operation succeeded.
      */
     public boolean modifyPassesAmount(int modifier) {
+        passesUsed.fetchIfNecessary();
+        passesAmount.fetchIfNecessary(); //This second call isn't really necessary, but I'm leaving it to be future-proof
+
         this.databaseLock.readLock().lock();
 
         try {
