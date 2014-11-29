@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import io.github.xxyy.common.XycConstants;
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import io.github.xxyy.common.sql.QueryResult;
@@ -44,7 +45,7 @@ import java.util.logging.Logger;
 public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
 {
 
-    public static final UUID CONSOLE_UUID = UUID.fromString("084b992e-5705-411a-9be0-9e91413fb23a");
+    public static final UUID CONSOLE_UUID = XycConstants.NIL_UUID;
     private static PlayerWrapper CONSOLE_WRAPPER;
     /**
      * No longer used, please make your own.
