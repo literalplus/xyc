@@ -15,10 +15,12 @@ import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +41,7 @@ public class GroupData {
      * Provides the full table name that is used for storing group meta. Constant, default value is {@value GameLib#XY_DB_NAME}.game_permissions.
      */
     public static final String FULL_XY_META_TABLE = GameLib.CENTRAL_DB_NAME + ".groups";
-    private static Map<String, GroupData> cache = new ConcurrentHashMap<>(7, 0.75F, 2);
+    private static Map<String, GroupData> cache = new HashMap<>();
     private String name;
     private List<String> rawPermissions = null;
     private Map<String, Boolean> matchedPermissions = new ConcurrentHashMap<>(16, 0.75F, 2);
@@ -143,8 +145,7 @@ public class GroupData {
      * @param ssql SafeSql to use to communicate with the database.
      * @return A (not necessarily new) {@link GroupData} object that represents the group of the name {@code name}.
      */
-    public static GroupData getByName(@NotNull String name, @NotNull SafeSql ssql) {
-        Validate.notNull(name, "name");
+    public static GroupData getByName(@Nullable String name, @NotNull SafeSql ssql) {
         Validate.notNull(ssql, "ssql");
         GroupData rtrn = GroupData.cache.get(name);
         if (rtrn == null) {
