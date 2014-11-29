@@ -45,7 +45,11 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
 {
 
     public static final UUID CONSOLE_UUID = UUID.fromString("084b992e-5705-411a-9be0-9e91413fb23a");
-    public static final PlayerWrapper CONSOLE_WRAPPER = new PlayerWrapper(Bukkit.getConsoleSender(), GameLib.getSql());
+    private static PlayerWrapper CONSOLE_WRAPPER;
+    /**
+     * No longer used, please make your own.
+     */
+    @Deprecated
     public static HttpProfileRepository HTTP_PROFILE_REPOSITORY;
     private QueryBuilder passQueryBuilder;
     private final ListMultimap<String, MetadataValue> metadata =
@@ -398,6 +402,27 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
         lockedModify(this.deaths, modifier);
     }
 
+
+    @Override
+    public void setMetadata(String key, MetadataValue value) {
+        metadata.put(key, value);
+    }
+
+    @Override
+    public List<MetadataValue> getMetadata(String metadataKey) {
+        return metadata.get(metadataKey);
+    }
+
+    @Override
+    public boolean hasMetadata(String metadataKey) {
+        return metadata.containsKey(metadataKey);
+    }
+
+    @Override
+    public void removeMetadata(String metadataKey, Plugin owningPlugin) {
+        metadata.values().removeIf(v -> v.getOwningPlugin().equals(owningPlugin));
+    }
+
 ////////////////////////// STATIC UTILITY METHODS //////////////////////////////////////////////////////////////////////
 
     /**
@@ -437,23 +462,13 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
         return null;
     }
 
-    @Override
-    public void setMetadata(String key, MetadataValue value) {
-        metadata.put(key, value);
-    }
-
-    @Override
-    public List<MetadataValue> getMetadata(String metadataKey) {
-        return metadata.get(metadataKey);
-    }
-
-    @Override
-    public boolean hasMetadata(String metadataKey) {
-        return metadata.containsKey(metadataKey);
-    }
-
-    @Override
-    public void removeMetadata(String metadataKey, Plugin owningPlugin) {
-        metadata.values().removeIf(v -> v.getOwningPlugin().equals(owningPlugin));
+    /**
+     * @return a wrapper for the console
+     */
+    public static PlayerWrapper getConsoleWrapper() {
+        if (CONSOLE_WRAPPER == null) {
+            CONSOLE_WRAPPER = new PlayerWrapper(Bukkit.getConsoleSender(), GameLib.getSql());
+        }
+        return CONSOLE_WRAPPER;
     }
 }
