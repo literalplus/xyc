@@ -8,11 +8,13 @@
 
 package io.github.xxyy.common.games.data;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
+import io.github.xxyy.lib.intellij_annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -141,7 +143,9 @@ public class GroupData {
      * @param ssql SafeSql to use to communicate with the database.
      * @return A (not necessarily new) {@link GroupData} object that represents the group of the name {@code name}.
      */
-    public static GroupData getByName(String name, SafeSql ssql) {
+    public static GroupData getByName(@NotNull String name, @NotNull SafeSql ssql) {
+        Validate.notNull(name, "name");
+        Validate.notNull(ssql, "ssql");
         GroupData rtrn = GroupData.cache.get(name);
         if (rtrn == null) {
             rtrn = new GroupData(name, ssql);
