@@ -126,11 +126,23 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @return value of the represented database column or {@code null} if not available.
      */
     public T getValue() {
+        fetchIfNecessary();
+        return this.value;
+    }
+
+    /**
+     * Fetches this holder's value, if not already present, from the underlying data source.
+     *
+     * @throws java.lang.IllegalStateException if the value could not be fetched
+     */
+    public void fetchIfNecessary() {
         if (this.value == null && !isFetched() && this.getDataSource() != null) {
             getDataSource().select(this);
         }
 
-        return this.value;
+        if (!isFetched()) {
+            throw new IllegalStateException("Could not fetch " + this.toString() + "!");
+        }
     }
 
     @Override
