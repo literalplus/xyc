@@ -72,6 +72,12 @@ public class HttpProfileRepository implements ProfileRepository {
 
     private Profile[] post(URL url, HttpBody body, List<HttpHeader> headers) throws IOException {
         String response = client.post(url, body, headers);
+
+        if (response.contains("error")) {
+            throw new IllegalStateException("Mojang responded with an error: " +
+                    gson.fromJson(response, MojangError.class).getErrorMessage());
+        }
+
         return gson.fromJson(response, MojangProfile[].class);
     }
 
