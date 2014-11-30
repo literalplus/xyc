@@ -50,13 +50,21 @@ public final class SqlConnectables {
      * @return Host string, as accepted by database drivers.
      */
     public static String getHostString(String database, String sqlHost) {
-        if (sqlHost == null) {
-            throw new NullPointerException("sqlHost");
+        String rtrn = sqlHost.contains(database) ? sqlHost : (sqlHost.endsWith("/") ? (sqlHost + database) : (sqlHost + "/" + database));
+
+        if (!rtrn.startsWith("jdbc:")) {
+            if (!rtrn.startsWith("mysql://")) {
+                rtrn = "jdbc:mysql://" + rtrn;
+            } else {
+                rtrn = "jdbc:" + rtrn;
+            }
         }
-        if (database == null) {
-            throw new NullPointerException("database");
+
+        if (!rtrn.contains("?")) {
+            rtrn += "?autoReconnect=true";
         }
-        return sqlHost.contains(database) ? sqlHost : (sqlHost.endsWith("/") ? (sqlHost + database) : (sqlHost + "/" + database));
+
+        return rtrn;
     }
 
     /**
@@ -95,7 +103,7 @@ public final class SqlConnectables {
     }
 
     /**
-     * Returns the host string for the given paramaeters. The host string consists of
+     * Returns the host string for the given parameters. The host string consists of
      * the database URL, as returned by {@link SqlConnectable#getSqlHost()}, of a slash (/)
      * and the database name, as returned by {@link SqlConnectable#getSqlDb()}.
      * If the database name is already appended to the host, it will not be appended another time.
