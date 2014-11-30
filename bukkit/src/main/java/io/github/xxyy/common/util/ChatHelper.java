@@ -89,7 +89,7 @@ public abstract class ChatHelper {
             msg = msg.replace(" ", "");
         }
         msg = msg.toLowerCase();
-        if (msg.contains("minotopia") || msg.contains("pvpwar") || msg.contains("living-bots") || msg.contains("nowak-at.net"))
+        if (msg.contains("minotopia") || msg.contains("living-bots") || msg.contains("nowak-at.net"))
             return false;
         msg = msg.replaceAll("(\\(punkt\\)|\\(dot\\)|\\s\\.\\s)", ".");
         if (ChatHelper.adDetectionReplacePointLikeChars) {
