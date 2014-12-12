@@ -378,6 +378,24 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
         return getClass().getName() + "{name=" + this.name() + ", uuid=" + (hasUniqueId() ? getUniqueId() : "unknown") + "}";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlayerWrapperBase)) return false;
+
+        PlayerWrapperBase that = (PlayerWrapperBase) o;
+
+        return sql.equals(that.sql) && uuid.equals(that.uuid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = sql.hashCode();
+        result = 31 * result + uuid.hashCode();
+        return result;
+    }
+
     protected <V> V lockedRead(SqlValueHolder<V> holder) {
         holder.fetchIfNecessary(); //Need to do this outside the locking part in order to avoid a deadlock
 
