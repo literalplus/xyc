@@ -118,6 +118,8 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
 //            }
 //        } //This code is probably a very wrong approach at locking, so let's just omit it until it causes issues
 
+        SafeSql.getLogger().fine(() -> "fullFetch: Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
+                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
 
         this.databaseLock.writeLock().lock(); //And that, kids, is why you don't do anything with PlayerWrapper on the main thread, if avoidable.
 
@@ -139,6 +141,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()}.
      */
     public void forceFullFlush() {
+        SafeSql.getLogger().fine(() -> "fullFlush: Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
+                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
+
         this.databaseLock.writeLock().lock();
 
         try {
@@ -279,6 +284,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * It is recommended to call this async.
      */
     final void xyFetch() {
+        SafeSql.getLogger().fine(() -> "Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
+                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
+
         this.databaseLock.writeLock().lock(); //Locks twice for fullFetch - Should not hurt though.
 
         try {
@@ -335,6 +343,9 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
         if (!this.xyChanged) {
             return;
         }
+
+        SafeSql.getLogger().fine(() -> "Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
+                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
 
         this.databaseLock.writeLock().lock(); //Locks twice for fullFlush - Should not hurt though.
 
