@@ -29,7 +29,6 @@ import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.NUMBER_MODIFICATION;
 import static io.github.xxyy.common.sql.builder.annotation.SqlValueCache.Type.OBJECT_IDENTIFIER;
@@ -83,12 +82,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
     protected Collection<SqlValueHolder<?>> valueHolders;
     protected QueryBuilder queryBuilder;
 
-    /**
-     * Lock used to lock database operations on this wrapper.
-     * The default implementations of {@link #xyFetch()} and {@link #xyFlush()} use this.
-     */
-    protected final ReentrantReadWriteLock databaseLock = new ReentrantReadWriteLock(false);
-
     public PlayerWrapperBase(SafeSql ssql) {
         try {
             this.valueHolders = getCacheBuilder().build(this, this);
@@ -106,34 +99,8 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * Forces a full (re-)fetch of all data. This is equivalent to calling {@link io.github.xxyy.common.games.data.PlayerWrapper#impFetch()} and {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()}.
      */
     public void forceFullFetch() {
-//        boolean relock = false;
-//        if (this.databaseLock.getReadHoldCount() > 0) { //UNLOCK READ LOCKS - AVOID DEADLOCKS
-//            try {
-//                this.databaseLock.readLock().unlock();
-//                relock = true;
-//            } catch (IllegalMonitorStateException e) {
-//                SafeSql.getLogger().warning("Could not unlock a ReadLock for " + this + "! - This thread does probably not hold that lock. Enjoy the following thread dump:");
-//                ThreadHelper.printThreadDump(SafeSql.getLogger()); //FIX ME debug info
-//                SafeSql.getLogger().warning("If the server stops responding now, you know what caused it at least :) [A deadlock because of some read lock not conforming to a policy]");
-//            }
-//        } //This code is probably a very wrong approach at locking, so let's just omit it until it causes issues
-
-        SafeSql.getLogger().fine(() -> "fullFetch: Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
-                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
-
-        this.databaseLock.writeLock().lock(); //And that, kids, is why you don't do anything with PlayerWrapper on the main thread, if avoidable.
-
-        try {
-            this.xyFetch();
-            this.impFetch();
-        } finally {
-            this.databaseLock.writeLock().unlock();
-        }
-
-
-//        if (relock) { //RE-LOCK READ LOCKS
-//            this.databaseLock.readLock().lock();
-//        }
+        this.xyFetch();
+        this.impFetch();
     }
 
     /**
@@ -141,17 +108,8 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * {@link io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()}.
      */
     public void forceFullFlush() {
-        SafeSql.getLogger().fine(() -> "fullFlush: Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
-                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
-
-        this.databaseLock.writeLock().lock();
-
-        try {
-            this.xyFlush();
-            this.impFlush();
-        } finally {
-            this.databaseLock.writeLock().unlock();
-        }
+        this.xyFlush();
+        this.impFlush();
     }
 
     /**
@@ -164,12 +122,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
             this.forceFullFetch();
         }
 
-        this.databaseLock.readLock().lock();
-        try {
-            return this.group;
-        } finally {
-            this.databaseLock.readLock().unlock();
-        }
+        return this.group;
     }
 
     /**
@@ -225,23 +178,15 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
     }
 
     private Player tryGetPlayer() {
-        this.uuid.fetchIfNecessary(); //Avoid deadlocks
+        Player plr = Bukkit.getPlayer(getUniqueId());
 
-        this.databaseLock.readLock().lock();
-
-        try {
-            Player plr = Bukkit.getPlayer(getUniqueId());
-
-            if (plr == null) {
-                return null;//throw new PlayerOfflineException();
-            }
-
-            this.weakPlr = new WeakReference<>(plr);
-
-            return plr;
-        } finally {
-            this.databaseLock.readLock().unlock();
+        if (plr == null) {
+            return null;//throw new PlayerOfflineException();
         }
+
+        this.weakPlr = new WeakReference<>(plr);
+
+        return plr;
     }
 
     /**
@@ -260,7 +205,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
 
     /**
      * Method to be overwritten by implementations. Will be called in {@link io.github.xxyy.common.games.data.PlayerWrapper#forceFullFetch()}. Shall (re-)fetch implementation data.
-     * Implementations are expected to lock their database I/O with {@link #databaseLock}.
      *
      * @see io.github.xxyy.common.games.data.PlayerWrapper#xyFetch()
      */
@@ -271,7 +215,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
     /**
      * Method to be overwritten by implementations. Will be called in {@link io.github.xxyy.common.games.data.PlayerWrapper#forceFullFlush()}. Shall save implementation data stored in
      * this object to database.
-     * Implementations are expected to lock their database I/O with {@link #databaseLock}.
      *
      * @see io.github.xxyy.common.games.data.PlayerWrapper#xyFlush()
      */
@@ -284,29 +227,20 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * It is recommended to call this async.
      */
     final void xyFetch() {
-        SafeSql.getLogger().fine(() -> "Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
-                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
+        this.xyFetched = true;
 
-        this.databaseLock.writeLock().lock(); //Locks twice for fullFetch - Should not hurt though.
-
-        try {
-            this.xyFetched = true;
-
-            if (!tryFetchByUUID() && !tryFetchByName() &&
-                    getUniqueId() != null && name() != null) {
-                sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId().toString());
-                tryFetchByUUID();
-            }
-
-            if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
-                throw new AssertionError("Could not find UUID! This is very bad..." +
-                        "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
-            }
-
-            this.group = GroupData.getByName(this.groupName.getValue(), getSql());
-        } finally {
-            this.databaseLock.writeLock().unlock();
+        if (!tryFetchByUUID() && !tryFetchByName() &&
+                getUniqueId() != null && name() != null) {
+            sql.safelyExecuteUpdate("INSERT INTO " + PlayerWrapperBase.FULL_CENTRAL_USER_TABLE_NAME + " SET username=?, uuid=?", name(), getUniqueId().toString());
+            tryFetchByUUID();
         }
+
+        if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
+            throw new AssertionError("Could not find UUID! This is very bad..." +
+                    "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
+        }
+
+        this.group = GroupData.getByName(this.groupName.getValue(), getSql());
     }
 
     private boolean tryFetchByIdentifier(SqlIdentifierHolder<?> identifier) { //Returns true if it got the data
@@ -344,11 +278,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
             return;
         }
 
-        SafeSql.getLogger().fine(() -> "Locking write lock with " + databaseLock.getReadLockCount() + " total and " +
-                databaseLock.getReadHoldCount() + " for this thread. Write: " + databaseLock.getWriteHoldCount());
-
-        this.databaseLock.writeLock().lock(); //Locks twice for fullFlush - Should not hurt though.
-
         try {
             this.queryBuilder.addUniqueIdentifier(this.uuid)
                     .executeTrueUpdate(getSql());
@@ -356,8 +285,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
             this.xyChanged = false;
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            this.databaseLock.writeLock().unlock();
         }
     }
 
@@ -408,27 +335,11 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
     }
 
     protected <V> V lockedRead(SqlValueHolder<V> holder) {
-        holder.fetchIfNecessary(); //Need to do this outside the locking part in order to avoid a deadlock
-
-        this.databaseLock.readLock().lock();
-
-        try {
-            return holder.getValue();
-        } finally {
-            this.databaseLock.readLock().unlock();
-        }
+        return holder.getValue();
     }
 
     protected <N extends Number> void lockedModify(ConcurrentSqlNumberHolder<N> holder, N modifier) {
-        holder.fetchIfNecessary();
-
-        this.databaseLock.readLock().lock();
-
-        try {
-            holder.modify(modifier);
-        } finally {
-            this.databaseLock.readLock().unlock();
-        }
+        holder.modify(modifier);
     }
 
     //lazy init of CacheBuilder
