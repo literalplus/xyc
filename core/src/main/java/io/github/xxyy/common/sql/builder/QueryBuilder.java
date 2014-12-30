@@ -361,6 +361,7 @@ public class QueryBuilder { //TODO make concurrent
      */
     @Nullable
     public PreparedStatement buildSelect(@NotNull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
+        Validate.notNull(statementFactory, "statementFactory");
         StringBuilder queryStringBuilder = new StringBuilder("SELECT ");
         List<Object> args = new LinkedList<>();
 
