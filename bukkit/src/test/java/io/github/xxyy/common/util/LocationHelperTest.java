@@ -14,7 +14,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.junit.Test;
 
+import io.github.xxyy.common.misc.XyLocation;
+
 import static junit.framework.TestCase.assertFalse;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -56,5 +60,12 @@ public class LocationHelperTest {
         assertFalse("Different location soft-equal! (2)", LocationHelper.softEqual(location1, location3));
         assertFalse("Different location soft-equal! (3)", LocationHelper.softEqual(location3, location2));
         assertFalse("Different world location soft-equal!", LocationHelper.softEqual(location1DifferentWorld, location1));
+    }
+
+    @Test
+    public void testSerialize() {
+        XyLocation location = new XyLocation(WORLD_1, 16, 67, 87, 56.865f, 234.8f);
+        String serialized = location.serializeToString();
+        assertThat(LocationHelper.deserialize(serialized, WORLD_1), equalTo(location));
     }
 }

@@ -110,6 +110,15 @@ public class XyLocation extends Location implements ConfigurationSerializable{
         return result;
     }
 
+    /**
+     * Serializes this location to a string.
+     * @return a string representing this location
+     * @see io.github.xxyy.common.util.LocationHelper#serialize(org.bukkit.Location)
+     */
+    public String serializeToString() {
+        return LocationHelper.serialize(this);
+    }
+
     public static XyLocation deserialize(Map<String, Object> data) {
         Validate.notNull(data, "Input data cannot be null!");
         Validate.isTrue(data.containsKey("world"), "Must have world key!");

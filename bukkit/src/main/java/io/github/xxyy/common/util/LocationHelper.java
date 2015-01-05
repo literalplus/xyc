@@ -12,7 +12,9 @@ package io.github.xxyy.common.util;
 
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -150,5 +152,66 @@ public abstract class LocationHelper {
         return a.getBlockX() == b.getBlockX() &&
                 a.getBlockY() == b.getBlockY() &&
                 a.getBlockZ() == b.getBlockZ();
+    }
+
+    /**
+     * Serializes a location to a string. This is only accurate at block level.
+     *
+     * @param loc the location to serialize
+     * @return a string uniquely identifying the location.
+     * @see #deserialize(String)
+     */
+    public static String serialize(Location loc) {
+        return loc.getWorld().getName() + ";" +
+                loc.getBlockX() + ";" + loc.getBlockY() + ";" + loc.getBlockZ() + ";" +
+                loc.getPitch() + ";" + loc.getYaw();
+    }
+
+    /**
+     * Deserializes a location from a string.
+     *
+     * @param input the input string
+     * @return the location specified by the input.
+     * @throws java.lang.IllegalArgumentException if the input string is invalid
+     * @see #serialize(org.bukkit.Location)
+     */
+    public static XyLocation deserialize(String input) {
+        String[] arr = input.split(";");
+        Validate.isTrue(arr.length == 6, "Invalid length");
+        String worldName = arr[0];
+        World world = Bukkit.getWorld(worldName);
+        Validate.notNull(world, "Unknown world");
+
+        return deserialize(input, world);
+    }
+
+    /**
+     * Deserializes a location from a string. This accepts a world parameter to force the location to be in a specified
+     * world.
+     *
+     * @param input the input string
+     * @param world the world to force
+     * @return the location specified by the input.
+     * @throws java.lang.IllegalArgumentException if the input string is invalid
+     * @see #serialize(org.bukkit.Location)
+     */
+    public static XyLocation deserialize(String input, World world) {
+        String[] arr = input.split(";");
+        Validate.isTrue(arr.length == 6, "Invalid length");
+        Validate.notNull(world, "world");
+
+        int x, y, z;
+        float pitch, yaw;
+        try {
+            x = Integer.parseInt(arr[1]);
+            y = Integer.parseInt(arr[2]);
+            z = Integer.parseInt(arr[3]);
+            pitch = Float.parseFloat(arr[4]);
+            yaw = Float.parseFloat(arr[5]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number format", e);
+        }
+
+        return new XyLocation(world, x, y, z, yaw, pitch);
     }
 }
