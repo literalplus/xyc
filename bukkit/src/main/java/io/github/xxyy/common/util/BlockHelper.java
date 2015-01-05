@@ -41,6 +41,7 @@ public final class BlockHelper {
         Wool wool = (Wool) data;
         wool.setColor(color);
         block.getState().setData(wool);
+        block.getState().update(true);
         return block;
     }
 }
