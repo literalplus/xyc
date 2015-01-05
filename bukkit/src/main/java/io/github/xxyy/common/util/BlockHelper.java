@@ -13,6 +13,7 @@ package io.github.xxyy.common.util;
 import org.apache.commons.lang.Validate;
 import org.bukkit.DyeColor;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 
@@ -40,8 +41,9 @@ public final class BlockHelper {
         //noinspection ConstantConditions
         Wool wool = (Wool) data;
         wool.setColor(color);
-        block.getState().setData(wool);
-        block.getState().update(true);
+        BlockState state = block.getState();
+        state.setData(wool);
+        state.update(true);
         return block;
     }
 }
