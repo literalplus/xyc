@@ -29,7 +29,11 @@ import java.util.ListIterator;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 31/01/14
+ * @deprecated This class is incomplete and has some serious API issues (namely indexes shifting and therefore not
+ * complying to List interface specification). There is a working alternative in the Java API, which can be found in
+ * <a href="http://stackoverflow.com/a/4062950/1117552">this StackOverflow answer</a>.
  */
+@Deprecated @SuppressWarnings("all")
 public final class WeakArrayList<E> implements List<E> {
 
     private final ArrayList<WeakReference<E>> dataList;
