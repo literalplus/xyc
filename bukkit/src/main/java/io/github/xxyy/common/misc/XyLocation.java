@@ -10,6 +10,7 @@
 
 package io.github.xxyy.common.misc;
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,6 +35,15 @@ import java.util.Map;
 public class XyLocation extends Location implements ConfigurationSerializable{
     static {
         ConfigurationSerialization.registerClass(XyLocation.class);
+    }
+
+    /**
+     * @param loc the location
+     * @return the given XyLocation or a new XyLocation object if the given location was no instance of XyLocation
+     */
+    public static XyLocation of(Location loc) {
+        Preconditions.checkNotNull(loc, "loc may not be null @XyLocation#of");
+        return loc instanceof XyLocation ? (XyLocation) loc : new XyLocation(loc);
     }
 
     public XyLocation(World world, double x, double y, double z) {
