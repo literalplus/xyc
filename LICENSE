@@ -1,9 +1,8 @@
-Copyright (c) 2013-2014 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+Copyright (c) 2013-2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
 
 Any usage, including, but not limited to, compiling, running, redistributing, printing,
  copying and reverse-engineering is strictly prohibited without explicit written permission
  from the original author and may result in legal steps being taken.
 
-This applies to every file containing a copyright header (first lines of this file) and the respective binaries as well as JavaDocs.
-
-Please refer to `core/src/main/resources/LICENSE` for the full license.
+Please refer to `core/src/main/resources/LICENSE` for the full, valid license. This file has
+ only been placed here for convenience.
