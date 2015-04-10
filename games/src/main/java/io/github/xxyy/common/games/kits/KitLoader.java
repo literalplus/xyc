@@ -10,7 +10,6 @@
 
 package io.github.xxyy.common.games.kits;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Material;
@@ -19,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.xxyy.common.util.FileHelper;
+import io.github.xxyy.lib.guava17.collect.Lists;
 
 import java.io.File;
 import java.io.FilenameFilter;
