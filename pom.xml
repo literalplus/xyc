@@ -13,7 +13,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.xxyy.common</groupId>
     <artifactId>xyc-parent</artifactId>
-    <version>3.1.2.0-SNAPSHOT</version>
+    <version>3.2.0.0-SNAPSHOT</version>
     <modules>
         <module>bukkit</module>
         <module>core</module>
@@ -27,8 +27,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
-        <minecraft.version>1.7</minecraft.version>
-        <spigot.version>${minecraft.version}.10-R0.1-SNAPSHOT</spigot.version>
+        <minecraft.version>1.8</minecraft.version>
+        <spigot.version>${minecraft.version}.3-R0.1-SNAPSHOT</spigot.version>
         <bungee.version>${minecraft.version}-SNAPSHOT</bungee.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>

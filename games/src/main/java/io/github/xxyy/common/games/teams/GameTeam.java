@@ -13,8 +13,8 @@ package io.github.xxyy.common.games.teams;
 
 import io.github.xxyy.common.games.maps.MapSpawn;
 import io.github.xxyy.lib.intellij_annotations.NotNull;
+import io.github.xxyy.lib.intellij_annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
