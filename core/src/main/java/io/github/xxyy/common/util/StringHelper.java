@@ -93,7 +93,7 @@ public final class StringHelper {
      * using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This only translates
      * actual formatting codes and ignores other instances of {@code &}.
      *
-     * @param text       the text to translate
+     * @param text the text to translate
      * @return the input, with formatting codes as accepted by the Minecraft client
      * @see #translateAlternateColorCodes(String, String)
      */
@@ -102,10 +102,44 @@ public final class StringHelper {
     }
 
     /**
+     * Generates a semi-random alphanumeric character.
+     *
+     * @param allowUpperCase whether to allow upper-case characters as result
+     * @return a semi-random alphanumeric character
+     * @see #alphanumericString(int, boolean)
+     */
+    public static char alphanumericChar(boolean allowUpperCase) {
+        char result = Character.forDigit(NumberHelper.RANDOM.nextInt(36), 36); //36....[0-9a-f]
+        if (allowUpperCase && NumberHelper.RANDOM.nextBoolean()) {
+            return Character.toUpperCase(result);
+        } else {
+            return result;
+        }
+    }
+
+    /**
+     * Generates a semi-random string consisting of alphanumeric characters.
+     *
+     * @param length         length of the string
+     * @param allowUpperCase whether to allow upper-case characters in the result
+     * @return a semi-random alphanumeric string with specified length
+     * @see #alphanumericChar(boolean)
+     */
+    public static String alphanumericString(int length, boolean allowUpperCase) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(alphanumericChar(allowUpperCase));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Creates a random string using a "secure" random number generator. No guarantees
+     * are made about the length of the returned string.
      * @return A random String, created with 130 bytes. Considered to be "securely" random.
      */
     public static String randomString() {
-        return NumberHelper.randomInteger().toString(32);
+        return NumberHelper.randomInteger().toString(36); //36....[0-9a-f]
     }
 
     /**

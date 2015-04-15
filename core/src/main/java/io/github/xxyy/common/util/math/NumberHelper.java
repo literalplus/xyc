@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Class that provides some static methods to deal with numbers.
@@ -49,6 +50,7 @@ public final class NumberHelper {
     }
 
     public static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    public static final Random RANDOM = new Random();
     private static final DecimalFormat SPACE_FORMAT;
     private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
     private static final Map<Class<? extends Number>, MathOperator<? extends Number>> CLASSES_TO_OPERATORS;
