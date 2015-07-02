@@ -50,6 +50,7 @@ public final class DBObjectHelper {
      * @param clazz  the expected type of the value
      * @return the retrieved object value or the default value
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getOrDefault(DBObject object, String key, T def, Class<T> clazz) {
         if (!object.containsField(key)) {
             return def;
@@ -57,7 +58,6 @@ public final class DBObjectHelper {
 
         Object value = object.get(key);
 
-        //noinspection unchecked
         return clazz.isAssignableFrom(value.getClass()) ? (T) value : def;
     }
 }

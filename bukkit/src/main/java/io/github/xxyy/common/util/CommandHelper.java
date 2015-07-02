@@ -328,6 +328,7 @@ public class CommandHelper {
      *
      * @param t   the element to add
      * @param <T> the generic type of the resulting list
+     * @return a list with only given element in it
      * @deprecated Use {@link com.google.common.collect.Lists#newArrayList(java.lang.Object...)} or {@link com.google.common.collect.ImmutableList#of()}
      */
     @Deprecated
@@ -510,6 +511,7 @@ public class CommandHelper {
 
     /**
      * Returns the UUID of the sender, or {@link io.github.xxyy.common.XycConstants#NIL_UUID} if the sender does not have an UUID.
+     *
      * @param sender the sender to target
      * @return an UUID which can represent given sender
      */

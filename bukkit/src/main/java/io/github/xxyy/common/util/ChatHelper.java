@@ -33,7 +33,7 @@ public class ChatHelper {
     public static String allowedChatColors = "012356789AaBbDdEeFfRr";
 
     /**
-     * Replaces occurrences of '&' followed by a hexadecimal character with the special formatting character
+     * Replaces occurrences of '&amp;' followed by a hexadecimal character with the special formatting character
      * accepted by Minecraft. Note that this is referred to as "legacy" by a lot of developers though, so please
      * consider using one of the many JSON chat APIs if possible. This is using the <code>public static</code> field
      * {@link #allowedChatColors}, which is why it is deprecated.
@@ -49,7 +49,7 @@ public class ChatHelper {
     }
 
     /**
-     * Replaces occurrences of '&' followed by a hexadecimal character with the special formatting character
+     * Replaces occurrences of '&amp;' followed by a hexadecimal character with the special formatting character
      * accepted by Minecraft. Note that this is referred to as "legacy" by a lot of developers though, so please
      * consider using one of the many JSON chat APIs if possible.
      *
@@ -61,7 +61,7 @@ public class ChatHelper {
     }
 
     /**
-     * Replaces occurrences of '&' followed by a hexadecimal character specified in the second argument with the special
+     * Replaces occurrences of '&amp;' followed by a hexadecimal character specified in the second argument with the special
      * formatting character accepted by Minecraft. Note that this is referred to as "legacy" by a lot of developers
      * though, so please consider using one of the many JSON chat APIs if possible. Any character in the "allowed colors"
      * string will be allowed as formatting code. Note that matching is case-sensitive.

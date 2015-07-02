@@ -119,7 +119,7 @@ public class AdFilterService {
      * Returns a mutable list of domain names this filter service ignores when URLs are encountered. Domain names listed
      * here start at second-level and also include the top-level domain. Some valid entries are:
      * <ul>
-     * <li>example.com/li>
+     * <li>example.com</li>
      * <li>google.com</li>
      * <li>minotopia.me</li>
      * <li>some-doma.in</li>
