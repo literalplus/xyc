@@ -135,6 +135,21 @@ public class AdFilterService {
     /**
      * Convenience method to easily add ignored domains in chained (construction) calls.
      *
+     * @param ignoredDomains an array of domains as specified by {@link #getIgnoredDomains()}
+     * @return this filter service, for cleaner construction
+     */
+    public AdFilterService addIgnoredDomains(List<String> ignoredDomains) {
+        ignoredDomains.addAll(
+                ignoredDomains.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toList())
+        );
+        return this;
+    }
+
+    /**
+     * Convenience method to easily add ignored domains in chained (construction) calls.
+     *
      * @param ignored an array of domains as specified by {@link #getIgnoredDomains()}
      * @return this filter service, for cleaner construction
      */
