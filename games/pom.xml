@@ -22,6 +22,10 @@
     <artifactId>xyc-games</artifactId>
     <name>XYC Game Library</name>
 
+    <properties>
+        <pomFile>dependency-reduced-pom.xml</pomFile>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.xxyy.common</groupId>

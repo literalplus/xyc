@@ -23,6 +23,10 @@
     <artifactId>xyc-bukkit</artifactId>
     <name>XYC Bukkit Utilities</name>
 
+    <properties>
+        <pomFile>dependency-reduced-pom.xml</pomFile>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.xxyy.common</groupId>

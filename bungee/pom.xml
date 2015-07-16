@@ -22,6 +22,10 @@
     <artifactId>xyc-bungee</artifactId>
     <name>XYC BungeeCord Utilities</name>
 
+    <properties>
+        <pomFile>dependency-reduced-pom.xml</pomFile>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.xxyy.common</groupId>
