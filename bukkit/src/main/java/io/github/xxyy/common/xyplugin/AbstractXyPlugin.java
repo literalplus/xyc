@@ -94,7 +94,7 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
      * @param exec    the executor to set
      * @param <T>     generic type of the executor
      */
-    protected final <T extends CommandExecutor> void setExec(final T exec, final String cmdName) {
+    public final <T extends CommandExecutor> void setExec(final T exec, final String cmdName) {
         Validate.notNull(this.getCommand(cmdName), "Command " + cmdName + " is not registered for this plugin: " + this.toString());
         this.getCommand(cmdName).setExecutor(exec);
     }
@@ -106,7 +106,7 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
      * @param exec    the executor and completer to set
      * @param <T>     generic type of the executor and completer
      */
-    protected final <T extends CommandExecutor & TabCompleter> void setExecAndCompleter(final T exec, final String cmdName) {
+    public final <T extends CommandExecutor & TabCompleter> void setExecAndCompleter(final T exec, final String cmdName) {
         this.setExec(exec, cmdName);
         this.getCommand(cmdName).setTabCompleter(exec);
     }
