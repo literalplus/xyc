@@ -11,7 +11,6 @@
 package io.github.xxyy.common.misc;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.util.LocationHelper;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,18 +33,9 @@ import java.util.Map;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 22.8.14
  */
-public class XyLocation extends Location implements ConfigurationSerializable{
+public class XyLocation extends Location implements ConfigurationSerializable {
     static {
         ConfigurationSerialization.registerClass(XyLocation.class);
-    }
-
-    /**
-     * @param loc the location
-     * @return the given XyLocation or a new XyLocation object if the given location was no instance of XyLocation
-     */
-    public static XyLocation of(Location loc) {
-        Preconditions.checkNotNull(loc, "loc may not be null @XyLocation#of");
-        return loc instanceof XyLocation ? (XyLocation) loc : new XyLocation(loc);
     }
 
     public XyLocation(World world, double x, double y, double z) {
@@ -60,6 +52,7 @@ public class XyLocation extends Location implements ConfigurationSerializable{
 
     /**
      * Creates a command to teleport to this location, using /minecraft:tp.
+     *
      * @param playerName the name of the player to teleport ot NULL to teleport the executing player.
      * @return a command that teleports to this location
      * @see io.github.xxyy.common.util.LocationHelper#createTpCommand(org.bukkit.Location, String)
@@ -70,6 +63,7 @@ public class XyLocation extends Location implements ConfigurationSerializable{
 
     /**
      * Checks if this location's block is in between or at the border of two boundaries.
+     *
      * @param boundary1 the first boundary
      * @param boundary2 the second boundary
      * @return whether this location is in or at the border of the cuboid region represented by the boundaries
@@ -89,15 +83,25 @@ public class XyLocation extends Location implements ConfigurationSerializable{
     }
 
     /**
-     * @return a human-readable string containing world and block coordinates of this location.
+     * @return a human-readable string containing world and block coordinates of this location
+     * @deprecated Misspelling of {@link #prettyPrint()}
+     */
+    @Deprecated
+    public String pretyPrint() {
+        return prettyPrint();
+    }
+
+    /**
+     * @return a human-readable string containing world and block coordinates of this location
      * @see io.github.xxyy.common.util.LocationHelper#prettyPrint(org.bukkit.Location)
      */
-    public String pretyPrint() {
+    public String prettyPrint() {
         return LocationHelper.prettyPrint(this);
     }
 
     /**
      * Checks if the given location is in the same world and at the same block coordinates as this location.
+     *
      * @param other the location to compare against
      * @return whether the given location is "about the same" as this one
      * @see io.github.xxyy.common.util.LocationHelper#softEqual(org.bukkit.Location, org.bukkit.Location)
@@ -122,6 +126,7 @@ public class XyLocation extends Location implements ConfigurationSerializable{
 
     /**
      * Serializes this location to a string.
+     *
      * @return a string representing this location
      * @see io.github.xxyy.common.util.LocationHelper#serialize(org.bukkit.Location)
      */
@@ -130,20 +135,20 @@ public class XyLocation extends Location implements ConfigurationSerializable{
     }
 
     public static XyLocation deserialize(Map<String, Object> data) {
-        Validate.notNull(data, "Input data cannot be null!");
-        Validate.isTrue(data.containsKey("world"), "Must have world key!");
-        Validate.isTrue(data.containsKey("x"), "Must have x key!");
-        Validate.isTrue(data.containsKey("y"), "Must have y key!");
-        Validate.isTrue(data.containsKey("z"), "Must have z key!");
+        Preconditions.checkNotNull(data, "Input data cannot be null!");
+        Preconditions.checkArgument(data.containsKey("world"), "Must have world key!");
+        Preconditions.checkArgument(data.containsKey("x"), "Must have x key!");
+        Preconditions.checkArgument(data.containsKey("y"), "Must have y key!");
+        Preconditions.checkArgument(data.containsKey("z"), "Must have z key!");
 
         World world = Bukkit.getWorld(data.get("world").toString());
-        Validate.notNull(world, "Unknown world!");
+        Preconditions.checkNotNull(world, "Unknown world!");
 
         float pitch = 0f, yaw = 0f;
-        if(data.containsKey("pitch")) {
+        if (data.containsKey("pitch")) {
             pitch = Float.parseFloat(data.get("pitch").toString());
         }
-        if(data.containsKey("yaw")) {
+        if (data.containsKey("yaw")) {
             yaw = Float.parseFloat(data.get("yaw").toString());
         }
 
@@ -153,5 +158,54 @@ public class XyLocation extends Location implements ConfigurationSerializable{
                 Double.parseDouble(data.get("z").toString()),
                 yaw,
                 pitch);
+    }
+
+    /**
+     * Attempts to find a location encoded in a SQL {@link ResultSet}. This looks for column
+     * names "x", "y", "z" and "world". Note that this doesn't account for pitch and yaw.
+     *
+     * @param rs the result set to use
+     * @return a location derived from the argument
+     * @throws SQLException         if any SQL error occurs or any of the columns doesn't exist
+     * @throws NullPointerException if given world doesn't exist
+     */
+    public static XyLocation fromResultSet(ResultSet rs) throws SQLException {
+        Preconditions.checkNotNull(rs, "resultSet");
+
+        World world = Bukkit.getWorld(rs.getString("world"));
+        Preconditions.checkNotNull(world, "Unknown world!");
+
+        return new XyLocation(world, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
+    }
+
+    /**
+     * Attempts to find a location encoded in a SQL {@link ResultSet}. This looks for column
+     * names "x", "y", "z", "pitch", "yaw" and "world".
+     *
+     * @param rs the result set to use
+     * @return a location derived from the argument
+     * @throws SQLException         if any SQL error occurs or any of the columns doesn't exist
+     * @throws NullPointerException if given world doesn't exist
+     */
+    public static XyLocation fromResultSetPitchYaw(ResultSet rs) throws SQLException {
+        Preconditions.checkNotNull(rs, "resultSet");
+
+        World world = Bukkit.getWorld(rs.getString("world"));
+        Preconditions.checkNotNull(world, "Unknown world!");
+
+        return new XyLocation(world, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"),
+                rs.getFloat("yaw"), rs.getFloat("pitch"));
+    }
+
+
+    /**
+     * Wraps a location as a {@link XyLocation} or returns the argument if it is already wrapped.
+     *
+     * @param loc the source location
+     * @return a {@link XyLocation} equivalent to the argument
+     */
+    public static XyLocation of(Location loc) {
+        Preconditions.checkNotNull(loc, "loc may not be null @XyLocation#of");
+        return loc instanceof XyLocation ? (XyLocation) loc : new XyLocation(loc);
     }
 }
