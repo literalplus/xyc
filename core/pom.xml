@@ -15,7 +15,7 @@
     <parent>
         <groupId>io.github.xxyy.common</groupId>
         <artifactId>xyc-parent</artifactId>
-        <version>3.2.0.5-SNAPSHOT</version>
+        <version>3.2.0.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,6 +46,10 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
         </dependency>
 
         <dependency>
