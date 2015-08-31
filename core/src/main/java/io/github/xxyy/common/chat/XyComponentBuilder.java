@@ -15,6 +15,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A drop-in replacement for {@link XyComponentBuilder} which adds some additional convenience
@@ -43,6 +44,17 @@ public class XyComponentBuilder extends ComponentBuilder {
         event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 TextComponent.fromLegacyText(legacyText)));
         return this;
+    }
+
+    /**
+     * Sets the {@link HoverEvent} with type of {@link HoverEvent.Action#SHOW_TEXT}
+     * and the given lines for the current part. Formatting codes may be used.
+     *
+     * @param legacyLines the legacy lines to show in the tooltip
+     * @return this builder for chaining
+     */
+    public XyComponentBuilder tooltip(String... legacyLines) {
+        return tooltip(StringUtils.join(legacyLines, "\n"));
     }
 
     /**
