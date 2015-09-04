@@ -44,14 +44,14 @@
 
     <ciManagement>
         <system>jenkins</system>
-        <url>http://ci.nowak-at.net/job/xyca~XYC_compile/</url>
+        <url>https://ci.nowak-at.net/job/xyc~master/</url>
     </ciManagement>
 
     <distributionManagement>
-        <downloadUrl>http://ci.nowak-at.net/job/xyca~XYC_compile/</downloadUrl>
+        <downloadUrl>https://ci.nowak-at.net/job/xyc~master/</downloadUrl>
         <repository>
             <id>xxyy-repo</id>
-            <url>http://server.nowak-at.net/repo/xxyy-private/</url>
+            <url>https://repo.nowak-at.net/xxyy-private/</url>
         </repository>
     </distributionManagement>
 
