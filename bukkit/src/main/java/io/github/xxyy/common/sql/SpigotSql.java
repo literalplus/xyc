@@ -11,7 +11,9 @@
 package io.github.xxyy.common.sql;
 
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -38,10 +40,28 @@ public class SpigotSql extends SafeSql {
     }
 
     /**
+     * Convenience shorthand for {@link #executeSimpleUpdateAsync(String, Object...)}.
      * Executes an update statement in an asynchronous thread using
-     * Bukkit's {@link org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
+     * Bukkit's {@link BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
      * The plugin managing this SpigotSql is used to register the task.
      * Please note that any tasks added to the returned Future will be called in an async thread.
+     * Any exceptions will be passed to the future on completion.
+     *
+     * @param query the query string
+     * @param args  the arguments to pass to the SQL driver
+     * @return a future that will be populated with the return value upon completion of the update
+     * @see #safelyExecuteUpdate(String, Object...)
+     */
+    public CompletableFuture<Integer> asyncUpdate(String query, Object... args) {
+        return executeSimpleUpdateAsync(query, args);
+    }
+
+    /**
+     * Executes an update statement in an asynchronous thread using
+     * Bukkit's {@link BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
+     * The plugin managing this SpigotSql is used to register the task.
+     * Please note that any tasks added to the returned Future will be called in an async thread.
+     * Any exceptions will be passed to the future on completion and additionally printed to stdout.
      *
      * @param query the query string
      * @param args  the arguments to pass to the SQL driver
@@ -52,14 +72,23 @@ public class SpigotSql extends SafeSql {
         CompletableFuture<Integer> future = new CompletableFuture<>();
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
-                () -> future.complete(safelyExecuteUpdate(query, args)));
+                () -> {
+                    try (PreparedStatement stmnt = this.prepareStatement(query)) {
+                        this.fillStatement(stmnt, args);
+
+                        future.complete(stmnt.executeUpdate());
+                    } catch (SQLException e) {
+                        e.printStackTrace(); //Not all impls will handle the exception
+                        future.completeExceptionally(e);
+                    }
+                });
 
         return future;
     }
 
     /**
      * Executes an update statement in an asynchronous thread using
-     * Bukkit's {@link org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
+     * Bukkit's {@link BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
      * The plugin managing this SpigotSql is used to register the task.
      * Please note that any tasks added to the returned Future (including {@code consumer}) will be called in an async thread.
      * The consumer is expected to close the passed result. If it does not close the result, memory leaks are to be expected.
@@ -79,7 +108,7 @@ public class SpigotSql extends SafeSql {
                     try {
                         future.complete(executeUpdateWithGenKeys(query, args));
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); //Not all impls will handle the exception
                         future.completeExceptionally(e);
                     }
                 });
@@ -89,7 +118,7 @@ public class SpigotSql extends SafeSql {
 
     /**
      * Executes a query statement in an asynchronous thread using
-     * Bukkit's {@link org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
+     * Bukkit's {@link BukkitScheduler#runTaskAsynchronously(org.bukkit.plugin.Plugin, Runnable) Scheduler API}.
      * The plugin managing this SpigotSql is used to register the task.
      * Please note that any tasks added to the returned Future (including {@code consumer}) will be called in an async thread.
      * The consumer is expected to close the passed result. If it does not close the result, memory leaks are to be expected.
@@ -109,7 +138,7 @@ public class SpigotSql extends SafeSql {
                     try {
                         future.complete(executeQueryWithResult(query, args));
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); //Not all impls will handle the exception
                         future.completeExceptionally(e);
                     }
                 });
