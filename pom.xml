@@ -39,8 +39,8 @@
     </properties>
 
     <scm>
-        <connection>scm:git://git@bitbucket.org:xxyy/xyc.git</connection>
-        <developerConnection>scm:git://git@bitbucket.org:xxyy/xyc.git</developerConnection>
+        <connection>scm:git:git@bitbucket.org:xxyy/xyc.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:xxyy/xyc.git</developerConnection>
         <url>https://bitbucket.org/xxyy/xyc/</url>
     </scm>
 
