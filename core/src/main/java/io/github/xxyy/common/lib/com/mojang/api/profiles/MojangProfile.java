@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ *
+ * Any usage, including, but not limited to, compiling, running, redistributing, printing,
+ *  copying and reverse-engineering is strictly prohibited without explicit written permission
+ *  from the original author and may result in legal steps being taken.
+ *
+ * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ */
+
 package io.github.xxyy.common.lib.com.mojang.api.profiles;
 
 import io.github.xxyy.common.util.UUIDHelper;
@@ -8,6 +18,7 @@ public class MojangProfile implements Profile {
     private String id;
     private String name;
     private boolean demo;
+    private boolean legacy;
 
     @Override
     public String getId() {
@@ -39,5 +50,13 @@ public class MojangProfile implements Profile {
 
     public void setDemo(boolean demo) {
         this.demo = demo;
+    }
+
+    public boolean isLegacy() {
+        return legacy;
+    }
+
+    public void setLegacy(boolean legacy) {
+        this.legacy = legacy;
     }
 }

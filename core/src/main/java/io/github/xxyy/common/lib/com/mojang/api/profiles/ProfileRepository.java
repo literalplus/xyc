@@ -17,9 +17,14 @@ public interface ProfileRepository {
      * Finds the current (!) profile for a name at a specified time. So, for example, if the requested player was
      * named Albert at the given time, but has since changed their name to Berta, the returned profile will contain
      * the current name. (Berta, in that case)
-     * @param name the name to request the profile for
+     * <p>
+     * Also note that, if you request the name at a time that the user profile did not yet exist, null will be
+     * returned. Due to a possible Mojang bug, that is not the case if the user has already changed their name once.
+     * </p>
+     *
+     * @param name     the name to request the profile for
      * @param unixTime the timestamp, in seconds since the begin of the Unix epoch
-     * @return the profile, if found
+     * @return the profile, if found, null otherwise
      */
     Profile findProfileAtTime(String name, long unixTime);
 }
