@@ -11,6 +11,7 @@
 package io.github.xxyy.common.lib.com.mojang.api.profiles;
 
 
+import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 
 import io.github.xxyy.common.lib.com.mojang.api.http.BasicHttpClient;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class HttpProfileRepository implements ProfileRepository {
 
@@ -88,8 +90,26 @@ public class HttpProfileRepository implements ProfileRepository {
         return profile;
     }
 
+    @Override
+    public NameData[] findNameHistory(UUID uniqueId) {
+        NameData[] names;
+        try {
+            names = getNameHistory(getNameHistoryUrl(uniqueId), Collections.emptyList());
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to query Mojang", e);
+        }
+
+        return names;
+    }
+
     private URL getProfileAtUrl(String name, long at) throws MalformedURLException {
-        return new URL("https://api.mojang.com/users/profiles/" + agent + "/" + name + "?at=" + at);
+        Preconditions.checkNotNull(name, "name");
+        return new URL(String.format("https://api.mojang.com/users/profiles/%s/%s?at=%d", agent, name, at));
+    }
+
+    private URL getNameHistoryUrl(UUID uuid) throws MalformedURLException {
+        Preconditions.checkNotNull(uuid, "uuid");
+        return new URL(String.format("https://api.mojang.com/user/profiles/%s/names", uuid.toString().replace("-", "")));
     }
 
     private URL getProfilesUrl() throws MalformedURLException {
@@ -117,6 +137,17 @@ public class HttpProfileRepository implements ProfileRepository {
         }
 
         return gson.fromJson(response, MojangProfile.class);
+    }
+
+    private NameData[] getNameHistory(URL url, List<HttpHeader> headers) throws IOException {
+        String response = client.get(url, headers);
+
+        if (response.contains("error")) {
+            throw new IllegalStateException("Mojang responded with an error: " +
+                    gson.fromJson(response, MojangError.class).getErrorMessage());
+        }
+
+        return gson.fromJson(response, NameData[].class);
     }
 
     private static HttpBody getHttpBody(String... namesBatch) {

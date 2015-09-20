@@ -10,6 +10,8 @@
 
 package io.github.xxyy.common.lib.com.mojang.api.profiles;
 
+import java.util.UUID;
+
 public interface ProfileRepository {
     Profile[] findProfilesByNames(String... names);
 
@@ -27,4 +29,11 @@ public interface ProfileRepository {
      * @return the profile, if found, null otherwise
      */
     Profile findProfileAtTime(String name, long unixTime);
+
+    /**
+     * Finds the name history of a profile. Returns null if there is no such profile.
+     * @param uniqueId the unique id of the profile to find the name history for
+     * @return an array of names or null if there is no such profile
+     */
+    NameData[] findNameHistory(UUID uniqueId); //returns an array because this is what Gson gives us. Cast at call site.
 }
