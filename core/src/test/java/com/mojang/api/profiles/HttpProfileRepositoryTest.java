@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import io.github.xxyy.common.lib.com.mojang.api.http.HttpBody;
 import io.github.xxyy.common.lib.com.mojang.api.http.HttpClient;
+import io.github.xxyy.common.lib.com.mojang.api.http.HttpHeader;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.MojangProfile;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
@@ -30,7 +31,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -67,8 +68,7 @@ public class HttpProfileRepositoryTest {
 
     private void setProfilesForUrl(HttpClient mock, URL url, Profile[] profiles) throws IOException {
         String jsonString = gson.toJson(profiles);
-        //noinspection unchecked
-        when(mock.post(eq(url), any(HttpBody.class), anyList())).thenReturn(jsonString);
+        when(mock.post(eq(url), any(HttpBody.class), anyListOf(HttpHeader.class))).thenReturn(jsonString);
     }
 
 }

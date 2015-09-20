@@ -15,10 +15,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
+import io.github.xxyy.common.lib.com.mojang.api.profiles.NameData;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.ProfileRepository;
 
+import java.util.UUID;
+
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -59,11 +65,32 @@ public class HttpProfileRepositoryIntegrationTest {
     }
 
     @Test
-    public void findProfileAtTime_unchangedNameProvided_returnsUniqueId() throws Exception {
+    public void findProfileAtTime_unchangedNameProvided_returnsNull() throws Exception {
         ProfileRepository repository = new HttpProfileRepository("minecraft");
 
         Profile profile = repository.findProfileAtTime("mollstam", 0);
 
-        assertThat(profile.getId(), is(equalTo("f8cdb6839e9043eea81939f85d9c5d69")));
+        assertThat(profile, is(nullValue()));
+    }
+
+    @Test
+    public void findProfileAtTime_changedNameProvided_returnsUniqueId() throws Exception {
+        ProfileRepository repository = new HttpProfileRepository("minecraft");
+
+        Profile profile = repository.findProfileAtTime("xxyy98", 0);
+
+        assertThat(profile, is(not(nullValue())));
+        assertThat(profile.getId(), is("a9503380ff104e71b717ff05d129da13"));
+    }
+
+    @Test
+    public void findNameHistory_unchangedNameProvided_returnsUniqueId() throws Exception {
+        ProfileRepository repository = new HttpProfileRepository("minecraft");
+
+        NameData[] names = repository.findNameHistory(UUID.fromString("a9503380-ff10-4e71-b717-ff05d129da13")); //Literallie
+
+        assertThat(names.length, is(greaterThan(1))); //known to have changed name at least once
+        assertThat(names[0].getChangedToAt(), is(equalTo(0L))); //first name shouldn't have time
+        assertThat(names[0].getName(), is(equalTo("xxyy98")));
     }
 }
