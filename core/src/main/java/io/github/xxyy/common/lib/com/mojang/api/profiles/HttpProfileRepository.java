@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ *
+ * Any usage, including, but not limited to, compiling, running, redistributing, printing,
+ *  copying and reverse-engineering is strictly prohibited without explicit written permission
+ *  from the original author and may result in legal steps being taken.
+ *
+ * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ */
+
 package io.github.xxyy.common.lib.com.mojang.api.profiles;
 
 
@@ -13,6 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HttpProfileRepository implements ProfileRepository {
@@ -65,6 +76,22 @@ public class HttpProfileRepository implements ProfileRepository {
         return profiles.toArray(new Profile[profiles.size()]);
     }
 
+    @Override
+    public Profile findProfileAtTime(String name, long unixTime) {
+        Profile profile;
+        try {
+            profile = postSingle(getProfileAtUrl(name, unixTime), Collections.emptyList());
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to query Mojang", e);
+        }
+
+        return profile;
+    }
+
+    private URL getProfileAtUrl(String name, long at) throws MalformedURLException {
+        return new URL("https://api.mojang.com/profile/"+agent+"/"+name+"?at="+at);
+    }
+
     private URL getProfilesUrl() throws MalformedURLException {
         // To lookup Minecraft profiles, agent should be "minecraft"
         return new URL("https://api.mojang.com/profiles/" + agent);
@@ -79,6 +106,17 @@ public class HttpProfileRepository implements ProfileRepository {
         }
 
         return gson.fromJson(response, MojangProfile[].class);
+    }
+
+    private Profile postSingle(URL url, List<HttpHeader> headers) throws IOException {
+        String response = client.post(url, null, headers);
+
+        if(response.contains("error")) {
+            throw new IllegalStateException("Mojang responded with an error: " +
+                    gson.fromJson(response, MojangError.class).getErrorMessage());
+        }
+
+        return gson.fromJson(response, MojangProfile.class);
     }
 
     private static HttpBody getHttpBody(String... namesBatch) {
