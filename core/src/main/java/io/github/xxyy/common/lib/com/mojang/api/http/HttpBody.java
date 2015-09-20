@@ -24,4 +24,7 @@ public class HttpBody {
         return bodyString != null ? bodyString.getBytes() : new byte[0];
     }
 
+    public boolean isEmpty() {
+        return bodyString == null || bodyString.isEmpty();
+    }
 }

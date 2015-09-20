@@ -1,4 +1,16 @@
+/*
+ * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ *
+ * Any usage, including, but not limited to, compiling, running, redistributing, printing,
+ *  copying and reverse-engineering is strictly prohibited without explicit written permission
+ *  from the original author and may result in legal steps being taken.
+ *
+ * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ */
+
 package io.github.xxyy.common.lib.com.mojang.api.http;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -33,9 +45,26 @@ public class BasicHttpClient implements HttpClient {
 
     @Override
     public String post(URL url, Proxy proxy, HttpBody body, List<HttpHeader> headers) throws IOException {
+        return request(url, "POST", proxy, body, headers);
+    }
+
+    @Override
+    public String get(URL url, List<HttpHeader> headers) throws IOException {
+        return get(url, null, headers);
+    }
+
+    @Override
+    public String get(URL url, Proxy proxy, List<HttpHeader> headers) throws IOException {
+        return request(url, "GET", proxy, HttpBody.EMPTY_BODY, headers);
+    }
+
+    @NotNull
+    private String request(URL url, String method, Proxy proxy, HttpBody body, List<HttpHeader> headers) throws IOException {
         if (proxy == null) proxy = Proxy.NO_PROXY;
         HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
-        connection.setRequestMethod("POST");
+        connection.setRequestMethod(method);
+        System.out.println(method + " -> " + url);
+
 
         for (HttpHeader header : headers) {
             connection.setRequestProperty(header.getName(), header.getValue());
@@ -43,12 +72,20 @@ public class BasicHttpClient implements HttpClient {
 
         connection.setUseCaches(false);
         connection.setDoInput(true);
-        connection.setDoOutput(true);
 
-        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
-        writer.write(body.getBytes());
-        writer.flush();
-        writer.close();
+        connection.setDoOutput(!body.isEmpty());
+        if (!body.isEmpty()) {
+            DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
+            writer.write(body.getBytes());
+            writer.flush();
+            writer.close();
+        }
+
+        if (connection.getResponseCode() < HttpURLConnection.HTTP_OK || // error reading response results in -1
+                connection.getResponseCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
+            throw new InvalidResponseCodeException(String.format("Server returned HTTP response code: %d for URL: %s",
+                    connection.getResponseCode(), url), connection.getResponseCode());
+        }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String line;

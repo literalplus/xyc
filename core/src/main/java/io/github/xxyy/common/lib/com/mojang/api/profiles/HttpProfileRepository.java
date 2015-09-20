@@ -80,7 +80,7 @@ public class HttpProfileRepository implements ProfileRepository {
     public Profile findProfileAtTime(String name, long unixTime) {
         Profile profile;
         try {
-            profile = postSingle(getProfileAtUrl(name, unixTime), Collections.emptyList());
+            profile = getSingle(getProfileAtUrl(name, unixTime), Collections.emptyList());
         } catch (Exception e) {
             throw new IllegalStateException("Failed to query Mojang", e);
         }
@@ -89,7 +89,7 @@ public class HttpProfileRepository implements ProfileRepository {
     }
 
     private URL getProfileAtUrl(String name, long at) throws MalformedURLException {
-        return new URL("https://api.mojang.com/profile/"+agent+"/"+name+"?at="+at);
+        return new URL("https://api.mojang.com/users/profiles/" + agent + "/" + name + "?at=" + at);
     }
 
     private URL getProfilesUrl() throws MalformedURLException {
@@ -108,10 +108,10 @@ public class HttpProfileRepository implements ProfileRepository {
         return gson.fromJson(response, MojangProfile[].class);
     }
 
-    private Profile postSingle(URL url, List<HttpHeader> headers) throws IOException {
-        String response = client.post(url, null, headers);
+    private Profile getSingle(URL url, List<HttpHeader> headers) throws IOException {
+        String response = client.get(url, headers);
 
-        if(response.contains("error")) {
+        if (response.contains("error")) {
             throw new IllegalStateException("Mojang responded with an error: " +
                     gson.fromJson(response, MojangError.class).getErrorMessage());
         }
