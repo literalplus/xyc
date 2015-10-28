@@ -177,6 +177,20 @@ public final class ItemStackFactory {
     }
 
     /**
+     * @param newData the future legacy, byte data value for the product
+     * @return This object for chanined calls
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public ItemStackFactory legacyData(final byte newData) {
+        MaterialData data = base.getData();
+        data.setData(newData);
+        materialData(data);
+
+        return this;
+    }
+
+    /**
      * Convenience method for making wool stacks.
      *
      * @param color Future DyeColor of the product.
