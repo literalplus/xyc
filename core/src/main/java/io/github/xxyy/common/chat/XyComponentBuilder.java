@@ -33,6 +33,11 @@ public class XyComponentBuilder extends ComponentBuilder {
         super(text);
     }
 
+    public XyComponentBuilder(String text, ChatColor color) {
+        super(text);
+        color(color);
+    }
+
     /**
      * Sets the {@link HoverEvent} with type of {@link HoverEvent.Action#SHOW_TEXT}
      * and the given message for the current part. Use {@code \n} for newlines.
