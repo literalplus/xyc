@@ -171,6 +171,41 @@ public class XyComponentBuilder extends ComponentBuilder {
         return this;
     }
 
+
+    /**
+     * Appends an object's string value to this builder.
+     * @param object the object to append
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder append(Object object) { //separate Object methods for binary compat with String methods implemented earlier
+        return append(String.valueOf(object));
+    }
+
+    /**
+     * Appends an object's string value to the builder and makes it the current target for
+     * formatting.
+     *
+     * @param object the object to append
+     * @param color the color to set
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder append(Object object, ChatColor color) {
+        return append(String.valueOf(object), color);
+    }
+
+    /**
+     * Appends an object's string value  to the builder and makes it the current target for
+     * formatting.
+     *
+     * @param object the object to append
+     * @param color      the color to set
+     * @param formatting the only formatting(s) to retain
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder append(Object object, ChatColor color, ChatColor... formatting) {
+        return append(String.valueOf(object), color, formatting);
+    }
+
     //////////////////////////////////////////////////////////////////////////////////
     // The rest of this class is just passing calls to super while retaining
     // XyComponentBuilder return type
