@@ -144,7 +144,6 @@ public abstract class ChatHelper {
         msg = msg.replaceAll("<3", "❤");
         msg = msg.replaceAll(";\\)", " ツ");
         msg = msg.replaceAll("!", "❢");
-        msg = msg.replaceFirst("%", "%%");
 
         return msg;
     }
