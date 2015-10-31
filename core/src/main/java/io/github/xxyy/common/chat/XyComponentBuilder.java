@@ -18,7 +18,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * A drop-in replacement for {@link XyComponentBuilder} which adds some additional convenience
+ * A drop-in replacement for {@link ComponentBuilder} which adds some additional convenience
  * methods in order to achieve simpler configuration.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
@@ -218,12 +218,12 @@ public class XyComponentBuilder extends ComponentBuilder {
 
     @Override
     public XyComponentBuilder append(String text) {
-        return (XyComponentBuilder) super.append(text);
+        return (XyComponentBuilder) super.append(text == null ? "null" : text);
     }
 
     @Override
     public XyComponentBuilder append(String text, FormatRetention retention) {
-        return (XyComponentBuilder) super.append(text, retention);
+        return (XyComponentBuilder) super.append(text == null ? "null" : text, retention);
     }
 
     @Override
