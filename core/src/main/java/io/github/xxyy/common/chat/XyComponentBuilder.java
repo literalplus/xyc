@@ -14,6 +14,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 
@@ -39,26 +40,27 @@ public class XyComponentBuilder extends ComponentBuilder {
     }
 
     /**
-     * Sets the {@link HoverEvent} with type of {@link HoverEvent.Action#SHOW_TEXT}
+     * Sets the {@link HoverEvent} with type of {@link Action#SHOW_TEXT}
      * and the given message for the current part. Use {@code \n} for newlines.
      *
      * @param legacyText the legacy text to add as tooltip
      * @return this builder for chaining
      */
     public XyComponentBuilder tooltip(String legacyText) {
-        event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+        event(new HoverEvent(Action.SHOW_TEXT,
                 TextComponent.fromLegacyText(legacyText)));
         return this;
     }
 
     /**
-     * Sets the {@link HoverEvent} with type of {@link HoverEvent.Action#SHOW_TEXT}
+     * Sets the {@link HoverEvent} with type of {@link Action#SHOW_TEXT}
      * and the given lines for the current part. Formatting codes may be used.
      *
      * @param legacyLines the legacy lines to show in the tooltip
      * @return this builder for chaining
      */
     public XyComponentBuilder tooltip(String... legacyLines) {
+        //noinspection ConstantConditions
         return tooltip(StringUtils.join(legacyLines, "\n"));
     }
 
@@ -71,6 +73,24 @@ public class XyComponentBuilder extends ComponentBuilder {
      */
     public XyComponentBuilder command(String command) {
         event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClickEvent} with type of {@link ClickEvent.Action#RUN_COMMAND} and the given command for the
+     * current part and sets the {@link HoverEvent} with type of {@link Action#SHOW_TEXT} with an appropriate
+     * hint text.
+     *
+     * @param command the command to run on click
+     * @return this builder for chaining
+     */
+    public XyComponentBuilder hintedCommand(String command) {
+        command(command);
+        event(new HoverEvent(Action.SHOW_TEXT,
+                new XyComponentBuilder("Hier klicken für:\n", ChatColor.YELLOW)
+                        .append(command, ChatColor.GRAY)
+                        .create()
+        ));
         return this;
     }
 
@@ -179,6 +199,7 @@ public class XyComponentBuilder extends ComponentBuilder {
 
     /**
      * Appends an object's string value to this builder.
+     *
      * @param object the object to append
      * @return this ComponentBuilder for chaining
      */
@@ -191,7 +212,7 @@ public class XyComponentBuilder extends ComponentBuilder {
      * formatting.
      *
      * @param object the object to append
-     * @param color the color to set
+     * @param color  the color to set
      * @return this ComponentBuilder for chaining
      */
     public XyComponentBuilder append(Object object, ChatColor color) {
@@ -202,7 +223,7 @@ public class XyComponentBuilder extends ComponentBuilder {
      * Appends an object's string value  to the builder and makes it the current target for
      * formatting.
      *
-     * @param object the object to append
+     * @param object     the object to append
      * @param color      the color to set
      * @param formatting the only formatting(s) to retain
      * @return this ComponentBuilder for chaining
