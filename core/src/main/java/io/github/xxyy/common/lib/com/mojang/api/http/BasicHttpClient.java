@@ -63,7 +63,6 @@ public class BasicHttpClient implements HttpClient {
         if (proxy == null) proxy = Proxy.NO_PROXY;
         HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
         connection.setRequestMethod(method);
-        System.out.println(method + " -> " + url);
 
 
         for (HttpHeader header : headers) {
