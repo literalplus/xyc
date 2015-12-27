@@ -26,9 +26,11 @@ import java.util.stream.Collectors;
  */
 public class ItemComponentBuilder {
     private final ItemStack stack;
+    private final String text;
 
-    public ItemComponentBuilder(ItemStack stack) {
+    public ItemComponentBuilder(ItemStack stack, String text) {
         this.stack = stack;
+        this.text = text;
     }
 
     /**
@@ -63,7 +65,8 @@ public class ItemComponentBuilder {
 
 
         //noinspection deprecation
-        return ComponentSerializer.parse(String.format("{" +
+        return ComponentSerializer.parse(String.format(
+                "{text:\"%s\", hoverEvent: {" +
                         "action:show_item," +
                         "value:\"{" +
                         "  id:minecraft:%s," +
@@ -71,7 +74,8 @@ public class ItemComponentBuilder {
                         "  tag:%s" +
                         "  }" +
                         "}\"" +
-                        "}",
+                        "}}",
+                text,
                 stack.getType().name().toLowerCase(),
                 stack.getAmount(),
                 tagBuilder.toString()
