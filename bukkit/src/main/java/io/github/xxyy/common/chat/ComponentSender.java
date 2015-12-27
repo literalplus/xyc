@@ -10,9 +10,12 @@
 
 package io.github.xxyy.common.chat;
 
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 
 /**
@@ -30,7 +33,8 @@ public class ComponentSender {
     /**
      * Sends the built components from the given builder to a receiver. Players will receiver fully formatted JSON chat
      * including events and all that fancy stuff, everything else will receive solely the legacy text representation.
-     * @param builder the builder to use to create the parts to send
+     *
+     * @param builder  the builder to use to create the parts to send
      * @param receiver the receiver of the parts
      * @return whether a message was sent
      */
@@ -41,16 +45,47 @@ public class ComponentSender {
     /**
      * Sends the given components to a receiver. Players will receiver fully formatted JSON chat including events and
      * all that fancy stuff, everything else will receive solely the legacy text representation.
-     * @param parts the parts to send
+     *
+     * @param parts    the parts to send
      * @param receiver the receiver of the parts
      * @return whether a message was sent
      */
     public static boolean sendTo(BaseComponent[] parts, CommandSender receiver) {
-        if(receiver instanceof Player) {
+        if (receiver instanceof Player){
             ((Player) receiver).spigot().sendMessage(parts);
         } else {
             receiver.sendMessage(TextComponent.toLegacyText(parts));
         }
+        return true;
+    }
+
+    /**
+     * Sends the given components to a receiver. Players will receiver fully formatted JSON chat including events and
+     * all that fancy stuff, everything else will receive solely the legacy text representation. This method executes
+     * the action in the main server thread and is intended for code in async threads.
+     *
+     * @param parts    the parts to send
+     * @param receiver the receiver of the parts
+     * @param plugin   the plugin to use for accessing the scheduler
+     * @return whether a message was sent
+     */
+    public static boolean sendToSync(BaseComponent[] parts, CommandSender receiver, Plugin plugin) {
+        plugin.getServer().getScheduler().runTask(plugin, () -> sendTo(parts, receiver));
+        return true;
+    }
+
+    /**
+     * Sends the given components to a receiver. Players will receiver fully formatted JSON chat including events and
+     * all that fancy stuff, everything else will receive solely the legacy text representation. This method executes
+     * the action in the main server thread and is intended for code in async threads.
+     *
+     * @param builder  the builder to use to create the parts to send
+     * @param receiver the receiver of the parts
+     * @param plugin   the plugin to use for accessing the scheduler
+     * @return whether a message was sent
+     */
+    public static boolean sendToSync(ComponentBuilder builder, CommandSender receiver, Plugin plugin) {
+        plugin.getServer().getScheduler().runTask(plugin, () -> sendTo(builder.create(), receiver));
         return true;
     }
 }
