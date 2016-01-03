@@ -24,6 +24,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.Collection;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -114,7 +116,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     public void formatAndPrintException(SQLException e, String firstLine) {
         System.out.println(firstLine);
         System.out.println("§4SQL Error " + e.getErrorCode() + ": " + e.getLocalizedMessage());
-        if (this.errLogger != null) {
+        if (this.errLogger != null){
             System.out.printf("%s\nSQL ERROR: %s: %s", firstLine, e.getErrorCode(), e.getLocalizedMessage());
         }
         e.printStackTrace();
@@ -133,7 +135,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
             c = DriverManager.getConnection(sqlHost, this.authDataProvider.getSqlUser(), this.authDataProvider.getSqlPwd());
 
-            if (c == null || !c.isValid(5)) {
+            if (c == null || !c.isValid(5)){
 //                CommandHelper.sendMessageToOpsAndConsole("§4§l[SEVERE] Could not establish database connection.");// Everybody panic.
                 TextOutputHelper.printAndOrLog("[XYC] Connection to " + sqlHost + " failed.", this.errLogger, Level.SEVERE);
             } else {
@@ -149,7 +151,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
     public Connection getAnyConnection() {
         try {
-            if (this.currentConnection == null || this.currentConnection.isClosed()) {
+            if (this.currentConnection == null || this.currentConnection.isClosed()){
                 this.currentConnection = makeConnection();
             }
         } catch (SQLException e) {
@@ -311,12 +313,12 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
     @Nullable
     public PreparedStatement fillStatement(@Nullable PreparedStatement stmt, @NotNull Object[] objects) throws SQLException {
-        if (stmt == null) {
+        if (stmt == null){
             return null;
         }
 
         for (int i = 0; i < objects.length; i++) {
-            if (objects[i] == null) {
+            if (objects[i] == null){
                 stmt.setNull(i + 1, Types.OTHER);
             } else {
                 stmt.setObject(i + 1, objects[i]);
@@ -345,6 +347,39 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
         return -1;
     }
 
+    /**
+     * Executes a set of updates for a given object type in a batch. Note that this can only operate on same objects and
+     * same SQL statements.
+     *
+     * @param sql             the SQL update or insert statement to fill with the parameters for each batch element
+     * @param data            a collection of objects representing the data to be written to the database
+     * @param parameterMapper a mapper function mapping an object to the {@code sql} parameters representing it, in
+     *                        declaration order.
+     * @param <T>             the type of object to be written to the database
+     * @return an integer array, see {@link PreparedStatement#executeBatch()}
+     * @throws SQLException if an error occurs while executing the batch
+     */
+    public <T> int[] executeBatchUpdate(String sql, Collection<T> data, Function<T, Object[]> parameterMapper) throws SQLException {
+        Connection connection = getAnyConnection();
+        int[] count;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+
+            for (T t : data) {
+                Object[] parameters = parameterMapper.apply(t);
+                fillStatement(statement, parameters);
+                statement.addBatch();
+            }
+
+            count = statement.executeBatch();
+        } finally {
+            connection.commit();
+            connection.setAutoCommit(true);
+        }
+
+        return count;
+    }
+
     @Override
     public String toString() {
         String conStr;
@@ -363,7 +398,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @return {@code false} if an Exception occurred while closing {@code closeable}, {@code true} otherwise.
      */
     public static boolean tryClose(AutoCloseable closeable) {
-        if (closeable == null) {
+        if (closeable == null){
             return true;
         }
         try {
@@ -377,7 +412,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
     @Override
     public void close() throws Exception {
-        if (currentConnection != null) {
+        if (currentConnection != null){
             currentConnection.close();
             currentConnection = null;
         }

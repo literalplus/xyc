@@ -15,8 +15,10 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * An extension to {@link io.github.xxyy.common.sql.SafeSql} providing several Spigot-specific utility methods.
@@ -142,6 +144,34 @@ public class SpigotSql extends SafeSql {
                         future.completeExceptionally(e);
                     }
                 });
+
+        return future;
+    }
+
+    /**
+     * Executes a set of updates for a given object type in a batch. Note that this can only operate on same objects and
+     * same SQL statements. The batch is executed in an async task using the Bukkit Scheduler API.
+     *
+     * @param sql             the SQL update or insert statement to fill with the parameters for each batch element
+     * @param data            a collection of objects representing the data to be written to the database
+     * @param parameterMapper a mapper function mapping an object to the {@code sql} parameters representing it, in
+     *                        declaration order.
+     * @param <T>             the type of object to be written to the database
+     * @return a future that is completed exceptionally when an exception occurs during execution of the batch
+     */
+    public <T> CompletableFuture<Void> asyncBatch(String sql, Collection<T> data, Function<T, Object[]> parameterMapper) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
+                () -> {
+                    try {
+                        executeBatchUpdate(sql, data, parameterMapper);
+                        future.complete(null);
+                    } catch (SQLException e) {
+                        future.completeExceptionally(e);
+                    }
+                }
+        );
 
         return future;
     }
