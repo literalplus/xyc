@@ -10,6 +10,7 @@
 
 package io.github.xxyy.common.sql;
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -360,9 +361,13 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @throws SQLException if an error occurs while executing the batch
      */
     public <T> int[] executeBatchUpdate(String sql, Collection<T> data, Function<T, Object[]> parameterMapper) throws SQLException {
+        Preconditions.checkNotNull(data, "data");
+        Preconditions.checkNotNull(sql, "sql");
+        Preconditions.checkNotNull(parameterMapper, "parameterMapper");
+
         Connection connection = getAnyConnection();
         int[] count;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = Preconditions.checkNotNull(connection.prepareStatement(sql), "statement")) {
             connection.setAutoCommit(false);
 
             for (T t : data) {
