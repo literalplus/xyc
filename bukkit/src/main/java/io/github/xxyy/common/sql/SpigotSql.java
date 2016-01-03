@@ -10,6 +10,7 @@
 
 package io.github.xxyy.common.sql;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -160,6 +161,7 @@ public class SpigotSql extends SafeSql {
      * @return a future that is completed exceptionally when an exception occurs during execution of the batch
      */
     public <T> CompletableFuture<Void> asyncBatch(String sql, Collection<T> data, Function<T, Object[]> parameterMapper) {
+        Preconditions.checkNotNull(data, "data");
         CompletableFuture<Void> future = new CompletableFuture<>();
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin,
