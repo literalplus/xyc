@@ -232,6 +232,64 @@ public class XyComponentBuilder extends ComponentBuilder {
         return append(String.valueOf(object), color, formatting);
     }
 
+    /**
+     * Appends some text to this builder if a condition is met.
+     *
+     * @param condition true to append, false to ignore
+     * @param text      the text to append
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder appendIf(boolean condition, String text) {
+        if (condition){
+            append(text);
+        }
+        return this;
+    }
+
+    /**
+     * Appends the string value of an object to this builder if a condition is met.
+     *
+     * @param condition true to append, false to ignore
+     * @param object    the object to append
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder appendIf(boolean condition, Object object) {
+        if (condition){
+            append(object);
+        }
+        return this;
+    }
+
+    /**
+     * Appends some text to this builder if a condition is met.
+     *
+     * @param condition true to append, false to ignore
+     * @param text      the text to append
+     * @param color     the color of the text
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder appendIf(boolean condition, String text, ChatColor color) {
+        if (condition){
+            append(text, color);
+        }
+        return this;
+    }
+
+    /**
+     * Appends the string value of an object to this builder if a condition is met.
+     *
+     * @param condition true to append, false to ignore
+     * @param object    the object to append
+     * @param color     the color of the text
+     * @return this ComponentBuilder for chaining
+     */
+    public XyComponentBuilder appendIf(boolean condition, Object object, ChatColor color) {
+        if (condition){
+            append(String.valueOf(object), color);
+        }
+        return this;
+    }
+
     //////////////////////////////////////////////////////////////////////////////////
     // The rest of this class is just passing calls to super while retaining
     // XyComponentBuilder return type
