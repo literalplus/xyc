@@ -239,6 +239,7 @@ public final class ItemStackFactory {
 
         meta = base.getItemMeta();
         ((SkullMeta) meta).setOwner(ownerName);
+        base.setDurability((short) 3);
 
         return this;
     }
