@@ -202,6 +202,7 @@ public final class ItemStackFactory {
         Validate.isTrue(base.getType() == Material.WOOL, "Material of base stack must be WOOL (" + base.getType() + ')');
 
         materialData = new Wool(color);
+        base.setDurability(materialData.toItemStack().getDurability()); //ugly hack, fuck you Bukkit
 
         return this;
     }
