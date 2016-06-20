@@ -44,8 +44,8 @@ public abstract class SqlXyGamePlugin extends SqlXyPlugin implements XyGamePlugi
     /**
      * In this method, initialise your plugin's configuration.
      * This is called <b>before</b> {@link SqlXyGamePlugin#enable()} in order
-     * to allow XYGameLib to initialize it's tables with an actual connection
-     * to a database (and that a config can be generated on the first start of your plugin.
+     * to allow XYGameLib to initialize its tables with an actual connection
+     * to a database (and that a config can be generated on the first start of your plugin).
      */
     protected abstract void initConfig();
 

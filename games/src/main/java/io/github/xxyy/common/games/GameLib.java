@@ -75,8 +75,6 @@ public abstract class GameLib {
 
         ssql = pl.getSql();
         PlayerWrapperBase.initTable(pl.getSql());
-
-        Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loaded xxyy98's game library!");
         GameLib.isInit = true;
     }
 }

@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 
 import io.github.xxyy.common.sql.SpigotSql;
 import io.github.xxyy.common.sql.SqlConnectable;
-import io.github.xxyy.common.util.CommandHelper;
+import io.github.xxyy.common.sql.SqlConnectables;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +25,8 @@ import java.util.List;
  * Provides JDBC SQL support for plugins out of the box, using {@link io.github.xxyy.common.sql.SpigotSql}.
  * This also takes care of creating and destroying the managed SpigotSql.
  * <p>
- * <b>Note:</b> You need to override {@link #getConnectable()}, it is currently left concrete for compatibility reasons.
+ * <b>Note:</b> Read the {@link #getConnectable()} JavaDoc for information on how credentials are
+ * managed.
  * </p>
  *
  * @author xxyy
@@ -38,12 +39,10 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     public final static List<SqlXyPlugin> INSTANCES = new ArrayList<>();
 
     /**
-     * SafeSql managing SQL for this {@link SqlXyPlugin}.
-     *
-     * @deprecated Was not intended to be exposed. Please use {@link SqlXyPlugin#getSql()}. Will be removed or marked protected in future updates.
+     * SafeSql managing SQL for this {@link SqlXyPlugin}. Was hsitorically public, but has been
+     * replaced with {@link #getSql()} since XYC 3.1.0.
      */
-    @Deprecated
-    public SpigotSql ssql;
+    private SpigotSql ssql;
 
     public SqlXyPlugin() {
 
@@ -74,25 +73,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     @SuppressWarnings("deprecation")
     protected final void loadSql() {
         SqlXyPlugin.INSTANCES.add(this);
-        SqlConnectable connectable = getConnectable();
-        try {
-            this.ssql = new SpigotSql(connectable == null ? this : connectable, this);
-        } catch (UnsupportedOperationException e) {
-            e.printStackTrace();
-            getLogger().severe("***************************************************");
-            getLogger().severe("As of the SqlXyPlugin class JavaDoc, you need to");
-            getLogger().severe("implement #getConnectable(). Sorry for the style.");
-            getLogger().severe("***************************************************");
-        }
-
-        if (connectable == null) {
-            getLogger().severe("***************************************************");
-            getLogger().severe("The plugin " + getName() + " by " + CommandHelper.CSCollection(getDescription().getAuthors()));
-            getLogger().severe("is using a severely deprecated API in XYC!");
-            getLogger().severe("Please bug the author to switch to the new #getConnectable() API");
-            getLogger().severe("AS SOON AS POSSIBLE. Thanks for your support.");
-            getLogger().severe("***************************************************");
-        }
+        this.ssql = new SpigotSql(getConnectable(), this);
     }
 
     @SuppressWarnings("deprecation")
@@ -105,56 +86,20 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
     }
 
     /**
-     * <b>This method is temporarily concrete and will be made abstract very soon(tm). It is advised to implement this
-     * method as soon as possible. For more details, see {@link #getSqlPwd()}.</b>
+     * Gets the credentials used to connect to the JDBC SQL database used by this plugin. By
+     * default, this uses the following values from the plugin configuration:
+     * {@code sql.host}, {@code sql.database}, {@code sql.user}, and {@code sql.password} for the
+     * respective credential. This method also sets configuration defaults so that users can set
+     * the correct credentials easily.
      *
-     * @return SQL credentials which can be used to connect to the main database of this plugin
+     * @return JDBC credentials which may be used to connect to the main database of this plugin
      */
     protected SqlConnectable getConnectable() {
-        return null; //TODO: remove deprecated methods and make this method abstract. Also remember to remove the notices from JavaDoc.
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Was not intended to be exposed, kept for compatibility reasons. Will be removed very soon(tm).
-     */
-    @Override
-    @Deprecated
-    public String getSqlDb() {
-        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Was not intended to be exposed, kept for compatibility reasons. Will be removed very soon(tm).
-     */
-    @Override
-    @Deprecated
-    public String getSqlHost() {
-        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Was not intended to be exposed, kept for compatibility reasons. Will be removed very soon(tm).
-     */
-    @Override
-    @Deprecated
-    public String getSqlPwd() {
-        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Was not intended to be exposed, kept for compatibility reasons. Will be removed very soon(tm).
-     */
-    @Override
-    @Deprecated
-    public String getSqlUser() {
-        throw new UnsupportedOperationException("Public SQL credentials are unsupported as of XYC 3.1.0!");
+        return SqlConnectables.fromCredentials(
+                getConfig().getString("sql.host", "jdbc:mysql://localhost:3306/"),
+                getConfig().getString("sql.database", "minecraft"),
+                getConfig().getString("sql.user", "root"),
+                getConfig().getString("sql.password", "myverysecurepassword")
+        );
     }
 }
