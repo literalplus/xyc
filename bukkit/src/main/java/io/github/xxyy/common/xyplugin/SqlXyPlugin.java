@@ -32,7 +32,7 @@ import java.util.List;
  * @author xxyy
  * @since practically forever
  */
-public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnectable {
+public abstract class SqlXyPlugin extends AbstractXyPlugin {
     /**
      * Lists all currently registered {@link SqlXyPlugin}s.
      */
