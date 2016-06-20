@@ -95,11 +95,15 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnect
      * @return JDBC credentials which may be used to connect to the main database of this plugin
      */
     protected SqlConnectable getConnectable() {
+        getConfig().addDefault("sql.host", "jdbc:mysql://localhost:3306/");
+        getConfig().addDefault("sql.database", "MissingCredentialsInConfigYml");
+        getConfig().addDefault("sql.user", "PleaseProvideCredentials");
+        getConfig().addDefault("sql.password", "Please, use a secure password.");
         return SqlConnectables.fromCredentials(
-                getConfig().getString("sql.host", "jdbc:mysql://localhost:3306/"),
-                getConfig().getString("sql.database", "minecraft"),
-                getConfig().getString("sql.user", "root"),
-                getConfig().getString("sql.password", "myverysecurepassword")
+                getConfig().getString("sql.host"),
+                getConfig().getString("sql.database"),
+                getConfig().getString("sql.user"),
+                getConfig().getString("sql.password")
         );
     }
 }
