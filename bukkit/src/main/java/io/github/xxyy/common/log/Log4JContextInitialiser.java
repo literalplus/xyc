@@ -10,6 +10,7 @@
 
 package io.github.xxyy.common.log;
 
+import com.google.common.base.Preconditions;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.spi.LoggerContext;
 import org.bukkit.Bukkit;
@@ -19,8 +20,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import io.github.xxyy.lib.guava17.base.Preconditions;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
