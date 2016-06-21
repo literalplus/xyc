@@ -12,7 +12,6 @@ package io.github.xxyy.common.games.kits;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import io.github.xxyy.common.util.inventory.InventoryHelper;
 
@@ -221,7 +220,7 @@ public class Kit implements Comparable<Kit> {
     }
 
     @Override
-    public int compareTo(@NotNull Kit other) {
+    public int compareTo(Kit other) {
         if (this.equals(other)) {
             return 0;
         }

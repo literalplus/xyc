@@ -12,7 +12,6 @@ package io.github.xxyy.common.games.kits.objective;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +111,6 @@ public class ParentObjectiveResolver implements ObjectiveResolver {
         return resolver == null ? null : resolver.getUnavailIcon(args[PARAM]);
     }
 
-    @NotNull
     private String[] splitObjective(String objective) {
         String[] args = objective.split(TYPE_SEPARATOR, 2);
         if (args.length == 1) { // we need an empty string there if we want to avoid checking every time
