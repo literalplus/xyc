@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -43,6 +44,17 @@ public final class InventoryHelper {
      * Default is 4 rows of slots.
      */
     public static final int DEFAULT_MAX_INVENTORY_SIZE = SLOTS_PER_ROW * 4;
+    /**
+     * Maximum amount of items allowed in armor slots
+     */
+    public static final int ARMOR_SIZE = 4;
+    /**
+     * Default amount of slots in a player inventory
+     *
+     * @see InventoryType#PLAYER
+     */
+    public static final int PLAYER_INV_SIZE = InventoryType.PLAYER.getDefaultSize();
+
     public static final String ACTION_PREFIX_PLACE = "PLACE_";
     public static final String ACTION_PREFIX_HOTBAR = "HOTBAR_";
     public static final String ACTION_PREFIX_DROP = "DROP_";

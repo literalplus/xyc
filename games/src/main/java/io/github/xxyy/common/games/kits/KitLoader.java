@@ -10,219 +10,148 @@
 
 package io.github.xxyy.common.games.kits;
 
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import io.github.xxyy.common.util.FileHelper;
-import io.github.xxyy.lib.guava17.collect.Lists;
+import io.github.xxyy.common.util.inventory.InventoryHelper;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A class that is capable of loading kits.
  *
- * @author xxyy98
+ * @author xxyy
  */
 public class KitLoader {
-    String fileExtension = ".kit.yml";
-    private String path;
-    private boolean loaded;
-    private KitInfo defaultKit;
-    private Map<String, KitInfo> playerKits = new ConcurrentHashMap<>(24, 0.75F, 2);
-    private List<KitInfo> kits = null;
+    public static final String FILE_EXTENSION = ".kit.yml";
+    private final KitManager manager;
+    private final File kitDirectory;
 
     /**
-     * @param orig A {@link KitLoader} to copy.
-     */
-    public KitLoader(KitLoader orig) {
-        this(orig.path, orig.fileExtension);
-        this.loaded = orig.loaded;
-        if (orig.kits != null) {
-            this.kits = new ArrayList<>(orig.kits);
-            Collections.sort(this.kits);
-        }
-    }
-
-    /**
-     * Constructs a new {@link KitLoader} by a path where kits are located. Uses ".kit.yml" as file extension.
+     * Constructs a new kit loader which is ready to load kits from a directory upon request.
      *
-     * @param path Path where the kits are.
+     * @param manager      the manager associated with the new loader
+     * @param kitDirectory the directory containing the kit files (need not exist yet)
      */
-    public KitLoader(String path) {
-        this.path = path;
-        ItemStack icon = new ItemStack(Material.FLOWER_POT_ITEM);
-        ItemMeta meta = icon.getItemMeta();
-        meta.setDisplayName("§4§lDummy Kit!");
-        meta.setLore(Lists.newArrayList("§7§oThis means that no kits were found for loading.", "§e§oSee the server log for details."));
-        icon.setItemMeta(meta);
-        ItemStack[] armor = new ItemStack[]{new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.CHAINMAIL_LEGGINGS),
-                new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.CHAINMAIL_HELMET)};
-        ItemStack[] contents = Lists.newArrayList(new ItemStack(Material.POISONOUS_POTATO), new ItemStack(Material.CLAY_BALL))
-                .toArray(new ItemStack[36]);
-        this.defaultKit = KitInfo.constructDummy("NoKitsLoaded", icon, armor, contents);
+    public KitLoader(KitManager manager, File kitDirectory) {
+        this.manager = manager;
+        this.kitDirectory = kitDirectory;
     }
 
     /**
-     * Constructs a new {@link KitLoader} by a path where kits are located.
+     * Deletes the file representing a kit.
      *
-     * @param path          Path where the kits are.
-     * @param fileExtension file extension to use. (including '.')
+     * @throws IOException if an error occurs while deleting
      */
-    public KitLoader(String path, String fileExtension) {
-        this(path);
-        this.fileExtension = fileExtension;
+    public void delete(Kit kit) throws IOException {
+        Files.delete(kit.getFile().toPath());
     }
 
     /**
-     * Applies a {@link KitInfo} to a {@link Player}.
+     * @return the directory where kits are read from
+     */
+    public File getKitDirectory() {
+        return kitDirectory;
+    }
+
+    /**
+     * Gets the file for a kit by its name. Note that the file may not exist and may not
+     * represent a valid kit.
      *
-     * @param kit KitInfo to apply.
-     * @param plr Player that will receive the kit.
+     * @param kitName the unique name of the kit
+     * @return the file representing the kit of given name
      */
-    public void apply(KitInfo kit, Player plr) {
-        Validate.notNull(kit);
-        Validate.notNull(plr);
-        plr.getInventory().setContents(kit.getContents());
-        plr.getInventory().setArmorContents(kit.getArmor());
-        this.playerKits.put(plr.getName(), kit);
+    public File getKitPath(String kitName) {
+        return new File(getKitDirectory(), kitName + FILE_EXTENSION);
     }
 
     /**
-     * Allies a random kit to a {@link Player}.
+     * Loads the list of kits and all kit data from the kit directory, creating it if it does not
+     * exist.
+     */
+    public List<Kit> load() {
+        FileHelper.mkdirsWithException(getKitDirectory());
+        ArrayList<Kit> kits = new ArrayList<>();
+
+        for (File kitFile : getKitDirectory().listFiles(
+                file -> file.getName().endsWith(FILE_EXTENSION)
+        )) {
+            kits.add(loadKit(kitFile));
+        }
+
+        Collections.sort(kits); //maintain consistent display order - sorts by id,name
+        return kits;
+    }
+
+    /**
+     * Loads a single kit from its file.
      *
-     * @param plr Player that will receive the kit.
+     * @param kitFile the kit file to load from
+     * @return a new kit from that file
      */
-    public void applyRandomKit(Player plr) {
-        if (!this.loaded) {
-            this.load();
-        }
-        int rand = RandomUtils.nextInt(this.kits.size());
-        this.apply(this.kits.get(rand), plr);
+    public Kit loadKit(File kitFile) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(kitFile);
+        @SuppressWarnings("SuspiciousToArrayCall")
+        ItemStack[] armor = config.getList(Kit.ARMOR_PATH)
+                .toArray(new ItemStack[InventoryHelper.ARMOR_SIZE]);
+        @SuppressWarnings("SuspiciousToArrayCall")
+        ItemStack[] contents = config.getList(Kit.CONTENTS_PATH)
+                .toArray(new ItemStack[InventoryHelper.PLAYER_INV_SIZE]);
+
+        return new Kit(
+                manager, config.getInt(Kit.ID_PATH, 0), kitFile,
+                config.getItemStack(Kit.ICON_PATH),
+                contents, armor, config.getString(Kit.OBJECTIVE_PATH),
+                config.getString(Kit.AUTHOR_PATH), config
+        );
     }
 
     /**
-     * Recursively deletes a kit by name.
+     * Saves a kit to its designated file.
      *
-     * @param name Name of the kit.
+     * @param kit the kit to save in its current state
+     * @throws IOException if an error occurs saving the file
      */
-    public void delete(String name) {
-        Validate.isTrue((new File(String.format(this.path, name))).delete(), "Could not delete KitInfo file for " + name);
-
-        Iterator<KitInfo> iterator = kits.iterator();
-
-        while (iterator.hasNext()) {
-            if (iterator.next().getName().equalsIgnoreCase(name)) {
-                iterator.remove();
-            }
-        }
+    public void saveKit(Kit kit) throws IOException {
+        YamlConfiguration config = kit.getConfig();
+        config.set(Kit.ID_PATH, kit.getId());
+        config.set(Kit.ICON_PATH, kit.getIconStack());
+        config.set(Kit.CONTENTS_PATH, kit.getContents());
+        config.set(Kit.ARMOR_PATH, kit.getArmor());
+        config.set(Kit.OBJECTIVE_PATH, kit.getObjective());
+        config.set(Kit.AUTHOR_PATH, kit.getAuthorName());
+        config.save(kit.getFile());
     }
 
     /**
-     * @return The default kit that is used if no kits are available.
-     */
-    public KitInfo getDefaultKit() {
-        return this.defaultKit;
-    }
-
-    /**
-     * @return The file extension that suffixes all kit files.
-     */
-    public String getFileExtension() {
-        return this.fileExtension;
-    }
-
-    /**
-     * @return All available kits.
-     */
-    public List<KitInfo> getKits() {
-        if (!this.loaded) {
-            this.load();
-        }
-        return this.kits;
-    }
-
-    /**
-     * @return The path where the kits are located.
-     */
-    public String getPath() {
-        return this.path;
-    }
-
-    /**
-     * Gets the kit applied to a {@link Player}.
+     * Creates a new kit and saves it to the kit directory.
      *
-     * @param plrName Name of the player.
-     * @return KitInfo or {@code null}.
+     * @param name       the file name of the new kit
+     * @param id         the {@link Kit#getId() sorting id} of the new kit
+     * @param iconStack  the icon stack to represent the new kit in inventories
+     * @param contents   the inventory contents for the new kit
+     * @param armor      the armor contents for the new kit
+     * @param objective  the {@link io.github.xxyy.common.games.kits.objective.ObjectiveResolver
+     *                   objective} required to access the new kit
+     * @param authorName the name of the player who created the new kit
+     * @return the created kit
+     * @throws IOException if an error occurs creating the file or saving the kit
      */
-    public KitInfo getPlayerKit(String plrName) {
-        return this.playerKits.get(plrName);
-    }
-
-    /**
-     * @return Whether this KitLoader has loaded its kits.
-     * @see KitLoader#load()
-     */
-    public boolean isLoaded() {
-        return this.loaded;
-    }
-
-    /**
-     * (Re-)loads the kits from the {@link KitLoader}'s folder.
-     *
-     * @see KitLoader#isLoaded()
-     */
-    public void load() {
-        this.loaded = true;
-        File fl = FileHelper.mkdirsWithException(new File(this.path));
-
-        this.kits = new ArrayList<>();
-        for (String path : fl.list(new KitFilenameFilter())) {
-            this.kits.add(new KitInfo(this.path + "/" + path));
+    public Kit createKit(String name, int id, ItemStack iconStack, ItemStack[] contents,
+                         ItemStack[] armor, String objective, String authorName) throws IOException {
+        File file = getKitPath(name);
+        if (!file.exists()) {
+            Files.createFile(file.toPath());
         }
-        Collections.sort(this.kits);
-        if (this.kits.isEmpty()) {
-            this.kits.add(this.defaultKit);
-            System.out.println("Could not find ANY kits at " + this.path + " - Using default kit.");
-        }
-    }
-
-    /**
-     * @deprecated Use {@link KitLoader#register(String, ItemStack, ItemStack, ItemStack[], ItemStack[], String, String, String, int)}
-     */
-    @Deprecated
-    public void put(KitInfo ki) {
-        this.kits.add(ki);
-        Collections.sort(this.kits);
-    }
-
-    protected KitInfo register(String name, ItemStack icon, ItemStack unavailIcon, ItemStack[] contents, ItemStack[] armor,
-                               String objNeeded, String objAmount, String authorName, int id) {
-        if (!this.loaded) {
-            this.load();
-        }
-        KitInfo ki = new KitInfo(name, icon, unavailIcon, contents, armor, objNeeded, objAmount, this.path + "/" + name + this.fileExtension,
-                authorName, id);
-        this.kits.add(ki);
-        Collections.sort(this.kits);
-        return ki;
-    }
-
-    protected class KitFilenameFilter implements FilenameFilter {
-
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.endsWith(KitLoader.this.fileExtension);
-        }
+        YamlConfiguration config = new YamlConfiguration();
+        Kit kit = new Kit(manager, id, file, iconStack, contents, armor, objective, authorName, config);
+        saveKit(kit);
+        return kit;
     }
 }
