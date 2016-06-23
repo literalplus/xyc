@@ -21,37 +21,39 @@ import java.util.stream.StreamSupport;
 /**
  * Simple implementation of a tree node.
  *
+ * @param <N> the node type of the tree this node is part of
+ * @param <V> the value type of the tree this node is part of
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-22
  */
 @SuppressWarnings("WeakerAccess")
-public class SimpleTreeNode<V> implements TreeNode<V> {
+public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, V> {
 
-    private final TreeNode<V> parent;
-    private final List<TreeNode<V>> children = new ArrayList<>(4); //and even that is an exaggeration
+    private final N parent;
+    private final List<N> children = new ArrayList<>(4); //and even that is an exaggeration
     private V value;
 
-    public SimpleTreeNode(TreeNode<V> parent) {
+    public SimpleTreeNode(N parent) {
         this.parent = parent;
     }
 
     @Override
-    public TreeNode<V> getParent() {
+    public N getParent() {
         return parent;
     }
 
     @Override
-    public List<TreeNode<V>> getChildren() {
+    public List<N> getChildren() {
         return children;
     }
 
     @Override
-    public void addChild(TreeNode<V> newChild) {
+    public void addChild(N newChild) {
         children.add(newChild);
     }
 
     @Override
-    public void removeChild(TreeNode<V> oldChild) {
+    public void removeChild(N oldChild) {
         children.remove(oldChild);
     }
 
@@ -111,13 +113,14 @@ public class SimpleTreeNode<V> implements TreeNode<V> {
      * {@inheritDoc}
      */
     @Override
-    public TreeValueSpliterator<V> spliterator() {
-        return new TreeValueSpliterator<>(this);
+    public TreeValueSpliterator<N, V> spliterator() {
+        return new TreeValueSpliterator<>(nodeSpliterator());
     }
 
     /**
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
      * important notes about its behaviour.</p>
+     *
      * @return a stream of this tree's values, including the root node's value
      * @see #spliterator()
      */
@@ -128,20 +131,23 @@ public class SimpleTreeNode<V> implements TreeNode<V> {
     /**
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
      * important notes about its behaviour.</p>
+     *
      * @return a value spliterator for this tree node and its children.
      * @see #spliterator()
      */
-    public TreeNodeSpliterator<V> nodeSpliterator() {
-        return new TreeNodeSpliterator<>(this);
+    @SuppressWarnings("unchecked")
+    public TreeNodeSpliterator<N, V> nodeSpliterator() {
+        return new TreeNodeSpliterator<>((N) this);
     }
 
     /**
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
      * important notes about its behaviour.</p>
+     *
      * @return a stream of this tree's nodes, including the root node
      * @see #nodeSpliterator()
      */
-    public Stream<TreeNode<V>> nodeStream() {
+    public Stream<N> nodeStream() {
         return StreamSupport.stream(nodeSpliterator(), false);
     }
 
@@ -149,9 +155,10 @@ public class SimpleTreeNode<V> implements TreeNode<V> {
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
      * important notes about its behaviour.</p>
      * Performs an action on all nodes of this tree, including the root node.
+     *
      * @param action the action to perform
      */
-    public void forEachNode(Consumer<? super TreeNode<V>> action) {
+    public void forEachNode(Consumer<? super N> action) {
         nodeSpliterator().forEachRemaining(action);
     }
 }

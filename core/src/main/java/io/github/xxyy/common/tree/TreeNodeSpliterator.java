@@ -24,27 +24,30 @@ import java.util.function.Consumer;
  * behaviour may lead to infinite recursion if this spliterator is used improperly.</p>
  *
  * @param <V> the value type of the tree that is spliterated
+ * @param <N> the node type of the tree that is spliterated
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @see TreeValueSpliterator a spliterator that spliterates values instead of nodes
  * @since 2016-06-22
  */
 @SuppressWarnings("WeakerAccess")
-public class TreeNodeSpliterator<V> extends Spliterators.AbstractSpliterator<TreeNode<V>> {
+public class TreeNodeSpliterator<N extends TreeNode<N, V>, V>
+        extends Spliterators.AbstractSpliterator<N> {
     private Stack<Integer> position = new Stack<>();
-    private TreeNode<V> next;
+    private N next;
 
     /**
      * Creates a spliterator for given root.
      *
      * @param root the root of the tree to spliterate
      */
-    public TreeNodeSpliterator(TreeNode<V> root) {
+    @SuppressWarnings("unchecked")
+    public TreeNodeSpliterator(N root) {
         super(Long.MAX_VALUE, 0);
         next = root; //the root node is the root itself
     }
 
     @Override
-    public boolean tryAdvance(Consumer<? super TreeNode<V>> action) {
+    public boolean tryAdvance(Consumer<? super N> action) {
         //This algorithm goes all the way up to the leaves and then continues to stay as far up
         //as possible, traversing low child ids first.
         //
@@ -57,7 +60,7 @@ public class TreeNodeSpliterator<V> extends Spliterators.AbstractSpliterator<Tre
             return true;
         }
         //If not, we must go back and seek a different path
-        TreeNode<V> parent = next.getParent();
+        N parent = next.getParent();
 
         while (parent != null) { //while we can go farther down
             //Top of the stack is where we are currently, so the next adjacent node is that plus one
@@ -73,19 +76,19 @@ public class TreeNodeSpliterator<V> extends Spliterators.AbstractSpliterator<Tre
         return true; //This last time we did it though
     }
 
-    private boolean tryContinueUp(TreeNode<V> relativeTo, int childId) {
+    private boolean tryContinueUp(N relativeTo, int childId) {
         //noinspection ConstantConditions
         return relativeTo.hasChild(childId) && continueUp(relativeTo, childId);
     }
 
-    private boolean continueUp(TreeNode<V> relativeTo, int childId) {
+    private boolean continueUp(N relativeTo, int childId) {
         next = relativeTo.getChildren().get(childId);
         position.push(childId);
         return true;
     }
 
     @Override
-    public void forEachRemaining(Consumer<? super TreeNode<V>> action) {
+    public void forEachRemaining(Consumer<? super N> action) {
         //noinspection StatementWithEmptyBody
         while (tryAdvance(action)) ; //Just advance as long as possible
     }
@@ -101,7 +104,7 @@ public class TreeNodeSpliterator<V> extends Spliterators.AbstractSpliterator<Tre
     }
 
     @Override
-    public Comparator<? super TreeNode<V>> getComparator() {
+    public Comparator<? super N> getComparator() {
         throw new IllegalStateException("not SORTED");
     }
 }

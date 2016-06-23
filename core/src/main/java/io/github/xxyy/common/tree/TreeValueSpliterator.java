@@ -22,12 +22,13 @@ import java.util.function.Consumer;
  * @since 2016-06-23
  */
 @SuppressWarnings("WeakerAccess")
-public class TreeValueSpliterator<V> extends Spliterators.AbstractSpliterator<V> {
-    private final TreeNodeSpliterator<V> nodeSpliterator;
+public class TreeValueSpliterator<N extends TreeNode<N, V>, V>
+        extends Spliterators.AbstractSpliterator<V> {
+    private final TreeNodeSpliterator<N, V> nodeSpliterator;
 
-    public TreeValueSpliterator(TreeNode<V> root) {
+    public TreeValueSpliterator(TreeNodeSpliterator<N, V> nodeSpliterator) {
         super(Long.MAX_VALUE, 0);
-        nodeSpliterator = new TreeNodeSpliterator<>(root);
+        this.nodeSpliterator = nodeSpliterator;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class TreeValueSpliterator<V> extends Spliterators.AbstractSpliterator<V>
         throw new IllegalStateException("not SORTED");
     }
 
-    private Consumer<? super TreeNode<V>> toNodeConsumer(Consumer<? super V> valueConsumer) {
+    private Consumer<? super N> toNodeConsumer(Consumer<? super V> valueConsumer) {
         return node -> valueConsumer.accept(node.getValue());
     }
 }

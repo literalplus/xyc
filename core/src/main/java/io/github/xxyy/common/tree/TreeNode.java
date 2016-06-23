@@ -16,16 +16,17 @@ import java.util.List;
  * Represents a node in a skill tree.
  *
  * @param <V> the value type of the tree this node is part of
+ * @param <N> the node type of the tree this node is part of
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-22
  */
 @SuppressWarnings("WeakerAccess")
-public interface TreeNode<V> extends Iterable<V> {
+public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
 
     /**
      * @return the immediate parent node of this node, of null if this is a root node
      */
-    TreeNode<V> getParent();
+    N getParent();
 
     /**
      * Gets the immediate children of this node. Children are mutually exclusive, that is, once
@@ -35,21 +36,21 @@ public interface TreeNode<V> extends Iterable<V> {
      *
      * @return the immutable set of children of this node
      */
-    List<TreeNode<V>> getChildren();
+    List<N> getChildren();
 
     /**
      * Adds a new child to this node.
      *
      * @param newChild the child to add
      */
-    void addChild(TreeNode<V> newChild);
+    void addChild(N newChild);
 
     /**
      * Removes a child from this node.
      *
      * @param oldChild the child to remove
      */
-    void removeChild(TreeNode<V> oldChild);
+    void removeChild(N oldChild);
 
     /**
      * @return whether this is a root node, that is, this node has no parents

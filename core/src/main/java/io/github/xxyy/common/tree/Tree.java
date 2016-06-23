@@ -20,7 +20,8 @@ package io.github.xxyy.common.tree;
  * @since 2016-06-22
  */
 @SuppressWarnings("WeakerAccess")
-public class Tree<V> extends SimpleTreeNode<V> { //Do we even need this class now?
+public class Tree<N extends TreeNode<N, V>, V> extends SimpleTreeNode<N, V> {
+
     /**
      * Creates a new tree.
      */
