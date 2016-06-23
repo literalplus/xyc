@@ -166,47 +166,23 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
         return new TreeValueSpliterator<>(nodeSpliterator());
     }
 
-    /**
-     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     *
-     * @return a stream of this tree's values, including the root node's value
-     * @see #spliterator()
-     */
+    @Override
     public Stream<V> stream() {
         return StreamSupport.stream(spliterator(), false);
     }
 
-    /**
-     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     *
-     * @return a value spliterator for this tree node and its children.
-     * @see #spliterator()
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public TreeNodeSpliterator<N, V> nodeSpliterator() {
         return new TreeNodeSpliterator<>((N) this);
     }
 
-    /**
-     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     *
-     * @return a stream of this tree's nodes, including the root node
-     * @see #nodeSpliterator()
-     */
+    @Override
     public Stream<N> nodeStream() {
         return StreamSupport.stream(nodeSpliterator(), false);
     }
 
-    /**
-     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     * Performs an action on all nodes of this tree, including the root node.
-     *
-     * @param action the action to perform
-     */
+    @Override
     public void forEachNode(Consumer<? super N> action) {
         nodeSpliterator().forEachRemaining(action);
     }

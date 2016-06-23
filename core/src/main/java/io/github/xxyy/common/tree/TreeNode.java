@@ -11,6 +11,8 @@
 package io.github.xxyy.common.tree;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Represents a node in a skill tree.
@@ -149,4 +151,41 @@ public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
      * @since 3.3.9.0
      */
     N getChild(int[] position);
+
+    /**
+     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
+     * important notes about its behaviour.</p>
+     *
+     * @return a stream of this tree's values, including the root node's value
+     * @see #spliterator()
+     */
+    Stream<V> stream();
+
+    /**
+     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
+     * important notes about its behaviour.</p>
+     *
+     * @return a value spliterator for this tree node and its children.
+     * @see #spliterator()
+     */
+    @SuppressWarnings("unchecked")
+    TreeNodeSpliterator<N, V> nodeSpliterator();
+
+    /**
+     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
+     * important notes about its behaviour.</p>
+     *
+     * @return a stream of this tree's nodes, including the root node
+     * @see #nodeSpliterator()
+     */
+    Stream<N> nodeStream();
+
+    /**
+     * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
+     * important notes about its behaviour.</p>
+     * Performs an action on all nodes of this tree, including the root node.
+     *
+     * @param action the action to perform
+     */
+    void forEachNode(Consumer<? super N> action);
 }
