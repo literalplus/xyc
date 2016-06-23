@@ -42,11 +42,14 @@ public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
      * Adds a new child to this node.
      *
      * @param newChild the child to add
+     * @throws IllegalArgumentException if the child is not of type &lt;N&gt;
      */
     void addChild(N newChild);
 
     /**
-     * Removes a child from this node.
+     * Removes a child from this node. Note that implementations must call
+     * {@link #updatePosition()} on all children whose position changes as a result of this call.
+     * Whether other children are updated too is up to the implementation.
      *
      * @param oldChild the child to remove
      */
@@ -86,4 +89,64 @@ public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
      * @param newValue the new value to be carried by this node, or null for no value
      */
     void setValue(V newValue);
+
+    /**
+     * Gets the child id of a direct child of this node. The child id is the index of the child
+     * in the list of children. Note that the child id changes if a child with a lower child id
+     * is removed.
+     * <p><b>Note:</b> The behaviour of this method is undefined if called from a node
+     * constructor. In such case, use {@link #getChildren() the size of the parent's children list}
+     * as child id.
+     * </p>
+     *
+     * @param child the direct child to get the child id for
+     * @return the index of child in the list of children of this node
+     * @throws IllegalArgumentException if child is not a direct child of this node
+     * @since 3.3.9.0
+     */
+    int getChildId(N child);
+
+    /**
+     * The child coordinates of this node relative to the root node of this tree. This is,
+     * starting from the root node, the {@link #getChildId(TreeNode)} child id} of every node
+     * on the shortest path to this node. Since the root node does not have a parent and
+     * therefore no child id, it is represented as an empty array.
+     *
+     * @return the shortest path to this node relative to the root node
+     * @since 3.3.9.0
+     */
+    int[] getPosition();
+
+    /**
+     * Causes this node to recompute its position in the tree. By interface contract, this method
+     * must be called by parent nodes if the position changes, that is, a child somewhere is
+     * removed.
+     *
+     * @since 3.3.9.0
+     */
+    void updatePosition();
+
+    /**
+     * Gets a direct child of this node by its child id.
+     *
+     * @param childId the id of the child to get
+     * @return the child with given child id
+     * @throws IndexOutOfBoundsException if there is no such child
+     * @since 3.3.9.0
+     */
+    N getChild(int childId);
+
+    /**
+     * Gets a child of this node by its {@link #getPosition() child position} relative to this
+     * node. The position of this node is an empty array. Note that implementations may call
+     * {@link #getChild(int)} directly instead of recursing directly in order to save unnecessary
+     * array copies.
+     *
+     * @param position the child position relative to this node
+     * @return the node at given position
+     * @throws IndexOutOfBoundsException if any of the child ids are out of range for the
+     *                                  referenced node
+     * @since 3.3.9.0
+     */
+    N getChild(int[] position);
 }

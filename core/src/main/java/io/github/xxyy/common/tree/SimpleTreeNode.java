@@ -10,7 +10,10 @@
 
 package io.github.xxyy.common.tree;
 
+import com.google.common.base.Preconditions;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterators;
@@ -30,11 +33,21 @@ import java.util.stream.StreamSupport;
 public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, V> {
 
     private final N parent;
+    private final Class<N> nodeClass; //for checking of nodes
     private final List<N> children = new ArrayList<>(4); //and even that is an exaggeration
     private V value;
+    private int[] position;
 
-    public SimpleTreeNode(N parent) {
+    public SimpleTreeNode(N parent, Class<N> nodeClass) {
+        this.nodeClass = nodeClass;
+        checkNodeType(getClass());
         this.parent = parent;
+        if (parent != null) {
+            position = Arrays.copyOf(parent.getPosition(), parent.getPosition().length + 1);
+            position[position.length - 1] = parent.getChildren().size(); //must be id of next child, that's us
+        } else {
+            position = new int[0]; //We're the root node
+        }
     }
 
     @Override
@@ -49,12 +62,15 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
 
     @Override
     public void addChild(N newChild) {
+        Preconditions.checkArgument(newChild.getClass().isAssignableFrom(nodeClass), "");
         children.add(newChild);
     }
 
     @Override
     public void removeChild(N oldChild) {
+        //no type check necessary: child type gets checked on add, anything else won't have any effect
         children.remove(oldChild);
+        forEachNode(TreeNode::updatePosition); //update children positions
     }
 
     @Override
@@ -80,6 +96,39 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
     @Override
     public void setValue(V newValue) {
         this.value = newValue;
+    }
+
+    @Override
+    public int getChildId(N child) {
+        Preconditions.checkArgument(children.contains(child), "%s must be a direct child!", child);
+        return getChildren().indexOf(child);
+    }
+
+    @Override
+    public int[] getPosition() {
+        return position;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void updatePosition() {
+        position = Arrays.copyOf(parent.getPosition(), parent.getPosition().length + 1);
+        position[position.length - 1] = parent.getChildId((N) this); // <--  unchecked (check in constructor)
+    }
+
+    @Override
+    public N getChild(int childId) {
+        return children.get(childId);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public N getChild(int[] position) {
+        N node = (N) this; //<-- unchecked (not necessary because we check in constructor)
+        for (int childId : position) { //go all the way down
+            node = node.getChild(childId); //select the child at that position
+        } //    v  zero-length arrays return ourselves
+        return node;
     }
 
     @Override
@@ -160,5 +209,10 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
      */
     public void forEachNode(Consumer<? super N> action) {
         nodeSpliterator().forEachRemaining(action);
+    }
+
+    private void checkNodeType(Class<?> aClass) {
+        Preconditions.checkArgument(aClass.isAssignableFrom(nodeClass),
+                "node must be subclass of <N> (%s), is: %s", nodeClass, aClass);
     }
 }
