@@ -80,8 +80,11 @@ Versioning
 XYC uses a `a.y.x.z` semantic versioning scheme.
 
 `a` is the overall version. This gets bumped when the project structure is significantly changed.
+
 `x` is the major version. This gets bumped when considerable new APIs are introduced, or serious binary incompatibilities are introduced.
+
 `y` is the minor version. This gets bumped for new features and considerable changes. Small binary incompatibilities may arise.
+
 `z` is the bugfix version. This gets bumped for bugfixes.
 
 Support
