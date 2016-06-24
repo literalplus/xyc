@@ -12,13 +12,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>xyc-parent</artifactId>
-        <groupId>li.l1t.common</groupId>
-        <version>4.0.0.0-SNAPSHOT</version>
-    </parent>
 
     <modelVersion>4.0.0</modelVersion>
+    <groupId>li.l1t.common</groupId>
+    <artifactId>xyc-libhibernate</artifactId>
+    <version>5.1.0.Final</version>
+
     <name>XYC LibHibernate for Bukkit</name>
     <description>
         Hibernate has too many dependencies and it's really hard to shade right, plus it needs a
@@ -27,11 +26,10 @@
         dependencies work too!
     </description>
 
-    <artifactId>xyc-libhibernate</artifactId>
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
-        <hibernate.version>5.1.0.Final</hibernate.version>
+        <hibernate.version>${project.version}</hibernate.version>
     </properties>
 
     <dependencies>
