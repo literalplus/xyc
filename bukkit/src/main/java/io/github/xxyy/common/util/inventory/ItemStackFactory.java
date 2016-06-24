@@ -30,13 +30,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This factory helps with creating {@link org.bukkit.inventory.ItemStack}s.
+ * This factory helps with creating {@link org.bukkit.inventory.ItemStack}s. Kept in this package
+ * instead of {@link io.github.xxyy.common.inventory} for historic reasons.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 30/01/14
  */
 @SuppressWarnings("UnusedDeclaration")
-public final class ItemStackFactory {
+public class ItemStackFactory {
     @NotNull
     private final ItemStack base;
     private String displayName;
@@ -97,6 +98,7 @@ public final class ItemStackFactory {
 
     /**
      * Sets the display name of this factory if the resulting stack would not have a custom display name.
+     *
      * @param defaultDisplayName the display name to ste
      * @return this object
      */
@@ -122,6 +124,7 @@ public final class ItemStackFactory {
     /**
      * Appends a collection of strings to the resulting item stack's lore, treating every element as a separate line.
      * If this factory was constructed with a template item stack, this method will append to its existing lore, if any.
+     *
      * @param loreToAppend the lines to add to the lore
      * @return this object
      */
@@ -216,7 +219,7 @@ public final class ItemStackFactory {
      * @see ItemStackFactory#materialData(org.bukkit.material.MaterialData)
      */
     public ItemStackFactory leatherArmorColor(final Color color) {
-        if(meta == null) {
+        if (meta == null) {
             meta = base.getItemMeta();
         }
 
