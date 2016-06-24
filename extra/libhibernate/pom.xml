@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+  ~
+  ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
+  ~  copying and reverse-engineering is strictly prohibited without explicit written permission
+  ~  from the original author and may result in legal steps being taken.
+  ~
+  ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>xyc-parent</artifactId>
+        <groupId>li.l1t.common</groupId>
+        <version>4.0.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <name>XYC LibHibernate for Bukkit</name>
+    <description>
+        Hibernate has too many dependencies and it's really hard to shade right, plus it needs a
+        current JPA version, not 1.0 like Bukkit is shipping. So here's a relocated Hibernate
+        with all libraries in place, just waiting to be dropped into your plugins folder. Direct
+        dependencies work too!
+    </description>
+
+    <artifactId>xyc-libhibernate</artifactId>
+
+    <properties>
+        <pomFile>dependency-reduced-pom.xml</pomFile>
+        <hibernate.version>5.1.0.Final</hibernate.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency> <!-- Hibernate entity auto-discovery -->
+            <groupId>com.github.v-ladynev</groupId>
+            <artifactId>fluent-hibernate-core</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <id>lh-shade</id>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>org.hibernate:*</include>
+                            <include>org.hibernate.javax.persistence:hibernate-jpa-2.1-api</include>
+                            <include>org.hibernate.common:hibernate-commons-annotations</include>
+                            <include>org.javassist:javassist</include>
+                            <include>antlr:antlr</include>
+                            <include>org.apache.geronimo.specs:geronimo-jta_1.1_spec</include>
+                            <include>org.jboss:jandex</include>
+                            <include>com.fasterxml:classmate</include>
+                            <include>dom4j:dom4j</include>
+                            <include>xml-apis:xml-apis</include>
+                            <include>org.jboss.logging:jboss-logging</include>
+                            <include>com.github.v-ladynev:fluent-hibernate-core</include>
+                        </includes>
+                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>javax.persistence</pattern>
+                            <shadedPattern>javax.persistence21</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <finalName>xyc-libhibernate</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>
