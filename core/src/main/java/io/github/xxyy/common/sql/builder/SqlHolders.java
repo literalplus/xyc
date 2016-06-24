@@ -11,11 +11,11 @@
 package io.github.xxyy.common.sql.builder;
 
 import com.google.common.collect.Lists;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
@@ -50,9 +50,9 @@ public class SqlHolders {
      * @see #processClassStructure(Class)
      * @deprecated Use {@link io.github.xxyy.common.sql.builder.SqlHolders.CacheBuilder}.
      */
-    @NotNull
+    @Nonnull
     @Deprecated
-    public static Set<SqlValueHolder<?>> processClass(@NotNull Class<?> clazz, @Nullable Object accessorInstance,
+    public static Set<SqlValueHolder<?>> processClass(@Nonnull Class<?> clazz, @Nullable Object accessorInstance,
                                                       @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
         Set<SqlValueHolder<?>> result = new LinkedHashSet<>();
 
@@ -81,8 +81,8 @@ public class SqlHolders {
      * @param clazz Class to process
      * @return {@link io.github.xxyy.common.sql.builder.annotation.SqlValueCache}s of {@code clazz}.
      */
-    @NotNull
-    public static CacheBuilder processClassStructure(@NotNull Class<?> clazz) {
+    @Nonnull
+    public static CacheBuilder processClassStructure(@Nonnull Class<?> clazz) {
         CacheBuilder builder = new CacheBuilder();
 
         for (Field field : clazz.getDeclaredFields()) {
@@ -94,7 +94,7 @@ public class SqlHolders {
         return builder;
     }
 
-    public static void updateFromResultSet(@NotNull Collection<SqlValueHolder<?>> holders, @NotNull ResultSet resultSet) throws SQLException {
+    public static void updateFromResultSet(@Nonnull Collection<SqlValueHolder<?>> holders, @Nonnull ResultSet resultSet) throws SQLException {
         ResultSetMetaData rsmd = resultSet.getMetaData();
         List<String> availableNames = Lists.newLinkedList();
         int columnCount = rsmd.getColumnCount();
@@ -121,7 +121,7 @@ public class SqlHolders {
         public CacheBuilder() {
         }
 
-        protected void put(@NotNull Field field) {
+        protected void put(@Nonnull Field field) {
             if (targetFields == null) {
                 targetFields = new HashMap<>();
             }
@@ -136,7 +136,7 @@ public class SqlHolders {
             this.targetFields.put(field, annotation);
         }
 
-        @NotNull
+        @Nonnull
         public List<SqlValueHolder<?>> build(@Nullable Object accessorInstance, @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
             List<SqlValueHolder<?>> result = new ArrayList<>(targetFields.size());
 

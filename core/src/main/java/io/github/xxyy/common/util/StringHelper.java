@@ -16,10 +16,10 @@
 package io.github.xxyy.common.util;
 
 import com.google.common.collect.ImmutableMap;
-import org.jetbrains.annotations.NotNull;
 
 import io.github.xxyy.common.util.math.NumberHelper;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -165,7 +165,7 @@ public final class StringHelper {
      * @return the amount of milliseconds represented by the input
      * @throws java.lang.IllegalArgumentException If the input couldn't be parsed
      */
-    public static long parseTimePeriod(@NotNull String input) {
+    public static long parseTimePeriod(@Nonnull String input) {
         if (input.isEmpty()){
             throw new IllegalArgumentException("Empty input!");
         }

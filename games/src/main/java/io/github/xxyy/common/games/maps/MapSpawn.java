@@ -18,8 +18,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import io.github.xxyy.common.games.teams.GameTeam;
 import io.github.xxyy.common.games.teams.TeamRegistry;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,13 +33,13 @@ public class MapSpawn implements ConfigurationSerializable {
     /**
      * Team this spawn belongs to.
      */
-    @NotNull
+    @Nonnull
     private final GameTeam team;
 
     /**
      * Location this spawn is at.
      */
-    @NotNull
+    @Nonnull
     private final Location location;
 
     @java.beans.ConstructorProperties({"team", "location"})
@@ -67,7 +67,7 @@ public class MapSpawn implements ConfigurationSerializable {
      * @throws java.lang.IllegalArgumentException If (a) The source map does not contain all necessary data (All data is necessary)
      *                                            (b) An unknown team is given (c) An unknown world is given (c) One of the location types is not a number.
      */
-    public static MapSpawn valueOf(@NotNull Map<String, Object> sourceMap) {
+    public static MapSpawn valueOf(@Nonnull Map<String, Object> sourceMap) {
         Validate.isTrue(sourceMap.containsKey("team") &&
                 sourceMap.containsKey("location.x") &&
                 sourceMap.containsKey("location.y") &&
@@ -122,12 +122,12 @@ public class MapSpawn implements ConfigurationSerializable {
         return map;
     }
 
-    @NotNull
+    @Nonnull
     public GameTeam getTeam() {
         return this.team;
     }
 
-    @NotNull
+    @Nonnull
     public Location getLocation() {
         return this.location;
     }
@@ -142,8 +142,7 @@ public class MapSpawn implements ConfigurationSerializable {
         if (this$team == null ? other$team != null : !this$team.equals(other$team)) return false;
         final Object this$location = this.location;
         final Object other$location = other.location;
-        if (this$location == null ? other$location != null : !this$location.equals(other$location)) return false;
-        return true;
+        return this$location == null ? other$location == null : this$location.equals(other$location);
     }
 
     public int hashCode() {

@@ -11,11 +11,11 @@
 package io.github.xxyy.common.shared.uuid;
 
 import org.bukkit.plugin.ServicePriority;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 /**
@@ -48,7 +48,7 @@ public interface UUIDRepository {
      * @throws InvalidResultException If profiles were found, but no unique UUID could be retrieved.
      * @see #forName(String)
      */
-    @NotNull
+    @Nonnull
     UUID forNameChecked(String name) throws UnknownKeyException, InvalidResultException;
 
     /**
@@ -69,7 +69,7 @@ public interface UUIDRepository {
      *
      * @return The parent or {@link EmptyUUIDRepository#INSTANCE} if no parent is set.
      */
-    @NotNull
+    @Nonnull
     UUIDRepository getParent();
 
     /**
@@ -84,11 +84,11 @@ public interface UUIDRepository {
      */
     ServicePriority getPriority();
 
-    public static class UnknownKeyException extends Exception {
+    class UnknownKeyException extends Exception {
 
     }
 
-    public static class InvalidResultException extends Exception {
+    class InvalidResultException extends Exception {
         @Nullable
         private final Profile[] profiles;
 
@@ -106,7 +106,7 @@ public interface UUIDRepository {
      * An empty UUID repository. This just returns NULL or throws {@link UnknownKeyException}s when queried.
      * {@link #setParent(UUIDRepository)} throws a {@link java.lang.UnsupportedOperationException}.
      */
-    public static class EmptyUUIDRepository implements UUIDRepository {
+    class EmptyUUIDRepository implements UUIDRepository {
 
         public static final EmptyUUIDRepository INSTANCE = new EmptyUUIDRepository();
 
@@ -120,7 +120,7 @@ public interface UUIDRepository {
             return null;
         }
 
-        @NotNull
+        @Nonnull
         @Override
         public UUID forNameChecked(String name) throws UnknownKeyException, InvalidResultException {
             throw new UnknownKeyException();
@@ -132,7 +132,7 @@ public interface UUIDRepository {
             return null;
         }
 
-        @NotNull
+        @Nonnull
         @Override
         public UUIDRepository getParent() {
             return this;

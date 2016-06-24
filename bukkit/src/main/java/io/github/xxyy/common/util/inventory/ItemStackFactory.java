@@ -21,8 +21,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,7 +38,7 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ItemStackFactory {
-    @NotNull
+    @Nonnull
     private final ItemStack base;
     private String displayName;
     private List<String> lore;
@@ -50,7 +50,7 @@ public class ItemStackFactory {
      *
      * @param source Item stack to use as base for this factory.
      */
-    public ItemStackFactory(@NotNull final ItemStack source) {
+    public ItemStackFactory(@Nonnull final ItemStack source) {
         base = source;
         materialData = source.getData();
 
@@ -272,7 +272,7 @@ public class ItemStackFactory {
         return product;
     }
 
-    @NotNull
+    @Nonnull
     public ItemStack getBase() {
         return this.base;
     }

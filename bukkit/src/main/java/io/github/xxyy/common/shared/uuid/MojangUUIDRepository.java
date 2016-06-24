@@ -15,12 +15,12 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.bukkit.plugin.ServicePriority;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -39,10 +39,10 @@ public class MojangUUIDRepository implements UUIDRepository {
     private final LoadingCache<String, UUID> uuidCache = CacheBuilder.newBuilder()
             .expireAfterWrite(60, TimeUnit.MINUTES)
             .maximumSize(4_200L)
-            .<String, UUID>build(new CacheLoader<String, UUID>() {
+            .build(new CacheLoader<String, UUID>() {
                 @Override
-                @NotNull
-                public UUID load(@NotNull String name) throws UnknownKeyException, InvalidResultException {
+                @Nonnull
+                public UUID load(@Nonnull String name) throws UnknownKeyException, InvalidResultException {
                     Profile[] profiles = HTTP_PROFILE_REPOSITORY.findProfilesByNames(name);
 
                     if (profiles.length == 1 && !profiles[0].isDemo()) {
@@ -55,7 +55,7 @@ public class MojangUUIDRepository implements UUIDRepository {
                 }
             });
 
-    @NotNull
+    @Nonnull
     private UUIDRepository parent = EmptyUUIDRepository.INSTANCE;
 
 
@@ -72,7 +72,7 @@ public class MojangUUIDRepository implements UUIDRepository {
         }
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public UUID forNameChecked(String name) throws UnknownKeyException, InvalidResultException {
         try {
@@ -100,7 +100,7 @@ public class MojangUUIDRepository implements UUIDRepository {
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public UUIDRepository getParent() {
         return parent;
     }

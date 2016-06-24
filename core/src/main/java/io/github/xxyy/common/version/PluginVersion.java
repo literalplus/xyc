@@ -10,9 +10,9 @@
 
 package io.github.xxyy.common.version;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
@@ -50,8 +50,8 @@ public final class PluginVersion {
      * @param clazz the class to retrieve version information for
      * @return the version information for given class
      */
-    @NotNull
-    public static PluginVersion ofClass(@NotNull Class<?> clazz) {
+    @Nonnull
+    public static PluginVersion ofClass(@Nonnull Class<?> clazz) {
         @Nullable CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
 
         if (codeSource != null) {

@@ -12,9 +12,8 @@ package io.github.xxyy.common.games.data;
 
 import org.bukkit.command.CommandSender;
 
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
-
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -63,7 +62,7 @@ public interface PlayerWrapperFactory<T extends PlayerWrapper> {
      * @return a T wrapping plrName.
      * @see io.github.xxyy.common.games.data.PlayerWrapper#PlayerWrapper(java.util.UUID, String, io.github.xxyy.common.sql.SafeSql)
      */
-    T getWrapper(@NotNull UUID uuid, @Nullable String plrName);
+    T getWrapper(@Nonnull UUID uuid, @Nullable String plrName);
 
     /**
      * @return All products that strong references are kept for by this instance.

@@ -13,9 +13,9 @@ package io.github.xxyy.common.games.data;
 import org.bukkit.command.CommandSender;
 
 import io.github.xxyy.common.sql.SafeSql;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,10 +31,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerWrapper> {
-    private Map<UUID, PlayerWrapper> wrappers = new HashMap<>();
     private static final ReentrantLock WRAPPER_CACHE_LOCK = new ReentrantLock(false);
-    private Map<String, UUID> nameToUuidMap = new HashMap<>();
     private final SafeSql sql;
+    private Map<UUID, PlayerWrapper> wrappers = new HashMap<>();
+    private Map<String, UUID> nameToUuidMap = new HashMap<>();
 
     @java.beans.ConstructorProperties({"sql"})
     public DefaultPlayerWrapperFactory(SafeSql sql) {
@@ -66,7 +66,7 @@ public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerW
     }
 
     @Override
-    public void free(@NotNull UUID wrpUniqueId) {
+    public void free(@Nonnull UUID wrpUniqueId) {
         WRAPPER_CACHE_LOCK.lock();
 
         try {
@@ -100,7 +100,7 @@ public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerW
     }
 
     @Override
-    public PlayerWrapper getWrapper(@NotNull UUID uuid, @Nullable String plrName) {
+    public PlayerWrapper getWrapper(@Nonnull UUID uuid, @Nullable String plrName) {
         WRAPPER_CACHE_LOCK.lock();
 
         try {
@@ -122,7 +122,7 @@ public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerW
      * @return A wrapper
      * @throws java.lang.NullPointerException If this player does not have a cached wrapper.
      */
-    public PlayerWrapper getWrapper(@NotNull String plrName) {
+    public PlayerWrapper getWrapper(@Nonnull String plrName) {
         return getWrapper(nameToUuidMap.get(plrName), plrName); //Can't do anything else
     }
 

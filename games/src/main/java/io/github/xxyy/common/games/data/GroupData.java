@@ -16,9 +16,9 @@ import org.bukkit.ChatColor;
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.QueryResult;
 import io.github.xxyy.common.sql.SafeSql;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,10 +44,10 @@ public class GroupData {
      */
     public static final String FULL_XY_META_TABLE = GameLib.CENTRAL_DB_NAME + ".groups";
     private static Map<String, GroupData> cache = new HashMap<>();
+    private final SafeSql ssql;
     private String name;
     private List<String> rawPermissions = null;
     private Map<String, Boolean> matchedPermissions = new ConcurrentHashMap<>(16, 0.75F, 2);
-    private final SafeSql ssql;
     private String nameColor = "§9";
     private String chatColor = "§7";
     private boolean metaFetched = false;
@@ -61,6 +61,23 @@ public class GroupData {
     protected GroupData(String name, SafeSql ssql) {
         this.name = name;
         this.ssql = ssql;
+    }
+
+    /**
+     * Factory method that returns a {@link GroupData} object for this name.
+     *
+     * @param name Name of the group the object will represent.
+     * @param ssql SafeSql to use to communicate with the database.
+     * @return A (not necessarily new) {@link GroupData} object that represents the group of the name {@code name}.
+     */
+    public static GroupData getByName(@Nullable String name, @Nonnull SafeSql ssql) {
+        Validate.notNull(ssql, "ssql");
+        GroupData rtrn = GroupData.cache.get(name);
+        if (rtrn == null) {
+            rtrn = new GroupData(name, ssql);
+            GroupData.cache.put(name, rtrn);
+        }
+        return rtrn;
     }
 
     @Override
@@ -138,23 +155,6 @@ public class GroupData {
     @Override
     public String toString() {
         return "TDGroup: " + this.name;
-    }
-
-    /**
-     * Factory method that returns a {@link GroupData} object for this name.
-     *
-     * @param name Name of the group the object will represent.
-     * @param ssql SafeSql to use to communicate with the database.
-     * @return A (not necessarily new) {@link GroupData} object that represents the group of the name {@code name}.
-     */
-    public static GroupData getByName(@Nullable String name, @NotNull SafeSql ssql) {
-        Validate.notNull(ssql, "ssql");
-        GroupData rtrn = GroupData.cache.get(name);
-        if (rtrn == null) {
-            rtrn = new GroupData(name, ssql);
-            GroupData.cache.put(name, rtrn);
-        }
-        return rtrn;
     }
 
     @SuppressWarnings("SpellCheckingInspection")

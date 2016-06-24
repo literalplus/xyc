@@ -10,11 +10,11 @@
 
 package io.github.xxyy.common.sql.builder;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 
+import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -31,7 +31,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @param columnName   Column to target
      * @param initialValue Initial value - This is assumed to be fetched from database and set using {@link #updateValue(Object)}
      */
-    public SqlValueHolder(@NotNull final String columnName, @Nullable final T initialValue) {
+    public SqlValueHolder(@Nonnull final String columnName, @Nullable final T initialValue) {
         this(columnName);
         this.value = initialValue;
     }
@@ -43,7 +43,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @param initialValue Initial value - This is assumed to be fetched from database and set using {@link #updateValue(Object)}
      * @param dataSource   DataSource to use - May be null.
      */
-    public SqlValueHolder(@NotNull final String columnName, @Nullable final T initialValue, @NotNull final DataSource dataSource) {
+    public SqlValueHolder(@Nonnull final String columnName, @Nullable final T initialValue, @Nonnull final DataSource dataSource) {
         this(columnName, initialValue);
         this.setDataSource(dataSource);
     }
@@ -51,7 +51,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
     /**
      * Name of the represented column
      */
-    @NotNull
+    @Nonnull
     private final String columnName;
 
     /**
@@ -73,7 +73,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
     protected boolean fetched;
 
     @java.beans.ConstructorProperties({"columnName"})
-    public SqlValueHolder(@NotNull String columnName) {
+    public SqlValueHolder(@Nonnull String columnName) {
         this.columnName = columnName;
     }
 
@@ -84,8 +84,8 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @param <T>    generic type to be held by the resulting holder
      * @return The created object
      */
-    @NotNull
-    public static <T> SqlValueHolder<T> fromAnnotation(@NotNull final SqlValueCache source) {
+    @Nonnull
+    public static <T> SqlValueHolder<T> fromAnnotation(@Nonnull final SqlValueCache source) {
         return new SqlValueHolder<>(source.value().intern(), null);
     }
 
@@ -181,7 +181,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
      * @throws SQLException If a database error occurs
      */
     @SuppressWarnings("unchecked")
-    public void processResultSet(@NotNull ResultSet resultSet) throws SQLException {
+    public void processResultSet(@Nonnull ResultSet resultSet) throws SQLException {
         this.updateValue((T) resultSet.getObject(this.getColumnName()));
     }
 
@@ -202,7 +202,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
                 '}';
     }
 
-    @NotNull
+    @Nonnull
     public String getColumnName() {
         return this.columnName;
     }
@@ -240,7 +240,7 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
          * @param holder Holder to fetch
          * @return {@code true} if the holder has been populated with data.
          */
-        boolean select(@NotNull SqlValueHolder<?> holder);
+        boolean select(@Nonnull SqlValueHolder<?> holder);
 
         /**
          * Called to notify the data source of a change in value,
@@ -248,6 +248,6 @@ public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
          *
          * @param holder Holder which issued the change
          */
-        void registerChange(@NotNull SqlValueHolder<?> holder);
+        void registerChange(@Nonnull SqlValueHolder<?> holder);
     }
 }

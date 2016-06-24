@@ -16,11 +16,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.misc.XyLocation;
 import io.github.xxyy.common.util.math.NumberHelper;
+
+import javax.annotation.Nonnull;
 
 /**
  * A class providing some static methods to deal with {@link Location}s.
@@ -41,7 +42,7 @@ public abstract class LocationHelper {
      * @return whether toCheck is in the rectangle represented by the boundaries
      * @see io.github.xxyy.common.util.math.NumberHelper#isNumberBetween(int, int, int)
      */
-    public static boolean isBlockBetween(@NotNull Location toCheck, @NotNull Location boundary1, @NotNull Location boundary2) {
+    public static boolean isBlockBetween(@Nonnull Location toCheck, @Nonnull Location boundary1, @Nonnull Location boundary2) {
         Validate.notNull(toCheck.getWorld(), "toCheck's world cannot be null!");
         Validate.notNull(boundary1.getWorld(), "boundary1's world cannot be null!");
         Validate.isTrue(boundary1.getWorld().equals(boundary2.getWorld()), "boundary worlds cannot be different!");
@@ -86,7 +87,7 @@ public abstract class LocationHelper {
      * @return The read Location.
      * @see io.github.xxyy.common.misc.XyLocation#deserialize(java.util.Map)
      */
-    public static Location fromConfiguration(@NotNull ConfigurationSection section) {
+    public static Location fromConfiguration(@Nonnull ConfigurationSection section) {
         return fromDetailedConfiguration(section);
     }
 
@@ -98,7 +99,7 @@ public abstract class LocationHelper {
      * @return The read Location.
      * @see io.github.xxyy.common.misc.XyLocation#deserialize(java.util.Map)
      */
-    public static Location fromDetailedConfiguration(@NotNull ConfigurationSection section) {
+    public static Location fromDetailedConfiguration(@Nonnull ConfigurationSection section) {
         return XyLocation.deserialize(section.getValues(false));
     }
 
@@ -122,7 +123,7 @@ public abstract class LocationHelper {
      * @param targetName the name of the player to target or NULL for the command's executor
      * @return a command string (including /) corresponding to the arguments
      */
-    public static String createTpCommand(@NotNull Location loc, @Nullable String targetName) {
+    public static String createTpCommand(@Nonnull Location loc, @Nullable String targetName) {
         StringBuilder stringBuilder = new StringBuilder("/minecraft:tp ");
 
         if (targetName != null) {

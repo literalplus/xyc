@@ -12,11 +12,11 @@ package io.github.xxyy.common.sql;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.util.TextOutputHelper;
 
+import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -193,8 +193,8 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @param query Query to prepare (may contain '?')
      * @return {@link PreparedStatement}; not executed OR null at failure
      */
-    @NotNull
-    public PreparedStatement prepareStatement(@NotNull String query) throws SQLException {
+    @Nonnull
+    public PreparedStatement prepareStatement(@Nonnull String query) throws SQLException {
         PreparedStatement stmt = this.getAnyConnection().prepareStatement(query);
         Validate.notNull(stmt);
         return stmt;
@@ -302,8 +302,8 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
      * @return A QueryResult representing the executed update ({@link QueryResult#getResultSet()} will be {@code null}). Remember to always close this!
      * @throws SQLException When an error occurs while creating the statement, executing the statement or filling in the values.
      */
-    @NotNull
-    public UpdateResult executeUpdateWithGenKeys(@NotNull String query, Object... arguments) throws SQLException {
+    @Nonnull
+    public UpdateResult executeUpdateWithGenKeys(@Nonnull String query, Object... arguments) throws SQLException {
         PreparedStatement stmt = this.getAnyConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         Validate.notNull(stmt);
 
@@ -313,7 +313,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
     }
 
     @Nullable
-    public PreparedStatement fillStatement(@Nullable PreparedStatement stmt, @NotNull Object[] objects) throws SQLException {
+    public PreparedStatement fillStatement(@Nullable PreparedStatement stmt, @Nonnull Object[] objects) throws SQLException {
         if (stmt == null){
             return null;
         }

@@ -11,7 +11,6 @@
 package io.github.xxyy.common.sql.builder.annotation;
 
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.sql.builder.ConcurrentSqlNumberHolder;
@@ -19,6 +18,7 @@ import io.github.xxyy.common.sql.builder.SqlIdentifierHolder;
 import io.github.xxyy.common.sql.builder.SqlUUIDHolder;
 import io.github.xxyy.common.sql.builder.SqlValueHolder;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -57,7 +57,7 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
      */
     Class<? extends Number> numberType() default Integer.class;
 
-    public enum Type { //Yes, I know this thing is abusing generix very awfully..Dunno how to do it in any other way ._.
+    enum Type { //Yes, I know this thing is abusing generix very awfully..Dunno how to do it in any other way ._.
         /**
          * Updates objects with overriding values.
          *
@@ -170,8 +170,8 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
          * @return An instance of {@link SqlValueHolder} corresponding to the this type and Field.
          * @throws java.lang.IllegalAccessException if the field couldn't be accessed
          */
-        @NotNull
-        public SqlValueHolder<?> createHolder(@NotNull Field sourceField, @NotNull SqlValueCache annotation,
+        @Nonnull
+        public SqlValueHolder<?> createHolder(@Nonnull Field sourceField, @Nonnull SqlValueCache annotation,
                                               @Nullable Object accessorInstance, @Nullable SqlValueHolder.DataSource dataSource) throws IllegalAccessException {
             return skeletonCreateHolder(sourceField, annotation, accessorInstance, dataSource, getExpectedClass(), getFactory()); //generix hax, kthx
         }
@@ -180,8 +180,8 @@ public @interface SqlValueCache { //TODO In case I ever open-source XYC, this pr
     /**
      * Makes {@link SqlValueHolder}s from annotations.
      */
-    static interface AnnotationToHolderFactory<T> {
-        @NotNull
-        T fromAnnotation(@NotNull SqlValueCache annotation);
+    interface AnnotationToHolderFactory<T> {
+        @Nonnull
+        T fromAnnotation(@Nonnull SqlValueCache annotation);
     }
 }

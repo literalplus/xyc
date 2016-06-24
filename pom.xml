@@ -8,16 +8,20 @@
   ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.github.xxyy.common</groupId>
+    <groupId>li.l1t.common</groupId>
     <artifactId>xyc-parent</artifactId>
-    <version>3.3.10.2-SNAPSHOT</version>
+    <version>4.0.0.0-SNAPSHOT</version>
     <modules>
         <module>bukkit</module>
         <module>core</module>
         <module>bungee</module>
         <module>games</module>
+        <module>games-bootstrap</module>
+        <module>bootstrap-legacy</module>
     </modules>
     <name>XYC Parent</name>
     <inceptionYear>2013</inceptionYear>
@@ -69,6 +73,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>17.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305
+                </artifactId> <!-- javax nullity annotations (formerly from Guava) -->
+                <version>3.0.0</version> <!-- only CraftBukkit ships this -->
             </dependency>
             <dependency>
                 <groupId>org.spigotmc</groupId>
@@ -160,6 +170,16 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>xyc-bukkit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>xyc-games</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>xyc-games-bootstrap</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

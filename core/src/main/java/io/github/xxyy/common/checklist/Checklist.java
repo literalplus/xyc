@@ -10,8 +10,7 @@
 
 package io.github.xxyy.common.checklist;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,17 +42,17 @@ public class Checklist {
     }
 
     public static class Item {
-        @NotNull
+        @Nonnull
         private final String description;
-        @NotNull
+        @Nonnull
         private final ChecklistEvaluator evaluator;
 
-        public Item(@NotNull String description, @NotNull ChecklistEvaluator evaluator) {
+        public Item(@Nonnull String description, @Nonnull ChecklistEvaluator evaluator) {
             this.description = description;
             this.evaluator = evaluator;
         }
 
-        @NotNull
+        @Nonnull
         public String getDescription() {
             return description;
         }

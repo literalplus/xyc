@@ -10,10 +10,11 @@
 
 package io.github.xxyy.common.sql.builder;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
+
+import javax.annotation.Nonnull;
 
 /**
  * Stores an identifier column value.
@@ -54,7 +55,7 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
         throw new UnsupportedOperationException("Cannot change value of an identifier column!");
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public QuerySnapshot produceSnapshot() {
         return this; //Have to ignore #isModified()
@@ -87,8 +88,8 @@ public class SqlIdentifierHolder<T> extends SqlValueHolder<T> {
      * @param <T>    the generic type of the newly generated holder
      * @return The created object
      */
-    @NotNull
-    public static <T> SqlIdentifierHolder<T> fromAnnotation(@NotNull final SqlValueCache source) {
+    @Nonnull
+    public static <T> SqlIdentifierHolder<T> fromAnnotation(@Nonnull final SqlValueCache source) {
         return new SqlIdentifierHolder<>(source.value().intern());
     }
 }

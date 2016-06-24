@@ -10,11 +10,10 @@
 
 package io.github.xxyy.common.sql.builder;
 
-import org.jetbrains.annotations.NotNull;
-
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import io.github.xxyy.common.util.UUIDHelper;
 
+import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -47,14 +46,14 @@ public class SqlUUIDHolder extends SqlIdentifierHolder<UUID> {
     }
 
     @Override
-    public void processResultSet(@NotNull ResultSet resultSet) throws SQLException {
+    public void processResultSet(@Nonnull ResultSet resultSet) throws SQLException {
         this.updateValue(UUIDHelper.getFromString(
                 resultSet.getString(this.getColumnName())
         ));
     }
 
-    @NotNull
-    public static SqlUUIDHolder fromAnnotation(@NotNull SqlValueCache annotation) {
+    @Nonnull
+    public static SqlUUIDHolder fromAnnotation(@Nonnull SqlValueCache annotation) {
         return new SqlUUIDHolder(annotation.value().intern());
     }
 }

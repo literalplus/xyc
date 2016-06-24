@@ -15,9 +15,9 @@ import org.bukkit.entity.Player;
 
 import io.github.xxyy.common.util.LocationHelper;
 import io.github.xxyy.common.util.task.NonAsyncBukkitRunnable;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Locale;
 
@@ -51,7 +51,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
      * @param to              Target location
      * @param attemptsAllowed How many attempts should be made to teleport the player. Set to 1 or below to disable this feature.
      */
-    public RunnableTeleportLater(@NotNull Player plr, @NotNull Location to, int attemptsAllowed) {
+    public RunnableTeleportLater(@Nonnull Player plr, @Nonnull Location to, int attemptsAllowed) {
         this(plr, to, attemptsAllowed, null);
     }
 
@@ -64,7 +64,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
      * @param attemptsAllowed How many attempts should be made to teleport the player. Set to 1 or below to disable this feature.
      * @param handler         Handler to call after a teleport attempt
      */
-    public RunnableTeleportLater(@NotNull Player plr, @NotNull Location to, int attemptsAllowed, @Nullable TeleportCompleteHandler handler) {
+    public RunnableTeleportLater(@Nonnull Player plr, @Nonnull Location to, int attemptsAllowed, @Nullable TeleportCompleteHandler handler) {
         this.handler = handler;
         this.plr = plr;
         this.to = to;
@@ -80,7 +80,7 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
      * @param plr Player to target
      * @param to  Target location
      */
-    public void reset(@NotNull Player plr, @NotNull Location to) {
+    public void reset(@Nonnull Player plr, @Nonnull Location to) {
         this.tryCancel();
 
         this.plr = plr;
@@ -152,17 +152,6 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
 
     // Inner stuff
 
-    public static interface TeleportCompleteHandler {
-        /**
-         * Handles an (attempted) teleport. This is called regardless of whether the teleport succeeded.
-         *
-         * @param cause         Runnable which caused this event
-         * @param failureReason Reason of the teleport failureReason or NULL if the teleport succeeded
-         * @param lastTry       whether this is the last time this teleport attempted
-         */
-        void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason, boolean lastTry);
-    }
-
     public enum TeleportFailureReason {
         MOVED,
         DAMAGED,
@@ -173,6 +162,17 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
          * @since 2.5.1
          */
         SYSTEM
+    }
+
+    public interface TeleportCompleteHandler {
+        /**
+         * Handles an (attempted) teleport. This is called regardless of whether the teleport succeeded.
+         *
+         * @param cause         Runnable which caused this event
+         * @param failureReason Reason of the teleport failureReason or NULL if the teleport succeeded
+         * @param lastTry       whether this is the last time this teleport attempted
+         */
+        void handleTeleport(RunnableTeleportLater cause, TeleportFailureReason failureReason, boolean lastTry);
     }
 
     /**
@@ -209,6 +209,30 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
         public MessageTeleportCompleteHandler(MessageTeleportCompleteHandler toCopy) {
             messages.putAll(toCopy.messages);
             successMessage = toCopy.successMessage;
+        }
+
+        /**
+         * Creates a handler with default messages for given locale.
+         * If there are no default messages available for given locale, english messages are used.
+         *
+         * @param locale Locale to get a handler for
+         * @return a copy of the default handler for that locale.
+         */
+        public static MessageTeleportCompleteHandler getHandler(Locale locale) { //TODO This should use some kind of file to store languages or so
+            return new MessageTeleportCompleteHandler(locale.getLanguage().equals(Locale.GERMAN.getLanguage()) ? DEFAULT_DE : DEFAULT_EN);
+        }
+
+        /**
+         * Creates a handler with default messages for given locale and a parent.
+         * If there are no default messages available for given locale, english messages are used.
+         *
+         * @param locale Locale to get a handler for
+         * @param parent the parent to set
+         * @return a copy of the default handler for that locale.
+         * @see #parent(io.github.xxyy.common.games.util.RunnableTeleportLater.TeleportCompleteHandler)
+         */
+        public static MessageTeleportCompleteHandler getHandler(Locale locale, TeleportCompleteHandler parent) {
+            return new MessageTeleportCompleteHandler(getHandler(locale)).parent(parent);
         }
 
         /**
@@ -274,30 +298,6 @@ public class RunnableTeleportLater extends NonAsyncBukkitRunnable {
             if (parent != null) {
                 parent.handleTeleport(cause, failureReason, lastTry);
             }
-        }
-
-        /**
-         * Creates a handler with default messages for given locale.
-         * If there are no default messages available for given locale, english messages are used.
-         *
-         * @param locale Locale to get a handler for
-         * @return a copy of the default handler for that locale.
-         */
-        public static MessageTeleportCompleteHandler getHandler(Locale locale) { //TODO This should use some kind of file to store languages or so
-            return new MessageTeleportCompleteHandler(locale.getLanguage().equals(Locale.GERMAN.getLanguage()) ? DEFAULT_DE : DEFAULT_EN);
-        }
-
-        /**
-         * Creates a handler with default messages for given locale and a parent.
-         * If there are no default messages available for given locale, english messages are used.
-         *
-         * @param locale Locale to get a handler for
-         * @param parent the parent to set
-         * @return a copy of the default handler for that locale.
-         * @see #parent(io.github.xxyy.common.games.util.RunnableTeleportLater.TeleportCompleteHandler)
-         */
-        public static MessageTeleportCompleteHandler getHandler(Locale locale, TeleportCompleteHandler parent) {
-            return new MessageTeleportCompleteHandler(getHandler(locale)).parent(parent);
         }
     }
 }

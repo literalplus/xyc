@@ -24,9 +24,9 @@ import io.github.xxyy.common.sql.builder.SqlIdentifierHolder;
 import io.github.xxyy.common.sql.builder.SqlUUIDHolder;
 import io.github.xxyy.common.sql.builder.SqlValueHolder;
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -95,6 +95,40 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
         this.queryBuilder = new QueryBuilder(FULL_CENTRAL_USER_TABLE_NAME).addAll(valueHolders, true);
 
         this.sql = ssql;
+    }
+
+    //lazy init of CacheBuilder
+    protected static SqlHolders.CacheBuilder getCacheBuilder() {
+        if (BASE_CACHE_BUILDER == null) {
+            BASE_CACHE_BUILDER = SqlHolders.processClassStructure(PlayerWrapperBase.class);
+        }
+
+        return BASE_CACHE_BUILDER;
+    }
+
+    /**
+     * Initialises tables used by this class.
+     *
+     * @param ssql SafeSql to use to query the database.
+     */
+    public static void initTable(SafeSql ssql) {
+        ssql.executeUpdate("CREATE DATABASE IF NOT EXISTS " + GameLib.XY_DB_NAME);
+        ssql.executeUpdate("CREATE TABLE IF NOT EXISTS " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " (\n" +
+                "\t`uuid` CHAR(36) NOT NULL COMMENT 'Mojang has their UUID at 32 chars plain, 36 chars with dashes.' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`username` VARCHAR(16) NOT NULL COMMENT 'The name of the user at the last time he was here' COLLATE 'utf8_swedish_ci',\n" +
+                "\t`nickname` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`groupname` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
+                "\t`reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
+                "\t`passes_amount` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`passes_used` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`kills` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\t`deaths` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
+                "\tPRIMARY KEY (`uuid`),\n" +
+                "\tUNIQUE INDEX `nickname` (`nickname`),\n" +
+                "\tINDEX `username` (`username`)\n" +
+                ")\n" +
+                "COLLATE='utf8_swedish_ci'\n" +
+                "ENGINE=MyISAM;\n");
     }
 
     /**
@@ -200,7 +234,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
      * @see org.bukkit.entity.Player#getUniqueId()
      * @see io.github.xxyy.common.games.data.PlayerWrapper#plr()
      */
-    @NotNull
+    @Nonnull
     public UUID getUniqueId() {
         return this.uuid.getValue();
     }
@@ -291,13 +325,13 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
     }
 
     @Override
-    public boolean select(@NotNull SqlValueHolder<?> holder) {
+    public boolean select(@Nonnull SqlValueHolder<?> holder) {
         forceFullFetch();
         return true;
     }
 
     @Override
-    public void registerChange(@NotNull SqlValueHolder<?> holder) {
+    public void registerChange(@Nonnull SqlValueHolder<?> holder) {
         this.xyChanged = true; //TODO only update actually changed values! :)
     }
 
@@ -342,40 +376,6 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
 
     protected <N extends Number> void lockedModify(ConcurrentSqlNumberHolder<N> holder, N modifier) {
         holder.modify(modifier);
-    }
-
-    //lazy init of CacheBuilder
-    protected static SqlHolders.CacheBuilder getCacheBuilder() {
-        if (BASE_CACHE_BUILDER == null) {
-            BASE_CACHE_BUILDER = SqlHolders.processClassStructure(PlayerWrapperBase.class);
-        }
-
-        return BASE_CACHE_BUILDER;
-    }
-
-    /**
-     * Initialises tables used by this class.
-     *
-     * @param ssql SafeSql to use to query the database.
-     */
-    public static void initTable(SafeSql ssql) {
-        ssql.executeUpdate("CREATE DATABASE IF NOT EXISTS " + GameLib.XY_DB_NAME);
-        ssql.executeUpdate("CREATE TABLE IF NOT EXISTS " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " (\n" +
-                "\t`uuid` CHAR(36) NOT NULL COMMENT 'Mojang has their UUID at 32 chars plain, 36 chars with dashes.' COLLATE 'utf8_swedish_ci',\n" +
-                "\t`username` VARCHAR(16) NOT NULL COMMENT 'The name of the user at the last time he was here' COLLATE 'utf8_swedish_ci',\n" +
-                "\t`nickname` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`groupname` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8_swedish_ci',\n" +
-                "\t`reg_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n" +
-                "\t`passes_amount` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`passes_used` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`kills` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\t`deaths` INT(11) UNSIGNED NOT NULL DEFAULT '0',\n" +
-                "\tPRIMARY KEY (`uuid`),\n" +
-                "\tUNIQUE INDEX `nickname` (`nickname`),\n" +
-                "\tINDEX `username` (`username`)\n" +
-                ")\n" +
-                "COLLATE='utf8_swedish_ci'\n" +
-                "ENGINE=MyISAM;\n");
     }
 
     public SafeSql getSql() {

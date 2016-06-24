@@ -13,14 +13,19 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>li.l1t.common</groupId>
         <artifactId>xyc-parent</artifactId>
+        <groupId>li.l1t.common</groupId>
         <version>4.0.0.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xyc-bungee</artifactId>
-    <name>XYC BungeeCord Utilities</name>
+    <modelVersion>4.0.0</modelVersion>
+    <name>XYC Games Standalone for Bukkit</name>
+    <description>
+        The XYC Games, Bukkit and Core library shipped in a single Bukkit
+        plugin for usage by multiple plugins - without any shading!
+    </description>
+
+    <artifactId>xyc-games-bootstrap</artifactId>
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
@@ -28,12 +33,37 @@
 
     <dependencies>
         <dependency>
-            <groupId>li.l1t.common</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>xyc-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xyc-bukkit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>xyc-games</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.trove4j</groupId>
+            <artifactId>trove4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
         </dependency>
     </dependencies>
 
@@ -45,7 +75,7 @@
 
                 <executions>
                     <execution>
-                        <id>bungee-shade</id>
+                        <id>bukkit-shade</id>
                         <goals>
                             <goal>shade</goal>
                         </goals>
@@ -55,7 +85,11 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>li.l1t.common:xyc-core</include>
+                            <include>li.l1t.common:*</include>
+                            <include>com.google.code.gson:gson</include>
+                            <include>org.jetbrains:annotations</include>
+                            <include>net.sf.trove4j:trove4j</include>
+                            <include>com.google.guava:guava</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -80,10 +114,31 @@
                             <shadedPattern>li.l1t.lib.guava17</shadedPattern>
                         </relocation>
                     </relocations>
+                    <filters>
+                        <filter>
+                            <artifact>net.sf.trove4j:trove4j</artifact>
+                            <includes>
+                                <include>gnu/trove/**</include>
+                            </includes>
+                        </filter>
+                        <filter>
+                            <artifact>com.google.guava:guava</artifact>
+                            <includes>
+                                <include>com/google/common/**</include>
+                            </includes>
+                        </filter>
+                    </filters>
                 </configuration>
             </plugin>
         </plugins>
 
-        <finalName>xyc-bungee</finalName>
+        <finalName>xyc-games-standalone</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 </project>

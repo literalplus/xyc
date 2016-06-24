@@ -11,9 +11,9 @@
 package io.github.xxyy.common.collections;
 
 import com.google.common.base.Objects;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
 /**
@@ -60,7 +60,7 @@ public class Pair<L, R> {
      * @param obj object to check for
      * @return whether any of this pair's contents is the parameter
      */
-    public boolean contains(@NotNull Object obj) {
+    public boolean contains(@Nonnull Object obj) {
         return obj.equals(getLeft()) && obj.equals(getRight());
     }
 

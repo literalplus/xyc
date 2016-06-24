@@ -11,12 +11,12 @@
 package io.github.xxyy.common.sql.builder;
 
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.sql.PreparedStatementFactory;
 import io.github.xxyy.common.sql.QueryResult;
 
+import javax.annotation.Nonnull;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class QueryBuilder { //TODO make concurrent
     /**
      * Name of the table this query is targeted to.
      */
-    @NotNull
+    @Nonnull
     private final String tableName;
 
     /**
@@ -58,11 +58,11 @@ public class QueryBuilder { //TODO make concurrent
     @Nullable
     private Set<QuerySnapshot> queryParts = null;
 
-    public QueryBuilder(@NotNull final String tableName) {
+    public QueryBuilder(@Nonnull final String tableName) {
         this.tableName = tableName;
     }
 
-    public QueryBuilder(@NotNull final QueryBuilder source) {
+    public QueryBuilder(@Nonnull final QueryBuilder source) {
         this.tableName = source.getTableName();
         this.uniqueIdentifiers = source.getUniqueIdentifiers();
         this.queryParts = source.getQueryParts();
@@ -77,8 +77,8 @@ public class QueryBuilder { //TODO make concurrent
      * @see #addPart(QuerySnapshot)
      * @see #addUniqueIdentifier(QuerySnapshot)
      */
-    @NotNull
-    public QueryBuilder addAll(@NotNull final Collection<? extends QuerySnapshot> snapshots, boolean omitIdentifiers) {
+    @Nonnull
+    public QueryBuilder addAll(@Nonnull final Collection<? extends QuerySnapshot> snapshots, boolean omitIdentifiers) {
         for (QuerySnapshot snapshot : snapshots) {
             if (snapshot.getType() == QuerySnapshot.Type.OBJECT_IDENTIFIER && !omitIdentifiers) {
                 addUniqueIdentifier(snapshot);
@@ -99,8 +99,8 @@ public class QueryBuilder { //TODO make concurrent
      * @return This object, for convenient construction.
      * @throws java.lang.IllegalArgumentException If {@link SimpleQuerySnapshot#getType()} does not return {@link QuerySnapshot.Type#OBJECT_UPDATE} for {@code identifier}.
      */
-    @NotNull
-    public QueryBuilder addUniqueIdentifier(@NotNull final QuerySnapshot identifier) {
+    @Nonnull
+    public QueryBuilder addUniqueIdentifier(@Nonnull final QuerySnapshot identifier) {
         Validate.isTrue(identifier.getType() == QuerySnapshot.Type.OBJECT_IDENTIFIER ||
                 identifier.getType() == QuerySnapshot.Type.NEGATED_OBJECT_IDENTIFIER, "Identifier type must be object identifier!");
 
@@ -119,7 +119,7 @@ public class QueryBuilder { //TODO make concurrent
      * @return This object, for convenient construction.
      * @see java.util.Queue#poll()
      */
-    @NotNull
+    @Nonnull
     public QueryBuilder pollUniqueIdentifier() {
         if (this.uniqueIdentifiers != null) {
             this.uniqueIdentifiers.poll();
@@ -133,7 +133,7 @@ public class QueryBuilder { //TODO make concurrent
      *
      * @return This object, for convenient construction.
      */
-    @NotNull
+    @Nonnull
     public QueryBuilder clearUniqueIdentifiers() {
         if (this.uniqueIdentifiers != null) {
             this.uniqueIdentifiers.clear();
@@ -148,7 +148,7 @@ public class QueryBuilder { //TODO make concurrent
      * @param part snapshot of the column to be written.
      * @return This object, for convenient construction.
      */
-    @NotNull
+    @Nonnull
     public QueryBuilder addPart(@Nullable final QuerySnapshot part) {
         if (part == null) {
             return this;
@@ -170,7 +170,7 @@ public class QueryBuilder { //TODO make concurrent
      * @param factory where to get a snapshot from
      * @return This object, for convenient construction.
      */
-    @NotNull
+    @Nonnull
     public QueryBuilder addPart(@Nullable final QuerySnapshot.Factory factory) {
         if (factory == null) {
             return this;
@@ -185,8 +185,8 @@ public class QueryBuilder { //TODO make concurrent
      * @param parts Collection of the snapshots to be added
      * @return This object, for convenient construction.
      */
-    @NotNull
-    public QueryBuilder addParts(@NotNull final Collection<QuerySnapshot> parts) {
+    @Nonnull
+    public QueryBuilder addParts(@Nonnull final Collection<QuerySnapshot> parts) {
         for (QuerySnapshot snapshot : parts) {
             addPart(snapshot);
         }
@@ -199,7 +199,7 @@ public class QueryBuilder { //TODO make concurrent
      *
      * @return This object, for convenient construction.
      */
-    @NotNull
+    @Nonnull
     public QueryBuilder clearParts() {
         if (this.queryParts != null) {
             this.queryParts.clear();
@@ -217,7 +217,7 @@ public class QueryBuilder { //TODO make concurrent
      * @throws java.sql.SQLException if a sql error occurs
      */
     @Nullable
-    public PreparedStatement buildUpdate(@NotNull final PreparedStatementFactory statementFactory) throws SQLException {
+    public PreparedStatement buildUpdate(@Nonnull final PreparedStatementFactory statementFactory) throws SQLException {
         if (this.queryParts == null || this.queryParts.isEmpty()) {
             return null; //Nothing to do then
         }
@@ -269,7 +269,7 @@ public class QueryBuilder { //TODO make concurrent
      * @throws java.sql.SQLException if a database error occurs
      */
     @Nullable
-    public PreparedStatement buildTrueUpdate(@NotNull final PreparedStatementFactory statementFactory) throws SQLException {
+    public PreparedStatement buildTrueUpdate(@Nonnull final PreparedStatementFactory statementFactory) throws SQLException {
         if ((this.queryParts == null || this.queryParts.isEmpty()) || (this.uniqueIdentifiers == null || this.uniqueIdentifiers.isEmpty())) {
             return null; //Nothing to do then
         }
@@ -316,7 +316,7 @@ public class QueryBuilder { //TODO make concurrent
      * @see java.sql.PreparedStatement#executeUpdate()
      * @see #buildUpdate(io.github.xxyy.common.sql.PreparedStatementFactory)
      */
-    public int executeUpdate(@NotNull final PreparedStatementFactory statementFactory) throws SQLException {
+    public int executeUpdate(@Nonnull final PreparedStatementFactory statementFactory) throws SQLException {
         PreparedStatement statement = buildUpdate(statementFactory);
         if (statement == null) {
             return -1;
@@ -338,7 +338,7 @@ public class QueryBuilder { //TODO make concurrent
      * @see java.sql.PreparedStatement#executeUpdate()
      * @see #buildTrueUpdate(io.github.xxyy.common.sql.PreparedStatementFactory)
      */
-    public int executeTrueUpdate(@NotNull final PreparedStatementFactory statementFactory) throws SQLException {
+    public int executeTrueUpdate(@Nonnull final PreparedStatementFactory statementFactory) throws SQLException {
         PreparedStatement statement = buildTrueUpdate(statementFactory);
         if (statement == null) {
             return -1;
@@ -362,7 +362,7 @@ public class QueryBuilder { //TODO make concurrent
      * @throws java.sql.SQLException if a database error occurs
      */
     @Nullable
-    public PreparedStatement buildSelect(@NotNull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
+    public PreparedStatement buildSelect(@Nonnull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
         Validate.notNull(statementFactory, "statementFactory");
         StringBuilder queryStringBuilder = new StringBuilder("SELECT ");
         List<Object> args = new LinkedList<>();
@@ -419,7 +419,7 @@ public class QueryBuilder { //TODO make concurrent
      * @return A {@link io.github.xxyy.common.sql.QueryResult} created by the request, or {@code null} if {@link #buildSelect(io.github.xxyy.common.sql.PreparedStatementFactory, boolean)} returned {@code null}.
      * @throws SQLException if a database error occurs
      */
-    public QueryResult executeSelect(@NotNull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
+    public QueryResult executeSelect(@Nonnull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
         PreparedStatement statement = buildSelect(statementFactory, selectStar);
         if (statement == null) {
             return null;
@@ -428,7 +428,7 @@ public class QueryBuilder { //TODO make concurrent
         return new QueryResult(statement, statement.executeQuery());
     }
 
-    @NotNull
+    @Nonnull
     public String getTableName() {
         return this.tableName;
     }

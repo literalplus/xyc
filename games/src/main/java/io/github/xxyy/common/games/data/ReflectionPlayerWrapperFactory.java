@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
 
 import io.github.xxyy.common.games.GameLib;
 import io.github.xxyy.common.sql.SafeSql;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Map;
@@ -37,10 +37,10 @@ import java.util.logging.Logger;
 public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements PlayerWrapperFactory<T> {
 
     private static final PlayerWrapperFactory<PlayerWrapper> GENERIC_FACTORY = new DefaultPlayerWrapperFactory(GameLib.getSql());
-    Map<UUID, T> wrappers = new ConcurrentHashMap<>(15, 0.75F, 2);
     final Class<T> clazz;
     final SafeSql ssql;
     final Map<String, UUID> nameToUuidMap = new WeakHashMap<>();
+    Map<UUID, T> wrappers = new ConcurrentHashMap<>(15, 0.75F, 2);
 
     /**
      * Creates a new factory that is capable of managing
@@ -52,6 +52,15 @@ public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements 
     public ReflectionPlayerWrapperFactory(Class<T> clazz, SafeSql ssql) {
         this.clazz = clazz;
         this.ssql = ssql;
+    }
+
+    /**
+     * Returns an example factory instance for use with {@link io.github.xxyy.common.games.data.PlayerWrapper}.
+     *
+     * @return factory for {@link io.github.xxyy.common.games.data.PlayerWrapper}s.
+     */
+    public static PlayerWrapperFactory<PlayerWrapper> getGenericFactory() {
+        return GENERIC_FACTORY;
     }
 
     @Override
@@ -110,7 +119,7 @@ public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements 
     }
 
     @Override
-    public T getWrapper(@NotNull UUID uuid, @Nullable String plrName) {
+    public T getWrapper(@Nonnull UUID uuid, @Nullable String plrName) {
         T rtrn = this.wrappers.get(uuid);
         if (rtrn == null) {
             try {
@@ -137,14 +146,5 @@ public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements 
     @Override
     public Collection<T> getWrappers() {
         return this.wrappers.values();
-    }
-
-    /**
-     * Returns an example factory instance for use with {@link io.github.xxyy.common.games.data.PlayerWrapper}.
-     *
-     * @return factory for {@link io.github.xxyy.common.games.data.PlayerWrapper}s.
-     */
-    public static PlayerWrapperFactory<PlayerWrapper> getGenericFactory() {
-        return GENERIC_FACTORY;
     }
 }

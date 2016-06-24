@@ -12,9 +12,9 @@ package io.github.xxyy.common.util.math;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
@@ -64,7 +64,7 @@ public final class NumberHelper {
      */
     @Nullable
     @SuppressWarnings("unchecked") //The Map is guaranteed to always have the corresponding object
-    public static <N extends Number> MathOperator<N> getOperator(@NotNull Class<N> clazz) {
+    public static <N extends Number> MathOperator<N> getOperator(@Nonnull Class<N> clazz) {
         return (MathOperator<N>) CLASSES_TO_OPERATORS.get(clazz);
     }
 

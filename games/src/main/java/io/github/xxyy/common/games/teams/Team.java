@@ -12,8 +12,7 @@ package io.github.xxyy.common.games.teams;
 
 import org.bukkit.entity.Player;
 
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -33,7 +32,7 @@ public interface Team {
      * @param plrName Name of the player to get
      * @return A {@link org.bukkit.entity.Player} instance if a player by the name {@code plrName} is in this team or {@code null} if there is no such player.
      */
-    Player getPlayer(@NotNull String plrName);
+    Player getPlayer(@Nonnull String plrName);
 
     /**
      * Checks whether this team contains a specific player.
@@ -50,14 +49,14 @@ public interface Team {
      * @param plrName Name of the player to get
      * @return Whether this team contains a player by the name of {@code plrName}
      */
-    boolean hasPlayer(@NotNull String plrName);
+    boolean hasPlayer(@Nonnull String plrName);
 
     /**
      * Removes a {@link org.bukkit.entity.Player} instance from this team, regardless if its in the team or not.
      *
      * @param plr {@link org.bukkit.entity.Player} to remove
      */
-    void removePlayer(@NotNull Player plr);
+    void removePlayer(@Nonnull Player plr);
 
     /**
      * Tries to remove a {@link org.bukkit.entity.Player} from this team by its name.
@@ -65,7 +64,7 @@ public interface Team {
      * @param plrName Name of the player to remove
      * @return A {@link org.bukkit.entity.Player} object if there was such player, or {@code null} otherwise.
      */
-    Player removePlayer(@NotNull String plrName);
+    Player removePlayer(@Nonnull String plrName);
 
     /**
      * Adds a {@link org.bukkit.entity.Player} to this team.

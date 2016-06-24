@@ -10,8 +10,9 @@
 
 package io.github.xxyy.common.sql.builder;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
 
 /**
  * Simple implementation of {@link io.github.xxyy.common.sql.builder.QuerySnapshot}.
@@ -23,7 +24,7 @@ public class SimpleQuerySnapshot implements QuerySnapshot {
     /**
      * Name of the column this snapshot belongs to.
      */
-    @NotNull
+    @Nonnull
     private final String columnName;
     /**
      * Value to be written or added to the column.
@@ -35,16 +36,16 @@ public class SimpleQuerySnapshot implements QuerySnapshot {
     /**
      * Type of this snapshot.
      */
-    @NotNull
+    @Nonnull
     private final Type type;
 
-    public SimpleQuerySnapshot(@NotNull String columnName, @Nullable Object snapshot, @NotNull Type type) {
+    public SimpleQuerySnapshot(@Nonnull String columnName, @Nullable Object snapshot, @Nonnull Type type) {
         this.columnName = columnName;
         this.snapshot = snapshot;
         this.type = type;
     }
 
-    @NotNull
+    @Nonnull
     public String getColumnName() {
         return this.columnName;
     }
@@ -54,7 +55,7 @@ public class SimpleQuerySnapshot implements QuerySnapshot {
         return this.snapshot;
     }
 
-    @NotNull
+    @Nonnull
     public Type getType() {
         return this.type;
     }
@@ -73,8 +74,7 @@ public class SimpleQuerySnapshot implements QuerySnapshot {
         if (this$snapshot == null ? other$snapshot != null : !this$snapshot.equals(other$snapshot)) return false;
         final Object this$type = this.type;
         final Object other$type = other.type;
-        if (!this$type.equals(other$type)) return false;
-        return true;
+        return this$type.equals(other$type);
     }
 
     public int hashCode() {

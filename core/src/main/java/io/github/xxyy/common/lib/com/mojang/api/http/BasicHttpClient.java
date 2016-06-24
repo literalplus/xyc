@@ -10,8 +10,7 @@
 
 package io.github.xxyy.common.lib.com.mojang.api.http;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -58,7 +57,7 @@ public class BasicHttpClient implements HttpClient {
         return request(url, "GET", proxy, HttpBody.EMPTY_BODY, headers);
     }
 
-    @NotNull
+    @Nonnull
     private String request(URL url, String method, Proxy proxy, HttpBody body, List<HttpHeader> headers) throws IOException {
         if (proxy == null) proxy = Proxy.NO_PROXY;
         HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);

@@ -10,6 +10,7 @@
 
 package io.github.xxyy.common.games.kits.factory;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -22,7 +23,6 @@ import io.github.xxyy.common.cmd.XYCCommandExecutor;
 import io.github.xxyy.common.games.kits.KitManager;
 import io.github.xxyy.common.util.CommandHelper;
 import io.github.xxyy.common.util.StringHelper;
-import io.github.xxyy.lib.guava17.collect.Lists;
 
 import java.util.Collections;
 import java.util.HashMap;

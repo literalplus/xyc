@@ -11,7 +11,8 @@
 package io.github.xxyy.common.sql;
 
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * Statuic utilities for the {@link io.github.xxyy.common.sql.SqlConnectable} class.
@@ -33,7 +34,7 @@ public final class SqlConnectables {
      * @param connectable Connectable to get information from
      * @return Host string, as accepted by database drivers.
      */
-    public static String getHostString(@NotNull SqlConnectable connectable) {
+    public static String getHostString(@Nonnull SqlConnectable connectable) {
         String sqlHost = connectable.getSqlHost();
 
         Validate.notNull(sqlHost);
@@ -78,9 +79,9 @@ public final class SqlConnectables {
      * @param password {@link SqlConnectable#getSqlPwd()}
      * @return A simple SqlConnectable matching provided arguments.
      */
-    @NotNull
-    public static SqlConnectable fromCredentials(@NotNull final String host, @NotNull final String database,
-                                                 @NotNull final String user, @NotNull final String password) {
+    @Nonnull
+    public static SqlConnectable fromCredentials(@Nonnull final String host, @Nonnull final String database,
+                                                 @Nonnull final String user, @Nonnull final String password) {
         return new SqlConnectable() {
             @Override
             public String getSqlDb() {

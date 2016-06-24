@@ -10,6 +10,8 @@
 
 package io.github.xxyy.common.games.data;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -27,11 +29,9 @@ import io.github.xxyy.common.sql.SafeSql;
 import io.github.xxyy.common.sql.builder.QueryBuilder;
 import io.github.xxyy.common.sql.builder.QuerySnapshot;
 import io.github.xxyy.common.util.CommandHelper;
-import io.github.xxyy.lib.guava17.collect.ListMultimap;
-import io.github.xxyy.lib.guava17.collect.MultimapBuilder;
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-import io.github.xxyy.lib.intellij_annotations.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.List;
@@ -48,15 +48,15 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
 {
 
     public static final UUID CONSOLE_UUID = XycConstants.NIL_UUID;
-    private static PlayerWrapper CONSOLE_WRAPPER;
     /**
      * No longer used, please make your own.
      */
     @Deprecated
     public static HttpProfileRepository HTTP_PROFILE_REPOSITORY;
-    private QueryBuilder passQueryBuilder;
+    private static PlayerWrapper CONSOLE_WRAPPER;
     private final ListMultimap<String, MetadataValue> metadata =
             MultimapBuilder.hashKeys().arrayListValues(1).build();
+    private QueryBuilder passQueryBuilder;
 
     /**
      * Gets a wrapper for a {@link CommandSender}. If it's a {@link ConsoleCommandSender}, internal things will happen. Use this method if you want to
@@ -67,7 +67,7 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * @param ssql   SafeSql to use for storing the object.
      * @throws ClassCastException If {@code sender} is not any of the expected types.
      */
-    protected PlayerWrapper(@NotNull CommandSender sender, @NotNull SafeSql ssql) {
+    protected PlayerWrapper(@Nonnull CommandSender sender, @Nonnull SafeSql ssql) {
         super(ssql);
 
         if (sender instanceof Player) {
@@ -131,12 +131,59 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * @param plrName Name of the player to wrap (May be null if not available)
      * @param ssql    SafeSql to use for storing the object.
      */
-    protected PlayerWrapper(@NotNull UUID uuid, @Nullable String plrName, @NotNull SafeSql ssql) {
+    protected PlayerWrapper(@Nonnull UUID uuid, @Nullable String plrName, @Nonnull SafeSql ssql) {
         super(ssql);
         this.plrName.updateValue(plrName);
         this.uuid.updateValue(uuid);
 
         this.xyFetch();
+    }
+
+    /**
+     * Returns the real user name for a provided String.
+     *
+     * @param name Name to seek.
+     * @return Name of the player currently owning this nickname or {@code name} if {@code name} is a real name or {@code null} if
+     * there is no such user.
+     */
+    public static String getAnyName(String name) {
+        try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(
+                "SELECT username FROM " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " WHERE username=? OR nickname=?", name, name).assertHasResultSet()) {
+            if (queryResult.rs().next()) {
+                return queryResult.rs().getString("username");
+            }
+        } catch (SQLException e) {
+            GameLib.getSql().formatAndPrintException(e, "PlayerWrapper#getNameByNick");
+        }
+        return null;
+    }
+
+    /**
+     * Gets the real name of an user by their nickname.
+     *
+     * @param nick Nickname to seek.
+     * @return Name of the player currently owning this nickname or {@code null} if this nickname has not been registered.
+     */
+    public static String getNameByNick(String nick) {
+        try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(
+                "SELECT username FROM " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " WHERE nickname=?", nick).assertHasResultSet()) {
+            if (queryResult.rs().next()) {
+                return queryResult.rs().getString("username");
+            }
+        } catch (SQLException e) {
+            GameLib.getSql().formatAndPrintException(e, "PlayerWrapper#getNameByNick");
+        }
+        return null;
+    }
+
+    /**
+     * @return a wrapper for the console
+     */
+    public static PlayerWrapper getConsoleWrapper() {
+        if (CONSOLE_WRAPPER == null) {
+            CONSOLE_WRAPPER = new PlayerWrapper(Bukkit.getConsoleSender(), GameLib.getSql());
+        }
+        return CONSOLE_WRAPPER;
     }
 
     /**
@@ -305,17 +352,6 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Sets the group of the wrapped player. {@link GroupData} objects can be obtained using the static factory method
-     * {@link GroupData#getByName(java.lang.String, SafeSql)}
-     *
-     * @param group New group for the wrapped player.
-     */
-    public void setGroup(GroupData group) {
-        this.group = group;
-        this.groupName.setValue(group.getName());
-    }
-
-    /**
      * Sets the nickname of this player.
      *
      * @param nick New nickname for the wrapped player or {@code null} to disable.
@@ -324,6 +360,17 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      */
     public void setNick(String nick) {
         this.nick.setValue(nick);
+    }
+
+    /**
+     * Sets the group of the wrapped player. {@link GroupData} objects can be obtained using the static factory method
+     * {@link GroupData#getByName(java.lang.String, SafeSql)}
+     *
+     * @param group New group for the wrapped player.
+     */
+    public void setGroup(GroupData group) {
+        this.group = group;
+        this.groupName.setValue(group.getName());
     }
 
     /**
@@ -399,11 +446,12 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
         lockedModify(this.deaths, modifier);
     }
 
-
     @Override
     public void setMetadata(String key, MetadataValue value) {
         metadata.put(key, value);
     }
+
+////////////////////////// STATIC UTILITY METHODS //////////////////////////////////////////////////////////////////////
 
     @Override
     public List<MetadataValue> getMetadata(String metadataKey) {
@@ -418,54 +466,5 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     @Override
     public void removeMetadata(String metadataKey, Plugin owningPlugin) {
         metadata.values().removeIf(v -> v.getOwningPlugin().equals(owningPlugin));
-    }
-
-////////////////////////// STATIC UTILITY METHODS //////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns the real user name for a provided String.
-     *
-     * @param name Name to seek.
-     * @return Name of the player currently owning this nickname or {@code name} if {@code name} is a real name or {@code null} if
-     * there is no such user.
-     */
-    public static String getAnyName(String name) {
-        try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(
-                "SELECT username FROM " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " WHERE username=? OR nickname=?", name, name).assertHasResultSet()) {
-            if (queryResult.rs().next()) {
-                return queryResult.rs().getString("username");
-            }
-        } catch (SQLException e) {
-            GameLib.getSql().formatAndPrintException(e, "PlayerWrapper#getNameByNick");
-        }
-        return null;
-    }
-
-    /**
-     * Gets the real name of an user by their nickname.
-     *
-     * @param nick Nickname to seek.
-     * @return Name of the player currently owning this nickname or {@code null} if this nickname has not been registered.
-     */
-    public static String getNameByNick(String nick) {
-        try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(
-                "SELECT username FROM " + PlayerWrapper.FULL_CENTRAL_USER_TABLE_NAME + " WHERE nickname=?", nick).assertHasResultSet()) {
-            if (queryResult.rs().next()) {
-                return queryResult.rs().getString("username");
-            }
-        } catch (SQLException e) {
-            GameLib.getSql().formatAndPrintException(e, "PlayerWrapper#getNameByNick");
-        }
-        return null;
-    }
-
-    /**
-     * @return a wrapper for the console
-     */
-    public static PlayerWrapper getConsoleWrapper() {
-        if (CONSOLE_WRAPPER == null) {
-            CONSOLE_WRAPPER = new PlayerWrapper(Bukkit.getConsoleSender(), GameLib.getSql());
-        }
-        return CONSOLE_WRAPPER;
     }
 }

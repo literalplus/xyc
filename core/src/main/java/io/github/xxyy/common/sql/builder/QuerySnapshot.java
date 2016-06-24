@@ -10,8 +10,9 @@
 
 package io.github.xxyy.common.sql.builder;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
 
 /**
  * Represents a snapshot of a value intended to be written to a SQL database.
@@ -43,7 +44,7 @@ public interface QuerySnapshot {
     /**
      * Represents a type of query.
      */
-    public enum Type {
+    enum Type {
         /**
          * Represents an addition to an integer.
          */
@@ -66,18 +67,18 @@ public interface QuerySnapshot {
          * This returns an operator string.
          * <b>Call {@link String#format(String, Object...)} with arg1 being the column name on this</b>
          */
-        @NotNull
+        @Nonnull
         private final String operator;
 
         public String getOperator(String columnName) {
             return String.format(getOperator(), columnName);
         }
 
-        Type(@NotNull String op) {
+        Type(@Nonnull String op) {
             this.operator = op;
         }
 
-        @NotNull
+        @Nonnull
         public String getOperator() {
             return this.operator;
         }
@@ -86,7 +87,7 @@ public interface QuerySnapshot {
     /**
      * Represents something that produces QuerySnapshots.
      */
-    public interface Factory {
+    interface Factory {
         /**
          * This produces a query snapshot that is to be written to a SQL database.
          * Note that this snapshot is required to be written to a database as soon as possible. For additional information, see the JavaDoc of {@link io.github.xxyy.common.sql.builder.SimpleQuerySnapshot}.

@@ -11,10 +11,10 @@
 package io.github.xxyy.common.util.encryption;
 
 import org.apache.commons.lang.UnhandledException;
-import org.jetbrains.annotations.NotNull;
 
 import io.github.xxyy.common.util.math.NumberHelper;
 
+import javax.annotation.Nonnull;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -37,7 +37,7 @@ public final class PasswordHelper {
      * @param salt     Salt to use. Pass {@code null} or an empty string if you don't want to use a salt.
      * @return The encrypted password
      */
-    public static String encrypt(@NotNull String password, String salt) {
+    public static String encrypt(@Nonnull String password, String salt) {
         try {
             return encrypt(password, salt, MessageDigest.getInstance("SHA-512"));
         } catch (NoSuchAlgorithmException e) {

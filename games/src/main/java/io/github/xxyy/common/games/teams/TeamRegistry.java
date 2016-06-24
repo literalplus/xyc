@@ -12,8 +12,7 @@ package io.github.xxyy.common.games.teams;
 
 import org.apache.commons.lang.Validate;
 
-import io.github.xxyy.lib.intellij_annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
@@ -45,7 +44,7 @@ public final class TeamRegistry {
      *
      * @param team Team to register
      */
-    public static void registerTeam(@NotNull Team team) {
+    public static void registerTeam(@Nonnull Team team) {
         TEAM_MAP.put(team.getName(), team);
 
         PROPERTY_CHANGE_SUPPORT.firePropertyChange("teams", null, team);
@@ -57,12 +56,12 @@ public final class TeamRegistry {
      * @param teamName Name of the team to get
      * @return A {@link io.github.xxyy.common.games.teams.Team} or null if there's no such team.
      */
-    public static Team getTeam(@NotNull String teamName) {
+    public static Team getTeam(@Nonnull String teamName) {
         return TEAM_MAP.get(teamName);
     }
 
     @SuppressWarnings("unchecked") //The class is actually checked, so no errors can occur. Sorry, Mr. Compiler
-    public static <T> T getTeam(@NotNull String teamName, Class<T> clazz) {
+    public static <T> T getTeam(@Nonnull String teamName, Class<T> clazz) {
         Team team = getTeam(teamName);
 
         if (team == null) {
@@ -80,7 +79,7 @@ public final class TeamRegistry {
      * @param teamName Name of the team to unregister.
      * @return Whether the team list changed as a result of this call.
      */
-    public static boolean unregisterTeam(@NotNull String teamName) {
+    public static boolean unregisterTeam(@Nonnull String teamName) {
         Team oldValue = TEAM_MAP.remove(teamName);
 
         if (oldValue != null) {
@@ -96,7 +95,7 @@ public final class TeamRegistry {
      * @param team Team to unregister.
      * @return Whether the team list changed as a result of this call.
      */
-    public static boolean unregisterTeam(@NotNull Team team) {
+    public static boolean unregisterTeam(@Nonnull Team team) {
         return unregisterTeam(team.getName());
     }
 

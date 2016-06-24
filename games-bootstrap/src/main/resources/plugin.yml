@@ -9,9 +9,9 @@
 name: XYC
 version: ${project.version}
 description: Provides some utilities for plugins to hook into.
-author: xxyy
-website: http://xxyy.github.io/
+author: Literallie
+website: https://l1t.li/
 load: STARTUP
 
-main: io.github.xxyy.common.internal.CommonPlugin
+main: li.l1t.common.internal.CommonPlugin
 

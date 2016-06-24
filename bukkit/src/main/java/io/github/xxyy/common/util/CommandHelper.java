@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.XycConstants;
@@ -28,6 +27,7 @@ import io.github.xxyy.common.localisation.XycLocale;
 import io.github.xxyy.common.util.inventory.InventoryHelper;
 import io.github.xxyy.common.util.math.NumberHelper;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,7 +52,7 @@ public class CommandHelper {
      * @param permission the permission required to receive the message or NULL to send to everyone
      * @see Bukkit#broadcast(String, String)
      */
-    public static void broadcast(@NotNull String msg, @Nullable String permission) {
+    public static void broadcast(@Nonnull String msg, @Nullable String permission) {
         for (Player plr : Bukkit.getOnlinePlayers()) {
             if (permission == null || plr.hasPermission(permission)) {
                 plr.sendMessage(msg);

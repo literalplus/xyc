@@ -11,13 +11,13 @@
 package io.github.xxyy.common.sql.builder;
 
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.sql.builder.annotation.SqlValueCache;
 import io.github.xxyy.common.util.math.MathOperator;
 import io.github.xxyy.common.util.math.NumberHelper;
 
+import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -46,17 +46,17 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(false);
 
     @Override
-    public void processResultSet(@NotNull ResultSet resultSet) throws SQLException {
+    public void processResultSet(@Nonnull ResultSet resultSet) throws SQLException {
         this.updateValue(getMathOperator().getFromResultSet(getColumnName(), resultSet));
     }
 
-    public ConcurrentSqlNumberHolder(@NotNull String columnName, @NotNull T initialValue, @NotNull MathOperator<T> mathOperator) {
+    public ConcurrentSqlNumberHolder(@Nonnull String columnName, @Nonnull T initialValue, @Nonnull MathOperator<T> mathOperator) {
         super(columnName, initialValue); //Can't update w/o MathOperator
         this.mathOperator = mathOperator;
         this.updateValue(initialValue);
     }
 
-    public ConcurrentSqlNumberHolder(@NotNull String columnName, @NotNull MathOperator<T> mathOperator) {
+    public ConcurrentSqlNumberHolder(@Nonnull String columnName, @Nonnull MathOperator<T> mathOperator) {
         this(columnName, mathOperator.getZero(), mathOperator);
     }
 
@@ -66,7 +66,7 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      * @param paramModifier Modifier to apply
      * @return This object, for convenient call chaining.
      */
-    @NotNull
+    @Nonnull
     public SqlValueHolder modify(final T paramModifier) {
         ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
         writeLock.lock();
@@ -110,7 +110,7 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
      *
      * @return This object, for convenient call chaining.
      */
-    @NotNull
+    @Nonnull
     public SqlValueHolder reset() {
         this.updateValue(mathOperator.getZero());
         return this;
@@ -203,8 +203,8 @@ public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<
         super.updateValue(newValue);
     }
 
-    @NotNull
-    public static ConcurrentSqlNumberHolder<?> fromAnnotation(@NotNull final SqlValueCache source) {
+    @Nonnull
+    public static ConcurrentSqlNumberHolder<?> fromAnnotation(@Nonnull final SqlValueCache source) {
         MathOperator<? extends Number> mathOperator = NumberHelper.getOperator(source.numberType());
         Validate.notNull(mathOperator, "Invalid Number class specified: " + source.numberType().getName());
 

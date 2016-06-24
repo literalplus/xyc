@@ -16,11 +16,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.github.xxyy.common.util.LocationHelper;
 
+import javax.annotation.Nonnull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -69,7 +69,7 @@ public class XyLocation extends Location implements ConfigurationSerializable {
      * @return whether this location is in or at the border of the cuboid region represented by the boundaries
      * @see io.github.xxyy.common.util.LocationHelper#isBlockBetween(org.bukkit.Location, org.bukkit.Location, org.bukkit.Location)
      */
-    public boolean isInBetween(@NotNull Location boundary1, @NotNull Location boundary2) {
+    public boolean isInBetween(@Nonnull Location boundary1, @Nonnull Location boundary2) {
         return LocationHelper.isBlockBetween(this, boundary1, boundary2);
     }
 
@@ -106,7 +106,7 @@ public class XyLocation extends Location implements ConfigurationSerializable {
      * @return whether the given location is "about the same" as this one
      * @see io.github.xxyy.common.util.LocationHelper#softEqual(org.bukkit.Location, org.bukkit.Location)
      */
-    public boolean softEquals(@NotNull Location other) {
+    public boolean softEquals(@Nonnull Location other) {
         return LocationHelper.softEqual(this, other);
     }
 

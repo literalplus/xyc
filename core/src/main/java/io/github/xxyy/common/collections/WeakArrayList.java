@@ -11,8 +11,8 @@
 package io.github.xxyy.common.collections;
 
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +63,7 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean contains(@NotNull final Object toCheck) {
+    public boolean contains(@Nonnull final Object toCheck) {
         for (final WeakReference<E> aDataList : dataList) {
             if (toCheck.equals(aDataList.get())) {
                 return true;
@@ -74,31 +74,31 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public Iterator<E> iterator() {
         return new WeakListIterator<>(dataList.iterator());
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public Object[] toArray() {
         return dataList.toArray();
     }
 
     @Override
-    @NotNull
-    public <T1> T1[] toArray(@NotNull final T1[] a) {
+    @Nonnull
+    public <T1> T1[] toArray(@Nonnull final T1[] a) {
         //noinspection SuspiciousToArrayCall
         return dataList.toArray(a);
     }
 
     @Override
-    public boolean add(@NotNull final E t) {
+    public boolean add(@Nonnull final E t) {
         return dataList.add(new WeakReference<>(t));
     }
 
     @Override
-    public boolean remove(@NotNull final Object toDelete) {
+    public boolean remove(@Nonnull final Object toDelete) {
         final Iterator<WeakReference<E>> iterator = dataList.iterator();
         while (iterator.hasNext()) {
             if (toDelete.equals(iterator.next().get())) {
@@ -110,7 +110,7 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean containsAll(@NotNull final Collection<?> toCheck) {
+    public boolean containsAll(@Nonnull final Collection<?> toCheck) {
         for (final Object obj : toCheck) {
             if (!contains(obj)) {
                 return false;
@@ -121,7 +121,7 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean addAll(@NotNull final Collection<? extends E> toAdd) {
+    public boolean addAll(@Nonnull final Collection<? extends E> toAdd) {
         //Two iterations, but it's more important not to get into an illegal state
         Validate.noNullElements(toAdd, "This implementation does not support null elements!");
 
@@ -134,12 +134,12 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean addAll(final int index, @NotNull final Collection<? extends E> c) {
+    public boolean addAll(final int index, @Nonnull final Collection<? extends E> c) {
         throw new UnsupportedOperationException(); //I don't see an need for this. Anyone have some spare time?
     }
 
     @Override
-    public boolean removeAll(@NotNull final Collection<?> toRemove) {
+    public boolean removeAll(@Nonnull final Collection<?> toRemove) {
         boolean changed = false;
         for (final Object obj : toRemove) {
             if (changed) {
@@ -153,7 +153,7 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean retainAll(@NotNull final Collection<?> toRetain) {
+    public boolean retainAll(@Nonnull final Collection<?> toRetain) {
         final Iterator<WeakReference<E>> iterator = dataList.iterator();
         boolean changed = false;
 
@@ -195,7 +195,7 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    public int indexOf(@NotNull final Object toCheck) {
+    public int indexOf(@Nonnull final Object toCheck) {
         for (int i = 0; i < size(); i++) {
             if (toCheck.equals(get(i))) {
                 return i;
@@ -216,19 +216,19 @@ public final class WeakArrayList<E> implements List<E> {
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public ListIterator<E> listIterator() {
         throw new UnsupportedOperationException(); //TODO implement
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public ListIterator<E> listIterator(final int index) {
         throw new UnsupportedOperationException(); //TODO implement
     }
 
     @Override
-    @NotNull
+    @Nonnull
     public List<E> subList(final int fromIndex, final int toIndex) {
         throw new UnsupportedOperationException(); //TODO implement
     }
