@@ -13,5 +13,5 @@ author: Literallie
 website: https://l1t.li/
 load: STARTUP
 
-main: CommonPlugin
+main: io.github.xxyy.common.internal.CommonPlugin
 
