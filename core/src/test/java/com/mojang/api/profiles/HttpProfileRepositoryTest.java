@@ -11,16 +11,15 @@
 package com.mojang.api.profiles;
 
 import com.google.gson.Gson;
+import li.l1t.common.lib.com.mojang.api.http.HttpBody;
+import li.l1t.common.lib.com.mojang.api.http.HttpClient;
+import li.l1t.common.lib.com.mojang.api.http.HttpHeader;
+import li.l1t.common.lib.com.mojang.api.profiles.HttpProfileRepository;
+import li.l1t.common.lib.com.mojang.api.profiles.MojangProfile;
+import li.l1t.common.lib.com.mojang.api.profiles.Profile;
+import li.l1t.common.lib.com.mojang.api.profiles.ProfileRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-
-import io.github.xxyy.common.lib.com.mojang.api.http.HttpBody;
-import io.github.xxyy.common.lib.com.mojang.api.http.HttpClient;
-import io.github.xxyy.common.lib.com.mojang.api.http.HttpHeader;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.MojangProfile;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.ProfileRepository;
 
 import java.io.IOException;
 import java.net.URL;

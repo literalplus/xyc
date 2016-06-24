@@ -10,14 +10,13 @@
 
 package com.mojang.api.profiles;
 
+import li.l1t.common.lib.com.mojang.api.profiles.HttpProfileRepository;
+import li.l1t.common.lib.com.mojang.api.profiles.NameData;
+import li.l1t.common.lib.com.mojang.api.profiles.Profile;
+import li.l1t.common.lib.com.mojang.api.profiles.ProfileRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import io.github.xxyy.common.lib.com.mojang.api.profiles.HttpProfileRepository;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.NameData;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.Profile;
-import io.github.xxyy.common.lib.com.mojang.api.profiles.ProfileRepository;
 
 import java.util.UUID;
 
