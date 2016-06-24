@@ -25,7 +25,7 @@ public class Tree<N extends TreeNode<N, V>, V> extends SimpleTreeNode<N, V> {
     /**
      * Creates a new tree.
      */
-    public Tree() {
-        super(null);
+    public Tree(Class<N> nodeClass) {
+        super(null, nodeClass);
     }
 }
