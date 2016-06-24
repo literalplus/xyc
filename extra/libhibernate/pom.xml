@@ -26,10 +26,23 @@
         dependencies work too!
     </description>
 
+    <ciManagement>
+        <system>jenkins</system>
+        <url>https://ci.l1t.li/job/xyc~libhibernate/</url>
+    </ciManagement>
+
+    <distributionManagement>
+        <downloadUrl>https://ci.l1t.li/job/xyc~libhibernate/</downloadUrl>
+        <repository>
+            <id>xxyy-repo</id>
+            <url>https://repo.l1t.li/xxyy-private/</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
         <hibernate.version>${project.version}</hibernate.version>
+        <project.sourceEncoding>UTF-8</project.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -68,6 +81,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
 
                 <executions>
                     <execution>
