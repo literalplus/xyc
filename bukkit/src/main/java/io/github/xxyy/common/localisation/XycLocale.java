@@ -11,7 +11,9 @@
 package io.github.xxyy.common.localisation;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.xxyy.common.internal.CommonPlugin;
 import io.github.xxyy.common.util.CommandHelper;
 import io.github.xxyy.common.util.FileHelper;
 import io.github.xxyy.common.xyplugin.AbstractXyPlugin;
@@ -51,7 +53,11 @@ public class XycLocale implements XyLocalizable {
                     //noinspection ResultOfMethodCallIgnored
                     destFl.createNewFile();
                     FileOutputStream out = new FileOutputStream(destFl);
-                    InputStream in = AbstractXyPlugin.getInstances().get(0).getResource("xyc_lang/" + lang + LangHelper.LANG_FILE_EXTENSION);
+                    JavaPlugin plugin = CommonPlugin.instance();
+                    if(plugin == null) { //if we are not standalone, we're probably shipped
+                        plugin = AbstractXyPlugin.getInstances().get(0);
+                    }
+                    InputStream in = plugin.getResource("xyc_lang/" + lang + LangHelper.LANG_FILE_EXTENSION);
                     int read;
                     while ((read = in.read()) != -1) {
                         out.write(read);
