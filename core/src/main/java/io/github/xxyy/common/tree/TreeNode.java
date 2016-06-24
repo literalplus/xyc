@@ -41,7 +41,9 @@ public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
     List<N> getChildren();
 
     /**
-     * Adds a new child to this node.
+     * Adds a new child to this node. The behaviour of this method is undefined if the new child
+     * has children of itself already - implementations may choose to throw an exception in that
+     * case, if noted in their overriding JavaDoc.
      *
      * @param newChild the child to add
      * @throws IllegalArgumentException if the child is not of type &lt;N&gt;
@@ -147,7 +149,7 @@ public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
      * @param position the child position relative to this node
      * @return the node at given position
      * @throws IndexOutOfBoundsException if any of the child ids are out of range for the
-     *                                  referenced node
+     *                                   referenced node
      * @since 3.3.9.0
      */
     N getChild(int[] position);
