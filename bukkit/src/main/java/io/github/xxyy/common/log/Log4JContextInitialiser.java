@@ -21,6 +21,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import io.github.xxyy.common.util.FileHelper;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -230,7 +232,7 @@ public class Log4JContextInitialiser {
         Path filePath = file.toPath();
 
         if (!file.exists()) {
-            Files.createFile(filePath);
+            FileHelper.createWithParents(file);
             InputStream resource = plugin.getResource(filename);
             if (resource == null) {
                 throw new IllegalStateException("Missing plugin resource " + filename +

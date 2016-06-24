@@ -117,4 +117,22 @@ public final class FileHelper {
 
         return file;
     }
+
+    /**
+     * Creates all non-existent parent directories of any file and the file itself.
+     *
+     * @param file the file
+     * @return the file
+     * @throws IOException if an error occurs creating the parent directories or the file itself
+     */
+    public static File createWithParents(File file) throws IOException {
+        if (!file.exists()) {
+            File parent = file.getAbsoluteFile().getParentFile();
+            if (parent != null) {
+                Files.createDirectories(parent.toPath());
+            }
+            Files.createFile(file.toPath());
+        }
+        return file;
+    }
 }
