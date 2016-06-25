@@ -10,9 +10,15 @@
 
 package li.l1t.common;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 /**
+ * such plugin.
+ * many functionality.
+ * wow.
+ *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-25
  */
-public class LibHibernate {
+public class LibHibernate extends JavaPlugin {
 }
