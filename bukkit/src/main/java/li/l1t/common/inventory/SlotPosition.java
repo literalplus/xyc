@@ -145,4 +145,25 @@ public class SlotPosition {
     public boolean isAdditionPossible(SlotPosition position) {
         return isValidSlot(x + position.getX(), y + position.getY());
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ')';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SlotPosition)) return false;
+        SlotPosition that = (SlotPosition) o;
+        return x == that.x && y == that.y;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
 }
