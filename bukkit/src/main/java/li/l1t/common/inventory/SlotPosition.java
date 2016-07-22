@@ -30,10 +30,8 @@ public class SlotPosition {
      *
      * @param x the x coordinate, that is, the horizontal distance from the top left slot
      * @param y the y coordinate, that is, the vertical distance from the top left slot
-     * @throws IllegalArgumentException if x is greater than or equal to the usual inventory width
-     *                                  of {@value InventoryHelper#SLOTS_PER_ROW}
      */
-    public SlotPosition(int x, int y) {
+    private SlotPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -50,6 +48,31 @@ public class SlotPosition {
         int y = Math.floorDiv(slotId, InventoryHelper.SLOTS_PER_ROW);
         int x = slotId % InventoryHelper.SLOTS_PER_ROW;
         return new SlotPosition(x, y);
+    }
+
+    /**
+     * Creates a new position object from its coordinates.
+     *
+     * @param x the x coordinate, that is, the horizontal distance from the top left slot
+     * @param y the y coordinate, that is, the vertical distance from the top left slot
+     * @return the created position
+     */
+    public static SlotPosition ofXY(int x, int y) {
+        return new SlotPosition(x, y);
+    }
+
+    /**
+     * Creates a new position object from its coordinates, validating that it is a valid slot.
+     *
+     * @param x the x coordinate, that is, the horizontal distance from the top left slot
+     * @param y the y coordinate, that is, the vertical distance from the top left slot
+     * @return the created position
+     * @throws IllegalArgumentException if the represented position is not a
+     *                                  {@link #isValidSlot() valid slot}
+     */
+    public static SlotPosition ofXYValidated(int x, int y) {
+        Preconditions.checkArgument(isValidSlot(x, y), "not a valid slot: (%s,%s)", x, y);
+        return ofXY(x, y);
     }
 
     /**
