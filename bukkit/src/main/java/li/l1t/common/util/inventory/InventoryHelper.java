@@ -40,10 +40,15 @@ public final class InventoryHelper {
     public static final int SLOTS_PER_ROW = 9;
 
     /**
-     * Default maximum fake inventory size.
-     * Default is 4 rows of slots.
+     * The maximum amount of rows in an inventory.
      */
-    public static final int DEFAULT_MAX_INVENTORY_SIZE = SLOTS_PER_ROW * 4;
+    public static final int MAX_ROW_COUNT = 6;
+
+    /**
+     * Default maximum fake inventory size.
+     * By default represents a double chest.
+     */
+    public static final int DEFAULT_MAX_INVENTORY_SIZE = SLOTS_PER_ROW * MAX_ROW_COUNT;
     /**
      * Maximum amount of items allowed in armor slots
      */
