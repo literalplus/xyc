@@ -12,6 +12,8 @@ package li.l1t.common.inventory.gui.holder;
 
 import li.l1t.common.inventory.gui.element.MenuElement;
 
+import java.util.BitSet;
+
 /**
  * An element holder that works as a template for creating inventory menus.
  *
@@ -19,6 +21,8 @@ import li.l1t.common.inventory.gui.element.MenuElement;
  * @since 2016-06-24
  */
 public class TemplateElementHolder extends SimpleElementHolder {
+    private final BitSet placeholderSlots = new BitSet(INVENTORY_SIZE);
+
     /**
      * Copies all elements from this template into a holder, setting elements directly instead of
      * through the API, bypassing unnecessary bound-checks. If the handler has special handling when
@@ -32,8 +36,12 @@ public class TemplateElementHolder extends SimpleElementHolder {
     public <T extends SimpleElementHolder> T applyRaw(T holder) {
         MenuElement[] elements = getElements();
         for (int slotId = 0; slotId < elements.length; slotId++) {
-            MenuElement element = elements[slotId];
-            holder.addElement(slotId, element);
+            if (placeholderSlots.get(slotId)) {
+                holder.addPlaceholder(slotId);
+            } else {
+                MenuElement element = elements[slotId];
+                holder.setElementRaw(slotId, element);
+            }
         }
         return holder;
     }
@@ -49,9 +57,18 @@ public class TemplateElementHolder extends SimpleElementHolder {
     public <T extends ElementHolder> T apply(T holder) {
         MenuElement[] elements = getElements();
         for (int slotId = 0; slotId < elements.length; slotId++) {
-            MenuElement element = elements[slotId];
-            holder.addElement(slotId, element);
+            if (placeholderSlots.get(slotId)) {
+                holder.addPlaceholder(slotId);
+            } else {
+                MenuElement element = elements[slotId];
+                holder.addElement(slotId, element);
+            }
         }
         return holder;
+    }
+
+    @Override
+    public void addPlaceholder(int slotId) {
+        placeholderSlots.set(slotId);
     }
 }
