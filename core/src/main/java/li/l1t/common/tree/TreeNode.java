@@ -65,9 +65,9 @@ public interface TreeNode<N extends TreeNode<N, V>, V> extends Iterable<V> {
     boolean isRoot();
 
     /**
-     * @return whether this is a leaf node, that is, this node has no children
+     * @return whether this node has children
      */
-    boolean isLeaf();
+    boolean hasChildren();
 
     /**
      * @param childId the zero-based identifier of a child

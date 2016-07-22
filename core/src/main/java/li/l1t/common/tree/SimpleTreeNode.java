@@ -79,8 +79,8 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
     }
 
     @Override
-    public boolean isLeaf() {
-        return children.isEmpty();
+    public boolean hasChildren() {
+        return !children.isEmpty();
     }
 
     @Override
