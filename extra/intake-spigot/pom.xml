@@ -24,6 +24,12 @@
         Bridge provides integration for Spigot, so that it can easily be used from Spigot plugins.
     </description>
 
+    <scm>
+        <connection>scm:git:git@bitbucket.org:xxyy/xyc.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:xxyy/xyc.git</developerConnection>
+        <url>https://bitbucket.org/xxyy/xyc/</url>
+    </scm>
+
     <ciManagement>
         <system>jenkins</system>
         <url>https://ci.l1t.li/job/xyc~intake-spigot/</url>
