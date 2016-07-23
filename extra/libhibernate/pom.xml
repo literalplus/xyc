@@ -49,6 +49,8 @@
         <pomFile>dependency-reduced-pom.xml</pomFile>
         <hibernate.version>${project.version}</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- maven-release-plugin -->
+        <ignoreSnapshots>true</ignoreSnapshots>
     </properties>
 
     <dependencies>
