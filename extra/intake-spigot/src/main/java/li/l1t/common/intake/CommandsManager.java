@@ -16,8 +16,13 @@ import com.sk89q.intake.fluent.CommandGraph;
 import com.sk89q.intake.parametric.ParametricBuilder;
 import com.sk89q.intake.parametric.binder.BindingBuilder;
 import com.sk89q.intake.parametric.provider.PrimitivesModule;
-import com.sk89q.intake.util.auth.Authorizer;
 import li.l1t.common.CommandRegistrationManager;
+import li.l1t.common.intake.provider.CommandSenderProvider;
+import li.l1t.common.intake.provider.OnlinePlayer;
+import li.l1t.common.intake.provider.OnlinePlayerProvider;
+import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -37,14 +42,27 @@ public class CommandsManager {
     private final ParametricBuilder builder = new ParametricBuilder(Intake.createInjector());
     private final CommonInjectorModule injectorModule;
     private final CommandGraph commandGraph = new CommandGraph().builder(builder);
-    private final Authorizer authorizer = new CommandSenderAuthorizer();
 
     public CommandsManager(Plugin plugin) {
         this.plugin = plugin;
         builder.getInjector().install(new PrimitivesModule());
         builder.getInjector().install(injectorModule = new CommonInjectorModule());
-        injectorModule.bind(Plugin.class).toInstance(plugin);
-        injectorModule.bind(CommandsManager.class).toInstance(this);
+        builder.setAuthorizer(new CommandSenderAuthorizer());
+        bindDefaultInjections();
+    }
+
+    private void bindDefaultInjections() {
+        injectorModule.bind(Plugin.class)
+                .toInstance(plugin);
+        injectorModule.bind(CommandsManager.class)
+                .toInstance(this);
+        injectorModule.bind(Server.class)
+                .toInstance(plugin.getServer());
+        injectorModule.bind(Player.class)
+                .annotatedWith(OnlinePlayer.class)
+                .toProvider(new OnlinePlayerProvider(plugin.getServer()));
+        injectorModule.bind(CommandSender.class)
+                .toProvider(new CommandSenderProvider());
     }
 
     public void putIntoNamespace(Object key, Object value) {

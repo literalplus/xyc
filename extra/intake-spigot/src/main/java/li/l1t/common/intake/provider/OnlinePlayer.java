@@ -8,17 +8,20 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.intake;
+package li.l1t.common.intake.provider;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Thrown if a command exits with a specified message. The message may be formatted like
- * Minecraft legacy text.
+ * Used to designate a Player type parameter as created from the name or UUID from an online player.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-07-24
  */
-public class CommandExitMessage extends RuntimeException {
-    public CommandExitMessage(String message) {
-        super(message);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.PARAMETER)
+public @interface OnlinePlayer {
 }

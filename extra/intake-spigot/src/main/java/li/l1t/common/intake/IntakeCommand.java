@@ -14,6 +14,7 @@ import com.sk89q.intake.CommandException;
 import com.sk89q.intake.argument.Namespace;
 import com.sk89q.intake.dispatcher.Dispatcher;
 import com.sk89q.intake.util.auth.AuthorizationException;
+import li.l1t.common.intake.exception.CommandExitMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
