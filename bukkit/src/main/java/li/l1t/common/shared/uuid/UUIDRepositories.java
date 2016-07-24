@@ -63,7 +63,7 @@ public final class UUIDRepositories {
      * @param plugin  the plugin to use if xyc isn't running standalone
      */
     public static void addRepository(UUIDRepository newRepo, Plugin plugin) {
-        if (!UUIDRepositories.class.getName().startsWith("io.github.xxyy.common.shared")) {
+        if (!UUIDRepositories.class.getName().startsWith("li.l1t.common.shared")) {
             plugin.getLogger().warning("[XYC] UUIDRepository registrations won't interface with other plugins when shaded to a different place!");
         }
 
