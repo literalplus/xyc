@@ -12,8 +12,6 @@ package li.l1t.common;
 
 import li.l1t.common.localisation.LangHelper;
 import li.l1t.common.localisation.XycLocale;
-import li.l1t.common.sql.SafeSql;
-import li.l1t.common.sql.XycSqlDataManager;
 import li.l1t.common.xyplugin.AbstractXyPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,11 +24,7 @@ import java.util.List;
  *
  * @author xxyy98
  */
-public class XyHelper { //TODO logger
-    /**
-     * Common {@link SafeSql} if you don't make your own using SqlXyPlugin.
-     */
-    public static final SafeSql commonSql = new SafeSql(new XycSqlDataManager());
+public class XyHelper {
     private static final File cfgFile = new File("plugins/XYC", "xyc.cfg.yml");
     /**
      * Default language used by {@link LangHelper}.
