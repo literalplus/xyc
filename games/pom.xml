@@ -9,7 +9,9 @@
   ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>li.l1t.common</groupId>
         <artifactId>xyc-parent</artifactId>
@@ -36,32 +38,6 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-
-                <executions>
-                    <execution>
-                        <id>core-shade</id>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>li.l1t.common:xyc-bukkit</include>
-                        </includes>
-                    </artifactSet>
-                    <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <shadedClassifierName>standalone</shadedClassifierName>
-                    <finalName>xyc-games-standalone</finalName>
-                </configuration>
-            </plugin>
-        </plugins>
 
         <finalName>xyc-games</finalName>
     </build>
