@@ -1,6 +1,6 @@
 XYC - xxyy's common library
 
-Copyright (C) 2013 - 2015 xxyy98 / Literallie / Philipp Nowak (me) and contributors.
+Copyright (C) 2013 - 2016 xxyy98 / Literallie / Philipp Nowak (me) and contributors.
 
 Additional contributions by other people (Contributors) belong to their respective authors but
 are licensed under these license terms. Major contributions (e.g. new files) will be marked
@@ -14,7 +14,7 @@ This license applies to code, concepts, resources or any other works related to 
 The license headers in some files of this project are intended solely for clarification and
 easy reference and do not exclude unmarked files from this license. This license does not
 apply to Mojang's AuthLib code which is included at 
-`core/src/main/java/io/github/xxyy/common/lib/com/mojang`.
+`core/src/main/java/li/l1t/common/lib/com/mojang`.
 
 Decompilation, redistribution or any other kind of usage without explicit written permission
 from the Author (me) is strictly prohibited and may result in legal steps being taken. Such
