@@ -62,7 +62,7 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
 
     @Override
     public void addChild(N newChild) {
-        Preconditions.checkArgument(nodeClass.isAssignableFrom(newChild.getClass()), "");
+        checkNodeType(newChild.getClass());
         children.add(newChild);
     }
 
@@ -188,7 +188,7 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
     }
 
     private void checkNodeType(Class<?> aClass) {
-        Preconditions.checkArgument(aClass.isAssignableFrom(nodeClass),
+        Preconditions.checkArgument(nodeClass.isAssignableFrom(aClass),
                 "node must be subclass of <N> (%s), is: %s", nodeClass, aClass);
     }
 }
