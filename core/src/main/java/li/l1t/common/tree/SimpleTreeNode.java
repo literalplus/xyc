@@ -62,7 +62,7 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
 
     @Override
     public void addChild(N newChild) {
-        Preconditions.checkArgument(newChild.getClass().isAssignableFrom(nodeClass), "");
+        Preconditions.checkArgument(nodeClass.isAssignableFrom(newChild.getClass()), "");
         children.add(newChild);
     }
 
