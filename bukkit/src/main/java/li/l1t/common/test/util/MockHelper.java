@@ -50,6 +50,8 @@ public class MockHelper {
         Mockito.when(server.getVersion()).thenReturn("infinity");
         Logger logger = Logger.getLogger(Server.class.getName());
         Mockito.when(server.getLogger()).thenReturn(logger);
+        MockItemFactory mockItemFactory = new MockItemFactory();
+        Mockito.when(server.getItemFactory()).thenReturn(mockItemFactory);
 
         CommandSender consoleSender = loggerSender(mock(ConsoleCommandSender.class), logger);
         Mockito.when(server.getConsoleSender()).thenAnswer(invocation -> consoleSender);
