@@ -10,11 +10,13 @@
 
 package li.l1t.common.util.inventory;
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -38,7 +40,6 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ItemStackFactory {
-    @Nonnull
     private final ItemStack base;
     private String displayName;
     private List<String> lore;
@@ -48,14 +49,14 @@ public class ItemStackFactory {
     /**
      * Creates a factory from a base {@link org.bukkit.inventory.ItemStack}.
      *
-     * @param source Item stack to use as base for this factory.
+     * @param source the item stack to use as base for this factory
      */
-    public ItemStackFactory(@Nonnull final ItemStack source) {
+    public ItemStackFactory(ItemStack source) {
         base = source;
         materialData = source.getData();
 
+        meta = source.getItemMeta(); //returns new meta if unset
         if (source.hasItemMeta()) {
-            meta = source.getItemMeta();
             if (meta.hasDisplayName()) {
                 displayName = meta.getDisplayName();
             }
@@ -66,32 +67,29 @@ public class ItemStackFactory {
     }
 
     /**
-     * Creates a factory by a {@link org.bukkit.Material}.
+     * Creates a factory from a {@link org.bukkit.Material}.
      * The resulting stack will have an amount of 1.
      *
-     * @param material Material the product shall be
-     * @see org.bukkit.inventory.ItemStack#ItemStack(org.bukkit.Material)
+     * @param material the material of the product
      */
-    public ItemStackFactory(final Material material) {
+    public ItemStackFactory(Material material) {
         base = new ItemStack(material);
     }
 
     /**
-     * Sets the product's amount.
-     *
-     * @param newAmount New amount
-     * @return This object for chained calls.
+     * @param newAmount the new amount of the product
+     * @return this factory
      */
-    public ItemStackFactory amount(final int newAmount) {
+    public ItemStackFactory amount(int newAmount) {
         base.setAmount(newAmount);
         return this;
     }
 
     /**
-     * @param displayName Future display name of the product.
-     * @return This object for chained calls.
+     * @param displayName the new display name of the product
+     * @return this factory
      */
-    public ItemStackFactory displayName(final String displayName) {
+    public ItemStackFactory displayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -99,24 +97,23 @@ public class ItemStackFactory {
     /**
      * Sets the display name of this factory if the resulting stack would not have a custom display name.
      *
-     * @param defaultDisplayName the display name to ste
-     * @return this object
+     * @param defaultDisplayName the display name to set
+     * @return this factory
      */
-    public ItemStackFactory defaultDisplayName(final String defaultDisplayName) {
+    public ItemStackFactory defaultDisplayName(String defaultDisplayName) {
         if (!(base.hasItemMeta() && base.getItemMeta().hasDisplayName()) || displayName == null) {
             return displayName(defaultDisplayName);
         }
-
         return this;
     }
 
     /**
      * Sets the resulting item stack's lore, overriding any previous values.
      *
-     * @param lore Future lore of the product.
-     * @return This object for chained calls.
+     * @param lore the new lore
+     * @return this factory
      */
-    public ItemStackFactory lore(final List<String> lore) {
+    public ItemStackFactory lore(List<String> lore) {
         this.lore = lore;
         return this;
     }
@@ -126,149 +123,181 @@ public class ItemStackFactory {
      * If this factory was constructed with a template item stack, this method will append to its existing lore, if any.
      *
      * @param loreToAppend the lines to add to the lore
-     * @return this object
+     * @return this factory
      */
-    public ItemStackFactory appendLore(final Collection<String> loreToAppend) {
+    public ItemStackFactory appendLore(Collection<String> loreToAppend) {
         if (this.lore == null) {
             return lore(loreToAppend instanceof List ? (List<String>) loreToAppend : new ArrayList<>(loreToAppend));
         }
-
         this.lore.addAll(loreToAppend);
-
         return this;
     }
 
     /**
-     * This method adds a String to the lore of the product.
-     * If given a simple String, it will be added as new line.
-     * If given a String containing newlines, it will split the input by {@code \n} and add each result String to the lore.
-     * If the factory was constructed with a template item stack, this will be appended to its existing lore, if any.
+     * Adds a string to the lore of the product. If given a simple string, it will be added as
+     * new line. If given a String containing newlines, it will split the input by {@code \n}
+     * and add each result String to the lore. If the factory was constructed with a template item
+     * stack, this will be appended to its existing lore, if any.
      *
-     * @param whatToAdd What to add to the future Lore of the product.
-     * @return This object for chained calls.
+     * @param whatToAdd the input string
+     * @return this factory
      */
-    public ItemStackFactory lore(final String whatToAdd) {
+    public ItemStackFactory lore(String whatToAdd) {
         if (lore == null) {
             lore = new LinkedList<>();
         }
-
         Collections.addAll(lore, whatToAdd.split("\n"));
-
         return this;
     }
 
     /**
-     * Adds an enchmantment to the product.
+     * Adds an enchantment to the product.
      *
-     * @param enchantment Enchantment to apply
-     * @param level       Level of the enchantment
-     * @return This object, for chained calls.
+     * @param enchantment the enchantment to apply
+     * @param level       the level of the enchantment
+     * @return this factory
      */
-    public ItemStackFactory enchant(final Enchantment enchantment, final int level) {
+    public ItemStackFactory enchant(Enchantment enchantment, int level) {
         base.addEnchantment(enchantment, level);
         return this;
     }
 
     /**
-     * @param newData Future {@link org.bukkit.material.MaterialData} for the product.
-     * @return This object for chained calls.
+     * Adds an enchantment to the product, but without checking level and type restrictions.
+     *
+     * @param enchantment the enchantment to apply
+     * @param level       the level of the enchantment
+     * @return this factory
      */
-    public ItemStackFactory materialData(final MaterialData newData) {
-        materialData = newData;
-
+    public ItemStackFactory enchantUnsafe(Enchantment enchantment, int level) {
+        base.addUnsafeEnchantment(enchantment, level);
         return this;
     }
 
     /**
-     * @param newData the future legacy, byte data value for the product
-     * @return This object for chanined calls
+     * @param newData the new {@link org.bukkit.material.MaterialData} for the product
+     * @return this factory
      */
-    @SuppressWarnings("deprecation")
+    public ItemStackFactory materialData(MaterialData newData) {
+        materialData = newData;
+        return this;
+    }
+
+    /**
+     * @param newData the future legacy byte data value for the product
+     * @return this factory
+     */
     @Deprecated
-    public ItemStackFactory legacyData(final byte newData) {
+    @SuppressWarnings("deprecation")
+    public ItemStackFactory legacyData(byte newData) {
         MaterialData data = base.getData();
         data.setData(newData);
         materialData(data);
-
         return this;
     }
 
     /**
-     * Convenience method for making wool stacks.
+     * Sets the color of the wool product.
      *
-     * @param color Future DyeColor of the product.
-     * @return This object for chained calls.
-     * @throws IllegalArgumentException If the base stack is not of material WOOL.
-     * @see ItemStackFactory#materialData(org.bukkit.material.MaterialData)
+     * @param color the new color of the product
+     * @return this factory
+     * @throws IllegalArgumentException if the base stack is not of material WOOL
      */
-    public ItemStackFactory woolColor(final DyeColor color) {
-        Validate.isTrue(base.getType() == Material.WOOL, "Material of base stack must be WOOL (" + base.getType() + ')');
-
+    public ItemStackFactory woolColor(DyeColor color) {
+        Preconditions.checkArgument(base.getType() == Material.WOOL,
+                "material of base stack must be WOOL (is: %s)", base.getType());
         materialData = new Wool(color);
-        base.setDurability(materialData.toItemStack().getDurability()); //ugly hack, fuck you Bukkit
-
+        base.setDurability(materialData.toItemStack().getDurability());
         return this;
     }
 
     /**
-     * Convenience method for making colored leather armor.
+     * Sets the color of the leather armor product.
      *
-     * @param color Future DyeColor of the product.
-     * @return This object for chained calls.
-     * @throws IllegalArgumentException If the base stack is not leather armor.
-     * @see ItemStackFactory#materialData(org.bukkit.material.MaterialData)
+     * @param color the new color of the product
+     * @return this factory
+     * @throws IllegalArgumentException if the base stack is not of type leather armor
      */
-    public ItemStackFactory leatherArmorColor(final Color color) {
-        if (meta == null) {
-            meta = base.getItemMeta();
-        }
-
-        Validate.isTrue(meta instanceof LeatherArmorMeta, "Base stack must be leather armor (" + base.getType() + ')');
-
+    public ItemStackFactory leatherArmorColor(Color color) {
+        Preconditions.checkArgument(meta instanceof LeatherArmorMeta,
+                "Base stack must be leather armor (is: %s)", meta.getClass());
         ((LeatherArmorMeta) meta).setColor(color);
-
         return this;
     }
 
     /**
-     * Convenience method for making player skulls.
+     * Sets the owner of the skull product.
      *
-     * @param ownerName Future skull owner of the product.
-     * @return This object for chained calls.
-     * @throws IllegalArgumentException If the base stack is not of material SKULL_ITEM.
-     * @see ItemStackFactory#materialData(org.bukkit.material.MaterialData)
+     * @param ownerName the new skull owner name
+     * @return this factory
+     * @throws IllegalArgumentException if the base stack is not of material SKULL_ITEM
      */
-    public ItemStackFactory skullOwner(final String ownerName) {
+    public ItemStackFactory skullOwner(String ownerName) {
         Validate.isTrue(base.getType() == Material.SKULL_ITEM, "Material of base stack must be SKULL_ITEM (" + base.getType() + ')');
-
-        meta = base.getItemMeta();
         ((SkullMeta) meta).setOwner(ownerName);
         base.setDurability((short) 3);
-
         return this;
+    }
+
+    /**
+     * Adds given item flags to the item meta of the result.
+     *
+     * @param itemFlags the flags to add
+     * @return this factory
+     */
+    public ItemStackFactory withFlags(ItemFlag... itemFlags) {
+        meta.addItemFlags(itemFlags);
+        return this;
+    }
+
+    /**
+     * Marks the product's item meta to hide enchantment information.
+     *
+     * @return this factory
+     */
+    public ItemStackFactory hideEnchants() {
+        return withFlags(ItemFlag.HIDE_ENCHANTS);
+    }
+
+    /**
+     * Marks the product's item meta to hide all information normally shown by Minecraft in its
+     * lore text.
+     *
+     * @return this factory
+     */
+    public ItemStackFactory hideAll() {
+        return withFlags(
+                ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE
+        );
+    }
+
+    /**
+     * Marks the product's item meta to hide enchantment information and adds a dummy enchantment
+     * to make the item glow without enchantment data in the lore text.
+     *
+     * @return this factory
+     */
+    public ItemStackFactory glow() {
+        enchantUnsafe(Enchantment.WATER_WORKER, 1);
+        return withFlags(ItemFlag.HIDE_ENCHANTS);
     }
 
     public ItemStack produce() {
         final ItemStack product = new ItemStack(base);
-
         if (materialData != null) {
             product.setData(materialData);
         }
-
         if (displayName != null || lore != null) {
             final ItemMeta finalMeta = (meta == null ? product.getItemMeta() : meta);
-
             if (lore != null) {
                 finalMeta.setLore(lore);
             }
-
             if (displayName != null) {
                 finalMeta.setDisplayName(displayName);
             }
-
             product.setItemMeta(finalMeta);
         }
-
         return product;
     }
 
