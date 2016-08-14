@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>li.l1t.common</groupId>
     <artifactId>xyc-parent</artifactId>
-    <version>4.0.1.7</version>
+    <version>4.0.1.8-SNAPSHOT</version>
     <modules>
         <module>bukkit</module>
         <module>core</module>
