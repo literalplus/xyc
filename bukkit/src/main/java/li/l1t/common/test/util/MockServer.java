@@ -23,6 +23,7 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.help.HelpMap;
@@ -35,6 +36,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -68,6 +70,8 @@ public class MockServer implements Server {
     private List<Recipe> recipes = new ArrayList<>();
     private int idleTimeout;
     private Spigot spigot = new Spigot();
+    private SimpleCommandMap commandMap = new SimpleCommandMap(this);
+    private SimplePluginManager pluginManager = new SimplePluginManager(this, commandMap);
 
     @Override
     public String getName() {
@@ -232,7 +236,7 @@ public class MockServer implements Server {
 
     @Override
     public PluginManager getPluginManager() {
-        throw new UnsupportedOperationException("MockServer#getPluginManager()");
+        return pluginManager;
     }
 
     @Override
@@ -297,7 +301,7 @@ public class MockServer implements Server {
 
     @Override
     public PluginCommand getPluginCommand(String name) {
-        throw new UnsupportedOperationException("MockServer#getPluginCommand()");
+        return (PluginCommand) commandMap.getCommand(name);
     }
 
     @Override
@@ -307,7 +311,7 @@ public class MockServer implements Server {
 
     @Override
     public boolean dispatchCommand(CommandSender sender, String commandLine) throws CommandException {
-        throw new UnsupportedOperationException("MockServer#dispatchCommand()");
+        return commandMap.dispatch(sender, commandLine);
     }
 
     @Override
