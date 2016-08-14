@@ -13,7 +13,6 @@ package li.l1t.common.test.util;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.mockito.Matchers;
@@ -40,25 +39,10 @@ public class MockHelper {
         Server server = Bukkit.getServer();
 
         if (server == null) {
-            server = mock(Server.class);
-        } else {
-            Mockito.reset(server);
+            server = new MockServer();
+        } else if (server instanceof MockServer) {
+            ((MockServer) server).reset();
         }
-
-        Mockito.when(server.getName()).thenReturn("Spagt");
-        Mockito.when(server.getBukkitVersion()).thenReturn("fuk of bukite");
-        Mockito.when(server.getVersion()).thenReturn("infinity");
-        Logger logger = Logger.getLogger(Server.class.getName());
-        Mockito.when(server.getLogger()).thenReturn(logger);
-        MockItemFactory mockItemFactory = new MockItemFactory();
-        Mockito.when(server.getItemFactory()).thenReturn(mockItemFactory);
-
-        CommandSender consoleSender = loggerSender(mock(ConsoleCommandSender.class), logger);
-        Mockito.when(server.getConsoleSender()).thenAnswer(invocation -> consoleSender);
-        Mockito.when(server.getPlayer(Matchers.any(UUID.class)))
-                .then(id -> Bukkit.getServer().getOnlinePlayers().stream()
-                .filter(plr -> plr.getUniqueId().equals(id.getArguments()[0]))
-                .findAny().orElse(null));
 
         if (Bukkit.getServer() == null) {
             Bukkit.setServer(server);
