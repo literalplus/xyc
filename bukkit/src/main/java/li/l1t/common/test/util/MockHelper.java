@@ -10,6 +10,8 @@
 
 package li.l1t.common.test.util;
 
+import li.l1t.common.test.util.mokkit.MockPlugin;
+import li.l1t.common.test.util.mokkit.MockServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -61,7 +63,7 @@ public class MockHelper {
 
     public static Plugin mockPlugin(MockServer server) {
         PluginDescriptionFile description = new PluginDescriptionFile(
-                "MockPlugin", "4.2.0", "li.l1t.common.test.util.MockPlugin"
+                "MockPlugin", "4.2.0", "li.l1t.common.test.util.mokkit.MockPlugin"
         );
         return new MockPlugin(server, description);
     }

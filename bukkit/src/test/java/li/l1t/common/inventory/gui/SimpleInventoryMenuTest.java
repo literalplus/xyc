@@ -12,7 +12,7 @@ package li.l1t.common.inventory.gui;
 
 import li.l1t.common.inventory.gui.element.Placeholder;
 import li.l1t.common.test.util.MockHelper;
-import li.l1t.common.test.util.MockServer;
+import li.l1t.common.test.util.mokkit.MockServer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -8,7 +8,7 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.test.util;
+package li.l1t.common.test.util.mokkit;
 
 import com.avaje.ebean.EbeanServer;
 import org.bukkit.command.Command;
