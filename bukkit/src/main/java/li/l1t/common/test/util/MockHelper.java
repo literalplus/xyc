@@ -15,6 +15,7 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
@@ -23,7 +24,6 @@ import java.util.logging.Logger;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="http://xxyy.github.io/">xxyy</a>
@@ -35,7 +35,7 @@ public class MockHelper {
 
     }
 
-    public static Server mockServer() {
+    public static MockServer mockServer() {
         Server server = Bukkit.getServer();
 
         if (server == null) {
@@ -48,7 +48,8 @@ public class MockHelper {
             Bukkit.setServer(server);
         }
 
-        return server;
+        //noinspection ConstantConditions
+        return (MockServer) server;
     }
 
     public static Player mockPlayer(final UUID uuid, final String name) {
@@ -58,14 +59,11 @@ public class MockHelper {
         return plr;
     }
 
-    public static Plugin mockPlugin(Server server) {
-        Plugin plugin = mock(Plugin.class);
-        when(plugin.getServer()).thenReturn(server);
-        when(plugin.getName()).thenReturn("SpagtPlugine");
-        when(plugin.isEnabled()).thenReturn(true);
-        Logger logger = server.getLogger();
-        when(plugin.getLogger()).thenReturn(logger);
-        return plugin;
+    public static Plugin mockPlugin(MockServer server) {
+        PluginDescriptionFile description = new PluginDescriptionFile(
+                "MockPlugin", "4.2.0", "li.l1t.common.test.util.MockPlugin"
+        );
+        return new MockPlugin(server, description);
     }
 
     public static CommandSender printlnSender(CommandSender sender) {

@@ -12,8 +12,8 @@ package li.l1t.common.inventory.gui;
 
 import li.l1t.common.inventory.gui.element.Placeholder;
 import li.l1t.common.test.util.MockHelper;
+import li.l1t.common.test.util.MockServer;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class SimpleInventoryMenuTest {
     @Test
     public void redraw__singleItem() throws Exception {
         //given
-        Server server = MockHelper.mockServer();
+        MockServer server = MockHelper.mockServer();
         Player player = MockHelper.mockPlayer(UUID.randomUUID(), "Hans");
         SimpleInventoryMenu menu = new SimpleInventoryMenu(MockHelper.mockPlugin(server), "lel", player);
         ItemStack stack = new ItemStack(Material.MELON);

@@ -37,6 +37,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -72,6 +73,8 @@ public class MockServer implements Server {
     private Spigot spigot = new Spigot();
     private SimpleCommandMap commandMap = new SimpleCommandMap(this);
     private SimplePluginManager pluginManager = new SimplePluginManager(this, commandMap);
+    @SuppressWarnings("deprecation")
+    private JavaPluginLoader pluginLoader = new JavaPluginLoader(this);
 
     @Override
     public String getName() {
@@ -585,5 +588,9 @@ public class MockServer implements Server {
     public void reset() {
         this.onlinePlayers.clear();
         this.clearRecipes();
+    }
+
+    public JavaPluginLoader getPluginLoader() {
+        return pluginLoader;
     }
 }
