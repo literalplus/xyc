@@ -71,4 +71,23 @@ public class TemplateElementHolder extends SimpleElementHolder {
     public void addPlaceholder(int slotId) {
         placeholderSlots.set(slotId);
     }
+
+    /**
+     * Checks whether this template has a placeholder at given slot id.
+     *
+     * @param slotId the slot id to check
+     * @return whether there is a placeholder in given slot
+     */
+    public boolean hasPlaceholderAt(int slotId) {
+        return placeholderSlots.get(slotId);
+    }
+
+    /**
+     * @return a view of which slots currently have placeholders assigned
+     */
+    public BitSet getPlaceholderSlots() {
+        BitSet slotsView = new BitSet();
+        slotsView.or(placeholderSlots); //no copy constructor or immutable wrapper available
+        return slotsView;
+    }
 }
