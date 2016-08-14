@@ -72,6 +72,11 @@ public class TemplateElementHolder extends SimpleElementHolder {
         placeholderSlots.set(slotId);
     }
 
+    @Override
+    public boolean isOccupied(int slotId) {
+        return super.isOccupied(slotId) || placeholderSlots.get(slotId);
+    }
+
     /**
      * Checks whether this template has a placeholder at given slot id.
      *
