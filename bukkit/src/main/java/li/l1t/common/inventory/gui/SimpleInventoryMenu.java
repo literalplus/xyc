@@ -57,6 +57,9 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
         MenuElement[] elementsRaw = getElementsRaw();
         for(int slotId = 0; slotId < INVENTORY_SIZE; slotId++) {
             MenuElement element = elementsRaw[slotId];
+            if (element == null) {
+                continue;
+            }
             ItemStack stack = element.draw(this);
             if(stack == null) {
                 stack = placeholder.createStack();
@@ -67,6 +70,7 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
 
     @Override
     public void open() {
+        redraw();
         if(getPlayer().getOpenInventory() != null) {
             getPlayer().closeInventory();
         }
