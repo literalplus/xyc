@@ -81,13 +81,4 @@ public class TemplateElementHolder extends SimpleElementHolder {
     public boolean hasPlaceholderAt(int slotId) {
         return placeholderSlots.get(slotId);
     }
-
-    /**
-     * @return a view of which slots currently have placeholders assigned
-     */
-    public BitSet getPlaceholderSlots() {
-        BitSet slotsView = new BitSet();
-        slotsView.or(placeholderSlots); //no copy constructor or immutable wrapper available
-        return slotsView;
-    }
 }
