@@ -13,6 +13,7 @@ package li.l1t.common.inventory.gui;
 import com.google.common.base.Preconditions;
 import li.l1t.common.inventory.gui.element.MenuElement;
 import li.l1t.common.inventory.gui.holder.SimpleElementHolder;
+import li.l1t.common.inventory.gui.util.InvMenuListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -49,6 +50,7 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
         this.inventoryTitle = inventoryTitle;
         this.plugin = plugin;
         this.player = player;
+        InvMenuListener.register(this);
     }
 
     @Override
