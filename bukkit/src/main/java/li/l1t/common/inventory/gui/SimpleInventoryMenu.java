@@ -23,10 +23,10 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * A simple implementation of an inventory menu that renders a graphical user interface into a
- * Minecraft inventory. This implementation does not permit hotbar swap. Click events are
- * {@link MenuElement#handleMenuClick(InventoryClickEvent, InventoryMenu)} forwarded} to elements,
- * monitor click and close are ignored. The inventory is created lazily to make sure the
- * inventory title is available.
+ * Minecraft inventory. This implementation does not permit hotbar swap. Click events are {@link
+ * MenuElement#handleMenuClick(InventoryClickEvent, InventoryMenu)} forwarded} to elements, monitor
+ * click and close are ignored. The inventory is created lazily to make sure the inventory title is
+ * available.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-24
@@ -39,17 +39,26 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
 
     /**
      * Creates a new abstract inventory menu.
-     * @param plugin the plugin associated with this menu, may not be null
+     *
+     * @param plugin         the plugin associated with this menu, may not be null
      * @param inventoryTitle the title of the inventory, may not be null
-     * @param player the player associated with this menu, may not be null
+     * @param player         the player associated with this menu, may not be null
      */
     protected SimpleInventoryMenu(Plugin plugin, String inventoryTitle, Player player) {
-        Preconditions.checkNotNull(plugin, "plugin");
-        Preconditions.checkNotNull(inventoryTitle, "inventoryTitle");
-        Preconditions.checkNotNull(player, "player");
-        this.inventoryTitle = inventoryTitle;
-        this.plugin = plugin;
-        this.player = player;
+        this(plugin, player);
+        this.inventoryTitle = Preconditions.checkNotNull(inventoryTitle, "inventoryTitle");
+    }
+
+    /**
+     * Creates a new abstract inventory menu without a title. When using this constructor, {@link
+     * #getInventoryTitle()} must be overridden.
+     *
+     * @param plugin the plugin associated with this menu, may not be null
+     * @param player the player associated with this menu, may not be null
+     */
+    protected SimpleInventoryMenu(Plugin plugin, Player player) {
+        this.plugin = Preconditions.checkNotNull(plugin, "plugin");
+        this.player = Preconditions.checkNotNull(player, "player");
         InvMenuListener.register(this);
     }
 
@@ -57,13 +66,13 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
     public void redraw() {
         Inventory inv = getInventory();
         MenuElement[] elementsRaw = getElementsRaw();
-        for(int slotId = 0; slotId < INVENTORY_SIZE; slotId++) {
+        for (int slotId = 0; slotId < INVENTORY_SIZE; slotId++) {
             MenuElement element = elementsRaw[slotId];
             if (element == null) {
                 continue;
             }
             ItemStack stack = element.draw(this);
-            if(stack == null) {
+            if (stack == null) {
                 stack = placeholder.createStack();
             }
             inv.setItem(slotId, stack);
@@ -73,7 +82,7 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
     @Override
     public void open() {
         redraw();
-        if(getPlayer().getOpenInventory() != null) {
+        if (getPlayer().getOpenInventory() != null) {
             getPlayer().closeInventory();
         }
 
@@ -86,6 +95,7 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
     }
 
     @Override
+    @SuppressWarnings("unchecked") //Java needs self-types for generics
     public boolean handleClick(InventoryClickEvent evt) {
         int slotId = evt.getSlot();
         if (isOccupied(slotId)) {
@@ -126,6 +136,10 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
 
     @Override
     public String getInventoryTitle() {
+        if (inventoryTitle == null) {
+            throw new AssertionError("If no inventory title is passed, " +
+                    "SimpleInventoryMenu#getInventoryTitle() must be overridden! (" + getClass().getName() + ")");
+        }
         return inventoryTitle;
     }
 }
