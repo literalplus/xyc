@@ -37,7 +37,7 @@ public class SimpleInventoryMenuTest {
         Player player = MockHelper.mockPlayer(UUID.randomUUID(), "Hans");
         SimpleInventoryMenu menu = new SimpleInventoryMenu(MockHelper.mockPlugin(server), "lel", player);
         ItemStack stack = new ItemStack(Material.MELON);
-        menu.addElement(5, new Placeholder<>(stack));
+        menu.addElement(5, new Placeholder(stack));
         //when
         menu.redraw();
         //then

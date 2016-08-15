@@ -10,7 +10,6 @@
 
 package li.l1t.common.inventory.gui.element;
 
-import li.l1t.common.inventory.gui.InventoryMenu;
 import li.l1t.common.inventory.gui.holder.ElementHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,11 +19,10 @@ import org.bukkit.inventory.ItemStack;
  * player. A good material for that is {@link org.bukkit.Material#STAINED_GLASS_PANE} with damage
  * value 8.
  *
- * @param <M> the kind of menu this element can be used in
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-24
  */
-public class Placeholder<M extends InventoryMenu> extends NoopMenuItem<M> {
+public class Placeholder extends NoopMenuItem {
     private final ItemStack template;
 
     /**

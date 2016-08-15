@@ -18,11 +18,10 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Represents a clickable element in an inventory menu, shown to the user as an item stack.
  *
- * @param <M> the kind of menu this element can be used in
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-04-17
  */
-public interface MenuElement<M extends InventoryMenu> {
+public interface MenuElement {
     /**
      * @param menu the menu requesting to display this element
      * @return the item stack representing this element, or null if this element is hidden
@@ -35,5 +34,5 @@ public interface MenuElement<M extends InventoryMenu> {
      * @param evt  the Bukkit event that caused the click
      * @param menu the menu associated with the click
      */
-    void handleMenuClick(InventoryClickEvent evt, M menu);
+    void handleMenuClick(InventoryClickEvent evt, InventoryMenu menu);
 }

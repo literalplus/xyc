@@ -95,7 +95,6 @@ public class SimpleInventoryMenu extends SimpleElementHolder implements Inventor
     }
 
     @Override
-    @SuppressWarnings("unchecked") //Java needs self-types for generics
     public boolean handleClick(InventoryClickEvent evt) {
         int slotId = evt.getSlot();
         if (isOccupied(slotId)) {

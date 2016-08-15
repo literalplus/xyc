@@ -11,11 +11,11 @@
 package li.l1t.common.inventory.gui.element;
 
 import li.l1t.common.inventory.gui.InventoryMenu;
+import li.l1t.common.inventory.gui.holder.ElementHolder;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * A menu element that calls a consumer when it is clicked and always shows a copy of a constant
@@ -25,44 +25,34 @@ import java.util.function.Consumer;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-24
  */
-public abstract class LambdaMenuElement<M extends InventoryMenu> extends Placeholder<M> {
+public abstract class LambdaMenuElement<M extends InventoryMenu> extends CheckedMenuElement<ElementHolder, M> {
     private final BiConsumer<InventoryClickEvent, M> consumer;
+    private final ItemStack template;
 
     /**
      * Creates a new element with a template stack and a consumer.
      *
+     * @param menuType the type of menu the consumer accepts
      * @param consumer the bi-consumer that consumes all click events
      * @param template the template stack to use as icon
      */
-    public LambdaMenuElement(BiConsumer<InventoryClickEvent, M> consumer, ItemStack template) {
-        super(template);
+    public LambdaMenuElement(Class<? extends M> menuType, BiConsumer<InventoryClickEvent, M> consumer, ItemStack template) {
+        super(ElementHolder.class, menuType);
+        this.template = template;
         this.consumer = consumer;
     }
 
-    /**
-     * Creates a new element with a template stack and a consumer.
-     *
-     * @param consumer the click event consumer that consumes all click events
-     * @param template the template stack to use as icon
-     */
-    public LambdaMenuElement(Consumer<InventoryClickEvent> consumer, ItemStack template) {
-        super(template);
-        this.consumer = (evt, menu) -> consumer.accept(evt);
-    }
-
-    /**
-     * Creates a new element with a template stack and a consumer.
-     *
-     * @param template the template stack to use as icon
-     * @param consumer the menu consumer that consumes all click events
-     */
-    public LambdaMenuElement(ItemStack template, Consumer<M> consumer) { //yes this is a hack
-        super(template);
-        this.consumer = (evt, menu) -> consumer.accept(menu);
+    @Override
+    public void checkedHandleMenuClick(InventoryClickEvent evt, M menu) {
+        consumer.accept(evt, menu);
     }
 
     @Override
-    public void handleMenuClick(InventoryClickEvent evt, M menu) {
-        consumer.accept(evt, menu);
+    public ItemStack checkedDraw(ElementHolder menu) {
+        return createStack();
+    }
+
+    private ItemStack createStack() {
+        return template.clone();
     }
 }
