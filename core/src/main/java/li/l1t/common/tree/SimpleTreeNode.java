@@ -112,6 +112,10 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
     @Override
     @SuppressWarnings("unchecked")
     public void updatePosition() {
+        if (parent == null) {
+            position = new int[0];
+            return;
+        }
         position = Arrays.copyOf(parent.getPosition(), parent.getPosition().length + 1);
         position[position.length - 1] = parent.getChildId((N) this); // <--  unchecked (check in constructor)
     }
