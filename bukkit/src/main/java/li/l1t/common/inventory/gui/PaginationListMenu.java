@@ -28,6 +28,7 @@ import org.bukkit.plugin.Plugin;
 public abstract class PaginationListMenu<V> extends SortFilterListMenu<V> {
     public PaginationListMenu(Plugin plugin, Player player) {
         super(plugin, player);
+        initTopRow();
     }
 
     @Override
