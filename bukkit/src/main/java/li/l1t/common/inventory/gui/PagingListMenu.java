@@ -115,11 +115,16 @@ public abstract class PagingListMenu<V> extends TopRowMenu implements PageableLi
     }
 
     private boolean handleCanvasClick(InventoryClickEvent evt) {
-        V slotValue = getItemForCanvasSlot(evt.getSlot());
+        V slotValue = getItemForCanvasSlot(toCanvasId(evt.getSlot()));
         if (slotValue != null) {
             handleValueClick(slotValue, evt);
         }
         return true;
+    }
+
+    private int toCanvasId(int slotId) {
+        Preconditions.checkArgument(!isTopBarSlotId(slotId), "must be canvas slot: %s", slotId);
+        return slotId - ROW_SIZE;
     }
 
     @Override
