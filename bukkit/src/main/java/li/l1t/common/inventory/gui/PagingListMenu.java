@@ -154,7 +154,11 @@ public abstract class PagingListMenu<V> extends TopRowMenu implements PageableLi
     }
 
     private V getItemForCanvasSlot(int canvasId) {
-        return items.get(currentItemStart + canvasId);
+        int index = currentItemStart + canvasId;
+        if (index >= items.size()) {
+            return null;
+        }
+        return items.get(index);
     }
 
     private void setCanvasStack(int canvasId, ItemStack stack) {
