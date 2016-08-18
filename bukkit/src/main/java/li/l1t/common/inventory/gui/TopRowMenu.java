@@ -24,17 +24,14 @@ import org.bukkit.plugin.Plugin;
  * @since 2016-08-15
  */
 public abstract class TopRowMenu extends SimpleInventoryMenu {
-    /**
-     * Creates a new abstract inventory menu.
-     *
-     * @param plugin         the plugin associated with this menu, may not be null
-     * @param inventoryTitle the title of the inventory, may not be null
-     * @param player         the player associated with this menu, may not be null
-     */
     protected TopRowMenu(Plugin plugin, String inventoryTitle, Player player) {
         super(plugin, inventoryTitle, player);
         prefillTopRow();
         initTopRow();
+    }
+
+    public TopRowMenu(Plugin plugin, Player player) {
+        super(plugin, player);
     }
 
     /**
@@ -58,8 +55,16 @@ public abstract class TopRowMenu extends SimpleInventoryMenu {
      * @throws IllegalArgumentException if the slotId is not in the top row
      */
     public void addToTopRow(int slotId, MenuElement element) {
-        Preconditions.checkArgument(slotId >= 0 && slotId < 9,
+        Preconditions.checkArgument(isTopBarSlotId(slotId),
                 "slotId must be positive and less than 10, given: %s", slotId);
         setElementRaw(slotId, element);
+    }
+
+    /**
+     * @param slotId the slot id to check
+     * @return whether given slot id is located in the top bar
+     */
+    protected boolean isTopBarSlotId(int slotId) {
+        return slotId >= 0 && slotId < 9;
     }
 }
