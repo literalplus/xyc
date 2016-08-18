@@ -62,7 +62,8 @@ public class SimpleElementHolder implements ElementHolder {
     }
 
     public void addPlaceholder(int slotId) {
-        addElement(slotId, placeholder);
+        checkSlotId(slotId);
+        setElementRaw(slotId, placeholder);
     }
 
     /**
