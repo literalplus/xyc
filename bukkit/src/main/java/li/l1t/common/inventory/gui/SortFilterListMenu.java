@@ -94,13 +94,13 @@ public abstract class SortFilterListMenu<V> extends PagingListMenu<V> {
 
     @Override
     public void setItems(Collection<V> newItems) {
-        super.setItems(newItems);
-        filterAndSortItems();
+        clearItems();
+        addItems(newItems);
     }
 
     @Override
     public void addItems(Collection<V> newItems) {
-        super.addItems(newItems);
+        this.allItems.addAll(newItems);
         filterAndSortItems();
     }
 }
