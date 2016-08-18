@@ -11,6 +11,7 @@
 package li.l1t.common.inventory.gui.util;
 
 import li.l1t.common.inventory.gui.InventoryMenu;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,9 +21,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Global listener for all actions on inventory menus. Menus should call
- * {@link InvMenuListener#register(InventoryMenu)} to make sure the listener is registered and
- * actually forwards events to the menu.
+ * Global listener for all actions on inventory menus. Menus should call {@link
+ * InvMenuListener#register(InventoryMenu)} to make sure the listener is registered and actually
+ * forwards events to the menu.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-24
@@ -55,7 +56,13 @@ public class InvMenuListener implements Listener {
 
         InventoryHolder holder = evt.getClickedInventory().getHolder();
         if (holder instanceof InventoryMenu) {
-            evt.setCancelled(((InventoryMenu) holder).handleClick(evt));
+            try {
+                evt.setCancelled(((InventoryMenu) holder).handleClick(evt));
+            } catch (Throwable t) { //e.g. ClassNotFoundError - want to be certain that players can't steal items out of readonly inventories
+                Bukkit.getLogger().warning("Error handling inventory menu click:");
+                t.printStackTrace();
+                evt.setCancelled(true);
+            }
         }
     }
 
