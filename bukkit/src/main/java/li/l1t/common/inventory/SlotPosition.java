@@ -86,7 +86,8 @@ public class SlotPosition {
      * chest
      */
     public static boolean isValidSlot(int x, int y) {
-        return x < InventoryHelper.SLOTS_PER_ROW && y < InventoryHelper.MAX_ROW_COUNT;
+        return x >= 0 && y >= 0 &&
+                x < InventoryHelper.SLOTS_PER_ROW && y < InventoryHelper.MAX_ROW_COUNT;
     }
 
     /**
