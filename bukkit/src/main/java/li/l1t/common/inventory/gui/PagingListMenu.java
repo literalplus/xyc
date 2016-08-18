@@ -183,7 +183,7 @@ public abstract class PagingListMenu<V> extends TopRowMenu implements PageableLi
     }
 
     private void addItemsInternal(Collection<V> newItems) {
-        Preconditions.checkArgument(newItems.stream().anyMatch(Objects::isNull), "PagingListMenu does not permit null elements!");
+        Preconditions.checkArgument(newItems.stream().allMatch(Objects::nonNull), "PagingListMenu does not permit null elements!");
         items.addAll(newItems);
     }
 
