@@ -27,7 +27,6 @@ public abstract class TopRowMenu extends SimpleInventoryMenu {
     protected TopRowMenu(Plugin plugin, String inventoryTitle, Player player) {
         super(plugin, inventoryTitle, player);
         prefillTopRow();
-        initTopRow();
     }
 
     public TopRowMenu(Plugin plugin, Player player) {
@@ -36,8 +35,9 @@ public abstract class TopRowMenu extends SimpleInventoryMenu {
 
     /**
      * Initialises the top row with buttons. By default, all slots of the top row are already filled
-     * with placeholders before this method is called. This method is called once from the
-     * constructor.
+     * with placeholders before this method is called. This method should be called from the
+     * implementation's constructor. It has been made abstract so that implementations do not forget
+     * to initialise their top row.
      */
     protected abstract void initTopRow();
 
