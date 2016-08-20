@@ -101,4 +101,17 @@ public class TreeNodeSpliteratorTest extends AbstractTreeTest {
         //then
         thenNoNodesAreLeft(spliterator);
     }
+
+    @Test
+    public void testStartAtChild() {
+        //given
+        TestTreeNode child = givenADirectChildOf(givenARootNode());
+        TestTreeNode grandchild = givenADirectChildOf(child);
+        TreeNodeSpliterator<TestTreeNode, Object> spliterator = child.nodeSpliterator();
+        //when
+        whenWeAdvanceToTheNextNodeWhichIs(child, spliterator);
+        whenWeAdvanceToTheNextNodeWhichIs(grandchild, spliterator);
+        //then
+        thenNoNodesAreLeft(spliterator);
+    }
 }

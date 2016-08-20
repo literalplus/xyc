@@ -62,7 +62,7 @@ public class TreeNodeSpliterator<N extends TreeNode<N, V>, V>
         //If not, we must go back and seek a different path
         N parent = next.getParent();
 
-        while (parent != null) { //while we can go farther down
+        while (canContinueDownFrom(parent)) { //while we can go farther down
             //Top of the stack is where we are currently, so the next adjacent node is that plus one
             int nextChildId = position.pop() + 1;
             if (tryContinueUp(parent, nextChildId)) { //if the parent has another child we haven't
@@ -74,6 +74,14 @@ public class TreeNodeSpliterator<N extends TreeNode<N, V>, V>
         //We can't go farther down, that means we have reached the root again
         next = null; //Nothing to see for the next call
         return true; //This last time we did it though
+    }
+
+    private boolean canContinueDownFrom(N from) {
+        //noinspection SimplifiableIfStatement
+        if (position.isEmpty()) {
+            return false; //this happens if the iteration base node is not the root node
+        }
+        return from != null;
     }
 
     private boolean tryContinueUp(N relativeTo, int childId) {
