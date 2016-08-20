@@ -40,11 +40,22 @@ public abstract class AbstractTreeNode<N extends TreeNode<N, V>, V> implements T
     private V value;
     private int[] position;
 
-    public AbstractTreeNode(N parent, Class<N> nodeClass) {
-        this.nodeClass = nodeClass;
+    /**
+     * Creates a new abstract tree node. Note that {@code nodeClass} must actually be of type {@code
+     * Class<N>}, but Java's type system doesn't allow to pass instances of subclasses if they have
+     * generic type parameters themselves. This constructor checks that this node and the parent are
+     * actually instances of the node class.
+     *
+     * @param parent    the parent node, or null if this is a root node
+     * @param nodeClass the raw class of the nodes
+     */
+    @SuppressWarnings("unchecked")
+    public AbstractTreeNode(N parent, Class nodeClass) { //we can't avoid this if we want to have subclasses have generic type params
+        this.nodeClass = (Class<N>) nodeClass;
         checkNodeType(getClass());
         this.parent = parent;
         if (parent != null) {
+            checkNodeType(parent.getClass());
             position = Arrays.copyOf(parent.getPosition(), parent.getPosition().length + 1);
             position[position.length - 1] = parent.getChildren().size(); //must be id of next child, that's us
         } else {
@@ -144,8 +155,7 @@ public abstract class AbstractTreeNode<N extends TreeNode<N, V>, V> implements T
 
     /**
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     * {@inheritDoc}
+     * important notes about its behaviour.</p> {@inheritDoc}
      */
     @Override
     public Iterator<V> iterator() {
@@ -154,8 +164,7 @@ public abstract class AbstractTreeNode<N extends TreeNode<N, V>, V> implements T
 
     /**
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     * {@inheritDoc}
+     * important notes about its behaviour.</p> {@inheritDoc}
      */
     @Override
     public void forEach(Consumer<? super V> action) {
@@ -164,8 +173,7 @@ public abstract class AbstractTreeNode<N extends TreeNode<N, V>, V> implements T
 
     /**
      * <p><b>Attention:</b> Read {@link TreeNodeSpliterator the node spliterator's JavaDoc} for
-     * important notes about its behaviour.</p>
-     * {@inheritDoc}
+     * important notes about its behaviour.</p> {@inheritDoc}
      */
     @Override
     public TreeValueSpliterator<N, V> spliterator() {
