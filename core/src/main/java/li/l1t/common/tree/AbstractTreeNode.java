@@ -22,7 +22,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Simple implementation of a tree node.
+ * Abstract base class for tree nodes. The reason why this class is abstract is because recursive
+ * (self-referencing) generics cannot be satisfied when creating an instance, hence a subclass is
+ * required to be able to instantiate a node.
  *
  * @param <N> the node type of the tree this node is part of
  * @param <V> the value type of the tree this node is part of
@@ -30,7 +32,7 @@ import java.util.stream.StreamSupport;
  * @since 2016-06-22
  */
 @SuppressWarnings("WeakerAccess")
-public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, V> {
+public abstract class AbstractTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, V> {
 
     private final N parent;
     private final Class<N> nodeClass; //for checking of nodes
@@ -38,7 +40,7 @@ public class SimpleTreeNode<N extends TreeNode<N, V>, V> implements TreeNode<N, 
     private V value;
     private int[] position;
 
-    public SimpleTreeNode(N parent, Class<N> nodeClass) {
+    public AbstractTreeNode(N parent, Class<N> nodeClass) {
         this.nodeClass = nodeClass;
         checkNodeType(getClass());
         this.parent = parent;

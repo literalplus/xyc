@@ -13,14 +13,14 @@ package li.l1t.common.tree;
 /**
  * Represents a single tree-style collection of nodes. The data structure is linked. Note that
  * this class does not offer any additional functionality compared to a
- * {@link SimpleTreeNode node}, but currently solely exists to make clearer that this is a root
+ * {@link AbstractTreeNode node}, but currently solely exists to make clearer that this is a root
  * node. This might change in the future.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-22
  */
 @SuppressWarnings("WeakerAccess")
-public class Tree<N extends TreeNode<N, V>, V> extends SimpleTreeNode<N, V> {
+public class Tree<N extends TreeNode<N, V>, V> extends AbstractTreeNode<N, V> {
 
     /**
      * Creates a new tree.

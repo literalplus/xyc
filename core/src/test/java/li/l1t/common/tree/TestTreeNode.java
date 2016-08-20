@@ -16,7 +16,7 @@ package li.l1t.common.tree;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-08-20
  */
-class TestTreeNode extends SimpleTreeNode<TestTreeNode, Object> {
+class TestTreeNode extends AbstractTreeNode<TestTreeNode, Object> {
     public TestTreeNode(TestTreeNode parent) {
         super(parent, TestTreeNode.class);
     }
