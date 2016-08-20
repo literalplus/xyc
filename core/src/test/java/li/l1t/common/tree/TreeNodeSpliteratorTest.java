@@ -10,7 +10,6 @@
 
 package li.l1t.common.tree;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.function.Consumer;
@@ -19,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class TreeNodeSpliteratorTest {
+public class TreeNodeSpliteratorTest extends AbstractTreeTest {
     @Test
     public void testSingleNode() {
         //given
@@ -29,17 +28,6 @@ public class TreeNodeSpliteratorTest {
         whenWeAdvanceToTheNextNodeWhichIs(root, spliterator);
         //then
         thenNoNodesAreLeft(spliterator);
-    }
-
-    private TestTreeNode givenARootNode() {
-        return new TestTreeNode(null);
-    }
-
-    @NotNull
-    private TestTreeNode givenADirectChildOf(TestTreeNode parent) {
-        TestTreeNode result = new TestTreeNode(parent);
-        parent.addChild(result);
-        return result;
     }
 
     private void whenWeAdvanceToTheNextNodeWhichIs(
