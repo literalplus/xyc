@@ -8,7 +8,7 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.util;
+package li.l1t.common.bungee;
 
 import li.l1t.common.XycConstants;
 import net.md_5.bungee.api.ChatColor;
