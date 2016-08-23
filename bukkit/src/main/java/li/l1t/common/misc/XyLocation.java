@@ -17,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -32,9 +33,11 @@ import java.util.Map;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 22.8.14
  */
+@SerializableAs("xyc.xylocation") //prevent future conflicts from name changes
 public class XyLocation extends Location implements ConfigurationSerializable {
     static {
         ConfigurationSerialization.registerClass(XyLocation.class);
+        ConfigurationSerialization.registerClass(XyLocation.class, "io.github.xxyy.common.misc.XyLocation"); //TODO: remove after 4.2.0.0
     }
 
     public XyLocation(World world, double x, double y, double z) {
