@@ -47,6 +47,7 @@ import org.bukkit.util.CachedServerIcon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -68,7 +69,7 @@ import static org.mockito.Mockito.mock;
  */
 public class MockServer implements Server {
     private final Logger logger = Logger.getLogger(MockServer.class.getName());
-    private final Collection<? extends Player> onlinePlayers = new CopyOnWriteArrayList<>();
+    private final Collection<Player> onlinePlayers = new CopyOnWriteArrayList<>();
     private List<Recipe> recipes = new ArrayList<>();
     private int idleTimeout;
     private Spigot spigot = new Spigot();
@@ -100,6 +101,39 @@ public class MockServer implements Server {
     @Override
     public Collection<? extends Player> getOnlinePlayers() {
         return onlinePlayers;
+    }
+
+    /**
+     * Sets the online players, removing any existing ones.
+     *
+     * @param players the players
+     * @return this server
+     */
+    public MockServer setOnlinePlayers(Collection<Player> players) {
+        onlinePlayers.clear();
+        onlinePlayers.addAll(players);
+        return this;
+    }
+
+    /**
+     * Adds some online players.
+     *
+     * @param players the players
+     * @return this server
+     */
+    public MockServer addOnlinePlayers(Player... players) {
+        onlinePlayers.addAll(Arrays.asList(players));
+        return this;
+    }
+
+    /**
+     * Sets the online players, removing any existing ones.
+     *
+     * @param players the players
+     * @return this server
+     */
+    public MockServer setOnlinePlayers(Player... players) {
+        return setOnlinePlayers(Arrays.asList(players));
     }
 
     @Override
