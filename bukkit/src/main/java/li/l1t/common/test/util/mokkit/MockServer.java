@@ -38,6 +38,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.SimpleServicesManager;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -77,6 +78,7 @@ public class MockServer implements Server {
     private SimplePluginManager pluginManager = new SimplePluginManager(this, commandMap);
     @SuppressWarnings("deprecation")
     private JavaPluginLoader pluginLoader = new JavaPluginLoader(this);
+    private SimpleServicesManager servicesManager = new SimpleServicesManager();
 
     @Override
     public String getName() {
@@ -109,6 +111,16 @@ public class MockServer implements Server {
      * @param players the players
      * @return this server
      */
+    public MockServer setOnlinePlayers(Player... players) {
+        return setOnlinePlayers(Arrays.asList(players));
+    }
+
+    /**
+     * Sets the online players, removing any existing ones.
+     *
+     * @param players the players
+     * @return this server
+     */
     public MockServer setOnlinePlayers(Collection<Player> players) {
         onlinePlayers.clear();
         onlinePlayers.addAll(players);
@@ -124,16 +136,6 @@ public class MockServer implements Server {
     public MockServer addOnlinePlayers(Player... players) {
         onlinePlayers.addAll(Arrays.asList(players));
         return this;
-    }
-
-    /**
-     * Sets the online players, removing any existing ones.
-     *
-     * @param players the players
-     * @return this server
-     */
-    public MockServer setOnlinePlayers(Player... players) {
-        return setOnlinePlayers(Arrays.asList(players));
     }
 
     @Override
@@ -284,7 +286,7 @@ public class MockServer implements Server {
 
     @Override
     public ServicesManager getServicesManager() {
-        throw new UnsupportedOperationException("MockServer#getServicesManager()");
+        return servicesManager;
     }
 
     @Override
@@ -601,6 +603,7 @@ public class MockServer implements Server {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public UnsafeValues getUnsafe() {
         throw new UnsupportedOperationException("MockServer#getUnsafe()");
     }
