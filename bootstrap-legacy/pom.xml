@@ -13,7 +13,7 @@
     <parent>
         <artifactId>xyc-parent</artifactId>
         <groupId>li.l1t.common</groupId>
-        <version>4.0.4.2</version>
+        <version>4.0.4.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
