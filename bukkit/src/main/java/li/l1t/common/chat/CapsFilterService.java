@@ -39,7 +39,7 @@ public class CapsFilterService {
      * @param capsFactor the fraction of a message which is allowed to be upper case
      */
     public CapsFilterService(float capsFactor) {
-        this(0.5F, 5);
+        this(capsFactor, 5);
     }
 
     /**
