@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>li.l1t.common</groupId>
     <artifactId>xyc-libhibernate</artifactId>
-    <version>5.1.0.Final-2</version>
+    <version>5.2.3-SNAPSHOT</version>
 
     <name>XYC LibHibernate for Bukkit</name>
     <description>
@@ -47,12 +47,19 @@
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
-        <hibernate.version>5.1.0.Final</hibernate.version>
+        <hibernate.version>5.2.3-SNAPSHOT</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- maven-release-plugin -->
         <ignoreSnapshots>true</ignoreSnapshots>
         <pomFileName>extra/libhibernate/pom.xml</pomFileName>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>xxyy-public</id>
+            <url>https://repo.l1t.li/xxyy-public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
