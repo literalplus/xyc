@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>li.l1t.common</groupId>
     <artifactId>xyc-libhibernate</artifactId>
-    <version>5.1.0.Final</version>
+    <version>5.1.0.Final-2</version>
 
     <name>XYC LibHibernate for Bukkit</name>
     <description>
@@ -47,7 +47,7 @@
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
-        <hibernate.version>${project.version}</hibernate.version>
+        <hibernate.version>5.1.0.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- maven-release-plugin -->
         <ignoreSnapshots>true</ignoreSnapshots>
@@ -79,9 +79,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency> <!-- Hibernate entity auto-discovery -->
-            <groupId>com.github.v-ladynev</groupId>
+            <groupId>li.l1t.lib</groupId>
             <artifactId>fluent-hibernate-core</artifactId>
-            <version>0.2.0</version>
+            <version>0.3.1</version>
         </dependency>
     </dependencies>
 
