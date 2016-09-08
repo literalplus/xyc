@@ -7,7 +7,7 @@
 # See the included LICENSE file (src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
 
 name: LibHibernate
-version: ${hibernate.version}
+version: ${project.version}
 description: Provides Hibernate in its own jar
 author: Literallie
 website: https://l1t.li/
