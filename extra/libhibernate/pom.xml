@@ -115,7 +115,7 @@
                             <include>dom4j:dom4j</include>
                             <include>xml-apis:xml-apis</include>
                             <include>org.jboss.logging:jboss-logging</include>
-                            <include>com.github.v-ladynev:fluent-hibernate-core</include>
+                            <include>*:fluent-hibernate-core</include>
                         </includes>
                     </artifactSet>
                     <relocations>
