@@ -86,7 +86,7 @@ public final class UUIDRepositories {
     }
 
     private static UUIDRepository getRepoOrFail() {
-        if (!UUIDRepositories.class.getName().startsWith("io.github.xxyy.common.shared")) {
+        if (!UUIDRepositories.class.getName().startsWith("li.l1t.common.shared")) {
             Bukkit.getLogger().warning("[XYC] UUIDRepository registrations won't interface with other plugins when shaded to a different place!");
         }
 
