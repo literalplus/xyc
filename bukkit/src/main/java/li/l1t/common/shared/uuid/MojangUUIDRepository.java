@@ -16,6 +16,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import li.l1t.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import li.l1t.common.lib.com.mojang.api.profiles.Profile;
+import li.l1t.common.util.UUIDHelper;
 import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,6 +61,9 @@ public class MojangUUIDRepository implements UUIDRepository {
 
     @Override
     public UUID forName(String name) {
+        if (UUIDHelper.isValidUUID(name)) {
+            return UUIDHelper.getFromString(name);
+        }
         try {
             return uuidCache.getUnchecked(name);
         } catch (UncheckedExecutionException e) {
@@ -74,6 +78,9 @@ public class MojangUUIDRepository implements UUIDRepository {
     @Nonnull
     @Override
     public UUID forNameChecked(String name) throws UnknownKeyException, InvalidResultException {
+        if (UUIDHelper.isValidUUID(name)) {
+            return UUIDHelper.getFromString(name);
+        }
         try {
             return uuidCache.get(name);
         } catch (ExecutionException e) {
