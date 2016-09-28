@@ -8,12 +8,12 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api;
+package li.l1t.lanatus.api;
 
-import li.l1t.common.lanatus.api.account.AccountRepository;
-import li.l1t.common.lanatus.api.position.PositionRepository;
-import li.l1t.common.lanatus.api.product.ProductRepository;
-import li.l1t.common.lanatus.api.purchase.PurchaseRepository;
+import li.l1t.lanatus.api.account.AccountRepository;
+import li.l1t.lanatus.api.position.PositionRepository;
+import li.l1t.lanatus.api.product.ProductRepository;
+import li.l1t.lanatus.api.purchase.PurchaseRepository;
 
 /**
  * Represents a client implementation for the Lanatus API.

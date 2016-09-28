@@ -18,4 +18,4 @@
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-package li.l1t.common.lanatus.api;
+package li.l1t.lanatus.api;

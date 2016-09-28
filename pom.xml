@@ -20,6 +20,7 @@
         <module>games</module>
         <module>games-bootstrap</module>
         <module>bootstrap-legacy</module>
+        <module>lanatus</module>
     </modules>
     <name>XYC Parent</name>
     <inceptionYear>2013</inceptionYear>

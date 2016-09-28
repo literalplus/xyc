@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+  ~
+  ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
+  ~  copying and reverse-engineering is strictly prohibited without explicit written permission
+  ~  from the original author and may result in legal steps being taken.
+  ~
+  ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>xyc-parent</artifactId>
+        <groupId>li.l1t.common</groupId>
+        <version>4.0.4.3-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>lanatus-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>Lanatus Parent</name>
+    <description>The parent project for all official Lanatus modules.</description>
+
+    <modules>
+        <module>api</module>
+        <module>sql</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>lanatus-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

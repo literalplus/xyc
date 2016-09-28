@@ -8,19 +8,20 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api.position;
-
-import java.util.Collection;
-import java.util.UUID;
+package li.l1t.lanatus.api.exception;
 
 /**
- * A repository for positions.
+ * Thrown if there is no row matching given criteria, but a row was required.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface PositionRepository {
-    Position findByPurchase(UUID purchaseId);
+public class NoSuchRowException extends RuntimeException {
+    public NoSuchRowException(String message) {
+        super(message);
+    }
 
-    Collection<Position> findByPlayer(UUID playerId);
+    public NoSuchRowException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

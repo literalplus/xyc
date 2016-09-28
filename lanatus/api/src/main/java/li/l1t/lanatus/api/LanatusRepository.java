@@ -8,20 +8,17 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api.exception;
+package li.l1t.lanatus.api;
 
 /**
- * Thrown if there is no row matching given criteria, but a row was required.
+ * A repository associated with a Lanatus client.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public class NoSuchRowException extends RuntimeException {
-    public NoSuchRowException(String message) {
-        super(message);
-    }
-
-    public NoSuchRowException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public interface LanatusRepository {
+    /**
+     * @return the client this repository is associated with
+     */
+    LanatusClient client();
 }

@@ -8,10 +8,10 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api.account;
+package li.l1t.lanatus.api.account;
 
-import li.l1t.common.lanatus.api.LanatusRepository;
-import li.l1t.common.lanatus.api.exception.AccountConflictException;
+import li.l1t.lanatus.api.LanatusRepository;
+import li.l1t.lanatus.api.exception.AccountConflictException;
 
 import java.util.UUID;
 

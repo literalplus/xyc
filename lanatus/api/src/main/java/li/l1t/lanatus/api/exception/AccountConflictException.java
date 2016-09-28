@@ -8,10 +8,10 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api.exception;
+package li.l1t.lanatus.api.exception;
 
-import li.l1t.common.lanatus.api.account.AccountSnapshot;
-import li.l1t.common.lanatus.api.account.MutableAccount;
+import li.l1t.lanatus.api.account.AccountSnapshot;
+import li.l1t.lanatus.api.account.MutableAccount;
 
 /**
  * Thrown if a conflict arises while attempting to merge a local copy of an account back into the

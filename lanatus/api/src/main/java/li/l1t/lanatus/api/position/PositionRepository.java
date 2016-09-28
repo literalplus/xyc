@@ -8,17 +8,19 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api;
+package li.l1t.lanatus.api.position;
+
+import java.util.Collection;
+import java.util.UUID;
 
 /**
- * A repository associated with a Lanatus client.
+ * A repository for positions.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface LanatusRepository {
-    /**
-     * @return the client this repository is associated with
-     */
-    LanatusClient client();
+public interface PositionRepository {
+    Position findByPurchase(UUID purchaseId);
+
+    Collection<Position> findByPlayer(UUID playerId);
 }

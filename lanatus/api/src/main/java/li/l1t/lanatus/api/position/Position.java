@@ -8,9 +8,9 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.common.lanatus.api.position;
+package li.l1t.lanatus.api.position;
 
-import li.l1t.common.lanatus.api.product.Product;
+import li.l1t.lanatus.api.product.Product;
 
 import java.time.Instant;
 import java.util.UUID;
