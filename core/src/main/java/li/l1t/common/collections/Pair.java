@@ -71,7 +71,7 @@ public class Pair<L, R> {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        Pair pair = (Couple) o;
+        Pair pair = (Pair) o;
 
         if (left != null ? !left.equals(pair.left) : pair.left != null) return false;
         if (right != null ? !right.equals(pair.right) : pair.right != null) return false;
