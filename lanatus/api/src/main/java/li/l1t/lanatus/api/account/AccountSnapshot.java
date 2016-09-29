@@ -11,7 +11,6 @@
 package li.l1t.lanatus.api.account;
 
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * An immutable snapshot of the state of a Lanatus account.
@@ -19,24 +18,10 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface AccountSnapshot {
+public interface AccountSnapshot extends LanatusAccount {
     /**
      * @return the instant at which this snapshot was taken
      */
     Instant getSnapshotInstant();
 
-    /**
-     * @return the unique id of the player the account belongs to
-     */
-    UUID getPlayerId();
-
-    /**
-     * @return the amount of melons in the account at the time this snapshot was taken
-     */
-    int getMelonsCount();
-
-    /**
-     * @return the most recently known rank of the account at the time this snapshot was taken
-     */
-    String getLastRank();
 }

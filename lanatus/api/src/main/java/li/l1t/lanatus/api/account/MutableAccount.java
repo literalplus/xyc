@@ -17,7 +17,7 @@ package li.l1t.lanatus.api.account;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface MutableAccount {
+public interface MutableAccount extends LanatusAccount {
     /**
      * @return an immutable snapshot of the account as it was before this mutable account was
      * fetched
@@ -27,6 +27,7 @@ public interface MutableAccount {
     /**
      * @return the amount of melons owned by this account in its mutated state
      */
+    @Override
     int getMelonsCount();
 
     /**
@@ -37,19 +38,20 @@ public interface MutableAccount {
     void setMelonsCount(int newMelonsCount);
 
     /**
+     * Adds an integer value to the amount of melons owned by this account in its mutated state.
+     *
+     * @param melonsModifier the amount of melons to add, may be negative
+     */
+    void modifyMelonsCount(int melonsModifier);
+
+    /**
      * @return the latest known rank of this account in its mutated state
      */
+    @Override
     String getLastRank();
 
     /**
      * @param lastRank the latest known rank of this account in its mutated state
      */
     void setLastRank(String lastRank);
-
-    /**
-     * Adds an integer value to the amount of melons owned by this account in its mutated state.
-     *
-     * @param melonsModifier the amount of melons to add, may be negative
-     */
-    void modifyMelonsCount(int melonsModifier);
 }
