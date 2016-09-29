@@ -10,7 +10,8 @@
 
 package li.l1t.common.util.inventory;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
+import li.l1t.common.inventory.SlotPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -35,20 +36,26 @@ import java.util.stream.Collectors;
 @SuppressWarnings("UnusedDeclaration")
 public final class InventoryHelper {
     /**
-     * Defines how many slots there are in each row in a fake inventory. (Not changeable, its a constant by minecraft implemntation)
+     * Defines how many slots there are in each row in a fake inventory. (Not changeable, its a
+     * constant by minecraft implemntation)
+     *
+     * @deprecated prefer {@link SlotPosition#SLOTS_PER_ROW} from the public XYC-API
      */
-    public static final int SLOTS_PER_ROW = 9;
+    @Deprecated
+    public static final int SLOTS_PER_ROW = SlotPosition.SLOTS_PER_ROW;
 
     /**
      * The maximum amount of rows in an inventory.
+     *
+     * @deprecated prefer {@link SlotPosition#MAX_ROW_COUNT} from the public XYC-API
      */
-    public static final int MAX_ROW_COUNT = 6;
+    @Deprecated
+    public static final int MAX_ROW_COUNT = SlotPosition.MAX_ROW_COUNT;
 
     /**
-     * Default maximum fake inventory size.
-     * By default represents a double chest.
+     * Default maximum fake inventory size. By default represents a double chest.
      */
-    public static final int DEFAULT_MAX_INVENTORY_SIZE = SLOTS_PER_ROW * MAX_ROW_COUNT;
+    public static final int DEFAULT_MAX_INVENTORY_SIZE = SlotPosition.SLOTS_PER_ROW * SlotPosition.MAX_ROW_COUNT;
     /**
      * Maximum amount of items allowed in armor slots
      */
@@ -71,38 +78,43 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Makes sure that an inventory size is a multiple of {@link InventoryHelper#SLOTS_PER_ROW}
-     * and will not fail Bukkit's inventory creation methods.
+     * Makes sure that an inventory size is a multiple of {@link InventoryHelper#SLOTS_PER_ROW} and
+     * will not fail Bukkit's inventory creation methods.
      *
      * @param minimumSize minimum size the inventory needs to be
-     * @param maximumSize maximum size of the inventory. Must be a multiple of {@link InventoryHelper#SLOTS_PER_ROW}.
-     * @return The multiple of {@link InventoryHelper#SLOTS_PER_ROW} that is closest to
-     * {@code minimumSize} and is greater than or equal to {@code minimumSize}. Will never exceed {@code maximumSize}.
-     * @throws IllegalArgumentException If {@code maximumSize} is not a multiple of {@link InventoryHelper#SLOTS_PER_ROW}
+     * @param maximumSize maximum size of the inventory. Must be a multiple of {@link
+     *                    InventoryHelper#SLOTS_PER_ROW}.
+     * @return The multiple of {@link InventoryHelper#SLOTS_PER_ROW} that is closest to {@code
+     * minimumSize} and is greater than or equal to {@code minimumSize}. Will never exceed {@code
+     * maximumSize}.
+     * @throws IllegalArgumentException If {@code maximumSize} is not a multiple of {@link
+     *                                  InventoryHelper#SLOTS_PER_ROW}
      * @see InventoryHelper#validateInventorySize(int, int)
      */
-    public static int validateInventorySize(final int minimumSize, final int maximumSize) {
-        Validate.isTrue((maximumSize % SLOTS_PER_ROW) == 0, "maximumSize must be a multiple of SLOTS_PER_ROW (=" + SLOTS_PER_ROW + ')');
+    public static int validateInventorySize(int minimumSize, int maximumSize) {
+        Preconditions.checkArgument((maximumSize % SlotPosition.SLOTS_PER_ROW) == 0,
+                "maximumSize must be a multiple of SLOTS_PER_ROW", maximumSize, SlotPosition.SLOTS_PER_ROW);
 
         int outputSize = minimumSize; //Reassigning parameters is considered bad practice
 
         if (minimumSize > maximumSize) {
             outputSize = maximumSize;
-        } else if (minimumSize % SLOTS_PER_ROW != 0) {
-            outputSize = minimumSize + (SLOTS_PER_ROW - (minimumSize % SLOTS_PER_ROW));
+        } else if (minimumSize % SlotPosition.SLOTS_PER_ROW != 0) {
+            outputSize = minimumSize + (SlotPosition.SLOTS_PER_ROW - (minimumSize % SlotPosition.SLOTS_PER_ROW));
         }
 
         return outputSize;
     }
 
     /**
-     * Makes sure that an inventory size is a multiple of {@link InventoryHelper#SLOTS_PER_ROW}
-     * and will not fail Bukkit's inventory creation methods.
-     * This implementation uses {@link InventoryHelper#DEFAULT_MAX_INVENTORY_SIZE} as maximum size.
+     * Makes sure that an inventory size is a multiple of {@link InventoryHelper#SLOTS_PER_ROW} and
+     * will not fail Bukkit's inventory creation methods. This implementation uses {@link
+     * InventoryHelper#DEFAULT_MAX_INVENTORY_SIZE} as maximum size.
      *
      * @param minimumSize minimum size the inventory needs to be
-     * @return The multiple of {@link InventoryHelper#SLOTS_PER_ROW} that is closest to
-     * {@code minimumSize} and is greater than or equal to {@code minimumSize}. Will never exceed {@link InventoryHelper#DEFAULT_MAX_INVENTORY_SIZE}.
+     * @return The multiple of {@link InventoryHelper#SLOTS_PER_ROW} that is closest to {@code
+     * minimumSize} and is greater than or equal to {@code minimumSize}. Will never exceed {@link
+     * InventoryHelper#DEFAULT_MAX_INVENTORY_SIZE}.
      * @see InventoryHelper#validateInventorySize(int, int)
      */
     public static int validateInventorySize(final int minimumSize) {
@@ -112,26 +124,30 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Closes a {@link org.bukkit.entity.HumanEntity}'s open inventory (if any) later by running a task later with Bukkit's Scheduler API.
+     * Closes a {@link org.bukkit.entity.HumanEntity}'s open inventory (if any) later by running a
+     * task later with Bukkit's Scheduler API.
      *
      * @param humanEntity HumanEntity to target
      * @param delay       Time, in ticks, to wait before the inventory is closed
      * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#closeInventory()
-     * @see InventoryHelper#closeInventoryLater(org.bukkit.entity.HumanEntity, org.bukkit.plugin.Plugin)
+     * @see InventoryHelper#closeInventoryLater(org.bukkit.entity.HumanEntity,
+     * org.bukkit.plugin.Plugin)
      */
     public static void closeInventoryLater(final HumanEntity humanEntity, final long delay, final Plugin plugin) {
         Bukkit.getScheduler().runTaskLater(plugin, humanEntity::closeInventory, delay);
     }
 
     /**
-     * Closes a {@link org.bukkit.entity.HumanEntity}'s open inventory (if any) later by running a task later with Bukkit's Scheduler API.
-     * Convenience method, uses 1L as delay (in ticks), as this is used very often.
+     * Closes a {@link org.bukkit.entity.HumanEntity}'s open inventory (if any) later by running a
+     * task later with Bukkit's Scheduler API. Convenience method, uses 1L as delay (in ticks), as
+     * this is used very often.
      *
      * @param humanEntity HumanEntity to target
      * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#closeInventory()
-     * @see InventoryHelper#closeInventoryLater(org.bukkit.entity.HumanEntity, long, org.bukkit.plugin.Plugin)
+     * @see InventoryHelper#closeInventoryLater(org.bukkit.entity.HumanEntity, long,
+     * org.bukkit.plugin.Plugin)
      */
     public static void closeInventoryLater(final HumanEntity humanEntity, final Plugin plugin) {
         closeInventoryLater(humanEntity, 1L, plugin);
@@ -140,28 +156,32 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Opens an Inventory to a  {@link org.bukkit.entity.HumanEntity} later by running a task later with Bukkit's Scheduler API.
+     * Opens an Inventory to a  {@link org.bukkit.entity.HumanEntity} later by running a task later
+     * with Bukkit's Scheduler API.
      *
      * @param delay       Time, in ticks, to wait before the action is executed
      * @param humanEntity HumanEntity to target
      * @param inventory   the inventory to open
      * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#openInventory(org.bukkit.inventory.Inventory)
-     * @see InventoryHelper#openInventoryLater(org.bukkit.entity.HumanEntity, org.bukkit.inventory.Inventory, org.bukkit.plugin.Plugin)
+     * @see InventoryHelper#openInventoryLater(org.bukkit.entity.HumanEntity,
+     * org.bukkit.inventory.Inventory, org.bukkit.plugin.Plugin)
      */
     public static void openInventoryLater(final HumanEntity humanEntity, final Inventory inventory, final long delay, final Plugin plugin) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> humanEntity.openInventory(inventory), delay);
     }
 
     /**
-     * Opens an Inventory to a  {@link org.bukkit.entity.HumanEntity} later by running a task later with Bukkit's Scheduler API.
-     * Convenience method, uses 1L as delay (in ticks), as this is used very often.
+     * Opens an Inventory to a  {@link org.bukkit.entity.HumanEntity} later by running a task later
+     * with Bukkit's Scheduler API. Convenience method, uses 1L as delay (in ticks), as this is used
+     * very often.
      *
      * @param humanEntity HumanEntity to target
      * @param inventory   the inventory to open
      * @param plugin      the plugin to register the task with
      * @see org.bukkit.entity.HumanEntity#openInventory(org.bukkit.inventory.Inventory)
-     * @see InventoryHelper#openInventoryLater(org.bukkit.entity.HumanEntity, org.bukkit.inventory.Inventory, long, org.bukkit.plugin.Plugin)
+     * @see InventoryHelper#openInventoryLater(org.bukkit.entity.HumanEntity,
+     * org.bukkit.inventory.Inventory, long, org.bukkit.plugin.Plugin)
      */
     public static void openInventoryLater(final HumanEntity humanEntity, final Inventory inventory, final Plugin plugin) {
         openInventoryLater(humanEntity, inventory, 1L, plugin);
@@ -170,8 +190,9 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is representing some kind of pickup
-     * (i.e. its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_PICKUP})
+     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is representing some
+     * kind of pickup (i.e. its enum constant name starts with {@value
+     * InventoryHelper#ACTION_PREFIX_PICKUP})
      *
      * @param action Action to check
      * @return Whether {@code action} 's name starts with {@value InventoryHelper#ACTION_PREFIX_PICKUP})
@@ -181,8 +202,8 @@ public final class InventoryHelper {
     }
 
     /**
-     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is representing some kind of drop
-     * (i.e. its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_DROP}))
+     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is representing some
+     * kind of drop (i.e. its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_DROP}))
      *
      * @param action Action to check
      * @return Whether {@code action} 's name starts with {@value InventoryHelper#ACTION_PREFIX_DROP})
@@ -192,8 +213,8 @@ public final class InventoryHelper {
     }
 
     /**
-     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is Hotbar-related
-     * (i.e. its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_HOTBAR}))
+     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is Hotbar-related (i.e.
+     * its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_HOTBAR}))
      *
      * @param action Action to check
      * @return Whether {@code action} 's name starts with {@value InventoryHelper#ACTION_PREFIX_HOTBAR})
@@ -203,8 +224,8 @@ public final class InventoryHelper {
     }
 
     /**
-     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is representing some kind of place
-     * (i.e. its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_PLACE}))
+     * Checks if a given {@link org.bukkit.event.inventory.InventoryAction} is representing some
+     * kind of place (i.e. its enum constant name starts with {@value InventoryHelper#ACTION_PREFIX_PLACE}))
      *
      * @param action Action to check
      * @return Whether {@code action} 's name starts with {@value InventoryHelper#ACTION_PREFIX_PLACE})
@@ -216,7 +237,8 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Checks if a Player's Inventory is currently empty (i.e. all slots, including armor, are either null or Material.AIR)
+     * Checks if a Player's Inventory is currently empty (i.e. all slots, including armor, are
+     * either null or Material.AIR)
      *
      * @param plr Player to check
      * @return whether the Player's Inventory is currently empty.
@@ -257,7 +279,8 @@ public final class InventoryHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Clones an ItemStack and sets its amount to 1 if it was 0 previously (this prevents some weird glitches).
+     * Clones an ItemStack and sets its amount to 1 if it was 0 previously (this prevents some weird
+     * glitches).
      *
      * @param input the stack to clone
      * @return a clone of the input, with non-zero amount
@@ -270,8 +293,8 @@ public final class InventoryHelper {
     }
 
     /**
-     * Clones all stacks in the input and sets their amount to 1 if it was 0.
-     * This is here because Bukkit sometimes serializes ItemStacks with amount=0.
+     * Clones all stacks in the input and sets their amount to 1 if it was 0. This is here because
+     * Bukkit sometimes serializes ItemStacks with amount=0.
      *
      * @param input the array containing the stacks to copy
      * @return an array of clones of the input stacks
@@ -285,8 +308,8 @@ public final class InventoryHelper {
     }
 
     /**
-     * Clones all stacks in the input and sets their amount to 1 if it was 0.
-     * This is here because Bukkit sometimes serializes ItemStacks with amount=0.
+     * Clones all stacks in the input and sets their amount to 1 if it was 0. This is here because
+     * Bukkit sometimes serializes ItemStacks with amount=0.
      *
      * @param input a collection containing the stacks to copy
      * @return an array of clones of the input stacks
