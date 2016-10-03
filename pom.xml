@@ -63,6 +63,11 @@
 
     <repositories>
         <repository>
+            <id>xxyy-repo</id>
+            <url>https://repo.l1t.li/xxyy-public/</url>
+            <!-- XYC-API -->
+        </repository>
+        <repository>
             <id>oss-sonatype</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
             <!-- BungeeCord-Chat -->
