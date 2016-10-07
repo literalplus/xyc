@@ -325,7 +325,7 @@ public class SafeSql implements AutoCloseable, PreparedStatementFactory {
 
         fillStatement(stmt, arguments);
 
-        return new UpdateResult(stmt.executeUpdate(), stmt.getGeneratedKeys());
+        return new UpdateResult(stmt.executeUpdate(), stmt.getGeneratedKeys()); //TODO: this does not close the statement, help
     }
 
     @Nullable
