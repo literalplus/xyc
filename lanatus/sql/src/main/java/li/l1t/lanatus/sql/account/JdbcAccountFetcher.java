@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.sql.account;
 
+import li.l1t.common.exception.InternalException;
 import li.l1t.common.sql.QueryResult;
 import li.l1t.common.sql.SafeSql;
 import li.l1t.lanatus.api.account.LanatusAccount;
@@ -33,13 +34,15 @@ class JdbcAccountFetcher<T extends LanatusAccount> {
         this.sql = sql;
     }
 
-    public T fetchSingle(UUID playerId) throws SQLException {
+    public T fetchSingle(UUID playerId) throws InternalException {
         try (QueryResult qr = fetchSingleAccount(playerId)) {
             if (proceedToFirstRow(qr)) {
                 return creator.createFromCurrentRow(qr.rs());
             } else {
                 return creator.createDefault(playerId);
             }
+        } catch (SQLException e) {
+            throw InternalException.wrap(e);
         }
     }
 

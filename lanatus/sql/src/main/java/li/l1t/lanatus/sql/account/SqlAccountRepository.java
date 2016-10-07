@@ -19,9 +19,9 @@ import li.l1t.lanatus.api.account.MutableAccount;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
+import li.l1t.lanatus.sql.account.mutable.snapshot.MutableAccountFactory;
 import li.l1t.lanatus.sql.account.snapshot.AccountSnapshotFactory;
 
-import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +40,10 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     private final Cache<UUID, AccountSnapshot> snapshotCache = CacheBuilder.newBuilder()
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .build();
+    private final JdbcAccountFetcher<MutableAccount> mutableFetcher = new JdbcAccountFetcher<>(
+            new JdbcAccountCreator<>(new MutableAccountFactory()),
+            client().getSql()
+    );
 
     public SqlAccountRepository(SqlLanatusClient client) {
         super(client);
@@ -60,16 +64,12 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     }
 
     private AccountSnapshot fetchSnapshot(UUID playerId) {
-        try {
-            return snapshotFetcher.fetchSingle(playerId);
-        } catch (SQLException e) {
-            throw InternalException.wrap(e);
-        }
+        return snapshotFetcher.fetchSingle(playerId);
     }
 
     @Override
     public MutableAccount findMutable(UUID playerId) {
-        throw new UnsupportedOperationException();
+        return mutableFetcher.fetchSingle(playerId);
     }
 
     @Override
