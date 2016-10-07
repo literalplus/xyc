@@ -11,30 +11,30 @@
 package li.l1t.common.sql;
 
 /**
- * Interface for providing SQL access data. Keep these safe because anyone can call {@link #getSqlPwd()}.
+ * Provides credentials for connecting to a JDBC database. <p><b>Note:</b> Try to keep the scope of
+ * these as small as possible. Untrusted code could easily steal credentials!</p>
  *
- * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @author <a href="https://l1t.li/">Literallie</a>
  */
-public interface SqlConnectable { //Not sure if Connectible...Internetz says -able at most places
+public interface SqlConnectable {
 
     /**
-     * @return The database to use.
+     * @return the database to connect to
      */
     String getSqlDb();
 
     /**
-     * @return The fully qualified JDBC connection string for the host to connect to, i.e.
-     * jdbc:mysql://<b>HOST</b>:<i>PORT</i>/
+     * @return the fully qualified JDBC connection string for the host to connect to
      */
     String getSqlHost();
 
     /**
-     * @return The password to connect with. This isn't very safe, isn't it? :(
+     * @return the password for authentication with the database
      */
     String getSqlPwd();
 
     /**
-     * @return The user to use to connect to SQL.
+     * @return the user for authentication with the database
      */
     String getSqlUser();
 }
