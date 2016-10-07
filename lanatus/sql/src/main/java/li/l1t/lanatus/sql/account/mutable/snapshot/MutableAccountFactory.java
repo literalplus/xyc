@@ -8,10 +8,12 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.lanatus.sql.account.snapshot;
+package li.l1t.lanatus.sql.account.mutable.snapshot;
 
 import li.l1t.lanatus.api.account.AccountSnapshot;
+import li.l1t.lanatus.api.account.MutableAccount;
 import li.l1t.lanatus.sql.account.LanatusAccountFactory;
+import li.l1t.lanatus.sql.account.snapshot.AccountSnapshotFactory;
 
 import java.util.UUID;
 
@@ -21,9 +23,12 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-29
  */
-public class AccountSnapshotFactory implements LanatusAccountFactory<AccountSnapshot> {
+public class MutableAccountFactory implements LanatusAccountFactory<MutableAccount> {
+    private final AccountSnapshotFactory snapshotFactory = new AccountSnapshotFactory();
+
     @Override
-    public AccountSnapshot newInstance(UUID playerId, int melonsCount, String lastRank) {
-        return new SqlAccountSnapshot(playerId, melonsCount, lastRank);
+    public MutableAccount newInstance(UUID playerId, int melonsCount, String lastRank) {
+        AccountSnapshot snapshot = snapshotFactory.newInstance(playerId, melonsCount, lastRank);
+        return new MutableSqlAccount(snapshot);
     }
 }
