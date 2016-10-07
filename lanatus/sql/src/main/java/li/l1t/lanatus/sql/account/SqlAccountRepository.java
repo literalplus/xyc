@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2016-09-29
  */
 public class SqlAccountRepository extends AbstractSqlLanatusRepository implements AccountRepository {
+    public static final String TABLE_NAME = "mt_main.lanatus_player";
     private final JdbcAccountFetcher<AccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(new AccountSnapshotFactory()),
             client().getSql()

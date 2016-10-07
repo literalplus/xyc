@@ -25,7 +25,6 @@ import java.util.UUID;
  * @since 2016-09-29
  */
 class JdbcAccountFetcher<T extends LanatusAccount> {
-    public static final String TABLE_NAME = "mt_main.lanatus_player";
     private final JdbcAccountCreator<T> creator;
     private final SafeSql sql;
 
@@ -56,7 +55,7 @@ class JdbcAccountFetcher<T extends LanatusAccount> {
 
     private QueryResult executeSql(String whereClause, Object parameters) throws SQLException {
         return sql.executeQueryWithResult(
-                "SELECT player_uuid, melons, lastrank FROM " + TABLE_NAME +
+                "SELECT player_uuid, melons, lastrank FROM " + SqlAccountRepository.TABLE_NAME +
                         " WHERE " + whereClause,
                 parameters);
     }
