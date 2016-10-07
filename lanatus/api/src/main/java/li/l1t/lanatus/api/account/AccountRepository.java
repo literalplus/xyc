@@ -23,7 +23,9 @@ import java.util.UUID;
  * fresh object must be obtained from this repository if an update is desired.</p> <p>Immutable
  * objects may not be changed and are not guaranteed to be regenerated at every call. However, their
  * data may change due to concurrent modifications by this client or another client. If an update is
- * required, it may be forced using {@link #refresh(AccountSnapshot)}.</p>
+ * required, it may be forced using {@link #refresh(AccountSnapshot)}.</p> <p>Note that all methods
+ * that access the database may throw {@link li.l1t.common.exception.InternalException}s if a
+ * database failure occurs.</p>
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28

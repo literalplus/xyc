@@ -11,7 +11,8 @@
 package li.l1t.lanatus.api;
 
 /**
- * A repository associated with a Lanatus client.
+ * A repository associated with a Lanatus client. <p>Note that all methods that access the database
+ * may throw {@link li.l1t.common.exception.InternalException}s if a database failure occurs.</p>
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
