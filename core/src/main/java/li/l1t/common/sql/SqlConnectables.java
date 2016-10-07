@@ -10,15 +10,15 @@
 
 package li.l1t.common.sql;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
 
 /**
- * Statuic utilities for the {@link SqlConnectable} class.
+ * Provides some static utility methods for {@link SqlConnectable}s.
  *
- * @author <a href="http://xxyy.github.io/">xxyy</a>
- * @since 14.5.14
+ * @author <a href="https://l1t.li/">Literallie</a>
+ * @since 2014-05-14
  */
 public final class SqlConnectables {
 
@@ -26,58 +26,63 @@ public final class SqlConnectables {
     }
 
     /**
-     * Returns the host string for the given Connectable. The host string consists of
-     * the database URL, as returned by {@link SqlConnectable#getSqlHost()}, of a slash (/)
-     * and the database name, as returned by {@link SqlConnectable#getSqlDb()}.
-     * If the database name is already appended to the host, it will not be appended another time.
+     * Builds a host string from a connectable. <p>A host string consists of the {@link
+     * SqlConnectable#getSqlHost() database URL}, a slash (/), and the {@link
+     * SqlConnectable#getSqlDb() database name}.</p> If the database URL ends with the database
+     * name, it is not appended another time.
      *
-     * @param connectable Connectable to get information from
-     * @return Host string, as accepted by database drivers.
+     * @param connectable the connectable to get information from
+     * @return a host string derived from given connectable
      */
     public static String getHostString(@Nonnull SqlConnectable connectable) {
-        String sqlHost = connectable.getSqlHost();
-
-        Validate.notNull(sqlHost);
-
-        return getHostString(connectable.getSqlDb(), sqlHost);
+        String jdbcUrl = Preconditions.checkNotNull(connectable.getSqlHost(), "connectable.sqlHost");
+        return getHostString(connectable.getSqlDb(), jdbcUrl);
     }
 
     /**
-     * Returns the host string for the given parameters. The host string consists of
-     * the database URL, as returned by {@link SqlConnectable#getSqlHost()}, of a slash (/)
-     * and the database name, as returned by {@link SqlConnectable#getSqlDb()}.
-     * If the database name is already appended to the host, it will not be appended another time.
+     * Builds a host string from database name and database URL. <p>A host string consists of the
+     * {@link SqlConnectable#getSqlHost() database URL}, a slash (/), and the {@link
+     * SqlConnectable#getSqlDb() database name}.</p> If the database URL ends with the database
+     * name, it is not appended another time.
      *
-     * @param database Database to use
-     * @param sqlHost  Fully-qualified JDBC connection string of the host to use
-     * @return Host string, as accepted by database drivers.
+     * @param database the database the host string should point to
+     * @param jdbcUrl  the fully qualified JDBC URL the host string should point to
+     * @return a host string derived from given parameters
      */
-    public static String getHostString(String database, String sqlHost) {
-        String rtrn = sqlHost.contains(database) ? sqlHost : (sqlHost.endsWith("/") ? (sqlHost + database) : (sqlHost + "/" + database));
+    public static String getHostString(String database, String jdbcUrl) {
+        String hostString = appendDatabaseIfNotAlreadyPresent(database, jdbcUrl);
 
-        if (!rtrn.startsWith("jdbc:")) {
-            if (!rtrn.startsWith("mysql://")) {
-                rtrn = "jdbc:mysql://" + rtrn;
+        if (!hostString.startsWith("jdbc:")) {
+            if (!hostString.startsWith("mysql://")) {
+                hostString = "jdbc:mysql://" + hostString;
             } else {
-                rtrn = "jdbc:" + rtrn;
+                hostString = "jdbc:" + hostString;
             }
         }
 
-        if (!rtrn.contains("?")) {
-            rtrn += "?autoReconnect=true";
+        if (!hostString.contains("?")) {
+            hostString += "?autoReconnect=true";
         }
 
-        return rtrn;
+        return hostString;
+    }
+
+    private static String appendDatabaseIfNotAlreadyPresent(String database, String jdbcUrl) {
+        if (jdbcUrl.contains(database)) { //some databases allow parameters with ?, so can't use endsWith
+            return jdbcUrl;
+        } else if (jdbcUrl.endsWith("/")) {
+            return jdbcUrl + database;
+        } else {
+            return jdbcUrl + "/" + database;
+        }
     }
 
     /**
-     * Creates a simple SqlConnectable that simply returns the connection credentials provided.
-     *
-     * @param host     {@link SqlConnectable#getSqlHost()}
-     * @param database {@link SqlConnectable#getSqlDb()}
-     * @param user     {@link SqlConnectable#getSqlUser()}
-     * @param password {@link SqlConnectable#getSqlPwd()}
-     * @return A simple SqlConnectable matching provided arguments.
+     * @param host     {@link SqlConnectable#getSqlHost() the fully-qualified JDBC URL}
+     * @param database {@link SqlConnectable#getSqlDb() the database}
+     * @param user     {@link SqlConnectable#getSqlUser() the user name}
+     * @param password {@link SqlConnectable#getSqlPwd() the password}
+     * @return a connectable instance with given credentials
      */
     @Nonnull
     public static SqlConnectable fromCredentials(@Nonnull final String host, @Nonnull final String database,
@@ -103,28 +108,5 @@ public final class SqlConnectables {
                 return user;
             }
         };
-    }
-
-    /**
-     * Returns the host string for the given parameters. The host string consists of
-     * the database URL, as returned by {@link SqlConnectable#getSqlHost()}, of a slash (/)
-     * and the database name, as returned by {@link SqlConnectable#getSqlDb()}.
-     * If the database name is already appended to the host, it will not be appended another time.
-     *
-     * @param database Database to use
-     * @param hostname Fully-qualified JDBC connection string of the host to use or just a FQDN.
-     * @param port     port number to use.
-     * @return Host string, as accepted by database drivers.
-     */
-    public static String getHostString(String hostname, int port, String database) {
-        String sqlHost;
-
-        if (!hostname.startsWith("jdbc:")) {
-            sqlHost = "jdbc:mysql://" + hostname + ":" + port + "/";
-        } else {
-            sqlHost = hostname;
-        }
-
-        return getHostString(database, sqlHost);
     }
 }
