@@ -23,43 +23,43 @@ import li.l1t.common.sql.UpdateResult;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-07
  */
-public interface SaneSql {
+public interface SaneSql extends AutoCloseable {
     /**
      * Executes a SQL query on the underlying database. No guarantees are made about what connection
      * is used. <p><b>Note:</b> Care should be taken at all times when querying SQL databases.
      * Requests may take long, and therefore should be off-loaded from the main server thread
-     * whereever possible. Further, manually concatenating anything into the query string bears the
-     * risk of SQL Injection. Use of {@code ?} placeholders in the query and the params array should
-     * be preferred.</p> <p><b>Important:</b> To prevent memory leaks, the resulting {@link
+     * wherever possible. Further, manually concatenating anything into the query string bears the
+     * risk of SQL Injection. Use of {@code ?} placeholders in the query and the parameter array
+     * should be preferred.</p> <p><b>Important:</b> To prevent memory leaks, the resulting {@link
      * QueryResult} should <b>always</b> be used with try-with-resources. Otherwise, leftover
      * prepared statement and result set objects will unnecessarily pollute the heap, possibly
      * leading to an {@link OutOfMemoryError} in the long run. Take care.</p>
      *
-     * @param sqlQuery the SQL query to execute in the database
-     * @param params   the parameters for {@code ?} placeholders in the query string, in order
+     * @param sqlQuery   the SQL query to execute in the database
+     * @param parameters the parameters for {@code ?} placeholders in the query string, in order
      * @return an object containing the result of the query
      * @throws DatabaseException if an error occurs communicating with the database
      */
-    QueryResult query(String sqlQuery, Object... params) throws DatabaseException;
+    QueryResult query(String sqlQuery, Object... parameters) throws DatabaseException;
 
     /**
      * Executes a SQL update statement on the underlying database. No guarantees are made about what
      * connection is used. <p><b>Note:</b> Care should be taken at all times when querying SQL
      * databases. Requests may take long, and therefore should be off-loaded from the main server
-     * thread whereever possible. Further, manually concatenating anything into the query string
-     * bears the risk of SQL Injection. Use of {@code ?} placeholders in the query and the params
+     * thread wherever possible. Further, manually concatenating anything into the query string
+     * bears the risk of SQL Injection. Use of {@code ?} placeholders in the query and the parameter
      * array should be preferred.</p> <p><b>Important:</b> To prevent memory leaks, the resulting
      * {@link UpdateResult} should <b>always</b> be used with try-with-resources. Otherwise,
      * leftover prepared statement and result set objects will unnecessarily pollute the heap,
      * possibly leading to an {@link OutOfMemoryError} in the long run. Take care.</p>
      *
-     * @param sqlQuery the SQL query to execute in the database
-     * @param params   the parameters for {@code ?} placeholders in the query string, in order
+     * @param sqlQuery   the SQL query to execute in the database
+     * @param parameters the parameters for {@code ?} placeholders in the query string, in order
      * @return an object containing the result of the update
      * @throws DatabaseException if an error occurs communicating with the database
      * @see #updateRaw(String, Object...) alternative that doesn't fetch generated keys
      */
-    UpdateResult update(String sqlQuery, Object... params) throws DatabaseException;
+    UpdateResult update(String sqlQuery, Object... parameters) throws DatabaseException;
 
     /**
      * Executes a SQL update statement on the underlying database. No guarantees are made about what
@@ -70,16 +70,16 @@ public interface SaneSql {
      * update.<p><b>Note:</b> Care should be taken at all times when querying SQL databases.
      * Requests may take long, and therefore should be off-loaded from the main server thread
      * wherever possible. Further, manually concatenating anything into the query string bears the
-     * risk of SQL Injection. Use of {@code ?} placeholders in the query and the params array should
-     * be preferred.</p> <p>Note that the underlying statement will already be closed when this
-     * method returns, so there is no need for cleanup.</p>
+     * risk of SQL Injection. Use of {@code ?} placeholders in the query and the parameter array
+     * should be preferred.</p> <p>Note that the underlying statement will already be closed when
+     * this method returns, so there is no need for cleanup.</p>
      *
-     * @param sqlQuery the SQL query to execute in the database
-     * @param params   the parameters for {@code ?} placeholders in the query string, in order
+     * @param sqlQuery   the SQL query to execute in the database
+     * @param parameters the parameters for {@code ?} placeholders in the query string, in order
      * @return the {@link java.sql.PreparedStatement#executeUpdate(String) raw JDBC result code}
      * @throws DatabaseException if an error occurs communicating with the database
      */
-    int updateRaw(String sqlQuery, Object... params) throws DatabaseException;
+    int updateRaw(String sqlQuery, Object... parameters) throws DatabaseException;
 
     // We could also add batch update support like SafeSql has, but only if necessary
 }
