@@ -36,7 +36,7 @@ public class SimpleQueryResult extends AbstractCloseableResult implements QueryR
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         super.close(); //closing a prepared statement also closes its result set, so nothing to do here
     }
 }
