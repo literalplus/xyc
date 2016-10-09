@@ -35,7 +35,7 @@ public class SimpleUpdateResult extends AbstractCloseableResult implements Updat
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         Closer.close(generatedKeys);
         super.close();
     }

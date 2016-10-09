@@ -29,13 +29,8 @@ abstract class AbstractCloseableResult implements CloseableResult {
     }
 
     @Override
-    public void close() throws Exception {
-        statement.close();
-    }
-
-    @Override
-    public void tryClose() {
-        Closer.close(this);
+    public void close() {
+        Closer.close(statement);
     }
 
     @Override
