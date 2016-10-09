@@ -10,7 +10,8 @@
 
 package li.l1t.lanatus.sql;
 
-import li.l1t.common.sql.SafeSql;
+import li.l1t.common.sql.sane.AbstractSqlConnected;
+import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.lanatus.api.LanatusClient;
 import li.l1t.lanatus.api.account.AccountRepository;
 import li.l1t.lanatus.api.position.PositionRepository;
@@ -24,8 +25,7 @@ import li.l1t.lanatus.sql.account.SqlAccountRepository;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public class SqlLanatusClient implements LanatusClient {
-    private final SafeSql sql;
+public class SqlLanatusClient extends AbstractSqlConnected implements LanatusClient {
     private final String module;
 
     /**
@@ -34,8 +34,8 @@ public class SqlLanatusClient implements LanatusClient {
      * @param sql    the database connection to use
      * @param module the name of the module using this client
      */
-    public SqlLanatusClient(SafeSql sql, String module) {
-        this.sql = sql;
+    public SqlLanatusClient(SaneSql sql, String module) {
+        super(sql);
         this.module = module;
     }
 
@@ -62,9 +62,5 @@ public class SqlLanatusClient implements LanatusClient {
     @Override
     public ProductRepository products() {
         throw new UnsupportedOperationException();
-    }
-
-    public SafeSql getSql() {
-        return sql;
     }
 }

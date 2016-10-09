@@ -10,9 +10,11 @@
 
 package li.l1t.lanatus.sql.account;
 
+import li.l1t.common.exception.DatabaseException;
 import li.l1t.common.exception.InternalException;
-import li.l1t.common.sql.QueryResult;
-import li.l1t.common.sql.SafeSql;
+import li.l1t.common.sql.sane.AbstractSqlConnected;
+import li.l1t.common.sql.sane.SaneSql;
+import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.lanatus.api.account.LanatusAccount;
 
 import java.sql.SQLException;
@@ -24,13 +26,12 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-29
  */
-class JdbcAccountFetcher<T extends LanatusAccount> {
+class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractSqlConnected {
     private final JdbcAccountCreator<T> creator;
-    private final SafeSql sql;
 
-    public JdbcAccountFetcher(JdbcAccountCreator<T> creator, SafeSql sql) {
+    public JdbcAccountFetcher(JdbcAccountCreator<T> creator, SaneSql sql) {
+        super(sql);
         this.creator = creator;
-        this.sql = sql;
     }
 
     public T fetchSingle(UUID playerId) throws InternalException {
@@ -49,12 +50,12 @@ class JdbcAccountFetcher<T extends LanatusAccount> {
         return qr.rs().next();
     }
 
-    private QueryResult fetchSingleAccount(UUID playerId) throws SQLException {
+    private QueryResult fetchSingleAccount(UUID playerId) throws DatabaseException {
         return executeSql("player_uuid = ?", playerId.toString());
     }
 
-    private QueryResult executeSql(String whereClause, Object parameters) throws SQLException {
-        return sql.executeQueryWithResult(
+    private QueryResult executeSql(String whereClause, Object parameters) throws DatabaseException {
+        return sql().query(
                 "SELECT player_uuid, melons, lastrank FROM " + SqlAccountRepository.TABLE_NAME +
                         " WHERE " + whereClause,
                 parameters);

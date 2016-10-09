@@ -36,14 +36,14 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     public static final String TABLE_NAME = "mt_main.lanatus_player";
     private final JdbcAccountFetcher<AccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(new AccountSnapshotFactory()),
-            client().getSql()
+            client().sql()
     );
     private final Cache<UUID, AccountSnapshot> snapshotCache = CacheBuilder.newBuilder()
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .build();
     private final JdbcAccountFetcher<MutableAccount> mutableFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(new MutableAccountFactory()),
-            client().getSql()
+            client().sql()
     );
 
     public SqlAccountRepository(SqlLanatusClient client) {
