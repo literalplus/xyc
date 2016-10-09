@@ -26,7 +26,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <xyc-api.version>4.0.3</xyc-api.version>
+        <xyc-api.version>4.1.0</xyc-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
         <minecraft.version>1.8</minecraft.version>

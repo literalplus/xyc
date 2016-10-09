@@ -12,13 +12,15 @@ package li.l1t.common.sql.sane;
 
 import com.google.common.base.Preconditions;
 import li.l1t.common.exception.DatabaseException;
-import li.l1t.common.sql.QueryResult;
 import li.l1t.common.sql.SqlConnectable;
-import li.l1t.common.sql.UpdateResult;
 import li.l1t.common.sql.sane.connection.ConnectionManager;
 import li.l1t.common.sql.sane.connection.SimpleConnectionManager;
 import li.l1t.common.sql.sane.exception.SqlExecutionException;
 import li.l1t.common.sql.sane.exception.SqlStatementException;
+import li.l1t.common.sql.sane.result.QueryResult;
+import li.l1t.common.sql.sane.result.SimpleQueryResult;
+import li.l1t.common.sql.sane.result.SimpleUpdateResult;
+import li.l1t.common.sql.sane.result.UpdateResult;
 import li.l1t.common.sql.sane.statement.GeneratedKeysStatementProvider;
 import li.l1t.common.sql.sane.statement.SimpleStatementProvider;
 import li.l1t.common.sql.sane.statement.StatementProvider;
@@ -63,7 +65,7 @@ public class SingleSql implements SaneSql {
 
     private QueryResult executeQuery(PreparedStatement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery();
-        return new QueryResult(statement, resultSet);
+        return new SimpleQueryResult(statement, resultSet);
     }
 
     @Override
@@ -86,7 +88,9 @@ public class SingleSql implements SaneSql {
 
     @NotNull
     private UpdateResult executeUpdate(PreparedStatement statement) throws SQLException {
-        return new UpdateResult(statement.executeUpdate(), statement.getGeneratedKeys());
+        int affectedRowCount = statement.executeUpdate();
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+        return new SimpleUpdateResult(statement, generatedKeys, affectedRowCount);
     }
 
     private PreparedStatement genKeysStatement(String sqlQuery, Object[] params) {
