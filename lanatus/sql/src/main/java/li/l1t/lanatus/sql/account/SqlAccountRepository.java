@@ -19,7 +19,7 @@ import li.l1t.lanatus.api.account.MutableAccount;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
-import li.l1t.lanatus.sql.account.mutable.snapshot.MutableAccountFactory;
+import li.l1t.lanatus.sql.account.mutable.MutableAccountFactory;
 import li.l1t.lanatus.sql.account.snapshot.AccountSnapshotFactory;
 
 import java.util.UUID;

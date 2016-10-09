@@ -8,7 +8,7 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.lanatus.sql.account.mutable.snapshot;
+package li.l1t.lanatus.sql.account.mutable;
 
 import com.google.common.base.Preconditions;
 import li.l1t.lanatus.api.account.AccountSnapshot;
