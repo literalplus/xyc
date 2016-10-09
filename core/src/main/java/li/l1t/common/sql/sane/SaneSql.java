@@ -69,7 +69,7 @@ public interface SaneSql {
      * <b>close</b> the {@link java.sql.PreparedStatement} used to execute the
      * update.<p><b>Note:</b> Care should be taken at all times when querying SQL databases.
      * Requests may take long, and therefore should be off-loaded from the main server thread
-     * wher-ever possible. Further, manually concatenating anything into the query string bears the
+     * wherever possible. Further, manually concatenating anything into the query string bears the
      * risk of SQL Injection. Use of {@code ?} placeholders in the query and the params array should
      * be preferred.</p> <p>Note that the underlying statement will already be closed when this
      * method returns, so there is no need for cleanup.</p>
