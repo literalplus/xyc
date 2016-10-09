@@ -13,6 +13,10 @@ package li.l1t.common.xyplugin;
 import li.l1t.common.sql.SpigotSql;
 import li.l1t.common.sql.SqlConnectable;
 import li.l1t.common.sql.SqlConnectables;
+import li.l1t.common.sql.sane.SaneSql;
+import li.l1t.common.sql.sane.SingleSql;
+import li.l1t.common.sql.sane.SqlConnected;
+import li.l1t.common.util.Closer;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
@@ -31,17 +35,19 @@ import java.util.List;
  * @author xxyy
  * @since practically forever
  */
-public abstract class SqlXyPlugin extends AbstractXyPlugin {
+public abstract class SqlXyPlugin extends AbstractXyPlugin implements SqlConnected {
     /**
      * Lists all currently registered {@link SqlXyPlugin}s.
      */
     public final static List<SqlXyPlugin> INSTANCES = new ArrayList<>();
 
     /**
-     * SafeSql managing SQL for this {@link SqlXyPlugin}. Was hsitorically public, but has been
+     * SafeSql managing SQL for this {@link SqlXyPlugin}. Was historically public, but has been
      * replaced with {@link #getSql()} since XYC 3.1.0.
      */
     private SpigotSql ssql;
+
+    private SaneSql saneSql;
 
     public SqlXyPlugin() {
 
@@ -69,10 +75,16 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin {
         return this.ssql;
     }
 
+    @Override
+    public SaneSql sql() {
+        return saneSql;
+    }
+
     @SuppressWarnings("deprecation")
     protected final void loadSql() {
         SqlXyPlugin.INSTANCES.add(this);
         this.ssql = new SpigotSql(getConnectable(), this);
+        this.saneSql = new SingleSql(getConnectable());
     }
 
     @SuppressWarnings("deprecation")
@@ -81,6 +93,7 @@ public abstract class SqlXyPlugin extends AbstractXyPlugin {
             this.ssql.preReload();
             this.ssql = null;
         }
+        Closer.close(saneSql);
         SqlXyPlugin.INSTANCES.remove(this);
     }
 
