@@ -10,6 +10,7 @@
 
 package li.l1t.common.sql;
 
+import li.l1t.common.util.Closer;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ import java.sql.SQLException;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 12/02/14
  */
-public class QueryResult implements li.l1t.common.sql.sane.result.QueryResult {
+public class QueryResult implements AutoCloseable {
     @Nullable
     private PreparedStatement preparedStatement;
     @Nullable
@@ -48,7 +49,6 @@ public class QueryResult implements li.l1t.common.sql.sane.result.QueryResult {
         this.updateReturn = updateReturn;
     }
 
-    @Override
     public ResultSet rs() {
         return resultSet;
     }
@@ -70,20 +70,19 @@ public class QueryResult implements li.l1t.common.sql.sane.result.QueryResult {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         if (preparedStatement == null) {
             if (resultSet != null) {
-                resultSet.close();
+                Closer.close(resultSet);
                 resultSet = null;
             }
             return;
         }
-        preparedStatement.close();
+        Closer.close(preparedStatement);
         preparedStatement = null;
         resultSet = null;
     }
 
-    @Override
     public void tryClose() {
         try {
             close();
@@ -92,7 +91,6 @@ public class QueryResult implements li.l1t.common.sql.sane.result.QueryResult {
         }
     }
 
-    @Override
     @Nullable
     public PreparedStatement getStatement() {
         return this.preparedStatement;
