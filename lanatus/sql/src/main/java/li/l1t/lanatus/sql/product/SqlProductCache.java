@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
  * @since 2016-10-10
  */
 class SqlProductCache {
-    public static final String TABLE_NAME = "mt_main.lanatus_product";
     private final Cache<UUID, Product> idCache = CacheBuilder.newBuilder()
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .build();

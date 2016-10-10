@@ -28,6 +28,7 @@ import java.util.UUID;
  * @since 2016-10-10
  */
 public class SqlProductRepository extends AbstractSqlLanatusRepository implements ProductRepository {
+    public static final String TABLE_NAME = "mt_main.lanatus_product";
     private final SqlProductCache cache = new SqlProductCache();
     private final JdbcProductFetcher fetcher = new JdbcProductFetcher(client().sql());
 
