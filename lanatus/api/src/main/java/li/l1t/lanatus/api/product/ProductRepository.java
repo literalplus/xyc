@@ -44,9 +44,4 @@ public interface ProductRepository extends LanatusRepository {
      * @return a builder for product queries in this repository
      */
     ProductQueryBuilder query();
-
-    /**
-     * Clears any caches that this repository may keep.
-     */
-    void clearCache();
 }

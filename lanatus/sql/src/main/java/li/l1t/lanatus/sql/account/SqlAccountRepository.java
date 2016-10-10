@@ -50,13 +50,18 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
         return snapshotCache.getOrCompute(playerId, this::fetchSnapshot);
     }
 
+    private AccountSnapshot fetchSnapshot(UUID playerId) {
+        return snapshotFetcher.fetchSingle(playerId);
+    }
+
     @Override
     public AccountSnapshot refresh(AccountSnapshot account) {
         return fetchSnapshot(account.getPlayerId());
     }
 
-    private AccountSnapshot fetchSnapshot(UUID playerId) {
-        return snapshotFetcher.fetchSingle(playerId);
+    @Override
+    public void clearCache() {
+        snapshotCache.clear();
     }
 
     @Override

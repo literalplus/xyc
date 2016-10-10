@@ -11,6 +11,7 @@
 package li.l1t.lanatus.api.purchase;
 
 import li.l1t.common.exception.DatabaseException;
+import li.l1t.lanatus.api.LanatusRepository;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 
 import java.util.Collection;
@@ -22,7 +23,7 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface PurchaseRepository {
+public interface PurchaseRepository extends LanatusRepository {
     /**
      * Finds a purchase by its unique id.
      *
@@ -41,9 +42,4 @@ public interface PurchaseRepository {
      * @throws DatabaseException if a database error occurs
      */
     Collection<Purchase> findByPlayer(UUID playerId) throws DatabaseException;
-
-    /**
-     * Clears any caches that this repository may keep.
-     */
-    void clearCache();
 }

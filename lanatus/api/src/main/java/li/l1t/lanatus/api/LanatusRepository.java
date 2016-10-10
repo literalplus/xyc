@@ -18,4 +18,8 @@ package li.l1t.lanatus.api;
  * @since 2016-09-28
  */
 public interface LanatusRepository extends LanatusConnected {
+    /**
+     * Clears any caches that this repository may keep.
+     */
+    void clearCache();
 }
