@@ -11,6 +11,7 @@
 package li.l1t.lanatus.sql.purchase;
 
 import li.l1t.common.collections.IdCache;
+import li.l1t.common.misc.Identifiable;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 import li.l1t.lanatus.api.purchase.Purchase;
 import li.l1t.lanatus.api.purchase.PurchaseRepository;
@@ -28,7 +29,7 @@ import java.util.UUID;
  */
 public class SqlPurchaseRepository extends AbstractSqlLanatusRepository implements PurchaseRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_purchases";
-    private final IdCache<Purchase> cache = new IdCache<>();
+    private final IdCache<Purchase> cache = new IdCache<>(Identifiable::getUniqueId);
     private final JdbcPurchaseFetcher fetcher = new JdbcPurchaseFetcher(
             new JdbcPurchaseCreator(client().products()), client().sql()
     );

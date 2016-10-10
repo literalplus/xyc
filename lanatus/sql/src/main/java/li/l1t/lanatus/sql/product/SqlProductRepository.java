@@ -11,6 +11,7 @@
 package li.l1t.lanatus.sql.product;
 
 import li.l1t.common.collections.IdCache;
+import li.l1t.common.misc.Identifiable;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductQueryBuilder;
@@ -29,7 +30,7 @@ import java.util.UUID;
  */
 public class SqlProductRepository extends AbstractSqlLanatusRepository implements ProductRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_product";
-    private final IdCache<Product> cache = new IdCache<>();
+    private final IdCache<Product> cache = new IdCache<>(Identifiable::getUniqueId);
     private final JdbcProductFetcher fetcher = new JdbcProductFetcher(client().sql());
 
     public SqlProductRepository(SqlLanatusClient client) {

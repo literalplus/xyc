@@ -10,9 +10,7 @@
 
 package li.l1t.lanatus.sql.account;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import li.l1t.common.exception.InternalException;
+import li.l1t.common.collections.IdCache;
 import li.l1t.lanatus.api.account.AccountRepository;
 import li.l1t.lanatus.api.account.AccountSnapshot;
 import li.l1t.lanatus.api.account.MutableAccount;
@@ -23,8 +21,6 @@ import li.l1t.lanatus.sql.account.mutable.MutableAccountFactory;
 import li.l1t.lanatus.sql.account.snapshot.AccountSnapshotFactory;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * An account repository that uses SQL as a backend.
@@ -38,9 +34,7 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
             new JdbcAccountCreator<>(new AccountSnapshotFactory()),
             client().sql()
     );
-    private final Cache<UUID, AccountSnapshot> snapshotCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(5, TimeUnit.MINUTES)
-            .build();
+    private final IdCache<AccountSnapshot> snapshotCache = new IdCache<>(AccountSnapshot::getPlayerId);
     private final JdbcAccountFetcher<MutableAccount> mutableFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(new MutableAccountFactory()),
             client().sql()
@@ -53,11 +47,7 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
 
     @Override
     public AccountSnapshot find(UUID playerId) {
-        try {
-            return snapshotCache.get(playerId, () -> fetchSnapshot(playerId));
-        } catch (ExecutionException e) {
-            throw InternalException.wrap(e, "checked exception fetching an account snapshot?"); //this should not happen, Google pls
-        }
+        return snapshotCache.getOrCompute(playerId, this::fetchSnapshot);
     }
 
     @Override
