@@ -52,7 +52,7 @@ public class IdCache<T> {
         return Optional.ofNullable(idCache.getIfPresent(id));
     }
 
-    public T getOrCompute(UUID id, Function<UUID, T> supplier) {
+    public T getOrCompute(UUID id, Function<UUID, ? extends T> supplier) {
         Optional<T> value = get(id);
         if (value.isPresent()) {
             return value.get();
