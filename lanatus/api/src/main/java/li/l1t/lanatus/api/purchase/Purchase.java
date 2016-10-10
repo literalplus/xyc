@@ -45,11 +45,6 @@ public interface Purchase extends Identifiable {
     Instant getCreationInstant();
 
     /**
-     * @return the instant this purchase was last changed at
-     */
-    Instant getUpdateInstant();
-
-    /**
      * @return the arbitrary string describing specifics of the product to its module
      */
     String getData();
