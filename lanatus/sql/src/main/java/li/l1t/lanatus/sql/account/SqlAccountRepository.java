@@ -45,6 +45,7 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
             new JdbcAccountCreator<>(new MutableAccountFactory()),
             client().sql()
     );
+    private final JdbcAccountWriter accountWriter = new JdbcAccountWriter(client().sql(), snapshotFetcher);
 
     public SqlAccountRepository(SqlLanatusClient client) {
         super(client);
@@ -75,6 +76,6 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
 
     @Override
     public void save(MutableAccount localCopy) throws AccountConflictException {
-        throw new UnsupportedOperationException();
+        accountWriter.write(localCopy);
     }
 }

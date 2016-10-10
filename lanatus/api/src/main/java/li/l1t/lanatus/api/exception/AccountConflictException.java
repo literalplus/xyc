@@ -21,18 +21,12 @@ import li.l1t.lanatus.api.account.MutableAccount;
  * @since 2016-09-28
  */
 public class AccountConflictException extends Exception {
-    private final AccountSnapshot initialState;
     private final AccountSnapshot databaseState;
     private final MutableAccount localState;
 
-    public AccountConflictException(AccountSnapshot initialState, AccountSnapshot databaseState, MutableAccount localState) {
-        this.initialState = initialState;
+    public AccountConflictException(AccountSnapshot databaseState, MutableAccount localState) {
         this.databaseState = databaseState;
         this.localState = localState;
-    }
-
-    public AccountSnapshot getInitialState() {
-        return initialState;
     }
 
     public AccountSnapshot getDatabaseState() {

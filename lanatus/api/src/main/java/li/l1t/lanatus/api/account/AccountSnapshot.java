@@ -24,4 +24,8 @@ public interface AccountSnapshot extends LanatusAccount {
      */
     Instant getSnapshotInstant();
 
+    /**
+     * @return whether the values of this snapshot are equal to the default values
+     */
+    boolean isDefault();
 }

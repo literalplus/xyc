@@ -57,6 +57,12 @@ class SqlAccountSnapshot implements AccountSnapshot {
     }
 
     @Override
+    public boolean isDefault() {
+        return lastRank.equals(AccountSnapshot.DEFAULT_RANK) &&
+                melonsCount == AccountSnapshot.INITIAL_MELONS_COUNT;
+    }
+
+    @Override
     public String toString() {
         return "SqlAccountSnapshot{" +
                 playerId +
@@ -69,11 +75,11 @@ class SqlAccountSnapshot implements AccountSnapshot {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SqlAccountSnapshot that = (SqlAccountSnapshot) o;
-        return melonsCount == that.melonsCount &&
-                playerId.equals(that.playerId) &&
-                lastRank.equals(that.lastRank);
+        if (o == null || !(o instanceof LanatusAccount)) return false;
+        LanatusAccount that = (LanatusAccount) o;
+        return melonsCount == that.getMelonsCount() &&
+                playerId.equals(that.getPlayerId()) &&
+                lastRank.equals(that.getLastRank());
     }
 
     @Override
