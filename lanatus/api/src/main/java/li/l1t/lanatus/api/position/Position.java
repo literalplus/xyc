@@ -12,7 +12,6 @@ package li.l1t.lanatus.api.position;
 
 import li.l1t.lanatus.api.product.Product;
 
-import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -38,11 +37,6 @@ public interface Position {
      * @return the product this position corresponds to
      */
     Product getProduct();
-
-    /**
-     * @return the instant this position was purchased at
-     */
-    Instant getPurchaseInstant();
 
     /**
      * @return the arbitrary data describing specifics of this position to its module
