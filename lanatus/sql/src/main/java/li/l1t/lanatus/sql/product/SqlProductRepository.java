@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.sql.product;
 
+import li.l1t.common.collections.IdCache;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductQueryBuilder;
@@ -18,7 +19,6 @@ import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class SqlProductRepository extends AbstractSqlLanatusRepository implements ProductRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_product";
-    private final SqlProductCache cache = new SqlProductCache();
+    private final IdCache<Product> cache = new IdCache<>();
     private final JdbcProductFetcher fetcher = new JdbcProductFetcher(client().sql());
 
     public SqlProductRepository(SqlLanatusClient client) {
@@ -38,12 +38,7 @@ public class SqlProductRepository extends AbstractSqlLanatusRepository implement
 
     @Override
     public Product findById(UUID productId) throws NoSuchRowException {
-        Optional<Product> product = cache.get(productId);
-        if (product.isPresent()) {
-            return product.get();
-        } else {
-            return cache.cache(fetcher.fetchById(productId));
-        }
+        return cache.getOrCompute(productId, fetcher::fetchById);
     }
 
     @Override

@@ -8,24 +8,26 @@
  * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
  */
 
-package li.l1t.lanatus.sql.product;
+package li.l1t.common.collections;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import li.l1t.lanatus.api.product.Product;
+import li.l1t.common.misc.Identifiable;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
- * Caches products by name and id.
+ * Caches things that are identifiable. Cache entries are expired automatically some time after they
+ * have been stored.
  *
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class SqlProductCache {
-    private final Cache<UUID, Product> idCache = CacheBuilder.newBuilder()
+public class IdCache<T extends Identifiable> {
+    private final Cache<UUID, T> idCache = CacheBuilder.newBuilder()
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .build();
 
@@ -33,12 +35,25 @@ class SqlProductCache {
         idCache.invalidateAll();
     }
 
-    public <T extends Product> T cache(T product) {
+    public <R extends T> R cache(R product) {
         idCache.put(product.getUniqueId(), product);
         return product;
     }
 
-    public Optional<Product> get(UUID productId) {
-        return Optional.ofNullable(idCache.getIfPresent(productId));
+    public <R extends T> R compute(UUID id, Function<UUID, R> supplier) {
+        return cache(supplier.apply(id));
+    }
+
+    public Optional<T> get(UUID id) {
+        return Optional.ofNullable(idCache.getIfPresent(id));
+    }
+
+    public T getOrCompute(UUID id, Function<UUID, T> supplier) {
+        Optional<T> value = get(id);
+        if (value.isPresent()) {
+            return value.get();
+        } else {
+            return compute(id, supplier);
+        }
     }
 }
