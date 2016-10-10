@@ -54,7 +54,7 @@ class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractSqlConnected 
         return executeSql("player_uuid = ?", playerId.toString());
     }
 
-    private QueryResult executeSql(String whereClause, Object parameters) throws DatabaseException {
+    private QueryResult executeSql(String whereClause, Object... parameters) throws DatabaseException {
         return sql().query(
                 "SELECT player_uuid, melons, lastrank FROM " + SqlAccountRepository.TABLE_NAME +
                         " WHERE " + whereClause,

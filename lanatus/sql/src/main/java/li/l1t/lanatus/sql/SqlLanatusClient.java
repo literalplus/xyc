@@ -18,6 +18,7 @@ import li.l1t.lanatus.api.position.PositionRepository;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.api.purchase.PurchaseRepository;
 import li.l1t.lanatus.sql.account.SqlAccountRepository;
+import li.l1t.lanatus.sql.product.SqlProductRepository;
 
 /**
  * An implementation of a Lanatus client using a SQL database as backend.
@@ -27,6 +28,8 @@ import li.l1t.lanatus.sql.account.SqlAccountRepository;
  */
 public class SqlLanatusClient extends AbstractSqlConnected implements LanatusClient {
     private final String module;
+    private SqlAccountRepository accountRepository = new SqlAccountRepository(this);
+    private ProductRepository productRepository = new SqlProductRepository(this);
 
     /**
      * Constructs a new SQL Lanatus client.
@@ -46,7 +49,7 @@ public class SqlLanatusClient extends AbstractSqlConnected implements LanatusCli
 
     @Override
     public AccountRepository accounts() {
-        return new SqlAccountRepository(this);
+        return accountRepository;
     }
 
     @Override
@@ -61,6 +64,6 @@ public class SqlLanatusClient extends AbstractSqlConnected implements LanatusCli
 
     @Override
     public ProductRepository products() {
-        throw new UnsupportedOperationException();
+        return productRepository;
     }
 }
