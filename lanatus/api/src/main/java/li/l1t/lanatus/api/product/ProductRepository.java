@@ -10,10 +10,10 @@
 
 package li.l1t.lanatus.api.product;
 
+import li.l1t.common.exception.DatabaseException;
 import li.l1t.lanatus.api.LanatusRepository;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 
-import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -34,41 +34,19 @@ public interface ProductRepository extends LanatusRepository {
      * @param productId the unique id of the product
      * @return the product with given unique id
      * @throws NoSuchRowException if there is no product with given id
+     * @throws DatabaseException  if a database error occurs
      */
-    Product findById(UUID productId) throws NoSuchRowException;
+    Product findById(UUID productId) throws NoSuchRowException, DatabaseException;
 
     /**
-     * @return the collection of products that are currently known, or an empty collection for none
-     */
-    Collection<Product> findAll();
-
-    /**
-     * @return the collection of products that are currently known and assigned to the current
-     * module, or an empty collection if none
-     */
-    Collection<Product> findByCurrentModule();
-
-    /**
-     * Finds a product by its unique name.
+     * Creates a new query builder. Note that queries ignore the product cache.
      *
-     * @param name the name of the product to find
-     * @return the product with given name
-     * @throws NoSuchRowException if there is no product with given name
+     * @return a builder for product queries in this repository
      */
-    Product findByName(String name) throws NoSuchRowException;
+    ProductQueryBuilder query();
 
     /**
      * Clears any caches that this repository may keep.
      */
     void clearCache();
-
-    /**
-     * Finds the most recent version of given product. If the product did not change, the argument
-     * is returned.
-     *
-     * @param product the product to refresh
-     * @return a product object representing the most recent state of given product
-     * @throws NoSuchRowException if given product no longer exists
-     */
-    Product refresh(Product product) throws NoSuchRowException;
 }
