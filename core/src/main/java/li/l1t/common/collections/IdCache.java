@@ -12,7 +12,6 @@ package li.l1t.common.collections;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import li.l1t.common.misc.Identifiable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -26,17 +25,22 @@ import java.util.function.Function;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-public class IdCache<T extends Identifiable> {
+public class IdCache<T> {
     private final Cache<UUID, T> idCache = CacheBuilder.newBuilder()
             .expireAfterWrite(5, TimeUnit.MINUTES)
             .build();
+    private final Function<? super T, UUID> idFunction;
+
+    public IdCache(Function<? super T, UUID> idFunction) {
+        this.idFunction = idFunction;
+    }
 
     public void clear() {
         idCache.invalidateAll();
     }
 
     public <R extends T> R cache(R product) {
-        idCache.put(product.getUniqueId(), product);
+        idCache.put(idFunction.apply(product), product);
         return product;
     }
 
