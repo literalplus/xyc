@@ -10,6 +10,8 @@
 
 package li.l1t.lanatus.api.product;
 
+import li.l1t.common.misc.Identifiable;
+
 import java.util.UUID;
 
 /**
@@ -18,10 +20,8 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface Product {
-    /**
-     * @return the unique id of this product
-     */
+public interface Product extends Identifiable {
+    @Override
     UUID getUniqueId();
 
     /**

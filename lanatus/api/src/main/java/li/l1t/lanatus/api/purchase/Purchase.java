@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.api.purchase;
 
+import li.l1t.common.misc.Identifiable;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.product.Product;
 
@@ -24,10 +25,8 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28
  */
-public interface Purchase {
-    /**
-     * @return the unique id of this purchase
-     */
+public interface Purchase extends Identifiable {
+    @Override
     UUID getUniqueId();
 
     /**
