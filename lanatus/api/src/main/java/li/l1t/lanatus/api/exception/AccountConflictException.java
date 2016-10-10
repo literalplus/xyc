@@ -29,10 +29,16 @@ public class AccountConflictException extends Exception {
         this.localState = localState;
     }
 
+    /**
+     * @return the conflicting state of the database
+     */
     public AccountSnapshot getDatabaseState() {
         return databaseState;
     }
 
+    /**
+     * @return the local account state that could not be merged
+     */
     public MutableAccount getLocalState() {
         return localState;
     }

@@ -26,9 +26,6 @@ import java.util.UUID;
  * @since 2016-09-28
  */
 public interface Purchase extends Identifiable {
-    @Override
-    UUID getUniqueId();
-
     /**
      * @return the unique id of the player whose account the purchase applies to
      */

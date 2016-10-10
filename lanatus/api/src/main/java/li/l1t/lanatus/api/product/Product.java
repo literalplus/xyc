@@ -12,8 +12,6 @@ package li.l1t.lanatus.api.product;
 
 import li.l1t.common.misc.Identifiable;
 
-import java.util.UUID;
-
 /**
  * Represents an immutable snapshot of a product that may be bought through Lanatus.
  *
@@ -21,9 +19,6 @@ import java.util.UUID;
  * @since 2016-09-28
  */
 public interface Product extends Identifiable {
-    @Override
-    UUID getUniqueId();
-
     /**
      * @return the Lanatus module handling this product
      */

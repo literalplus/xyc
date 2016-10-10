@@ -19,8 +19,7 @@ import java.util.UUID;
 /**
  * A repository for products that may be owned through Lanatus. Note that results may be heavily
  * cached in order to reduce database calls at the cost that product information may not always be
- * up to date. <p>Note that all methods that access the database may throw {@link
- * li.l1t.common.exception.InternalException}s if a database failure occurs.</p>
+ * up to date.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-28

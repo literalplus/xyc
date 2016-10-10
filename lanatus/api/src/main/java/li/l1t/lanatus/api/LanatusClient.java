@@ -22,14 +22,30 @@ import li.l1t.lanatus.api.purchase.PurchaseRepository;
  * @since 2016-09-28
  */
 public interface LanatusClient {
+    /**
+     * @return the unique name of the module this client is for, must not be longer than 20
+     * characters
+     */
     String getModuleName();
 
+    /**
+     * @return the account repository associated with this client
+     */
     AccountRepository accounts();
 
+    /**
+     * @return the position repository associated with this client
+     */
     PositionRepository positions();
 
+    /**
+     * @return the purchase repository associated with this client
+     */
     PurchaseRepository purchases();
 
+    /**
+     * @return the product repository associated with this client
+     */
     ProductRepository products();
 
     //TODO: PurchaseBuilder startPurchase();
