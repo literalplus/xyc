@@ -60,7 +60,7 @@ class JdbcProductFetcher extends AbstractSqlConnected {
     }
 
     private String buildSelect(String whereClause) {
-        return "SELECT module, name, displayname, description, item, melonscost, active " +
+        return "SELECT id, module, name, displayname, description, item, melonscost, active " +
                 "FROM " + SqlProductRepository.TABLE_NAME + " " +
                 whereClause;
     }
