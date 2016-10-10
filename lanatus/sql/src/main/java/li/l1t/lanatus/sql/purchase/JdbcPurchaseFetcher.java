@@ -10,13 +10,12 @@
 
 package li.l1t.lanatus.sql.purchase;
 
-import com.google.common.collect.ImmutableList;
 import li.l1t.common.exception.DatabaseException;
-import li.l1t.common.sql.sane.AbstractSqlConnected;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 import li.l1t.lanatus.api.purchase.Purchase;
+import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -28,18 +27,15 @@ import java.util.UUID;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class JdbcPurchaseFetcher extends AbstractSqlConnected {
-    private final JdbcPurchaseCreator creator;
-
+class JdbcPurchaseFetcher extends AbstractJdbcFetcher<Purchase> {
     JdbcPurchaseFetcher(JdbcPurchaseCreator creator, SaneSql sql) {
-        super(sql);
-        this.creator = creator;
+        super(creator, sql);
     }
 
     public Purchase fetchById(UUID purchaseId) throws DatabaseException {
         try (QueryResult result = selectSingle(purchaseId)) {
             if (proceedToNextRow(result)) {
-                return creator.createFromCurrentRow(result.rs());
+                return entityFromCurrentRow(result);
             } else {
                 throw new NoSuchRowException("purchase with id " + purchaseId);
             }
@@ -48,19 +44,12 @@ class JdbcPurchaseFetcher extends AbstractSqlConnected {
         }
     }
 
-    private boolean proceedToNextRow(QueryResult result) throws SQLException {
-        return result.rs().next();
-    }
-
     private QueryResult selectSingle(UUID purchaseId) {
         return select("id=?", purchaseId.toString());
     }
 
-    private QueryResult select(String whereClause, Object... parameters) {
-        return sql().query(buildSelect(whereClause), parameters);
-    }
-
-    private String buildSelect(String whereClause) {
+    @Override
+    protected String buildSelect(String whereClause) {
         return "SELECT id, player_uuid, product_id, created, data, comment, melonscost " +
                 "FROM " + SqlPurchaseRepository.TABLE_NAME + " WHERE " + whereClause;
     }
@@ -75,13 +64,5 @@ class JdbcPurchaseFetcher extends AbstractSqlConnected {
 
     private QueryResult selectByPlayer(UUID playerId) {
         return select("player_uuid=?", playerId.toString());
-    }
-
-    private Collection<Purchase> collectAll(QueryResult result) throws SQLException {
-        ImmutableList.Builder<Purchase> products = ImmutableList.builder();
-        while (proceedToNextRow(result)) {
-            products.add(creator.createFromCurrentRow(result.rs()));
-        }
-        return products.build();
     }
 }

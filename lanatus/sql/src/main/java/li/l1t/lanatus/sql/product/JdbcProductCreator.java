@@ -11,10 +11,10 @@
 package li.l1t.lanatus.sql.product;
 
 import li.l1t.lanatus.api.product.Product;
+import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 /**
  * Creates product instances from results of JDBC queries.
@@ -22,11 +22,12 @@ import java.util.UUID;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class JdbcProductCreator {
+class JdbcProductCreator extends AbstractJdbcEntityCreator<Product> {
+    @Override
     public Product createFromCurrentRow(ResultSet rs) throws SQLException {
         return new SqlProduct(
-                UUID.fromString(rs.getString("id")), rs.getString("module"),
-                rs.getString("name"), rs.getString("displayname"), rs.getString("description"),
+                uuid(rs, "id"), rs.getString("module"), rs.getString("name"),
+                rs.getString("displayname"), rs.getString("description"),
                 rs.getString("icon"), rs.getInt("melonscost"), rs.getBoolean("active")
         );
     }

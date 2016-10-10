@@ -31,7 +31,9 @@ import java.util.UUID;
 public class SqlProductRepository extends AbstractSqlLanatusRepository implements ProductRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_product";
     private final IdCache<Product> cache = new IdCache<>(Identifiable::getUniqueId);
-    private final JdbcProductFetcher fetcher = new JdbcProductFetcher(client().sql());
+    private final JdbcProductFetcher fetcher = new JdbcProductFetcher(
+            new JdbcProductCreator(), client().sql()
+    );
 
     public SqlProductRepository(SqlLanatusClient client) {
         super(client);

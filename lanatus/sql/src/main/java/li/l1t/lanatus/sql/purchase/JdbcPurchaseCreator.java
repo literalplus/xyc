@@ -14,11 +14,11 @@ import li.l1t.lanatus.api.exception.NoSuchRowException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.api.purchase.Purchase;
+import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * Creates purchase objects from JDBC SQL result sets.
@@ -26,13 +26,14 @@ import java.util.UUID;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class JdbcPurchaseCreator {
+class JdbcPurchaseCreator extends AbstractJdbcEntityCreator<Purchase> {
     private final ProductRepository productRepository;
 
     JdbcPurchaseCreator(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
+    @Override
     public Purchase createFromCurrentRow(ResultSet rs) throws SQLException, NoSuchRowException {
         return new SqlPurchase(
                 uuid(rs, "id"), uuid(rs, "player_uuid"),
@@ -45,7 +46,4 @@ class JdbcPurchaseCreator {
         return productRepository.findById(uuid(rs, "product_id"));
     }
 
-    private UUID uuid(ResultSet rs, String column) throws SQLException {
-        return UUID.fromString(rs.getString(column));
-    }
 }

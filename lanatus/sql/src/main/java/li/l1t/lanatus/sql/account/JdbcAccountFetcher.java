@@ -12,10 +12,10 @@ package li.l1t.lanatus.sql.account;
 
 import li.l1t.common.exception.DatabaseException;
 import li.l1t.common.exception.InternalException;
-import li.l1t.common.sql.sane.AbstractSqlConnected;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.lanatus.api.account.LanatusAccount;
+import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -26,11 +26,11 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-29
  */
-class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractSqlConnected {
+class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractJdbcFetcher<T> {
     private final JdbcAccountCreator<T> creator;
 
     public JdbcAccountFetcher(JdbcAccountCreator<T> creator, SaneSql sql) {
-        super(sql);
+        super(creator, sql);
         this.creator = creator;
     }
 
@@ -56,8 +56,14 @@ class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractSqlConnected 
 
     private QueryResult executeSql(String whereClause, Object... parameters) throws DatabaseException {
         return sql().query(
-                "SELECT player_uuid, melons, lastrank FROM " + SqlAccountRepository.TABLE_NAME +
-                        " WHERE " + whereClause,
+                buildSelect(whereClause),
                 parameters);
+    }
+
+    @Override
+    protected String buildSelect(String whereClause) {
+        return "SELECT player_uuid, melons, lastrank " +
+                "FROM " + SqlAccountRepository.TABLE_NAME + " " +
+                "WHERE " + whereClause;
     }
 }

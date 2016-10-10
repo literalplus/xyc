@@ -10,13 +10,13 @@
 
 package li.l1t.lanatus.sql.product;
 
-import com.google.common.collect.ImmutableList;
 import li.l1t.common.exception.DatabaseException;
-import li.l1t.common.sql.sane.AbstractSqlConnected;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.lanatus.api.exception.NoSuchRowException;
 import li.l1t.lanatus.api.product.Product;
+import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
+import li.l1t.lanatus.sql.common.JdbcEntityCreator;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -28,17 +28,15 @@ import java.util.UUID;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class JdbcProductFetcher extends AbstractSqlConnected {
-    private final JdbcProductCreator creator = new JdbcProductCreator();
-
-    JdbcProductFetcher(SaneSql saneSql) {
-        super(saneSql);
+class JdbcProductFetcher extends AbstractJdbcFetcher<Product> {
+    JdbcProductFetcher(JdbcEntityCreator<Product> creator, SaneSql saneSql) {
+        super(creator, saneSql);
     }
 
     public Product fetchById(UUID productId) {
         try (QueryResult result = selectSingle(productId)) {
             if (proceedToNextRow(result)) {
-                return creator.createFromCurrentRow(result.rs());
+                return entityFromCurrentRow(result);
             } else {
                 throw new NoSuchRowException("product with id " + productId);
             }
@@ -47,19 +45,12 @@ class JdbcProductFetcher extends AbstractSqlConnected {
         }
     }
 
-    private boolean proceedToNextRow(QueryResult result) throws SQLException {
-        return result.rs().next();
-    }
-
     private QueryResult selectSingle(UUID productId) {
         return select("WHERE id=?", productId.toString());
     }
 
-    private QueryResult select(String whereClause, Object... parameters) {
-        return sql().query(buildSelect(whereClause), parameters);
-    }
-
-    private String buildSelect(String whereClause) {
+    @Override
+    protected String buildSelect(String whereClause) {
         return "SELECT id, module, name, displayname, description, item, melonscost, active " +
                 "FROM " + SqlProductRepository.TABLE_NAME + " " +
                 whereClause;
@@ -75,13 +66,5 @@ class JdbcProductFetcher extends AbstractSqlConnected {
 
     private QueryResult selectByQuery(ProductQuery query) {
         return select(query.getWhereClause(), query.getParameters());
-    }
-
-    private Collection<Product> collectAll(QueryResult result) throws SQLException {
-        ImmutableList.Builder<Product> products = ImmutableList.builder();
-        while (proceedToNextRow(result)) {
-            products.add(creator.createFromCurrentRow(result.rs()));
-        }
-        return products.build();
     }
 }

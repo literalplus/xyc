@@ -10,12 +10,11 @@
 
 package li.l1t.lanatus.sql.account;
 
-import com.google.common.collect.ImmutableList;
 import li.l1t.lanatus.api.account.LanatusAccount;
+import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -24,7 +23,7 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-29
  */
-class JdbcAccountCreator<T extends LanatusAccount> {
+class JdbcAccountCreator<T extends LanatusAccount> extends AbstractJdbcEntityCreator<T> {
     private final LanatusAccountFactory<T> factory;
 
     public JdbcAccountCreator(LanatusAccountFactory<T> factory) {
@@ -42,11 +41,10 @@ class JdbcAccountCreator<T extends LanatusAccount> {
      *                                  positioned at a valid row
      * @throws IllegalArgumentException if the player UUID in the result set is in a wrong format
      */
+    @Override
     public T createFromCurrentRow(ResultSet rs) throws SQLException {
         return factory.newInstance(
-                UUID.fromString(rs.getString("player_uuid")),
-                rs.getInt("melons"),
-                rs.getString("lastrank")
+                uuid(rs, "player_uuid"), rs.getInt("melons"), rs.getString("lastrank")
         );
     }
 
@@ -59,23 +57,5 @@ class JdbcAccountCreator<T extends LanatusAccount> {
      */
     public T createDefault(UUID playerId) {
         return factory.defaultInstance(playerId);
-    }
-
-    /**
-     * Creates a collection of account objects from a result set. Note that the result set must be
-     * <b>before</b> the first row when calling this method, i.e. {@link ResultSet#next()} must not
-     * have been called.
-     *
-     * @param rs the result set to retrieve data from
-     * @return the immutable collection of accounts created from the rows of the result set, or an
-     * empty immutable collection of the result set is empty
-     * @throws SQLException
-     */
-    public Collection<T> createCollectionFromResultSet(ResultSet rs) throws SQLException {
-        ImmutableList.Builder<T> builder = new ImmutableList.Builder<>();
-        while (rs.next()) {
-            builder.add(createFromCurrentRow(rs));
-        }
-        return builder.build();
     }
 }
