@@ -23,5 +23,5 @@ import java.util.UUID;
 public interface PositionRepository {
     Position findByPurchase(UUID purchaseId);
 
-    Collection<Position> findByPlayer(UUID playerId);
+    Collection<Position> findAllByPlayer(UUID playerId);
 }
