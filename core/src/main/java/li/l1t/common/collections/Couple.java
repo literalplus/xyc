@@ -16,24 +16,44 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
- * An <b>immutable</b> implementation of a Tuple2 with left and right element of the same type.
+ * An immutable implementation of a Tuple2 with left and right element of the same type.
  *
- * @author <a href="http://xxyy.github.io/">xxyy</a>
- * @since 21.7.14
+ * @author <a href="https://l1t.li/">Literallie</a>
+ * @since 2014-07-21
  */
 public class Couple<V> extends Pair<V, V> {
 
+    /**
+     * Creates a new couple instance.
+     *
+     * @param left  the left element
+     * @param right the right element
+     * @deprecated Use {@link #of(Object, Object)}.
+     */
+    @Deprecated
     public Couple(@Nullable V left, @Nullable V right) {
         super(left, right);
     }
 
     /**
-     * This method gets an element from this Couple different from the argument.
-     * If both elements are different from the argument, NULL is returned.
-     * If both elements match the argument, left is returned first.
+     * Creates a new couple with given elements.
      *
-     * @param element The element to compare against the ones in this Couple
-     * @return An element different from the argument or NULL if there are none.
+     * @param left  the left element
+     * @param right the right element
+     * @param <V>   the couple's value type
+     * @return the created couple
+     */
+    public static <V> Couple<V> of(@Nullable V left, @Nullable V right) {
+        return new Couple<>(left, right);
+    }
+
+    /**
+     * This method gets an element from this Couple different from the argument. If both elements
+     * are different from the argument, NULL is returned. If both elements match the argument, left
+     * is returned first.
+     *
+     * @param element the element to compare against the ones in this Couple
+     * @return an element different from the argument or NULL if there are none.
      */
     @Nullable
     public V getOther(@Nullable V element) {
@@ -57,23 +77,41 @@ public class Couple<V> extends Pair<V, V> {
     }
 
     /**
-     * Creates a Stream out of this Couple's elements.
-     * Left will always be the first element.
+     * Creates a stream out of this couple's elements from left to right.
      *
-     * @return A Stream of this Couple's elements.
+     * @return a stream of this couple's elements.
      */
     public Stream<V> stream() {
         return Stream.of(left, right);
     }
 
     /**
-     * Applies a Consumer to this Couple's elements.
+     * Applies a Consumer to this couple's elements.
      *
-     * @param consumer Consumer to use
-     * @see java.util.stream.Stream#forEach(java.util.function.Consumer)
+     * @param consumer the consumer to apply
      */
     public void forEach(Consumer<V> consumer) {
         consumer.accept(left);
         consumer.accept(right);
+    }
+
+    /**
+     * Returns a new couple with this couple's right element and a new left element.
+     *
+     * @param newLeft the new left element
+     * @return a new couple
+     */
+    public Couple withLeft(@Nullable V newLeft) {
+        return of(newLeft, this.right);
+    }
+
+    /**
+     * Returns a new couple with this couple's left element and a new right element.
+     *
+     * @param newRight the new right element
+     * @return a new couple
+     */
+    public Couple withRight(@Nullable V newRight) {
+        return of(this.left, newRight);
     }
 }
