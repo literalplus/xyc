@@ -10,15 +10,14 @@
 
 package li.l1t.common.collections;
 
-import com.google.common.base.Objects;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
 /**
- * A class storing an <b>immutable</b> pair of two objects related to each other.
- * Useful fpr storage in Collections.
+ * A class storing an <b>immutable</b> pair of two objects related to each other. Useful fpr storage
+ * in Collections.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 22.7.14
@@ -45,8 +44,7 @@ public class Pair<L, R> {
     }
 
     /**
-     * Creates a Stream out of this Couple's elements.
-     * Left will always be the first element.
+     * Creates a Stream out of this Couple's elements. Left will always be the first element.
      *
      * @return A Stream of this Couple's elements.
      */
@@ -89,9 +87,6 @@ public class Pair<L, R> {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("left", left)
-                .add("right", right)
-                .toString();
+        return "{" + getClass().getSimpleName() + " L='" + left + "', R='" + right + "'}";
     }
 }
