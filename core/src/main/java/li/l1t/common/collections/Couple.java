@@ -28,9 +28,10 @@ public class Couple<V> extends Pair<V, V> {
      *
      * @param left  the left element
      * @param right the right element
-     * @deprecated Use {@link #of(Object, Object)}.
+     * @deprecated was not intended to be exposed - use {@link #of(Object, Object)}
      */
     @Deprecated
+    @SuppressWarnings("deprecation")
     public Couple(@Nullable V left, @Nullable V right) {
         super(left, right);
     }
@@ -101,7 +102,7 @@ public class Couple<V> extends Pair<V, V> {
      * @param newLeft the new left element
      * @return a new couple
      */
-    public Couple withLeft(@Nullable V newLeft) {
+    public Couple<V> withLeft(@Nullable V newLeft) {
         return of(newLeft, this.right);
     }
 
@@ -111,7 +112,7 @@ public class Couple<V> extends Pair<V, V> {
      * @param newRight the new right element
      * @return a new couple
      */
-    public Couple withRight(@Nullable V newRight) {
+    public Couple<V> withRight(@Nullable V newRight) {
         return of(this.left, newRight);
     }
 }

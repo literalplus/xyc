@@ -16,11 +16,10 @@ import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
 /**
- * A class storing an <b>immutable</b> pair of two objects related to each other. Useful fpr storage
- * in Collections.
+ * Represents an immutable pair of two objects related to each other.
  *
- * @author <a href="http://xxyy.github.io/">xxyy</a>
- * @since 22.7.14
+ * @author <a href="https://l1t.li/">Literallie</a>
+ * @since 2014-07-22
  */
 public class Pair<L, R> {
     @Nullable
@@ -28,16 +27,43 @@ public class Pair<L, R> {
     @Nullable
     protected final R right;
 
+    /**
+     * Creates a new pair.
+     *
+     * @param left  the left element
+     * @param right the right element
+     * @deprecated was not intended to be exposed - use {@link #pairOf(Object, Object)}
+     */
+    @Deprecated
     public Pair(@Nullable L left, @Nullable R right) {
         this.left = left;
         this.right = right;
     }
 
+    /**
+     * Creates a new pair with given elements.
+     *
+     * @param left  the left element
+     * @param right the right element
+     * @param <L>   the left type
+     * @param <R>   the right type
+     * @return a new pair
+     */
+    public static <L, R> Pair<L, R> pairOf(L left, R right) {
+        return new Pair<>(left, right);
+    }
+
+    /**
+     * @return the left element of this pair
+     */
     @Nullable
     public L getLeft() {
         return left;
     }
 
+    /**
+     * @return the right element of this pair
+     */
     @Nullable
     public R getRight() {
         return right;
@@ -60,6 +86,26 @@ public class Pair<L, R> {
      */
     public boolean contains(@Nonnull Object obj) {
         return obj.equals(getLeft()) && obj.equals(getRight());
+    }
+
+    /**
+     * Returns a new couple with this couple's right element and a new left element.
+     *
+     * @param newLeft the new left element
+     * @return a new couple
+     */
+    public Pair<L, R> withLeft(@Nullable L newLeft) {
+        return pairOf(newLeft, this.right);
+    }
+
+    /**
+     * Returns a new couple with this couple's left element and a new right element.
+     *
+     * @param newRight the new right element
+     * @return a new couple
+     */
+    public Pair<L, R> withRight(@Nullable R newRight) {
+        return pairOf(this.left, newRight);
     }
 
     @Override
