@@ -23,18 +23,16 @@ import java.util.UUID;
 class SqlProduct implements Product {
     private final UUID uniqueId;
     private final String module;
-    private String name;
     private String displayName;
     private String description;
     private String iconName;
     private int melonsCost;
     private boolean active;
 
-    SqlProduct(UUID uniqueId, String module, String name, String displayName,
+    SqlProduct(UUID uniqueId, String module, String displayName,
                String description, String iconName, int melonsCost, boolean active) {
         this.uniqueId = uniqueId;
         this.module = module;
-        this.name = name;
         this.displayName = displayName;
         this.description = description;
         this.iconName = iconName;
@@ -50,11 +48,6 @@ class SqlProduct implements Product {
     @Override
     public String getModule() {
         return module;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

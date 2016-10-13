@@ -26,7 +26,7 @@ class JdbcProductCreator extends AbstractJdbcEntityCreator<Product> {
     @Override
     public Product createFromCurrentRow(ResultSet rs) throws SQLException {
         return new SqlProduct(
-                uuid(rs, "id"), rs.getString("module"), rs.getString("name"),
+                uuid(rs, "id"), rs.getString("module"),
                 rs.getString("displayname"), rs.getString("description"),
                 rs.getString("icon"), rs.getInt("melonscost"), rs.getBoolean("active")
         );

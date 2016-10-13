@@ -25,11 +25,6 @@ public interface Product extends Identifiable {
     String getModule();
 
     /**
-     * @return the internal name of this product
-     */
-    String getName();
-
-    /**
      * @return the display name of this product
      */
     String getDisplayName();
