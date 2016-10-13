@@ -101,4 +101,14 @@ public class OptionalIdCache<T> {
             return compute(id, supplier);
         }
     }
+
+    /**
+     * Invalidates the value associated with given key, meaning that it will not be returned by
+     * further queries unless cached again.
+     *
+     * @param id the key whose value to invalidate
+     */
+    public void invalidate(UUID id) {
+        cache.invalidateKey(id);
+    }
 }

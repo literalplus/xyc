@@ -39,9 +39,9 @@ public class IdCache<T> {
         idCache.invalidateAll();
     }
 
-    public <R extends T> R cache(R product) {
-        idCache.put(idFunction.apply(product), product);
-        return product;
+    public <R extends T> R cache(R value) {
+        idCache.put(idFunction.apply(value), value);
+        return value;
     }
 
     public <R extends T> R compute(UUID id, Function<UUID, R> supplier) {
@@ -59,5 +59,13 @@ public class IdCache<T> {
         } else {
             return compute(id, supplier);
         }
+    }
+
+    public void invalidateValue(T value) {
+        invalidateKey(idFunction.apply(value));
+    }
+
+    public void invalidateKey(UUID key) {
+        idCache.invalidate(key);
     }
 }
