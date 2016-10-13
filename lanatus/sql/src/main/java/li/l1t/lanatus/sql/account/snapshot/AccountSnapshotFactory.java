@@ -11,6 +11,7 @@
 package li.l1t.lanatus.sql.account.snapshot;
 
 import li.l1t.lanatus.api.account.AccountSnapshot;
+import li.l1t.lanatus.api.account.LanatusAccount;
 import li.l1t.lanatus.sql.account.LanatusAccountFactory;
 
 import java.util.UUID;
@@ -25,5 +26,13 @@ public class AccountSnapshotFactory implements LanatusAccountFactory<AccountSnap
     @Override
     public AccountSnapshot newInstance(UUID playerId, int melonsCount, String lastRank) {
         return new SqlAccountSnapshot(playerId, melonsCount, lastRank);
+    }
+
+    public AccountSnapshot of(LanatusAccount account) {
+        if (account instanceof AccountSnapshot) {
+            return (AccountSnapshot) account;
+        } else {
+            return newInstance(account.getPlayerId(), account.getMelonsCount(), account.getLastRank());
+        }
     }
 }

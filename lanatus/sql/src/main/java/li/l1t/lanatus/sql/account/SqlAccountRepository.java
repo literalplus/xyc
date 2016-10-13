@@ -30,8 +30,9 @@ import java.util.UUID;
  */
 public class SqlAccountRepository extends AbstractSqlLanatusRepository implements AccountRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_player";
+    private final AccountSnapshotFactory snapshotFactory = new AccountSnapshotFactory();
     private final JdbcAccountFetcher<AccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
-            new JdbcAccountCreator<>(new AccountSnapshotFactory()),
+            new JdbcAccountCreator<>(snapshotFactory),
             client().sql()
     );
     private final IdCache<AccountSnapshot> snapshotCache = new IdCache<>(AccountSnapshot::getPlayerId);
@@ -72,5 +73,6 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     @Override
     public void save(MutableAccount localCopy) throws AccountConflictException {
         accountWriter.write(localCopy);
+        snapshotCache.invalidateKey(localCopy.getPlayerId());
     }
 }
