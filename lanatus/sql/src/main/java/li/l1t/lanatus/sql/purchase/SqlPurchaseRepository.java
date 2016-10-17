@@ -12,7 +12,7 @@ package li.l1t.lanatus.sql.purchase;
 
 import li.l1t.common.collections.IdCache;
 import li.l1t.common.misc.Identifiable;
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchPurchaseException;
 import li.l1t.lanatus.api.purchase.Purchase;
 import li.l1t.lanatus.api.purchase.PurchaseRepository;
 import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
@@ -39,7 +39,7 @@ public class SqlPurchaseRepository extends AbstractSqlLanatusRepository implemen
     }
 
     @Override
-    public Purchase findById(UUID purchaseId) throws NoSuchRowException {
+    public Purchase findById(UUID purchaseId) throws NoSuchPurchaseException {
         return cache.getOrCompute(purchaseId, fetcher::fetchById);
     }
 

@@ -13,7 +13,7 @@ package li.l1t.lanatus.sql.product;
 import li.l1t.common.exception.DatabaseException;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
 import li.l1t.lanatus.sql.common.JdbcEntityCreator;
@@ -38,7 +38,7 @@ class JdbcProductFetcher extends AbstractJdbcFetcher<Product> {
             if (proceedToNextRow(result)) {
                 return entityFromCurrentRow(result);
             } else {
-                throw new NoSuchRowException("product with id " + productId);
+                throw new NoSuchProductException("product with id " + productId);
             }
         } catch (SQLException e) {
             throw DatabaseException.wrap(e);

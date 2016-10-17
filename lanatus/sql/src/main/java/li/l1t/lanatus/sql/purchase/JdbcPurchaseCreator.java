@@ -10,7 +10,7 @@
 
 package li.l1t.lanatus.sql.purchase;
 
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchPurchaseException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.api.purchase.Purchase;
@@ -34,7 +34,7 @@ class JdbcPurchaseCreator extends AbstractJdbcEntityCreator<Purchase> {
     }
 
     @Override
-    public Purchase createFromCurrentRow(ResultSet rs) throws SQLException, NoSuchRowException {
+    public Purchase createFromCurrentRow(ResultSet rs) throws SQLException {
         return new SqlPurchase(
                 uuid(rs, "id"), uuid(rs, "player_uuid"),
                 findProduct(rs), rs.getObject("created", Instant.class),
@@ -42,7 +42,7 @@ class JdbcPurchaseCreator extends AbstractJdbcEntityCreator<Purchase> {
         );
     }
 
-    private Product findProduct(ResultSet rs) throws SQLException, NoSuchRowException {
+    private Product findProduct(ResultSet rs) throws SQLException, NoSuchPurchaseException {
         return productRepository.findById(uuid(rs, "product_id"));
     }
 

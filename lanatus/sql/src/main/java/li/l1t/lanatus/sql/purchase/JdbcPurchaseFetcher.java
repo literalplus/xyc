@@ -13,7 +13,7 @@ package li.l1t.lanatus.sql.purchase;
 import li.l1t.common.exception.DatabaseException;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchPurchaseException;
 import li.l1t.lanatus.api.purchase.Purchase;
 import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
 
@@ -37,7 +37,7 @@ class JdbcPurchaseFetcher extends AbstractJdbcFetcher<Purchase> {
             if (proceedToNextRow(result)) {
                 return entityFromCurrentRow(result);
             } else {
-                throw new NoSuchRowException("purchase with id " + purchaseId);
+                throw new NoSuchPurchaseException("purchase with id " + purchaseId);
             }
         } catch (SQLException e) {
             throw DatabaseException.wrap(e);

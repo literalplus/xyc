@@ -10,20 +10,18 @@
 
 package li.l1t.lanatus.api.exception;
 
-import li.l1t.common.exception.InternalException;
-
 /**
- * Thrown if there is no row matching given criteria, but a row was required.
+ * Thrown if no such purchase exists, but a purchase was required for some action.
  *
- * @author <a href="http://xxyy.github.io/">xxyy</a>
- * @since 2016-09-28
+ * @author <a href="https://l1t.li/">Literallie</a>
+ * @since 2016-10-17
  */
-public class NoSuchRowException extends InternalException {
-    public NoSuchRowException(String message) {
+public class NoSuchPurchaseException extends NoSuchRowException {
+    public NoSuchPurchaseException(String message) {
         super(message);
     }
 
-    public NoSuchRowException(String message, Throwable cause) {
+    public NoSuchPurchaseException(String message, Throwable cause) {
         super(message, cause);
     }
 }

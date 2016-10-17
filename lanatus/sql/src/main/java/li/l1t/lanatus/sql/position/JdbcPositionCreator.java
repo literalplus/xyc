@@ -10,7 +10,7 @@
 
 package li.l1t.lanatus.sql.position;
 
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRepository;
@@ -40,7 +40,7 @@ class JdbcPositionCreator extends AbstractJdbcEntityCreator<Position> {
         );
     }
 
-    private Product findProduct(ResultSet rs) throws SQLException, NoSuchRowException {
+    private Product findProduct(ResultSet rs) throws SQLException, NoSuchProductException {
         return productRepository.findById(uuid(rs, "product_id"));
     }
 }

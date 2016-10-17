@@ -12,7 +12,7 @@ package li.l1t.lanatus.sql.product;
 
 import li.l1t.common.collections.IdCache;
 import li.l1t.common.misc.Identifiable;
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductQueryBuilder;
 import li.l1t.lanatus.api.product.ProductRepository;
@@ -40,7 +40,7 @@ public class SqlProductRepository extends AbstractSqlLanatusRepository implement
     }
 
     @Override
-    public Product findById(UUID productId) throws NoSuchRowException {
+    public Product findById(UUID productId) throws NoSuchProductException {
         return cache.getOrCompute(productId, fetcher::fetchById);
     }
 

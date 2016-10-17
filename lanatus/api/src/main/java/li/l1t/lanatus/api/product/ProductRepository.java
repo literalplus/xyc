@@ -12,7 +12,7 @@ package li.l1t.lanatus.api.product;
 
 import li.l1t.common.exception.DatabaseException;
 import li.l1t.lanatus.api.LanatusRepository;
-import li.l1t.lanatus.api.exception.NoSuchRowException;
+import li.l1t.lanatus.api.exception.NoSuchProductException;
 
 import java.util.UUID;
 
@@ -32,10 +32,10 @@ public interface ProductRepository extends LanatusRepository {
      *
      * @param productId the unique id of the product
      * @return the product with given unique id
-     * @throws NoSuchRowException if there is no product with given id
+     * @throws NoSuchProductException if there is no product with given id
      * @throws DatabaseException  if a database error occurs
      */
-    Product findById(UUID productId) throws NoSuchRowException, DatabaseException;
+    Product findById(UUID productId) throws NoSuchProductException, DatabaseException;
 
     /**
      * Creates a new query builder. Note that queries ignore the product cache.
