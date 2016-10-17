@@ -27,28 +27,34 @@ import java.util.UUID;
  */
 public interface PurchaseBuilder {
     /**
+     * The special value that uses the product's default cost when passed to {@link
+     * #withMelonsCost(int)} and is assumed if no custom melons cost is set.
+     */
+    int PRODUCT_DEFAULT_COST = Integer.MAX_VALUE;
+
+    /**
      * @return the generated unique id for the purchase to be created from this builder
      */
     UUID getPurchaseId();
 
     /**
      * @return the executed purchase made from this builder
-     * @throws IllegalStateException if the purchase has not yet been executed
+     * @throws IllegalStateException if the purchase has not yet been built
      */
     Purchase getPurchase();
 
     /**
-     * @return whether the purchase built by this builder has been executed
+     * @return whether the purchase has been built already
      */
-    boolean hasBeenExecuted();
+    boolean hasBeenBuilt();
 
     /**
      * Executes the purchase defined by the current state of this builder and saves its result to
      * the database. Note that this method can only be executed once per builder instance. The
      * created purchase may be obtained using {@link #getPurchase()}.
      *
-     * @throws IllegalStateException  {@linkplain #hasBeenExecuted() if the purchase has already
-     *                                been built}
+     * @throws IllegalStateException  {@linkplain #hasBeenBuilt() if the purchase has already been
+     *                                built}
      * @throws NoSuchProductException if the product set on this builder does not exist or no
      *                                product has been set
      * @throws DatabaseException      if a database error occurs
@@ -71,7 +77,7 @@ public interface PurchaseBuilder {
 
     /**
      * Sets the melons cost of this builder, overriding the default cost of the product. Setting the
-     * cost to {@link Integer#MIN_VALUE} (the default) causes the product's default cost to be
+     * cost to {@link #PRODUCT_DEFAULT_COST} (the default) causes the product's default cost to be
      * used.
      *
      * @param melonsCost the melons cost of the purchase, may be negative or zero
@@ -81,14 +87,18 @@ public interface PurchaseBuilder {
     PurchaseBuilder withMelonsCost(int melonsCost);
 
     /**
-     * @param data the arbitrary string describing specifics of the product to its module
+     * Attaches an arbitrary string to the purchase that describes specifics of the product to its
+     * module. The default is an empty string.
+     *
+     * @param data the arbitrary product data string
      * @return this builder
      * @throws IllegalStateException if the purchase has already been built
      */
     PurchaseBuilder withData(String data);
 
     /**
-     * Attaches an arbitrary string to the purchase for internal reference.
+     * Attaches an arbitrary string to the purchase for internal reference. The default is an empty
+     * string.
      *
      * @param comment the purchase comment
      * @return this builder
