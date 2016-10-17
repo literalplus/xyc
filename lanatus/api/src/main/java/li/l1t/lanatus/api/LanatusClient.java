@@ -11,9 +11,12 @@
 package li.l1t.lanatus.api;
 
 import li.l1t.lanatus.api.account.AccountRepository;
+import li.l1t.lanatus.api.builder.purchase.PurchaseBuilder;
 import li.l1t.lanatus.api.position.PositionRepository;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.api.purchase.PurchaseRepository;
+
+import java.util.UUID;
 
 /**
  * Represents a client implementation for the Lanatus API.
@@ -48,7 +51,13 @@ public interface LanatusClient {
      */
     ProductRepository products();
 
-    //TODO: PurchaseBuilder startPurchase();
+    /**
+     * Starts a new purchase builder for given player.
+     *
+     * @param playerId the unique id of the player on whose behalf the purchase is to be made
+     * @return a new purchase builder
+     */
+    PurchaseBuilder startPurchase(UUID playerId);
 
     //TODO: CreditMelonsBuilder creditMelons();
 }
