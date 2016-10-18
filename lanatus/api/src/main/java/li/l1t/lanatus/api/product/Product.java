@@ -54,4 +54,13 @@ public interface Product extends Identifiable {
      * @return whether this product may be purchased currently
      */
     boolean isActive();
+
+    /**
+     * Gets whether this product is permanent. Permanent products are represented by positions in
+     * players' accounts and have effect as long as their position exists. Non-permanent products
+     * only appear in the purchase log and generally are single-use.
+     *
+     * @return whether this product is permanent
+     */
+    boolean isPermanent();
 }

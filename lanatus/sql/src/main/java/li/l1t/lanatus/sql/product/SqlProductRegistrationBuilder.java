@@ -35,6 +35,7 @@ public class SqlProductRegistrationBuilder extends AbstractSqlConnected implemen
     private String description = "";
     private String iconName = "";
     private int melonsCost = 1;
+    private boolean permanent = true;
 
     public SqlProductRegistrationBuilder(SqlProductRepository repository, UUID productId) {
         super(repository.client().sql());
@@ -76,6 +77,12 @@ public class SqlProductRegistrationBuilder extends AbstractSqlConnected implemen
     }
 
     @Override
+    public ProductRegistrationBuilder withPermanent(boolean permanent) {
+        this.permanent = permanent;
+        return this;
+    }
+
+    @Override
     public ProductRegistrationBuilder withMelonsCost(int melonsCost) {
         Preconditions.checkArgument(melonsCost >= 0, "melonsCost must not be negative!");
         this.melonsCost = melonsCost;
@@ -93,7 +100,7 @@ public class SqlProductRegistrationBuilder extends AbstractSqlConnected implemen
 
     private Product createProductFromBuilderState() {
         SqlProduct createdProduct = new SqlProduct(
-                productId, moduleName, displayName, description, iconName, melonsCost, true
+                productId, moduleName, displayName, description, iconName, melonsCost, true, permanent
         );
         repository.createNewProduct(createdProduct);
         return createdProduct;

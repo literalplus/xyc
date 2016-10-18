@@ -51,7 +51,7 @@ class JdbcProductFetcher extends AbstractJdbcFetcher<Product> {
 
     @Override
     protected String buildSelect(String whereClause) {
-        return "SELECT id, module, displayname, description, item, melonscost, active " +
+        return "SELECT id, module, displayname, description, item, melonscost, active, permanent " +
                 "FROM " + SqlProductRepository.TABLE_NAME + " " +
                 whereClause;
     }

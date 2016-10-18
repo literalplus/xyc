@@ -34,17 +34,18 @@ class JdbcProductWriter extends AbstractSqlConnected {
         Preconditions.checkNotNull(product, "product");
         int rowsAffected = insertRaw(
                 product.getUniqueId(), product.getModule(), product.getDisplayName(), product.getDescription(),
-                product.getIconName(), product.getMelonsCost(), product.isActive()
+                product.getIconName(), product.getMelonsCost(), product.isActive(), product.isPermanent()
         );
         Verify.verify(rowsAffected == 1, "expected insert to affect single row, was: ", product, rowsAffected);
     }
 
     private int insertRaw(UUID productId, String module, String displayName, String description,
-                          String iconName, int melonsCost, boolean active) {
+                          String iconName, int melonsCost, boolean active, boolean permanent) {
         return sql().updateRaw("INSERT INTO " + SqlProductRepository.TABLE_NAME + " " +
                         "SET id=?, module=?, displayname=?, description=?, " +
-                        "icon=?, melonscost=?, active=?",
-                productId.toString(), module, displayName, description, iconName, melonsCost, active
+                        "icon=?, melonscost=?, active=?, permanent=?",
+                productId.toString(), module, displayName, description,
+                iconName, melonsCost, active, permanent
         );
     }
 }

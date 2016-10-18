@@ -59,6 +59,12 @@ public interface ProductRegistrationBuilder {
     ProductRegistrationBuilder withMelonsCost(int melonsCost);
 
     /**
+     * @param permanent the {@link Product#isPermanent() permanence status} to set on the builder
+     * @return this builder
+     */
+    ProductRegistrationBuilder withPermanent(boolean permanent);
+
+    /**
      * Executes the registration represented by this builder. Registrations where there is already a
      * product by that unique id are silently ignored. Note that only the unique id is actually
      * checked, to allow administrators to customise display names and other parts of the product

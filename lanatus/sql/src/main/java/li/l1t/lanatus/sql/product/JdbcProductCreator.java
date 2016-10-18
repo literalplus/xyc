@@ -28,7 +28,8 @@ class JdbcProductCreator extends AbstractJdbcEntityCreator<Product> {
         return new SqlProduct(
                 uuid(rs, "id"), rs.getString("module"),
                 rs.getString("displayname"), rs.getString("description"),
-                rs.getString("icon"), rs.getInt("melonscost"), rs.getBoolean("active")
+                rs.getString("icon"), rs.getInt("melonscost"), rs.getBoolean("active"),
+                rs.getBoolean("permanent")
         );
     }
 }

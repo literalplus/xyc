@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.sql.product;
 
+import com.google.common.base.Preconditions;
 import li.l1t.lanatus.api.product.Product;
 
 import java.util.UUID;
@@ -28,16 +29,18 @@ class SqlProduct implements Product {
     private String iconName;
     private int melonsCost;
     private boolean active;
+    private boolean permanent;
 
     SqlProduct(UUID uniqueId, String module, String displayName,
-               String description, String iconName, int melonsCost, boolean active) {
-        this.uniqueId = uniqueId;
-        this.module = module;
-        this.displayName = displayName;
-        this.description = description;
-        this.iconName = iconName;
+               String description, String iconName, int melonsCost, boolean active, boolean permanent) {
+        this.uniqueId = Preconditions.checkNotNull(uniqueId, "uniqueId");
+        this.module = Preconditions.checkNotNull(module, "module");
+        this.displayName = Preconditions.checkNotNull(displayName, "diplayName");
+        this.description = Preconditions.checkNotNull(description, "description");
+        this.iconName = Preconditions.checkNotNull(iconName, "iconName");
         this.melonsCost = melonsCost;
         this.active = active;
+        this.permanent = permanent;
     }
 
     @Override
@@ -73,5 +76,10 @@ class SqlProduct implements Product {
     @Override
     public boolean isActive() {
         return active;
+    }
+
+    @Override
+    public boolean isPermanent() {
+        return permanent;
     }
 }
