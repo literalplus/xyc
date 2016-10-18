@@ -41,7 +41,7 @@ public class JdbcScopedSession implements RawScopedSession {
     }
 
     @Override
-    public ScopedSession join() {
+    public JdbcScopedSession join() {
         checkNotClosed();
         refCount.incrementAndGet();
         return this;
@@ -62,7 +62,7 @@ public class JdbcScopedSession implements RawScopedSession {
 
     @Override
     public JdbcScopedSession tx() {
-        checkNotClosed();
+        join();
         if (transactionOpen.compareAndSet(false, true)) { //note: minor race condition here
             SqlSanebox.run(() -> {
                 previousAutoCommit = connection().getAutoCommit();

@@ -31,14 +31,16 @@ import li.l1t.common.exception.InternalException;
 public interface ScopedSession<T> extends AutoCloseable {
     /**
      * Joins this scoped session and returns itself. Note that a joined session needs to be released
-     * using {@link #close()} to make sure it will get properly closed.
+     * using {@link #close()} to make sure it will get properly closed. Further note that {@link
+     * #tx()} joins the session too, so calling join again will leave the session thinking that it
+     * is one layer deeper than it actually is, and will not get closed.
      *
      * @return the scoped session that was just joined
      */
-    ScopedSession join();
+    ScopedSession<T> join();
 
     /**
-     * Starts a new transaction on this session and ensures that the database driver does not
+     * Joins this session, starts a new transaction and ensures that the database driver does not
      * auto-commit.
      *
      * @return this scoped session
