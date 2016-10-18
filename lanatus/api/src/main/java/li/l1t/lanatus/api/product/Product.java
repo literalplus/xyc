@@ -35,6 +35,12 @@ public interface Product extends Identifiable {
     String getDescription();
 
     /**
+     * Gets the internal name of the icon to use for this product in Minecraft, represented in the
+     * format {@code materialName[:dataValue]}, where {@code materialName} corresponds to the
+     * lowercase name of the material in the Material enum and {@code dataValue} means the legacy
+     * data "damage" on the item.<p>For example, {@code melon_block} represents a melon block and
+     * {@code wool:0} represents white wool.</p>
+     *
      * @return the internal name of the icon to use for this product in Minecraft
      */
     String getIconName();
