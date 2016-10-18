@@ -12,6 +12,8 @@ package li.l1t.lanatus.api.builder.melons;
 
 import li.l1t.common.exception.DatabaseException;
 
+import java.util.UUID;
+
 /**
  * Fluent builder interface for crediting melons to a player's account.
  *
@@ -19,6 +21,11 @@ import li.l1t.common.exception.DatabaseException;
  * @since 2016-10-18
  */
 public interface CreditMelonsBuilder {
+    /**
+     * The unique id of the product that represents credited melons.
+     */
+    UUID PRODUCT_ID = UUID.fromString("e94dd44d-93ea-4f21-823e-9aa15e278803");
+
     /**
      * @return whether the melons were credited already
      */
