@@ -13,7 +13,9 @@ package li.l1t.lanatus.sql;
 import li.l1t.common.sql.sane.AbstractSqlConnected;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.lanatus.api.LanatusClient;
+import li.l1t.lanatus.api.builder.melons.CreditMelonsBuilder;
 import li.l1t.lanatus.sql.account.SqlAccountRepository;
+import li.l1t.lanatus.sql.builder.melons.SqlCreditMelonsBuilder;
 import li.l1t.lanatus.sql.position.SqlPositionRepository;
 import li.l1t.lanatus.sql.product.SqlProductRepository;
 import li.l1t.lanatus.sql.purchase.SqlPurchaseBuilder;
@@ -73,5 +75,10 @@ public class SqlLanatusClient extends AbstractSqlConnected implements LanatusCli
     @Override
     public SqlPurchaseBuilder startPurchase(UUID playerId) {
         return new SqlPurchaseBuilder(playerId, this);
+    }
+
+    @Override
+    public CreditMelonsBuilder creditMelons(UUID playerId) {
+        return new SqlCreditMelonsBuilder(playerId, this);
     }
 }

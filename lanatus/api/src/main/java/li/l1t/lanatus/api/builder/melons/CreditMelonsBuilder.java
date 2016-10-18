@@ -35,7 +35,7 @@ public interface CreditMelonsBuilder {
      * Actually credits the amount of melons defined in this builder to the player. Note that this
      * method can only be executed once per builder instance.
      *
-     * @throws IllegalStateException {@linkplain #hasBeenExecuted()if the melons have already been
+     * @throws IllegalStateException {@linkplain #hasBeenExecuted() if the melons have already been
      *                               credited}
      * @throws DatabaseException     if a database error occurs
      */
@@ -49,4 +49,12 @@ public interface CreditMelonsBuilder {
      * @throws IllegalArgumentException if melonsCount is negative
      */
     CreditMelonsBuilder withMelonsCount(int melonsCount);
+
+    /**
+     * Attaches an arbitrary string comment to the purchase associated with the action.
+     *
+     * @param comment the comment string
+     * @return this builder
+     */
+    CreditMelonsBuilder withComment(String comment);
 }
