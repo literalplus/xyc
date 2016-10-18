@@ -12,6 +12,7 @@ package li.l1t.common.sql.sane;
 
 import com.google.common.base.Preconditions;
 import li.l1t.common.exception.DatabaseException;
+import li.l1t.common.exception.InternalException;
 import li.l1t.common.sql.SqlConnectable;
 import li.l1t.common.sql.sane.connection.ConnectionManager;
 import li.l1t.common.sql.sane.connection.SimpleConnectionManager;
@@ -21,6 +22,9 @@ import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.common.sql.sane.result.SimpleQueryResult;
 import li.l1t.common.sql.sane.result.SimpleUpdateResult;
 import li.l1t.common.sql.sane.result.UpdateResult;
+import li.l1t.common.sql.sane.scoped.JdbcScopedSession;
+import li.l1t.common.sql.sane.scoped.ScopedSession;
+import li.l1t.common.sql.sane.scoped.ScopedSessionManager;
 import li.l1t.common.sql.sane.statement.GeneratedKeysStatementProvider;
 import li.l1t.common.sql.sane.statement.SimpleStatementProvider;
 import li.l1t.common.sql.sane.statement.StatementProvider;
@@ -30,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.function.Supplier;
 
 /**
  * Implementation of a sane SQL accessor class that manages a single database connection.
@@ -41,11 +46,14 @@ public class SingleSql implements SaneSql {
     private final ConnectionManager connectionManager;
     private final StatementProvider simpleStatementProvider;
     private final StatementProvider generatedKeysStatementProvider;
+    private final ScopedSessionManager<JdbcScopedSession> scopedSessionManager;
 
     public SingleSql(SqlConnectable connectable) {
         this.connectionManager = new SimpleConnectionManager(connectable);
         this.simpleStatementProvider = new SimpleStatementProvider(connectionManager);
         this.generatedKeysStatementProvider = new GeneratedKeysStatementProvider(connectionManager);
+        Supplier<JdbcScopedSession> scopedSessionProvider = () -> new JdbcScopedSession(connectionManager.getConnection());
+        this.scopedSessionManager = new ScopedSessionManager<>(scopedSessionProvider);
     }
 
     @Override
@@ -97,6 +105,18 @@ public class SingleSql implements SaneSql {
         Preconditions.checkNotNull(sqlQuery, "sqlQuery");
         Preconditions.checkNotNull(params, "params");
         return generatedKeysStatementProvider.create(sqlQuery, params);
+    }
+
+    /**
+     * Gets the current session used by the current thread if a session scope already exists or
+     * crates a new session and scope otherwise. <p><b>Important:</b> Refer to the {@link
+     * ScopedSession} class JavaDoc for important information regarding safe usage.</p>
+     *
+     * @return a scoped session
+     * @throws InternalException if the session lock cannot be obtained
+     */
+    public JdbcScopedSession scoped() {
+        return scopedSessionManager.scoped();
     }
 
     @Override
