@@ -11,6 +11,7 @@
 package li.l1t.lanatus.api;
 
 import li.l1t.lanatus.api.account.AccountRepository;
+import li.l1t.lanatus.api.builder.melons.CreditMelonsBuilder;
 import li.l1t.lanatus.api.builder.purchase.PurchaseBuilder;
 import li.l1t.lanatus.api.position.PositionRepository;
 import li.l1t.lanatus.api.product.ProductRepository;
@@ -59,5 +60,11 @@ public interface LanatusClient {
      */
     PurchaseBuilder startPurchase(UUID playerId);
 
-    //TODO: CreditMelonsBuilder creditMelons();
+    /**
+     * Creates a new builder that credits melons to given player.
+     *
+     * @param playerId the unique id of the player whose account should be credited
+     * @return a new purchase builder
+     */
+    CreditMelonsBuilder creditMelons(UUID playerId);
 }
