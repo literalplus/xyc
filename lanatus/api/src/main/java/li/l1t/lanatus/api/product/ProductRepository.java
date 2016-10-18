@@ -33,7 +33,7 @@ public interface ProductRepository extends LanatusRepository {
      * @param productId the unique id of the product
      * @return the product with given unique id
      * @throws NoSuchProductException if there is no product with given id
-     * @throws DatabaseException  if a database error occurs
+     * @throws DatabaseException      if a database error occurs
      */
     Product findById(UUID productId) throws NoSuchProductException, DatabaseException;
 
@@ -43,4 +43,16 @@ public interface ProductRepository extends LanatusRepository {
      * @return a builder for product queries in this repository
      */
     ProductQueryBuilder query();
+
+    /**
+     * Creates a new product registration builder. This is intended for modules to register their
+     * own products when they connect to Lanatus, in order to make sure that they actually exist. If
+     * a product by that unique id already exists (or is cached), the registration will be silently
+     * ignored.
+     *
+     * @param productId the unique id of the product, must be persistent over sessions - best saved
+     *                  as a constant
+     * @return a builder for a product registration
+     */
+    ProductRegistrationBuilder registration(UUID productId);
 }
