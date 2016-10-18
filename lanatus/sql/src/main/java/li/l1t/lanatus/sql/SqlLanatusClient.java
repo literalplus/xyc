@@ -13,14 +13,13 @@ package li.l1t.lanatus.sql;
 import li.l1t.common.sql.sane.AbstractSqlConnected;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.lanatus.api.LanatusClient;
-import li.l1t.lanatus.api.account.AccountRepository;
-import li.l1t.lanatus.api.position.PositionRepository;
-import li.l1t.lanatus.api.product.ProductRepository;
-import li.l1t.lanatus.api.purchase.PurchaseRepository;
 import li.l1t.lanatus.sql.account.SqlAccountRepository;
 import li.l1t.lanatus.sql.position.SqlPositionRepository;
 import li.l1t.lanatus.sql.product.SqlProductRepository;
+import li.l1t.lanatus.sql.purchase.SqlPurchaseBuilder;
 import li.l1t.lanatus.sql.purchase.SqlPurchaseRepository;
+
+import java.util.UUID;
 
 /**
  * An implementation of a Lanatus client using a SQL database as backend.
@@ -30,10 +29,10 @@ import li.l1t.lanatus.sql.purchase.SqlPurchaseRepository;
  */
 public class SqlLanatusClient extends AbstractSqlConnected implements LanatusClient {
     private final String module;
-    private AccountRepository accountRepository = new SqlAccountRepository(this);
-    private ProductRepository productRepository = new SqlProductRepository(this);
-    private PurchaseRepository purchaseRepository = new SqlPurchaseRepository(this);
-    private PositionRepository positionRepository = new SqlPositionRepository(this);
+    private SqlAccountRepository accountRepository = new SqlAccountRepository(this);
+    private SqlProductRepository productRepository = new SqlProductRepository(this);
+    private SqlPurchaseRepository purchaseRepository = new SqlPurchaseRepository(this);
+    private SqlPositionRepository positionRepository = new SqlPositionRepository(this);
 
     /**
      * Constructs a new SQL Lanatus client.
@@ -52,22 +51,27 @@ public class SqlLanatusClient extends AbstractSqlConnected implements LanatusCli
     }
 
     @Override
-    public AccountRepository accounts() {
+    public SqlAccountRepository accounts() {
         return accountRepository;
     }
 
     @Override
-    public PositionRepository positions() {
+    public SqlPositionRepository positions() {
         return positionRepository;
     }
 
     @Override
-    public PurchaseRepository purchases() {
+    public SqlPurchaseRepository purchases() {
         return purchaseRepository;
     }
 
     @Override
-    public ProductRepository products() {
+    public SqlProductRepository products() {
         return productRepository;
+    }
+
+    @Override
+    public SqlPurchaseBuilder startPurchase(UUID playerId) {
+        return new SqlPurchaseBuilder(playerId, this);
     }
 }
