@@ -54,6 +54,7 @@ public interface ProductRegistrationBuilder {
     /**
      * @param melonsCost the default melons cost to set on the builder
      * @return this builder
+     * @throws IllegalArgumentException if given cost is negative
      */
     ProductRegistrationBuilder withMelonsCost(int melonsCost);
 

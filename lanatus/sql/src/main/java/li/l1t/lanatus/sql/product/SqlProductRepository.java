@@ -10,11 +10,13 @@
 
 package li.l1t.lanatus.sql.product;
 
+import com.google.common.base.Preconditions;
 import li.l1t.common.collections.IdCache;
 import li.l1t.common.misc.Identifiable;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductQueryBuilder;
+import li.l1t.lanatus.api.product.ProductRegistrationBuilder;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
@@ -34,6 +36,7 @@ public class SqlProductRepository extends AbstractSqlLanatusRepository implement
     private final JdbcProductFetcher fetcher = new JdbcProductFetcher(
             new JdbcProductCreator(), client().sql()
     );
+    private final JdbcProductWriter writer = new JdbcProductWriter(client().sql());
 
     public SqlProductRepository(SqlLanatusClient client) {
         super(client);
@@ -54,7 +57,18 @@ public class SqlProductRepository extends AbstractSqlLanatusRepository implement
     }
 
     @Override
+    public ProductRegistrationBuilder registration(UUID productId) {
+        return new SqlProductRegistrationBuilder(this, productId);
+    }
+
+    @Override
     public void clearCache() {
         cache.clear();
+    }
+
+    void createNewProduct(SqlProduct product) {
+        Preconditions.checkNotNull(product, "product");
+        cache.invalidateKey(product.getUniqueId());
+        writer.write(product);
     }
 }
