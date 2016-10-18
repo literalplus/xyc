@@ -13,6 +13,7 @@ package li.l1t.lanatus.sql.position;
 import li.l1t.common.collections.OptionalIdCache;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.position.PositionRepository;
+import li.l1t.lanatus.api.purchase.Purchase;
 import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
 
@@ -21,8 +22,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Simple implementation of a position repository based on a JDBC SQL data source. Caches by id
- * only.
+ * Simple implementation of a position repository based on a JDBC SQL data source. Caches by
+ * purchase id only.
  *
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
@@ -33,6 +34,7 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
     private final JdbcPositionFetcher fetcher = new JdbcPositionFetcher(
             new JdbcPositionCreator(client().products()), client().sql()
     );
+    private final JdbcPositionWriter writer = new JdbcPositionWriter(client().sql());
 
     public SqlPositionRepository(SqlLanatusClient client) {
         super(client);
@@ -46,6 +48,18 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
     @Override
     public Collection<Position> findAllByPlayer(UUID playerId) {
         return fetcher.fetchAllByPlayer(playerId);
+    }
+
+    /**
+     * Creates a <b>new</b> position from a purchase and writes it to the database.
+     *
+     * @param purchase the purchase to create a position from
+     * @return the created position
+     */
+    public Position createFromPurchase(Purchase purchase) {
+        SqlPosition position = new SqlPosition(purchase);
+        writer.write(position);
+        return position;
     }
 
     @Override

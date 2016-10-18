@@ -12,6 +12,7 @@ package li.l1t.lanatus.sql.position;
 
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.product.Product;
+import li.l1t.lanatus.api.purchase.Purchase;
 
 import java.util.UUID;
 
@@ -32,6 +33,10 @@ class SqlPosition implements Position {
         this.playerId = playerId;
         this.product = product;
         this.data = data;
+    }
+
+    SqlPosition(Purchase purchase) {
+        this(purchase.getUniqueId(), purchase.getPlayerId(), purchase.getProduct(), purchase.getData());
     }
 
     @Override
