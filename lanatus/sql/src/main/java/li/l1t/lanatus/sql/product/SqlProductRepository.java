@@ -11,7 +11,8 @@
 package li.l1t.lanatus.sql.product;
 
 import com.google.common.base.Preconditions;
-import li.l1t.common.collections.IdCache;
+import li.l1t.common.collections.cache.IdCache;
+import li.l1t.common.collections.cache.MapIdCache;
 import li.l1t.common.misc.Identifiable;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
@@ -32,7 +33,7 @@ import java.util.UUID;
  */
 public class SqlProductRepository extends AbstractSqlLanatusRepository implements ProductRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_product";
-    private final IdCache<Product> cache = new IdCache<>(Identifiable::getUniqueId);
+    private final IdCache<UUID, Product> cache = new MapIdCache<>(Identifiable::getUniqueId);
     private final JdbcProductFetcher fetcher = new JdbcProductFetcher(
             new JdbcProductCreator(), client().sql()
     );

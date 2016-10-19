@@ -10,7 +10,8 @@
 
 package li.l1t.lanatus.sql.account;
 
-import li.l1t.common.collections.IdCache;
+import li.l1t.common.collections.cache.IdCache;
+import li.l1t.common.collections.cache.MapIdCache;
 import li.l1t.lanatus.api.account.AccountRepository;
 import li.l1t.lanatus.api.account.AccountSnapshot;
 import li.l1t.lanatus.api.account.MutableAccount;
@@ -35,7 +36,7 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
             new JdbcAccountCreator<>(snapshotFactory),
             client().sql()
     );
-    private final IdCache<AccountSnapshot> snapshotCache = new IdCache<>(AccountSnapshot::getPlayerId);
+    private final IdCache<UUID, AccountSnapshot> snapshotCache = new MapIdCache<>(AccountSnapshot::getPlayerId);
     private final JdbcAccountFetcher<MutableAccount> mutableFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(new MutableAccountFactory()),
             client().sql()

@@ -10,7 +10,8 @@
 
 package li.l1t.lanatus.sql.position;
 
-import li.l1t.common.collections.OptionalIdCache;
+import li.l1t.common.collections.cache.OptionalGuavaCache;
+import li.l1t.common.collections.cache.OptionalCache;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.position.PositionRepository;
 import li.l1t.lanatus.api.purchase.Purchase;
@@ -22,15 +23,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Simple implementation of a position repository based on a JDBC SQL data source. Caches by
- * purchase id only.
+ * Simple implementation of a position repository based on a JDBC SQL data source. Caches positions
+ * by purchase id and product ids by player. Caches are automatically invalidated some time after
+ * they have been updated from the data source.
  *
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
 public class SqlPositionRepository extends AbstractSqlLanatusRepository implements PositionRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_position";
-    private final OptionalIdCache<Position> cache = new OptionalIdCache<>();
+    private final OptionalCache<UUID, Position> cache = new OptionalGuavaCache<>();
     private final JdbcPositionFetcher fetcher = new JdbcPositionFetcher(
             new JdbcPositionCreator(client().products()), client().sql()
     );
@@ -48,6 +50,11 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
     @Override
     public Collection<Position> findAllByPlayer(UUID playerId) {
         return fetcher.fetchAllByPlayer(playerId);
+    }
+
+    @Override
+    public boolean playerHasProduct(UUID playerId, UUID productId) {
+        return false;
     }
 
     /**

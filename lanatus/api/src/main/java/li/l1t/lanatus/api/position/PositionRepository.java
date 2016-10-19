@@ -40,4 +40,11 @@ public interface PositionRepository extends LanatusRepository {
      * @return the collection of positions, or an empty collection if none
      */
     Collection<Position> findAllByPlayer(UUID playerId);
+
+    /**
+     * @param playerId  the unique id of the player
+     * @param productId the unique id of the product
+     * @return whether given player has a position matching given product
+     */
+    boolean playerHasProduct(UUID playerId, UUID productId);
 }
