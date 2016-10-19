@@ -10,17 +10,23 @@
 
 package li.l1t.lanatus.sql.position;
 
-import li.l1t.common.collections.cache.OptionalGuavaCache;
+import com.google.common.base.VerifyException;
+import li.l1t.common.collections.cache.GuavaMapCache;
+import li.l1t.common.collections.cache.MapCache;
 import li.l1t.common.collections.cache.OptionalCache;
+import li.l1t.common.collections.cache.OptionalGuavaCache;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.position.PositionRepository;
+import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.purchase.Purchase;
 import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Simple implementation of a position repository based on a JDBC SQL data source. Caches positions
@@ -37,6 +43,7 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
             new JdbcPositionCreator(client().products()), client().sql()
     );
     private final JdbcPositionWriter writer = new JdbcPositionWriter(client().sql());
+    private final MapCache<UUID, Set<UUID>> playerPositionsCache = new GuavaMapCache<>();
 
     public SqlPositionRepository(SqlLanatusClient client) {
         super(client);
@@ -49,12 +56,23 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
 
     @Override
     public Collection<Position> findAllByPlayer(UUID playerId) {
-        return fetcher.fetchAllByPlayer(playerId);
+        Collection<Position> positions = fetcher.fetchAllByPlayer(playerId);
+        Set<UUID> positionIds = positions.stream()
+                .map(Position::getProduct)
+                .map(Product::getUniqueId)
+                .collect(Collectors.toSet());
+        playerPositionsCache.cache(playerId, positionIds);
+        return positions;
     }
 
     @Override
     public boolean playerHasProduct(UUID playerId, UUID productId) {
-        return false;
+        if (!playerPositionsCache.containsKey(playerId)) {
+            findAllByPlayer(playerId); //adds to cache
+        }
+        Set<UUID> playerProducts = playerPositionsCache.get(playerId)
+                .orElseThrow(VerifyException::new);
+        return playerProducts.contains(productId);
     }
 
     /**
