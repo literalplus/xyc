@@ -81,4 +81,17 @@ public interface IdCache<K, V> {
      * @param key the key to operate on
      */
     void invalidateKey(K key);
+
+    /**
+     * @param id the identifier to look up in the cache
+     * @return whether given identifier is currently part of a valid mapping
+     */
+    boolean containsKey(K id);
+
+    /**
+     * @param value the value to pass to the id function
+     * @return whether a mapping is currently cached for the identifier that the id function
+     * returned for given key that is {@link Object#equals(Object) equal} to given value
+     */
+    boolean containsValue(V value);
 }

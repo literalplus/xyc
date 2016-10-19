@@ -66,6 +66,7 @@ public class MapIdCache<K, V> implements IdCache<K, V> {
     }
 
     private <R extends V> K findId(R value) {
+        Preconditions.checkNotNull(value, "value");
         return Verify.verifyNotNull(idFunction.apply(value), "id function result is null for %s", value);
     }
 
@@ -101,5 +102,16 @@ public class MapIdCache<K, V> implements IdCache<K, V> {
     @Override
     public void invalidateKey(K key) {
         proxy.invalidateKey(key);
+    }
+
+    @Override
+    public boolean containsKey(K id) {
+        return proxy.containsKey(id);
+    }
+
+    @Override
+    public boolean containsValue(V value) {
+        Optional<V> result = get(findId(value));
+        return result.isPresent() && result.get().equals(value);
     }
 }

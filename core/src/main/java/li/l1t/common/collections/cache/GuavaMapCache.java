@@ -83,4 +83,9 @@ public class GuavaMapCache<K, V> implements MapCache<K, V> {
     public void invalidateKey(K key) {
         proxy.invalidate(key);
     }
+
+    @Override
+    public boolean containsKey(K key) {
+        return get(key).isPresent();
+    }
 }

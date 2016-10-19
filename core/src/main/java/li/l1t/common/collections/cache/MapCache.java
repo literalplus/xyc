@@ -72,4 +72,10 @@ public interface MapCache<K, V> {
      * @param key the key to operate on
      */
     void invalidateKey(K key);
+
+    /**
+     * @param key the key to look up in the cache
+     * @return whether given key is currently part of a valid mapping
+     */
+    boolean containsKey(K key);
 }
