@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.purchase;
@@ -29,7 +29,7 @@ import java.util.UUID;
  * @since 2016-10-10
  */
 public class SqlPurchaseRepository extends AbstractSqlLanatusRepository implements PurchaseRepository {
-    public static final String TABLE_NAME = "mt_main.lanatus_purchases";
+    public static final String TABLE_NAME = "mt_main.lanatus_purchase";
     private final IdCache<UUID, Purchase> cache = new MapIdCache<>(Identifiable::getUniqueId);
     private final JdbcPurchaseFetcher fetcher = new JdbcPurchaseFetcher(
             new JdbcPurchaseCreator(client().products()), client().sql()
