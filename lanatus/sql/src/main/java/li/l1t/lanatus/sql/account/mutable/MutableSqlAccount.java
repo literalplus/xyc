@@ -53,7 +53,7 @@ class MutableSqlAccount implements MutableAccount {
     @Override
     public void setMelonsCount(int melonsCount) {
         if (melonsCount < 0) {
-            throw new NotEnoughMelonsException(this, melonsCount);
+            throw new NotEnoughMelonsException(this, Math.abs(melonsCount));
         }
         this.melonsCount = melonsCount;
     }
