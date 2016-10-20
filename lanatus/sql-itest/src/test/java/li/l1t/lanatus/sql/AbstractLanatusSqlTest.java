@@ -13,6 +13,10 @@ package li.l1t.lanatus.sql;
 import li.l1t.common.sql.sane.SingleSql;
 import li.l1t.common.sql.sane.SqlConnected;
 import li.l1t.lanatus.api.LanatusConnected;
+import li.l1t.lanatus.api.account.MutableAccount;
+import li.l1t.lanatus.api.exception.AccountConflictException;
+
+import java.util.UUID;
 
 /**
  * Abstract base class for Lanatus-SQL tests providing commonly used methods.
@@ -35,5 +39,13 @@ public abstract class AbstractLanatusSqlTest implements LanatusConnected, SqlCon
     @Override
     public SqlLanatusClient client() {
         return client;
+    }
+
+    protected UUID givenAPlayerWithMelons(int melonsCount) throws AccountConflictException {
+        UUID playerId = UUID.randomUUID();
+        MutableAccount mutable = client().accounts().findMutable(playerId);
+        mutable.setMelonsCount(melonsCount);
+        client().accounts().save(mutable);
+        return playerId;
     }
 }

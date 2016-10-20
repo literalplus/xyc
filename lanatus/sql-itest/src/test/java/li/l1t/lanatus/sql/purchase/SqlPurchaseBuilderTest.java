@@ -137,14 +137,6 @@ public class SqlPurchaseBuilderTest extends AbstractLanatusSqlTest {
         assertThat(client().accounts().find(playerId).getMelonsCount(), is(0));
     }
 
-    private UUID givenAPlayerWithMelons(int melonsCount) throws AccountConflictException {
-        UUID playerId = UUID.randomUUID();
-        MutableAccount mutable = client().accounts().findMutable(playerId);
-        mutable.setMelonsCount(melonsCount);
-        client().accounts().save(mutable);
-        return playerId;
-    }
-
     private void thenThePlayerId(Matcher<UUID> matcher, Purchase purchase) {
         assertThat(purchase.getPlayerId(), matcher);
     }
