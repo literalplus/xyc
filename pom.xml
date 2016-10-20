@@ -1,11 +1,11 @@
 <!--
-  ~ Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+  ~ Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
   ~
   ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
   ~  copying and reverse-engineering is strictly prohibited without explicit written permission
   ~  from the original author and may result in legal steps being taken.
   ~
-  ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+  ~ See the included LICENSE file (core/src/main/resources) for details.
   -->
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,13 +22,14 @@
         <module>games</module>
         <module>games-bootstrap</module>
         <module>bootstrap-legacy</module>
+        <module>lanatus</module>
     </modules>
     <name>XYC Parent</name>
     <inceptionYear>2013</inceptionYear>
     <packaging>pom</packaging>
 
     <properties>
-        <xyc-api.version>4.1.1</xyc-api.version>
+        <xyc-api.version>4.1.2-SNAPSHOT</xyc-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
         <minecraft.version>1.8</minecraft.version>
@@ -112,12 +113,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.11</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>2.2.4</version>
@@ -150,17 +145,29 @@
                 <version>3.0.3</version>
             </dependency>
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>1.9.5</version>
-                <scope>compile</scope>
-                <!-- XYC Bukkit has some test library classes -->
-            </dependency>
-            <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-library</artifactId>
                 <version>1.3</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.5</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hamcrest</groupId>
+                        <artifactId>hamcrest-library</artifactId>
+                    </exclusion>
+                </exclusions>
+                <!-- XYC Bukkit has some test library classes -->
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>
@@ -209,6 +216,16 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>xyc-games-bootstrap</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>lanatus-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>lanatus-sql</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

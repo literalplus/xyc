@@ -9,7 +9,9 @@
   ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>li.l1t.common</groupId>
         <artifactId>xyc-parent</artifactId>
@@ -28,6 +30,18 @@
         <dependency>
             <groupId>li.l1t.common</groupId>
             <artifactId>xyc-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>li.l1t.common</groupId>
+            <artifactId>xyc-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>li.l1t.common</groupId>
+            <artifactId>lanatus-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>li.l1t.common</groupId>
+            <artifactId>lanatus-sql</artifactId>
         </dependency>
         <dependency>
             <groupId>net.md-5</groupId>
@@ -53,7 +67,7 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>li.l1t.common:xyc-core</include>
+                            <include>li.l1t.common:*</include>
                         </includes>
                     </artifactSet>
                     <relocations>
