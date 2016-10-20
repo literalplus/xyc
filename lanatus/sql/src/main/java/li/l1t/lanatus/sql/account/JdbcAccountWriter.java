@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.account;
@@ -52,17 +52,15 @@ class JdbcAccountWriter extends AbstractSqlConnected {
 
     private void createNewAccount(MutableAccount account) {
         int rowsAffected = insertRaw(
-                account.getPlayerId(), account.getMelonsCount(), account.getLastRank(),
-                findMelonDifference(account)
+                account.getPlayerId(), account.getMelonsCount(), account.getLastRank()
         );
         Verify.verify(rowsAffected == 1, "expected insert to affect single row, was: ", account, rowsAffected);
     }
 
-    private int insertRaw(UUID playerId, int melonsCount, String lastRank, int melonsDiff) {
+    private int insertRaw(UUID playerId, int melonsCount, String lastRank) {
         return sql().updateRaw("INSERT INTO " + SqlAccountRepository.TABLE_NAME + " " +
-                        "SET player_uuid=?, created=?, melons=?, lastrank=? " +
-                        "ON DUPLICATE KEY UPDATE melons=melons+?, lastrank=?",
-                playerId.toString(), Instant.now(), melonsCount, lastRank, melonsDiff, lastRank
+                        "SET player_uuid=?, created=?, melons=?, lastrank=?",
+                playerId.toString(), Instant.now(), melonsCount, lastRank
         );
     }
 
