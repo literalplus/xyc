@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -76,6 +77,78 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
         assertNotSame("refresh does not return new object", initial, refreshed);
         assertNotSame("refresh does not purge cache", initial, repo().find(PLAYER_ID));
         assertSame("refresh does not cache new object", refreshed, repo().find(PLAYER_ID));
+    }
+
+    @Test
+    public void testClearCache__single() {
+        //given
+        AccountSnapshot initial = repo().find(PLAYER_ID);
+        //when
+        repo().clearCache();
+        //then
+        assertNotSame("clear cache does not purge cache", initial, repo().find(PLAYER_ID));
+    }
+
+    @Test
+    public void testFindMutable__sameData() {
+        //given
+        AccountSnapshot snapshot = repo().find(PLAYER_ID);
+        //when
+        MutableAccount mutable = repo().findMutable(PLAYER_ID);
+        //then
+        assertNotNull(mutable);
+        assertThat(mutable.getInitialState(), is(equalTo(snapshot)));
+    }
+
+    @Test
+    public void testSave__noChanges() throws AccountConflictException {
+        //given
+        MutableAccount mutable = repo().findMutable(PLAYER_ID);
+        //when
+        repo().save(mutable);
+        //then
+        assertNotNull(mutable);
+        repo().clearCache();
+        assertThat(mutable.getInitialState(), is(equalTo(repo().find(PLAYER_ID))));
+    }
+
+    @Test
+    public void testSave__changes() throws AccountConflictException {
+        //given
+        MutableAccount mutable = repo().findMutable(PLAYER_ID);
+        mutable.modifyMelonsCount(-20);
+        //when
+        repo().save(mutable);
+        //then
+        assertNotNull(mutable);
+        repo().clearCache();
+        assertThat(repo().find(PLAYER_ID), is(equalTo(mutable)));
+    }
+
+    @Test
+    public void testSave__concurrent_changes() throws AccountConflictException {
+        //given
+        MutableAccount mutable = repo().findMutable(PLAYER_ID);
+        mutable.modifyMelonsCount(-20);
+        givenThatTheAccountWasUpdatedConcurrently(+50);
+        //when
+        repo().save(mutable);
+        //then
+        assertNotNull(mutable);
+        thenTheRemoteMelonsCountHasChangedBy(mutable, 50 - 20);
+    }
+
+    private void thenTheRemoteMelonsCountHasChangedBy(MutableAccount mutable, int expectedModifier) {
+        repo().clearCache();
+        int remoteMelonsCount = repo().find(PLAYER_ID).getMelonsCount();
+        int initialMelonsCount = mutable.getInitialState().getMelonsCount();
+        assertThat(remoteMelonsCount, is(initialMelonsCount + expectedModifier));
+    }
+
+    private void givenThatTheAccountWasUpdatedConcurrently(int modifier) throws AccountConflictException {
+        MutableAccount concurrent = repo().findMutable(PLAYER_ID);
+        concurrent.modifyMelonsCount(modifier);
+        repo().save(concurrent);
     }
 
     private SqlAccountRepository repo() {
