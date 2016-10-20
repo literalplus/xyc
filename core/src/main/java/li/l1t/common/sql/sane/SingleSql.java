@@ -1,18 +1,17 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.sql.sane;
 
 import com.google.common.base.Preconditions;
 import li.l1t.common.exception.DatabaseException;
-import li.l1t.common.exception.InternalException;
 import li.l1t.common.sql.SqlConnectable;
 import li.l1t.common.sql.sane.connection.ConnectionManager;
 import li.l1t.common.sql.sane.connection.SimpleConnectionManager;
@@ -23,7 +22,6 @@ import li.l1t.common.sql.sane.result.SimpleQueryResult;
 import li.l1t.common.sql.sane.result.SimpleUpdateResult;
 import li.l1t.common.sql.sane.result.UpdateResult;
 import li.l1t.common.sql.sane.scoped.JdbcScopedSession;
-import li.l1t.common.sql.sane.scoped.ScopedSession;
 import li.l1t.common.sql.sane.scoped.ScopedSessionManager;
 import li.l1t.common.sql.sane.statement.GeneratedKeysStatementProvider;
 import li.l1t.common.sql.sane.statement.SimpleStatementProvider;
@@ -107,14 +105,7 @@ public class SingleSql implements SaneSql {
         return generatedKeysStatementProvider.create(sqlQuery, params);
     }
 
-    /**
-     * Gets the current session used by the current thread if a session scope already exists or
-     * crates a new session and scope otherwise. <p><b>Important:</b> Refer to the {@link
-     * ScopedSession} class JavaDoc for important information regarding safe usage.</p>
-     *
-     * @return a scoped session
-     * @throws InternalException if the session lock cannot be obtained
-     */
+    @Override
     public JdbcScopedSession scoped() {
         return scopedSessionManager.scoped();
     }
