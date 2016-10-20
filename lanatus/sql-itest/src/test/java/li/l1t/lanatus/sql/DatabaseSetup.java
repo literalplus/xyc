@@ -61,8 +61,8 @@ public class DatabaseSetup extends ExternalResource implements SqlConnected {
     }
 
     private String findFlywaysPropertiesPath() {
-        String currentDirectoryName = new File("").getName();
-        if (currentDirectoryName.equals("sql-itest")) {
+        String currentDirectoryName = new File("").getAbsoluteFile().getName();
+        if ("sql-itest".equals(currentDirectoryName)) {
             return "./flyway.properties";
         } else {
             return "./lanatus/sql-itest/flyway.properties"; //running tests in IntelliJ IDEA

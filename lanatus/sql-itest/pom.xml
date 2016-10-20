@@ -20,6 +20,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>lanatus-sql-itest</artifactId>
+    <name>Lanatus SQL Client Integration Tests</name>
+    <description>
+        Integration Tests for the Lanatus SQL Client, using Flyway and H2 as backend.
+    </description>
 
     <dependencies>
         <dependency>
