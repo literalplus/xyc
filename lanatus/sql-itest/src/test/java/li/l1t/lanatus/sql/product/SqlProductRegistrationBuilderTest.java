@@ -10,13 +10,11 @@
 
 package li.l1t.lanatus.sql.product;
 
-import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRegistrationBuilder;
 import li.l1t.lanatus.sql.AbstractLanatusSqlTest;
 import org.hamcrest.Matcher;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.UUID;
@@ -38,24 +36,11 @@ import static org.junit.Assume.assumeTrue;
  * @since 2016-10-20
  */
 public class SqlProductRegistrationBuilderTest extends AbstractLanatusSqlTest {
-    private static final UUID PRODUCT_ID = UUID.randomUUID();
     private static final String OTHER_MODULE = "xyc-it-something";
     private static final String SOME_DISPLAY_NAME = "display name";
     private static final String SOME_DESCRIPTION = "description";
     private static final String SOME_ICON_NAME = "melon";
     private static final int SOME_MELONS_COST = 420;
-
-    @BeforeClass
-    public static void setupSampleData() throws AccountConflictException {
-//        SqlLanatusClient client = createClient();
-//        client.products().registration(PRODUCT_ID)
-//                .inThisModule()
-//                .withDisplayName("testing products")
-//                .withDescription("a test product")
-//                .withIcon("melon")
-//                .withMelonsCost(1)
-//                .register();
-    }
 
     @Test
     public void testRegister__minimal() {
