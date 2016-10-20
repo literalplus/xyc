@@ -25,8 +25,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>lanatus-api</artifactId>
+            <groupId>li.l1t.common</groupId>
+            <artifactId>xyc-api</artifactId>
         </dependency>
         <dependency>
             <groupId>li.l1t.common</groupId>

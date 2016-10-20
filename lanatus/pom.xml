@@ -25,7 +25,6 @@
     <description>The parent project for all official Lanatus modules.</description>
 
     <modules>
-        <module>api</module>
         <module>sql</module>
         <module>sql-itest</module>
     </modules>
