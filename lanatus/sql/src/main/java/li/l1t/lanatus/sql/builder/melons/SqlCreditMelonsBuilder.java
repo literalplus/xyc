@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
 import li.l1t.common.exception.DatabaseException;
 import li.l1t.lanatus.api.LanatusClient;
 import li.l1t.lanatus.api.LanatusConnected;
-import li.l1t.lanatus.api.builder.melons.CreditMelonsBuilder;
+import li.l1t.lanatus.api.builder.CreditMelonsBuilder;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.sql.SqlLanatusClient;
 

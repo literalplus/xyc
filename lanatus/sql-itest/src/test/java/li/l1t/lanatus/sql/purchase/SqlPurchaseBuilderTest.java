@@ -11,7 +11,7 @@
 package li.l1t.lanatus.sql.purchase;
 
 import li.l1t.lanatus.api.account.MutableAccount;
-import li.l1t.lanatus.api.builder.purchase.PurchaseBuilder;
+import li.l1t.lanatus.api.builder.PurchaseBuilder;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.api.exception.NotEnoughMelonsException;
 import li.l1t.lanatus.api.product.Product;

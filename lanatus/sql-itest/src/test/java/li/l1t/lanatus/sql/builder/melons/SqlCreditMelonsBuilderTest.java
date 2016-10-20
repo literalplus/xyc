@@ -10,7 +10,7 @@
 
 package li.l1t.lanatus.sql.builder.melons;
 
-import li.l1t.lanatus.api.builder.melons.CreditMelonsBuilder;
+import li.l1t.lanatus.api.builder.CreditMelonsBuilder;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.api.purchase.Purchase;
 import li.l1t.lanatus.sql.AbstractLanatusSqlTest;

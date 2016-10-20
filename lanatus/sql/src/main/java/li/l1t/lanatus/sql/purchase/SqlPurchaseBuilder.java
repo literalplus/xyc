@@ -17,7 +17,7 @@ import li.l1t.common.sql.sane.SqlConnected;
 import li.l1t.common.sql.sane.scoped.ScopedSession;
 import li.l1t.lanatus.api.LanatusConnected;
 import li.l1t.lanatus.api.account.MutableAccount;
-import li.l1t.lanatus.api.builder.purchase.PurchaseBuilder;
+import li.l1t.lanatus.api.builder.PurchaseBuilder;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;

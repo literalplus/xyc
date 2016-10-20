@@ -11,7 +11,7 @@
 package li.l1t.lanatus.sql.position;
 
 import li.l1t.lanatus.api.account.MutableAccount;
-import li.l1t.lanatus.api.builder.purchase.PurchaseBuilder;
+import li.l1t.lanatus.api.builder.PurchaseBuilder;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.product.Product;
