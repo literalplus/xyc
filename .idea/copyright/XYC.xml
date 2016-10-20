@@ -1,8 +1,8 @@
 <component name="CopyrightManager">
   <copyright>
-    <option name="notice" value="Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.&#10;&#10;Any usage, including, but not limited to, compiling, running, redistributing, printing,&#10; copying and reverse-engineering is strictly prohibited without explicit written permission&#10; from the original author and may result in legal steps being taken.&#10;&#10;See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details." />
+    <option name="notice" value="Copyright (c) 2013 - &amp;#36;{today.year} xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.&#10;&#10;Any usage, including, but not limited to, compiling, running, redistributing, printing,&#10; copying and reverse-engineering is strictly prohibited without explicit written permission&#10; from the original author and may result in legal steps being taken.&#10;&#10;See the included LICENSE file (core/src/main/resources) for details." />
     <option name="keyword" value="Copyright" />
-    <option name="allowReplaceKeyword" value="" />
+    <option name="allowReplaceKeyword" value="Copyright (c) 2013 -" />
     <option name="myName" value="XYC" />
     <option name="myLocal" value="true" />
   </copyright>
