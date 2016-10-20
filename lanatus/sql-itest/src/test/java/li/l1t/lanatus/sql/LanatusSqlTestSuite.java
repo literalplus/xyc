@@ -13,6 +13,7 @@ package li.l1t.lanatus.sql;
 import li.l1t.lanatus.sql.account.SqlAccountRepositoryTest;
 import li.l1t.lanatus.sql.product.SqlProductRegistrationBuilderTest;
 import li.l1t.lanatus.sql.product.SqlProductRepositoryTest;
+import li.l1t.lanatus.sql.purchase.SqlPurchaseBuilderTest;
 import li.l1t.lanatus.sql.purchase.SqlPurchaseRepositoryTest;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         SqlAccountRepositoryTest.class,
         SqlProductRepositoryTest.class, SqlProductRegistrationBuilderTest.class,
-        SqlPurchaseRepositoryTest.class
+        SqlPurchaseRepositoryTest.class, SqlPurchaseBuilderTest.class
 })
 public class LanatusSqlTestSuite {
     @ClassRule
