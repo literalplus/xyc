@@ -20,7 +20,9 @@ import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.Instant;
 
 /**
  * Abstract base class for JDBC statement providers relying on {@link ConnectionProvider}
@@ -67,6 +69,9 @@ abstract class AbstractStatementProvider implements StatementProvider {
     private void setStatementParameter(@Nonnull PreparedStatement statement, int parameterNumber, Object parameter) throws SQLException {
         if (parameter == null) {
             statement.setNull(parameterNumber, Types.OTHER);
+        } else if (parameter instanceof Instant) {
+            long epochMilli = ((Instant) parameter).toEpochMilli();
+            statement.setTimestamp(parameterNumber, new Timestamp(epochMilli));
         } else {
             statement.setObject(parameterNumber, parameter);
         }
