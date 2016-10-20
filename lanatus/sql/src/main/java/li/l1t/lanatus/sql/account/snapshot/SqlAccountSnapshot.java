@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.account.snapshot;
@@ -23,13 +23,19 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-29
  */
-class SqlAccountSnapshot implements AccountSnapshot {
+public class SqlAccountSnapshot implements AccountSnapshot {
     private final Instant snapshotInstant = Instant.now();
     private final UUID playerId;
     private final int melonsCount;
     private final String lastRank;
+    private final boolean existed;
 
-    public SqlAccountSnapshot(UUID playerId, int melonsCount, String lastRank) {
+    SqlAccountSnapshot(UUID playerId, int melonsCount, String lastRank) {
+        this(playerId, melonsCount, lastRank, true);
+    }
+
+    SqlAccountSnapshot(UUID playerId, int melonsCount, String lastRank, boolean existed) {
+        this.existed = existed;
         Preconditions.checkNotNull(playerId, "playerId");
         this.playerId = playerId;
         this.melonsCount = melonsCount;
@@ -60,6 +66,13 @@ class SqlAccountSnapshot implements AccountSnapshot {
     public boolean isDefault() {
         return lastRank.equals(AccountSnapshot.DEFAULT_RANK) &&
                 melonsCount == AccountSnapshot.INITIAL_MELONS_COUNT;
+    }
+
+    /**
+     * @return whether the account existed at the time the snapshot was made
+     */
+    public boolean existed() {
+        return existed;
     }
 
     @Override

@@ -17,6 +17,7 @@ import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.lanatus.api.account.AccountSnapshot;
 import li.l1t.lanatus.api.account.MutableAccount;
 import li.l1t.lanatus.api.exception.AccountConflictException;
+import li.l1t.lanatus.sql.account.snapshot.SqlAccountSnapshot;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -29,21 +30,21 @@ import java.util.UUID;
  * @since 2016-10-07
  */
 class JdbcAccountWriter extends AbstractSqlConnected {
-    private final JdbcAccountFetcher<AccountSnapshot> snapshotFetcher;
+    private final JdbcAccountFetcher<SqlAccountSnapshot> snapshotFetcher;
 
-    JdbcAccountWriter(SaneSql sql, JdbcAccountFetcher<AccountSnapshot> snapshotFetcher) {
+    JdbcAccountWriter(SaneSql sql, JdbcAccountFetcher<SqlAccountSnapshot> snapshotFetcher) {
         super(sql);
         this.snapshotFetcher = snapshotFetcher;
     }
 
     public void write(MutableAccount account) throws AccountConflictException {
         Preconditions.checkNotNull(account, "account");
-        AccountSnapshot currentSnapshot = snapshotFetcher.fetchSingle(account.getPlayerId());
+        SqlAccountSnapshot currentSnapshot = snapshotFetcher.fetchSingle(account.getPlayerId());
         attemptWrite(account, currentSnapshot);
     }
 
-    private void attemptWrite(MutableAccount account, AccountSnapshot currentSnapshot) throws AccountConflictException {
-        if (currentSnapshot.isDefault()) {
+    private void attemptWrite(MutableAccount account, SqlAccountSnapshot currentSnapshot) throws AccountConflictException {
+        if (!currentSnapshot.existed()) {
             createNewAccount(account);
         } else if (localCopyIsDifferentFromRemote(account, currentSnapshot)) {
             attemptUpdate(account, currentSnapshot);

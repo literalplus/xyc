@@ -20,6 +20,7 @@ import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
 import li.l1t.lanatus.sql.account.mutable.MutableAccountFactory;
 import li.l1t.lanatus.sql.account.snapshot.AccountSnapshotFactory;
+import li.l1t.lanatus.sql.account.snapshot.SqlAccountSnapshot;
 
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ import java.util.UUID;
 public class SqlAccountRepository extends AbstractSqlLanatusRepository implements AccountRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_player";
     private final AccountSnapshotFactory snapshotFactory = new AccountSnapshotFactory();
-    private final JdbcAccountFetcher<AccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
+    private final JdbcAccountFetcher<SqlAccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(snapshotFactory),
             client().sql()
     );

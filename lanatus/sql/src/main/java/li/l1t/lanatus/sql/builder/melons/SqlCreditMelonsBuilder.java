@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.builder.melons;
@@ -48,7 +48,7 @@ public class SqlCreditMelonsBuilder implements CreditMelonsBuilder, LanatusConne
         Product product = findOrRegisterProduct();
         client().startPurchase(playerId)
                 .withProduct(product)
-                .withMelonsCost(melonsCount)
+                .withMelonsCost(melonsCount * -1)
                 .withComment(comment)
                 .build();
         executed = true;
