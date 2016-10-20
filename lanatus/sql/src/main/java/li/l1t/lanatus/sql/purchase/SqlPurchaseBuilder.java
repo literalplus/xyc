@@ -85,7 +85,9 @@ public class SqlPurchaseBuilder implements PurchaseBuilder, LanatusConnected, Sq
             MutableAccount account = client().accounts().findMutable(playerId); //needs to exist for purchase
             account.modifyMelonsCount(purchase.getMelonsCost() * -1);
             client().accounts().save(account);
-            client().positions().createFromPurchase(purchase);
+            if (product.isPermanent()) {
+                client().positions().createFromPurchase(purchase);
+            }
             scoped.commitIfLast();
             this.purchase = purchase; //don't mess up hasBeenBuilt() if a method throws an exception above
         } catch (AccountConflictException e) {
