@@ -92,7 +92,7 @@ class JdbcAccountWriter extends AbstractSqlConnected {
         return sql().updateRaw("UPDATE " + SqlAccountRepository.TABLE_NAME + " " +
                         "SET melons=melons+?, lastrank=?" +
                         "WHERE player_uuid=?",
-                melonsDiff, lastRank, playerId.toString(), lastRank
+                melonsDiff, lastRank, playerId.toString()
         );
     }
 
