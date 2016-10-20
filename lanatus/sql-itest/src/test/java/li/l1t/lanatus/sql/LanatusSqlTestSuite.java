@@ -12,6 +12,8 @@ package li.l1t.lanatus.sql;
 
 import li.l1t.lanatus.sql.account.SqlAccountRepositoryTest;
 import li.l1t.lanatus.sql.builder.melons.SqlCreditMelonsBuilderTest;
+import li.l1t.lanatus.sql.position.SqlPositionRepositoryTest;
+import li.l1t.lanatus.sql.product.SqlProductQueryBuilderTest;
 import li.l1t.lanatus.sql.product.SqlProductRegistrationBuilderTest;
 import li.l1t.lanatus.sql.product.SqlProductRepositoryTest;
 import li.l1t.lanatus.sql.purchase.SqlPurchaseBuilderTest;
@@ -30,7 +32,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         SqlAccountRepositoryTest.class,
-        SqlProductRepositoryTest.class, SqlProductRegistrationBuilderTest.class,
+        SqlPositionRepositoryTest.class,
+        SqlProductRepositoryTest.class, SqlProductRegistrationBuilderTest.class, SqlProductQueryBuilderTest.class,
         SqlPurchaseRepositoryTest.class, SqlPurchaseBuilderTest.class,
         SqlCreditMelonsBuilderTest.class
 })
