@@ -1,0 +1,2 @@
+-- Changes Lanatus product names to be unique over all modules
+-- no indexes :(
