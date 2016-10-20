@@ -11,6 +11,7 @@
 package li.l1t.lanatus.sql;
 
 import li.l1t.lanatus.sql.account.SqlAccountRepositoryTest;
+import li.l1t.lanatus.sql.product.SqlProductRepositoryTest;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -23,7 +24,9 @@ import org.junit.runners.Suite;
  * @since 2016-10-20
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SqlAccountRepositoryTest.class})
+@Suite.SuiteClasses({
+        SqlAccountRepositoryTest.class, SqlProductRepositoryTest.class
+})
 public class LanatusSqlTestSuite {
     @ClassRule
     public static final DatabaseSetup SETUP = new DatabaseSetup();
