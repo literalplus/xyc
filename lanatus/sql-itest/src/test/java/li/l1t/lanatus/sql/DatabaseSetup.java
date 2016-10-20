@@ -49,7 +49,6 @@ public class DatabaseSetup extends ExternalResource implements SqlConnected {
     private void runFlywayMigration(Properties flywayProperties) throws IOException {
         Flyway flyway = new Flyway();
         flyway.configure(flywayProperties);
-        flyway.clean();
         flyway.migrate();
     }
 
@@ -76,7 +75,7 @@ public class DatabaseSetup extends ExternalResource implements SqlConnected {
     }
 
     private SqlConnectable credentialsFrom(Properties flywayProperties) {
-        String jdbcUrl = flywayProperties.getProperty("flyway.url");
+        String jdbcUrl = flywayProperties.getProperty("junit.url");
         return SqlConnectables.fromCredentials(jdbcUrl, "mt_main", "", "");
     }
 
