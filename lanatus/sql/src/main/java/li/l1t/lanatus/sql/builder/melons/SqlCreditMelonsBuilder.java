@@ -66,7 +66,6 @@ public class SqlCreditMelonsBuilder implements CreditMelonsBuilder, LanatusConne
 
     @Override
     public CreditMelonsBuilder withMelonsCount(int melonsCount) {
-        Preconditions.checkArgument(melonsCount >= 0, "melonsCount must not be negative");
         this.melonsCount = melonsCount;
         return this;
     }
