@@ -1,19 +1,20 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.product;
 
 import com.google.common.base.Preconditions;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +25,8 @@ import java.util.stream.Collectors;
  */
 class ProductQuery {
     private final SqlProductQueryBuilder builder;
-    private final Map<String, Object> conditions = new HashMap<>();
+    private final List<String> andConditions = new ArrayList<>(3);
+    private final List<Object> parameters = new ArrayList<>();
     private String whereClause = "";
 
     ProductQuery(SqlProductQueryBuilder builder) {
@@ -35,7 +37,7 @@ class ProductQuery {
 
     private void compile() {
         compileConditionsFrom(builder);
-        String whereConditions = conditions.keySet().stream()
+        String whereConditions = andConditions.stream()
                 .collect(Collectors.joining(" AND "));
         if (!whereConditions.isEmpty()) {
             whereClause = "WHERE " + whereConditions;
@@ -43,16 +45,26 @@ class ProductQuery {
     }
 
     private void compileConditionsFrom(SqlProductQueryBuilder builder) {
-        Preconditions.checkState(conditions.isEmpty(), "conditions already compiled!");
+        Preconditions.checkState(andConditions.isEmpty(), "conditions already compiled!");
         if (builder.getModule() != null) {
-            conditions.put("module = ?", builder.getModule());
+            addCondition("module = ?", builder.getModule());
         }
-        if (builder.getName() != null) {
-            conditions.put("name = ?", builder.getName());
+        if (!builder.getSearchTerm().isEmpty()) {
+            addCondition(
+                    "module LIKE CONCAT('%', ?, '%') OR " +
+                            "displayname LIKE CONCAT('%', ?, '%') OR " +
+                            "description LIKE CONCAT('%', ?, '%')",
+                    builder.getSearchTerm(), builder.getSearchTerm(), builder.getSearchTerm()
+            );
         }
         if (builder.isActiveOnly()) {
-            conditions.put("active = ?", true);
+            addCondition("active = ?", true);
         }
+    }
+
+    private void addCondition(String whereClause, Object... params) {
+        andConditions.add(whereClause);
+        Arrays.stream(params).forEach(parameters::add);
     }
 
     public String getWhereClause() {
@@ -60,6 +72,6 @@ class ProductQuery {
     }
 
     public Object[] getParameters() {
-        return conditions.values().toArray(new Object[conditions.size()]);
+        return parameters.toArray(new Object[parameters.size()]);
     }
 }

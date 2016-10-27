@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.product;
@@ -15,6 +15,7 @@ import li.l1t.lanatus.api.LanatusClient;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductQueryBuilder;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Collection;
 class SqlProductQueryBuilder implements ProductQueryBuilder {
     private final SqlProductRepository repository;
     private String module = null;
-    private String name = null;
+    private String searchTerm = "";
     private boolean activeOnly = false;
 
     SqlProductQueryBuilder(SqlProductRepository repository) {
@@ -51,7 +52,14 @@ class SqlProductQueryBuilder implements ProductQueryBuilder {
 
     @Override
     public ProductQueryBuilder withName(String nameFilter) {
-        name = nameFilter;
+        //no longer supported - deprecated
+        return this;
+    }
+
+    @Override
+    public ProductQueryBuilder containing(@Nonnull String searchTerm) {
+        Preconditions.checkNotNull(searchTerm, "searchTerm");
+        this.searchTerm = searchTerm;
         return this;
     }
 
@@ -70,8 +78,8 @@ class SqlProductQueryBuilder implements ProductQueryBuilder {
         return module;
     }
 
-    String getName() {
-        return name;
+    String getSearchTerm() {
+        return searchTerm;
     }
 
     boolean isActiveOnly() {
