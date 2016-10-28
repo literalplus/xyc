@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.sql.purchase;
 
+import com.google.common.base.Preconditions;
 import li.l1t.common.collections.cache.IdCache;
 import li.l1t.common.collections.cache.MapIdCache;
 import li.l1t.common.misc.Identifiable;
@@ -52,5 +53,13 @@ public class SqlPurchaseRepository extends AbstractSqlLanatusRepository implemen
     @Override
     public void clearCache() {
         cache.clear();
+    }
+
+    @Override
+    public void clearCachesFor(UUID playerId) {
+        Preconditions.checkNotNull(playerId, "playerId");
+        cache.stream()
+                .filter(purchase -> purchase.getPlayerId().equals(playerId))
+                .forEach(cache::invalidateValue);
     }
 }

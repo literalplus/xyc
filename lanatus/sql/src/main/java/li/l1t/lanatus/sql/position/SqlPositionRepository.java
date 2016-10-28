@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.position;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 public class SqlPositionRepository extends AbstractSqlLanatusRepository implements PositionRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_position";
-    private final OptionalCache<UUID, Position> cache = new OptionalGuavaCache<>();
+    private final OptionalCache<UUID, Position> purchasePositionCache = new OptionalGuavaCache<>();
     private final JdbcPositionFetcher fetcher = new JdbcPositionFetcher(
             new JdbcPositionCreator(client().products()), client().sql()
     );
@@ -51,7 +51,7 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
 
     @Override
     public Optional<Position> findByPurchase(UUID purchaseId) {
-        return cache.getOrCompute(purchaseId, fetcher::fetchByPurchase);
+        return purchasePositionCache.getOrCompute(purchaseId, fetcher::fetchByPurchase);
     }
 
     @Override
@@ -89,6 +89,15 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
 
     @Override
     public void clearCache() {
-        cache.clear();
+        purchasePositionCache.clear();
+    }
+
+    @Override
+    public void clearCachesFor(UUID playerId) {
+        playerPositionsCache.get(playerId)
+                .ifPresent(set -> set.forEach(purchasePositionCache::invalidateKey));
+        //we don't need to scan the player caches for references to ^ because positions only belong
+        //to a single player, the player we're clearing v
+        playerPositionsCache.invalidateKey(playerId);
     }
 }

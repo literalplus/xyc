@@ -61,11 +61,6 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     }
 
     @Override
-    public void clearCache() {
-        snapshotCache.clear();
-    }
-
-    @Override
     public MutableAccount findMutable(UUID playerId) {
         return mutableFetcher.fetchSingle(playerId);
     }
@@ -74,5 +69,15 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     public void save(MutableAccount localCopy) throws AccountConflictException {
         accountWriter.write(localCopy);
         snapshotCache.invalidateKey(localCopy.getPlayerId());
+    }
+
+    @Override
+    public void clearCache() {
+        snapshotCache.clear();
+    }
+
+    @Override
+    public void clearCachesFor(UUID playerId) {
+        snapshotCache.invalidateKey(playerId);
     }
 }

@@ -12,6 +12,7 @@ package li.l1t.lanatus.sql;
 
 import li.l1t.common.sql.sane.AbstractSqlConnected;
 import li.l1t.common.sql.sane.SaneSql;
+import li.l1t.lanatus.api.LanatusCache;
 import li.l1t.lanatus.api.LanatusClient;
 import li.l1t.lanatus.api.builder.CreditMelonsBuilder;
 import li.l1t.lanatus.sql.account.SqlAccountRepository;
@@ -22,6 +23,7 @@ import li.l1t.lanatus.sql.purchase.SqlPurchaseBuilder;
 import li.l1t.lanatus.sql.purchase.SqlPurchaseRepository;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * An implementation of a Lanatus client using a SQL database as backend.
@@ -80,5 +82,22 @@ public class SqlLanatusClient extends AbstractSqlConnected implements LanatusCli
     @Override
     public CreditMelonsBuilder creditMelons(UUID playerId) {
         return new SqlCreditMelonsBuilder(playerId, this);
+    }
+
+    @Override
+    public void clearCache() {
+        forAllCaches(LanatusCache::clearCache);
+    }
+
+    @Override
+    public void clearCachesFor(UUID playerId) {
+        forAllCaches(cache -> cache.clearCachesFor(playerId));
+    }
+
+    private void forAllCaches(Consumer<LanatusCache> consumer) {
+        consumer.accept(accountRepository);
+        consumer.accept(positionRepository);
+        consumer.accept(purchaseRepository);
+        consumer.accept(productRepository);
     }
 }
