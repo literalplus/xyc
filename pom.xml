@@ -8,7 +8,9 @@
   ~ See the included LICENSE file (core/src/main/resources) for details.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>li.l1t.common</groupId>
     <artifactId>xyc-parent</artifactId>
@@ -27,7 +29,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <xyc-api.version>4.2.1</xyc-api.version>
+        <xyc-api.version>4.2.2</xyc-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
         <minecraft.version>1.8</minecraft.version>

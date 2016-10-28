@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.collections.cache;
@@ -13,9 +13,11 @@ package li.l1t.common.collections.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Caches mappings from one thing to another thing, wrapping Guava's {@link Cache} class with an
@@ -87,5 +89,20 @@ public class GuavaMapCache<K, V> implements MapCache<K, V> {
     @Override
     public boolean containsKey(K key) {
         return get(key).isPresent();
+    }
+
+    @Override
+    public Stream<Map.Entry<K, V>> entryStream() {
+        return proxy.asMap().entrySet().stream();
+    }
+
+    @Override
+    public Stream<V> valueStream() {
+        return proxy.asMap().values().stream();
+    }
+
+    @Override
+    public Stream<K> keyStream() {
+        return proxy.asMap().keySet().stream();
     }
 }
