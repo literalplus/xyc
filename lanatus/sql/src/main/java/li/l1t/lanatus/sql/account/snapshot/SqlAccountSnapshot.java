@@ -63,14 +63,6 @@ public class SqlAccountSnapshot implements AccountSnapshot {
     }
 
     @Override
-    public boolean isDefault() {
-        return lastRank.equals(AccountSnapshot.DEFAULT_RANK) &&
-                melonsCount == AccountSnapshot.INITIAL_MELONS_COUNT;
-    }
-
-    /**
-     * @return whether the account existed at the time the snapshot was made
-     */
     public boolean existed() {
         return existed;
     }
@@ -78,6 +70,7 @@ public class SqlAccountSnapshot implements AccountSnapshot {
     @Override
     public String toString() {
         return "SqlAccountSnapshot{" +
+                (existed ? "[new] " : "") +
                 playerId +
                 " was '" + lastRank +
                 "' with " + melonsCount +

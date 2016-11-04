@@ -10,8 +10,8 @@
 
 package li.l1t.lanatus.sql.account;
 
-import li.l1t.common.collections.cache.IdCache;
-import li.l1t.common.collections.cache.MapIdCache;
+import li.l1t.common.collections.cache.OptionalCache;
+import li.l1t.common.collections.cache.OptionalGuavaCache;
 import li.l1t.lanatus.api.account.AccountRepository;
 import li.l1t.lanatus.api.account.AccountSnapshot;
 import li.l1t.lanatus.api.account.MutableAccount;
@@ -20,8 +20,8 @@ import li.l1t.lanatus.sql.AbstractSqlLanatusRepository;
 import li.l1t.lanatus.sql.SqlLanatusClient;
 import li.l1t.lanatus.sql.account.mutable.MutableAccountFactory;
 import li.l1t.lanatus.sql.account.snapshot.AccountSnapshotFactory;
-import li.l1t.lanatus.sql.account.snapshot.SqlAccountSnapshot;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -33,11 +33,11 @@ import java.util.UUID;
 public class SqlAccountRepository extends AbstractSqlLanatusRepository implements AccountRepository {
     public static final String TABLE_NAME = "mt_main.lanatus_player";
     private final AccountSnapshotFactory snapshotFactory = new AccountSnapshotFactory();
-    private final JdbcAccountFetcher<SqlAccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
+    private final JdbcAccountFetcher<AccountSnapshot> snapshotFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(snapshotFactory),
             client().sql()
     );
-    private final IdCache<UUID, AccountSnapshot> snapshotCache = new MapIdCache<>(AccountSnapshot::getPlayerId);
+    private final OptionalCache<UUID, AccountSnapshot> snapshotCache = new OptionalGuavaCache<>();
     private final JdbcAccountFetcher<MutableAccount> mutableFetcher = new JdbcAccountFetcher<>(
             new JdbcAccountCreator<>(new MutableAccountFactory()),
             client().sql()
@@ -49,20 +49,30 @@ public class SqlAccountRepository extends AbstractSqlLanatusRepository implement
     }
 
     @Override
-    public AccountSnapshot find(UUID playerId) {
-        return snapshotCache.getOrCompute(playerId, snapshotFetcher::fetchSingle);
+    public Optional<AccountSnapshot> find(UUID playerId) {
+        return getOrFetchSnapshot(playerId);
+    }
+
+    @Override
+    public AccountSnapshot findOrDefault(UUID playerId) {
+        return getOrFetchSnapshot(playerId)
+                .orElseGet(() -> snapshotFactory.defaultInstance(playerId));
+    }
+
+    private Optional<AccountSnapshot> getOrFetchSnapshot(UUID playerId) {
+        return snapshotCache.getOrCompute(playerId, snapshotFetcher::fetchOptionally);
     }
 
     @Override
     public AccountSnapshot refresh(AccountSnapshot account) {
         UUID playerId = account.getPlayerId();
         snapshotCache.invalidateKey(playerId);
-        return find(playerId);
+        return findOrDefault(playerId);
     }
 
     @Override
     public MutableAccount findMutable(UUID playerId) {
-        return mutableFetcher.fetchSingle(playerId);
+        return mutableFetcher.fetchOrDefault(playerId);
     }
 
     @Override

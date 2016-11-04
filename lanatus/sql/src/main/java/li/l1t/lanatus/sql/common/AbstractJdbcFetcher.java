@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.lanatus.sql.common;
@@ -25,9 +25,9 @@ import java.util.Collection;
  * @since 2016-10-10
  */
 public abstract class AbstractJdbcFetcher<T> extends AbstractSqlConnected {
-    protected final JdbcEntityCreator<T> creator;
+    protected final JdbcEntityCreator<? extends T> creator;
 
-    public AbstractJdbcFetcher(JdbcEntityCreator<T> creator, SaneSql saneSql) {
+    public AbstractJdbcFetcher(JdbcEntityCreator<? extends T> creator, SaneSql saneSql) {
         super(saneSql);
         this.creator = creator;
     }

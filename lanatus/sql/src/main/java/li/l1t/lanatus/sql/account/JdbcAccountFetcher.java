@@ -18,6 +18,7 @@ import li.l1t.lanatus.api.account.LanatusAccount;
 import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -27,19 +28,24 @@ import java.util.UUID;
  * @since 2016-09-29
  */
 class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractJdbcFetcher<T> {
-    private final JdbcAccountCreator<T> creator;
+    private final JdbcAccountCreator<? extends T> creator;
 
-    public JdbcAccountFetcher(JdbcAccountCreator<T> creator, SaneSql sql) {
+    public JdbcAccountFetcher(JdbcAccountCreator<? extends T> creator, SaneSql sql) {
         super(creator, sql);
         this.creator = creator;
     }
 
-    public T fetchSingle(UUID playerId) throws InternalException {
+    public T fetchOrDefault(UUID playerId) throws InternalException {
+        return fetchOptionally(playerId)
+                .orElseGet(() -> creator.createDefault(playerId));
+    }
+
+    public Optional<T> fetchOptionally(UUID playerId) throws InternalException {
         try (QueryResult qr = fetchSingleAccount(playerId)) {
             if (proceedToFirstRow(qr)) {
-                return creator.createFromCurrentRow(qr.rs());
+                return Optional.of(creator.createFromCurrentRow(qr.rs()));
             } else {
-                return creator.createDefault(playerId);
+                return Optional.empty();
             }
         } catch (SQLException e) {
             throw InternalException.wrap(e);
