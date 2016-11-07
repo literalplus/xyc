@@ -51,7 +51,7 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
     public void testFind__basic() {
         //given PLAYER_ID
         //when
-        AccountSnapshot firstSnapshot = repo().find(PLAYER_ID);
+        AccountSnapshot firstSnapshot = findAccount(PLAYER_ID);
         //then
         assertNotNull("firstSnapshot", firstSnapshot);
         assertThat("rank does not match expected", firstSnapshot.getLastRank(), is(EXPECTED_RANK));
@@ -61,8 +61,8 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
     public void testFind__caching() {
         //given PLAYER_ID
         //when
-        AccountSnapshot first = repo().find(PLAYER_ID);
-        AccountSnapshot second = repo().find(PLAYER_ID);
+        AccountSnapshot first = findAccount(PLAYER_ID);
+        AccountSnapshot second = findAccount(PLAYER_ID);
         //then
         assertSame("cache does not return the same object every time", first, second);
     }
@@ -70,29 +70,29 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
     @Test
     public void testRefresh__notSame() {
         //given
-        AccountSnapshot initial = repo().find(PLAYER_ID);
+        AccountSnapshot initial = findAccount(PLAYER_ID);
         //when
         AccountSnapshot refreshed = repo().refresh(initial);
         //then
         assertNotSame("refresh does not return new object", initial, refreshed);
-        assertNotSame("refresh does not purge cache", initial, repo().find(PLAYER_ID));
-        assertSame("refresh does not cache new object", refreshed, repo().find(PLAYER_ID));
+        assertNotSame("refresh does not purge cache", initial, findAccount(PLAYER_ID));
+        assertSame("refresh does not cache new object", refreshed, findAccount(PLAYER_ID));
     }
 
     @Test
     public void testClearCache__single() {
         //given
-        AccountSnapshot initial = repo().find(PLAYER_ID);
+        AccountSnapshot initial = findAccount(PLAYER_ID);
         //when
         repo().clearCache();
         //then
-        assertNotSame("clear cache does not purge cache", initial, repo().find(PLAYER_ID));
+        assertNotSame("clear cache does not purge cache", initial, findAccount(PLAYER_ID));
     }
 
     @Test
     public void testFindMutable__sameData() {
         //given
-        AccountSnapshot snapshot = repo().find(PLAYER_ID);
+        AccountSnapshot snapshot = findAccount(PLAYER_ID);
         //when
         MutableAccount mutable = repo().findMutable(PLAYER_ID);
         //then
@@ -109,7 +109,7 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
         //then
         assertNotNull(mutable);
         repo().clearCache();
-        assertThat(mutable.getInitialState(), is(equalTo(repo().find(PLAYER_ID))));
+        assertThat(mutable.getInitialState(), is(equalTo(findAccount(PLAYER_ID))));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
         //then
         assertNotNull(mutable);
         repo().clearCache();
-        assertThat(repo().find(PLAYER_ID), is(equalTo(mutable)));
+        assertThat(findAccount(PLAYER_ID), is(equalTo(mutable)));
     }
 
     @Test
@@ -140,7 +140,7 @@ public class SqlAccountRepositoryTest extends AbstractLanatusSqlTest {
 
     private void thenTheRemoteMelonsCountHasChangedBy(MutableAccount mutable, int expectedModifier) {
         repo().clearCache();
-        int remoteMelonsCount = repo().find(PLAYER_ID).getMelonsCount();
+        int remoteMelonsCount = findAccount(PLAYER_ID).getMelonsCount();
         int initialMelonsCount = mutable.getInitialState().getMelonsCount();
         assertThat(remoteMelonsCount, is(initialMelonsCount + expectedModifier));
     }

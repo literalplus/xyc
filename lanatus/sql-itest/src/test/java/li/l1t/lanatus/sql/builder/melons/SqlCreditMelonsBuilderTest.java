@@ -46,7 +46,7 @@ public class SqlCreditMelonsBuilderTest extends AbstractLanatusSqlTest {
     }
 
     private int remoteMelonsCount(UUID playerId) {
-        return client().accounts().find(playerId).getMelonsCount();
+        return findAccount(playerId).getMelonsCount();
     }
 
     @Test

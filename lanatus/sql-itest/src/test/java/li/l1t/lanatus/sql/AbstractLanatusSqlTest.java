@@ -13,6 +13,7 @@ package li.l1t.lanatus.sql;
 import li.l1t.common.sql.sane.SingleSql;
 import li.l1t.common.sql.sane.SqlConnected;
 import li.l1t.lanatus.api.LanatusConnected;
+import li.l1t.lanatus.api.account.AccountSnapshot;
 import li.l1t.lanatus.api.account.MutableAccount;
 import li.l1t.lanatus.api.exception.AccountConflictException;
 
@@ -47,5 +48,9 @@ public abstract class AbstractLanatusSqlTest implements LanatusConnected, SqlCon
         mutable.setMelonsCount(melonsCount);
         client().accounts().save(mutable);
         return playerId;
+    }
+
+    protected AccountSnapshot findAccount(UUID playerId) {
+        return client().accounts().find(playerId).orElseThrow(AssertionError::new);
     }
 }

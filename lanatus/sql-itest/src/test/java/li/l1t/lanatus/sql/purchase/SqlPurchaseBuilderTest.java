@@ -134,7 +134,7 @@ public class SqlPurchaseBuilderTest extends AbstractLanatusSqlTest {
     }
 
     private void thenThePlayerHasNoMoreMelonsLeft(UUID playerId) {
-        assertThat(client().accounts().find(playerId).getMelonsCount(), is(0));
+        assertThat(findAccount(playerId).getMelonsCount(), is(0));
     }
 
     private void thenThePlayerId(Matcher<UUID> matcher, Purchase purchase) {
