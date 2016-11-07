@@ -97,7 +97,7 @@ public class SqlPurchaseBuilder implements PurchaseBuilder, LanatusConnected, Sq
 
     private void makeSurePlayerAccountExists() throws AccountConflictException {
         MutableAccount account = client().accounts().findMutable(playerId);
-        if (account.getInitialState().isDefault()) {
+        if (account.getInitialState().existed()) {
             client().accounts().save(account);
         }
     }
