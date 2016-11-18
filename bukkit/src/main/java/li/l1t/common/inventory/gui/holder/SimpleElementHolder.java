@@ -10,6 +10,7 @@
 
 package li.l1t.common.inventory.gui.holder;
 
+import li.l1t.common.inventory.SlotPosition;
 import li.l1t.common.inventory.gui.element.MenuElement;
 import li.l1t.common.inventory.gui.element.Placeholder;
 import li.l1t.common.util.inventory.ItemStackFactory;
@@ -116,5 +117,25 @@ public class SimpleElementHolder implements ElementHolder {
         if (slotId >= INVENTORY_SIZE || slotId < 0) {
             throw new IndexOutOfBoundsException("invalid slot id: " + slotId);
         }
+    }
+
+    @Override
+    public boolean isOccupied(SlotPosition slot) {
+        return isOccupied(slot.toSlotId());
+    }
+
+    @Override
+    public void addPlaceholder(SlotPosition slot) {
+        addPlaceholder(slot.toSlotId());
+    }
+
+    @Override
+    public void addElement(SlotPosition slot, MenuElement element) {
+        addElement(slot.toSlotId(), element);
+    }
+
+    @Override
+    public MenuElement getElement(SlotPosition slot) {
+        return getElement(slot.toSlotId());
     }
 }

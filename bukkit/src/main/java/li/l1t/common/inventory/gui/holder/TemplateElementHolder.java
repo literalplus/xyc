@@ -10,6 +10,7 @@
 
 package li.l1t.common.inventory.gui.holder;
 
+import li.l1t.common.inventory.SlotPosition;
 import li.l1t.common.inventory.gui.element.MenuElement;
 
 import java.util.BitSet;
@@ -86,4 +87,15 @@ public class TemplateElementHolder extends SimpleElementHolder {
     public boolean hasPlaceholderAt(int slotId) {
         return placeholderSlots.get(slotId);
     }
+
+    /**
+     * Checks whether this template has a placeholder in given slot.
+     *
+     * @param slot the slot to check
+     * @return whether there is a placeholder in given slot
+     */
+    public boolean hasPlaceholderAt(SlotPosition slot) {
+        return placeholderSlots.get(slot.toSlotId());
+    }
+
 }
