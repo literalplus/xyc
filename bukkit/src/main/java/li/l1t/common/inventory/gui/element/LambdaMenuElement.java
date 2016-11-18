@@ -25,7 +25,7 @@ import java.util.function.BiConsumer;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-06-24
  */
-public abstract class LambdaMenuElement<M extends InventoryMenu> extends CheckedMenuElement<ElementHolder, M> {
+public class LambdaMenuElement<M extends InventoryMenu> extends CheckedMenuElement<ElementHolder, M> {
     private final BiConsumer<InventoryClickEvent, M> consumer;
     private final ItemStack template;
 
