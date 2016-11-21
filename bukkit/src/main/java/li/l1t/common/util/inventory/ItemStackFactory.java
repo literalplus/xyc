@@ -146,7 +146,7 @@ public class ItemStackFactory {
         if (lore == null) {
             lore = new LinkedList<>();
         }
-        Collections.addAll(lore, whatToAdd.split("\n"));
+        Collections.addAll(lore, whatToAdd.split("\r?\n"));
         return this;
     }
 
