@@ -76,4 +76,17 @@ class SqlPurchase implements Purchase {
     public int getMelonsCost() {
         return melonsCost;
     }
+
+    @Override
+    public String toString() {
+        return "SqlPurchase{" +
+                "uniqueId=" + uniqueId +
+                ", playerId=" + playerId +
+                ", product=" + product +
+                ", creationInstant=" + creationInstant +
+                ", data='" + data + '\'' +
+                ", comment='" + comment + '\'' +
+                ", melonsCost=" + melonsCost +
+                '}';
+    }
 }
