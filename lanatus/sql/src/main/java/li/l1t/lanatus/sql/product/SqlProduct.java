@@ -82,4 +82,15 @@ class SqlProduct implements Product {
     public boolean isPermanent() {
         return permanent;
     }
+
+    @Override
+    public String toString() {
+        return "SqlProduct: " + uniqueId + " " +
+                "(\"" + displayName + "\") " +
+                "in " + module + " " +
+                "with icon='" + iconName + "', " +
+                "description '" + description + "'," +
+                "active: " + active +
+                ", perm: " + permanent;
+    }
 }
