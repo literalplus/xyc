@@ -58,4 +58,14 @@ class SqlPosition implements Position {
     public String getData() {
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "SqlPosition{" +
+                "purchaseId=" + purchaseId +
+                ", playerId=" + playerId +
+                ", product=" + product +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }
