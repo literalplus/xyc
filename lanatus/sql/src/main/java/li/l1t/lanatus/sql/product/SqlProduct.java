@@ -93,4 +93,17 @@ class SqlProduct implements Product {
                 "active: " + active +
                 ", perm: " + permanent;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SqlProduct)) return false;
+        SqlProduct that = (SqlProduct) o;
+        return uniqueId.equals(that.uniqueId);
+    }
+
+    @Override
+    public int hashCode() {
+        return uniqueId.hashCode();
+    }
 }

@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.sql.position;
 
+import com.google.common.base.Preconditions;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.purchase.Purchase;
@@ -29,9 +30,9 @@ class SqlPosition implements Position {
     private final String data;
 
     SqlPosition(UUID purchaseId, UUID playerId, Product product, String data) {
-        this.purchaseId = purchaseId;
-        this.playerId = playerId;
-        this.product = product;
+        this.purchaseId = Preconditions.checkNotNull(purchaseId, "purchaseId");
+        this.playerId = Preconditions.checkNotNull(playerId, "playerId");
+        this.product = Preconditions.checkNotNull(product, "product");
         this.data = data;
     }
 
@@ -67,5 +68,23 @@ class SqlPosition implements Position {
                 ", product=" + product +
                 ", data='" + data + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SqlPosition)) return false;
+        SqlPosition that = (SqlPosition) o;
+        if (!purchaseId.equals(that.purchaseId)) return false;
+        if (!playerId.equals(that.playerId)) return false;
+        return product.equals(that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = purchaseId.hashCode();
+        result = 31 * result + playerId.hashCode();
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        return result;
     }
 }

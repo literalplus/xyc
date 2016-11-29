@@ -10,6 +10,7 @@
 
 package li.l1t.lanatus.sql.purchase;
 
+import com.google.common.base.Preconditions;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.purchase.Purchase;
 
@@ -33,7 +34,7 @@ class SqlPurchase implements Purchase {
 
     SqlPurchase(UUID uniqueId, UUID playerId, Product product, Instant creationInstant,
                 String data, String comment, int melonsCost) {
-        this.uniqueId = uniqueId;
+        this.uniqueId = Preconditions.checkNotNull(uniqueId, "uniqueId");
         this.playerId = playerId;
         this.product = product;
         this.creationInstant = creationInstant;
@@ -88,5 +89,20 @@ class SqlPurchase implements Purchase {
                 ", comment='" + comment + '\'' +
                 ", melonsCost=" + melonsCost +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SqlPurchase)) return false;
+
+        SqlPurchase that = (SqlPurchase) o;
+
+        return uniqueId.equals(that.uniqueId);
+    }
+
+    @Override
+    public int hashCode() {
+        return uniqueId != null ? uniqueId.hashCode() : 0;
     }
 }
