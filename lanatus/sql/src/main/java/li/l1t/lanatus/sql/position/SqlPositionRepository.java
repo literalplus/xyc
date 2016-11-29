@@ -84,6 +84,7 @@ public class SqlPositionRepository extends AbstractSqlLanatusRepository implemen
     public Position createFromPurchase(Purchase purchase) {
         SqlPosition position = new SqlPosition(purchase);
         writer.write(position);
+        playerPositionsCache.invalidateKey(purchase.getPlayerId());
         return position;
     }
 
