@@ -25,11 +25,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * This factory helps with creating {@link org.bukkit.inventory.ItemStack}s. Kept in this package
@@ -148,6 +144,17 @@ public class ItemStackFactory {
         }
         Collections.addAll(lore, whatToAdd.split("\r?\n"));
         return this;
+    }
+
+    /**
+     * Appends an array of strings to the resulting item stack's lore, treating every element as a separate line.
+     * If this factory was constructed with a template item stack, this method will append to its existing lore, if any.
+     *
+     * @param whatToAdd the lines to add to the lore
+     * @return this factory
+     */
+    public ItemStackFactory lore(String... whatToAdd) {
+        return appendLore(Arrays.asList(whatToAdd));
     }
 
     /**
