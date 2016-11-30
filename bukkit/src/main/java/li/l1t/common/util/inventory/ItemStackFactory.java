@@ -69,7 +69,7 @@ public class ItemStackFactory {
      * @param material the material of the product
      */
     public ItemStackFactory(Material material) {
-        base = new ItemStack(material);
+        this(new ItemStack(material));
     }
 
     /**
