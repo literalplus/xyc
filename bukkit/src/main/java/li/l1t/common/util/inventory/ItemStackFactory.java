@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.util.inventory;
@@ -37,6 +37,7 @@ import java.util.*;
 @SuppressWarnings("UnusedDeclaration")
 public class ItemStackFactory {
     private final ItemStack base;
+    private final List<String> lore;
     private MaterialData materialData;
     private ItemMeta meta;
 
@@ -49,6 +50,7 @@ public class ItemStackFactory {
         base = source;
         materialData = source.getData();
         meta = source.getItemMeta(); //returns new meta if unset
+        lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
     }
 
     /**
@@ -99,7 +101,8 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory lore(List<String> lore) {
-        meta.setLore(lore);
+        this.lore.clear();
+        this.lore.addAll(lore);
         return this;
     }
 
@@ -111,10 +114,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory appendLore(Collection<String> loreToAppend) {
-        if (!meta.hasLore()) {
-            return lore(new ArrayList<>(loreToAppend));
-        }
-        meta.getLore().addAll(loreToAppend);
+        lore.addAll(loreToAppend);
         return this;
     }
 
@@ -128,10 +128,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory lore(String whatToAdd) {
-        if (!meta.hasLore()) {
-            meta.setLore(new ArrayList<>());
-        }
-        Collections.addAll(meta.getLore(), whatToAdd.split("\r?\n"));
+        Collections.addAll(lore, whatToAdd.split("\r?\n"));
         return this;
     }
 
@@ -282,6 +279,7 @@ public class ItemStackFactory {
     public ItemStack produce() {
         final ItemStack product = new ItemStack(base);
         product.setData(materialData);
+        meta.setLore(lore);
         product.setItemMeta(meta);
         return product;
     }
