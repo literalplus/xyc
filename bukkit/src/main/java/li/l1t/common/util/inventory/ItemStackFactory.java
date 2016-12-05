@@ -20,12 +20,18 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
+import org.bukkit.potion.PotionEffect;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This factory helps with creating {@link org.bukkit.inventory.ItemStack}s. Kept in this package
@@ -103,6 +109,18 @@ public class ItemStackFactory {
     public ItemStackFactory lore(List<String> lore) {
         this.lore.clear();
         this.lore.addAll(lore);
+        return this;
+    }
+
+    /**
+     * Adds a potion effect to the product.
+     *
+     * @param effect the effect to add
+     * @return this factory
+     */
+    public ItemStackFactory effect(PotionEffect effect) {
+        Preconditions.checkState(meta instanceof PotionMeta, "expected potion meta, got: %s", meta.getClass());
+        ((PotionMeta) meta).addCustomEffect(effect, /* overwrite */ true);
         return this;
     }
 
