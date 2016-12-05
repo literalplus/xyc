@@ -11,6 +11,7 @@
 package li.l1t.common.test.util.mokkit;
 
 import li.l1t.common.util.PredicateHelper;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -47,6 +48,21 @@ public class MockInventory implements Inventory {
         this.name = name;
         this.holder = holder;
         this.contents = new ItemStack[size];
+    }
+
+    @Override
+    public ItemStack[] getStorageContents() {
+        return contents;
+    }
+
+    @Override
+    public void setStorageContents(ItemStack[] itemStacks) throws IllegalArgumentException {
+        setContents(itemStacks);
+    }
+
+    @Override
+    public Location getLocation() {
+        throw new UnsupportedOperationException("MockInventory#getLocation()");
     }
 
     @Override

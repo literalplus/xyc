@@ -20,6 +20,10 @@ import org.bukkit.UnsafeValues;
 import org.bukkit.Warning;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -27,12 +31,9 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemFactory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.*;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -79,6 +80,21 @@ public class MockServer implements Server {
     @SuppressWarnings("deprecation")
     private JavaPluginLoader pluginLoader = new JavaPluginLoader(this);
     private SimpleServicesManager servicesManager = new SimpleServicesManager();
+
+    @Override
+    public Merchant createMerchant(String s) {
+        throw new UnsupportedOperationException("Server#createMerchant()");
+    }
+
+    @Override
+    public ChunkGenerator.ChunkData createChunkData(World world) {
+        throw new UnsupportedOperationException("Server#createChunkData()");
+    }
+
+    @Override
+    public BossBar createBossBar(String s, BarColor barColor, BarStyle barStyle, BarFlag... barFlags) {
+        throw new UnsupportedOperationException("Server#createBossBar()");
+    }
 
     @Override
     public String getName() {
@@ -413,11 +429,6 @@ public class MockServer implements Server {
 
     @Override
     public boolean isHardcore() {
-        return false;
-    }
-
-    @Override
-    public boolean useExactLoginLocation() {
         return false;
     }
 

@@ -37,6 +37,7 @@ public class MockItemMeta implements ItemMeta {
     private Map<Enchantment, Integer> enchants = new HashMap<>();
     private Set<ItemFlag> itemFlags = EnumSet.noneOf(ItemFlag.class);
     private Spigot spigot = new Spigot();
+    private boolean unbreakable = false;
 
     public MockItemMeta() {
     }
@@ -51,6 +52,16 @@ public class MockItemMeta implements ItemMeta {
         this.enchants = enchants;
         this.itemFlags = itemFlags;
         this.spigot = spigot;
+    }
+
+    @Override
+    public boolean isUnbreakable() {
+        return unbreakable;
+    }
+
+    @Override
+    public void setUnbreakable(boolean b) {
+        this.unbreakable = b;
     }
 
     public static MockItemMeta deserialize(Map<String, Object> source) {
