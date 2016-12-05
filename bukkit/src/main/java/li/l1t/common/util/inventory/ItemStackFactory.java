@@ -37,8 +37,6 @@ import java.util.*;
 @SuppressWarnings("UnusedDeclaration")
 public class ItemStackFactory {
     private final ItemStack base;
-    private String displayName;
-    private List<String> lore;
     private MaterialData materialData;
     private ItemMeta meta;
 
@@ -50,16 +48,7 @@ public class ItemStackFactory {
     public ItemStackFactory(ItemStack source) {
         base = source;
         materialData = source.getData();
-
         meta = source.getItemMeta(); //returns new meta if unset
-        if (source.hasItemMeta()) {
-            if (meta.hasDisplayName()) {
-                displayName = meta.getDisplayName();
-            }
-            if (meta.hasLore()) {
-                lore = meta.getLore();
-            }
-        }
     }
 
     /**
@@ -86,7 +75,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory displayName(String displayName) {
-        this.displayName = displayName;
+        meta.setDisplayName(displayName);
         return this;
     }
 
@@ -97,7 +86,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory defaultDisplayName(String defaultDisplayName) {
-        if (!(base.hasItemMeta() && base.getItemMeta().hasDisplayName()) || displayName == null) {
+        if (!meta.hasDisplayName()) {
             return displayName(defaultDisplayName);
         }
         return this;
@@ -110,7 +99,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory lore(List<String> lore) {
-        this.lore = lore;
+        meta.setLore(lore);
         return this;
     }
 
@@ -122,10 +111,10 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory appendLore(Collection<String> loreToAppend) {
-        if (this.lore == null) {
-            return lore(loreToAppend instanceof List ? (List<String>) loreToAppend : new ArrayList<>(loreToAppend));
+        if (!meta.hasLore()) {
+            return lore(new ArrayList<>(loreToAppend));
         }
-        this.lore.addAll(loreToAppend);
+        meta.getLore().addAll(loreToAppend);
         return this;
     }
 
@@ -139,10 +128,10 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory lore(String whatToAdd) {
-        if (lore == null) {
-            lore = new LinkedList<>();
+        if (!meta.hasLore()) {
+            meta.setLore(new ArrayList<>());
         }
-        Collections.addAll(lore, whatToAdd.split("\r?\n"));
+        Collections.addAll(meta.getLore(), whatToAdd.split("\r?\n"));
         return this;
     }
 
@@ -165,7 +154,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory enchant(Enchantment enchantment, int level) {
-        base.addEnchantment(enchantment, level);
+        meta.addEnchant(enchantment, level, false);
         return this;
     }
 
@@ -177,7 +166,7 @@ public class ItemStackFactory {
      * @return this factory
      */
     public ItemStackFactory enchantUnsafe(Enchantment enchantment, int level) {
-        base.addUnsafeEnchantment(enchantment, level);
+        meta.addEnchant(enchantment, level, true);
         return this;
     }
 
@@ -292,33 +281,14 @@ public class ItemStackFactory {
 
     public ItemStack produce() {
         final ItemStack product = new ItemStack(base);
-        if (materialData != null) {
-            product.setData(materialData);
-        }
-        if (displayName != null || lore != null) {
-            final ItemMeta finalMeta = (meta == null ? product.getItemMeta() : meta);
-            if (lore != null) {
-                finalMeta.setLore(lore);
-            }
-            if (displayName != null) {
-                finalMeta.setDisplayName(displayName);
-            }
-            product.setItemMeta(finalMeta);
-        }
+        product.setData(materialData);
+        product.setItemMeta(meta);
         return product;
     }
 
     @Nonnull
     public ItemStack getBase() {
         return this.base;
-    }
-
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    public List<String> getLore() {
-        return this.lore;
     }
 
     public MaterialData getMaterialData() {
