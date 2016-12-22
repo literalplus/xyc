@@ -76,4 +76,15 @@ public class PotionHelper {
             return Optional.empty();
         }
     }
+
+    /**
+     * Creates a string from a potion effect that may be passed back to {@link #effectFromString(String)} to create
+     * given effect.
+     *
+     * @param effect the effect to serialise into a string
+     * @return the string representing given effect
+     */
+    public static String stringFromEffect(PotionEffect effect) {
+        return String.format("%s:%d*%d", effect.getType().getName(), effect.getAmplifier(), effect.getAmplifier());
+    }
 }
