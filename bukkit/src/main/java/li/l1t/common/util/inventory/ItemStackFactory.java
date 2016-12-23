@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
 import javax.annotation.Nonnull;
@@ -109,7 +110,8 @@ public class ItemStackFactory {
     }
 
     /**
-     * Adds a potion effect to the product.
+     * Adds a potion effect to the product. <p><b>Important:</b> This does not set the base data, which means that given
+     * effect will be handled as a custom effect and will not modify potion colour or display name!</p>
      *
      * @param effect the effect to add
      * @return this factory
@@ -117,6 +119,18 @@ public class ItemStackFactory {
     public ItemStackFactory effect(PotionEffect effect) {
         Preconditions.checkState(meta instanceof PotionMeta, "expected potion meta, got: %s", meta.getClass());
         ((PotionMeta) meta).addCustomEffect(effect, /* overwrite */ true);
+        return this;
+    }
+
+    /**
+     * Sets the base potion effect of the product. This causes Minecraft to change the potion colour and display name.
+     *
+     * @param data the data to add
+     * @return this factory
+     */
+    public ItemStackFactory potion(PotionData data) {
+        Preconditions.checkState(meta instanceof PotionMeta, "expected potion meta, got: %s", meta.getClass());
+        ((PotionMeta) meta).setBasePotionData(data);
         return this;
     }
 
