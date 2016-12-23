@@ -109,7 +109,7 @@ public class PotionHelper {
     public static PotionData dataFromString(String spec) {
         Preconditions.checkNotNull(spec, "spec");
         String[] parts = spec.split("\\.");
-        PotionType type = PotionType.valueOf(spec.toUpperCase().replace("[- ]", "_"));
+        PotionType type = PotionType.valueOf(parts[0].toUpperCase().replace("[- ]", "_"));
         boolean extended = false;
         boolean upgraded = false;
         for (int i = 1; i < parts.length; i++) {
