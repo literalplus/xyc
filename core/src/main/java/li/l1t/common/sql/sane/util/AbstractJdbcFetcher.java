@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -8,7 +8,7 @@
  * See the included LICENSE file (core/src/main/resources) for details.
  */
 
-package li.l1t.lanatus.sql.common;
+package li.l1t.common.sql.sane.util;
 
 import com.google.common.collect.ImmutableList;
 import li.l1t.common.sql.sane.AbstractSqlConnected;

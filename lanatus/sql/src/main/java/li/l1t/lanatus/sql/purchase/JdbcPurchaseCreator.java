@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -10,11 +10,11 @@
 
 package li.l1t.lanatus.sql.purchase;
 
+import li.l1t.common.sql.sane.util.AbstractJdbcEntityCreator;
 import li.l1t.lanatus.api.exception.NoSuchPurchaseException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.api.purchase.Purchase;
-import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -15,7 +15,6 @@ import li.l1t.common.exception.InternalException;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.lanatus.api.account.LanatusAccount;
-import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -27,7 +26,7 @@ import java.util.UUID;
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2016-09-29
  */
-class JdbcAccountFetcher<T extends LanatusAccount> extends AbstractJdbcFetcher<T> {
+class JdbcAccountFetcher<T extends LanatusAccount> extends li.l1t.common.sql.sane.util.AbstractJdbcFetcher<T> {
     private final JdbcAccountCreator<? extends T> creator;
 
     public JdbcAccountFetcher(JdbcAccountCreator<? extends T> creator, SaneSql sql) {

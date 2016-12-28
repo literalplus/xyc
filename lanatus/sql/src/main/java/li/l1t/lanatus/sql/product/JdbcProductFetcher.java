@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -13,10 +13,9 @@ package li.l1t.lanatus.sql.product;
 import li.l1t.common.exception.DatabaseException;
 import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
+import li.l1t.common.sql.sane.util.JdbcEntityCreator;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
-import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
-import li.l1t.lanatus.sql.common.JdbcEntityCreator;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -28,7 +27,7 @@ import java.util.UUID;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class JdbcProductFetcher extends AbstractJdbcFetcher<Product> {
+class JdbcProductFetcher extends li.l1t.common.sql.sane.util.AbstractJdbcFetcher<Product> {
     JdbcProductFetcher(JdbcEntityCreator<Product> creator, SaneSql saneSql) {
         super(creator, saneSql);
     }
