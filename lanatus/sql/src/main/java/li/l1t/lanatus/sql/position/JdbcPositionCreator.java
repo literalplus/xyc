@@ -10,11 +10,11 @@
 
 package li.l1t.lanatus.sql.position;
 
+import li.l1t.common.sql.sane.util.AbstractJdbcEntityCreator;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.position.Position;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRepository;
-import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

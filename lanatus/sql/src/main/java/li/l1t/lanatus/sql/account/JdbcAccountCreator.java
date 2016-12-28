@@ -10,8 +10,8 @@
 
 package li.l1t.lanatus.sql.account;
 
+import li.l1t.common.sql.sane.util.AbstractJdbcEntityCreator;
 import li.l1t.lanatus.api.account.LanatusAccount;
-import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

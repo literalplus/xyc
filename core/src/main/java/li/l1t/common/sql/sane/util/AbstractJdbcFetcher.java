@@ -8,7 +8,7 @@
  * See the included LICENSE file (core/src/main/resources) for details.
  */
 
-package li.l1t.lanatus.sql.common;
+package li.l1t.common.sql.sane.util;
 
 import com.google.common.collect.ImmutableList;
 import li.l1t.common.sql.sane.AbstractSqlConnected;

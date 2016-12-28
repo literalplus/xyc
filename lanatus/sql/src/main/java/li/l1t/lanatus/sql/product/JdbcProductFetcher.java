@@ -15,8 +15,7 @@ import li.l1t.common.sql.sane.SaneSql;
 import li.l1t.common.sql.sane.result.QueryResult;
 import li.l1t.lanatus.api.exception.NoSuchProductException;
 import li.l1t.lanatus.api.product.Product;
-import li.l1t.lanatus.sql.common.AbstractJdbcFetcher;
-import li.l1t.lanatus.sql.common.JdbcEntityCreator;
+import li.l1t.common.sql.sane.util.JdbcEntityCreator;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -28,7 +27,7 @@ import java.util.UUID;
  * @author <a href="https://l1t.li/">Literallie</a>
  * @since 2016-10-10
  */
-class JdbcProductFetcher extends AbstractJdbcFetcher<Product> {
+class JdbcProductFetcher extends li.l1t.common.sql.sane.util.AbstractJdbcFetcher<Product> {
     JdbcProductFetcher(JdbcEntityCreator<Product> creator, SaneSql saneSql) {
         super(creator, saneSql);
     }

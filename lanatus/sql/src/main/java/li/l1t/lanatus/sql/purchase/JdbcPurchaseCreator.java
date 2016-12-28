@@ -10,11 +10,11 @@
 
 package li.l1t.lanatus.sql.purchase;
 
+import li.l1t.common.sql.sane.util.AbstractJdbcEntityCreator;
 import li.l1t.lanatus.api.exception.NoSuchPurchaseException;
 import li.l1t.lanatus.api.product.Product;
 import li.l1t.lanatus.api.product.ProductRepository;
 import li.l1t.lanatus.api.purchase.Purchase;
-import li.l1t.lanatus.sql.common.AbstractJdbcEntityCreator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
