@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+  ~ Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
   ~
   ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
   ~  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -287,10 +287,11 @@
 
                 <configuration>
                     <excludePackageNames>*.internal.*</excludePackageNames>
-                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="http://xxyy.github.io/">xxyy<a> (Philipp Nowak).
+                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="https://l1t.li/">Literallie<a> (Philipp Nowak).
                     Do not distribute or otherwise use without explicit written permission from the author. See the LICENSE file for details.]]></bottom>
-                    <defaultAuthor><![CDATA[<a href="http://xxyy.github.io/">probably xxyy</a>]]></defaultAuthor>
-                    <doctitle>XYC ${project.version} JavaDocs</doctitle>
+                    <defaultAuthor>
+                        <![CDATA[<a href="https://l1t.li/">probably Literallie</a>]]></defaultAuthor>
+                    <doctitle>XYC JavaDoc ${project.version}</doctitle>
                     <outputDirectory>${project.basedir}/target/apidocs</outputDirectory>
                     <quiet>true</quiet>
                 </configuration>
