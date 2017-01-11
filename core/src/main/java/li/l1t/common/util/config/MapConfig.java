@@ -104,4 +104,16 @@ public interface MapConfig {
     <V, R extends Collection<V>> R getCollection(
             String key, Class<V> valueType, Collector<V, ?, R> collector
     );
+
+    /**
+     * Gets the string-keyed map at given key, or an empty map if there is no value associated with
+     * given key. Any values that are not instances of the value type and any keys that are not
+     * strings are ignored.
+     *
+     * @param key       the key to operate on
+     * @param valueType the expected value type
+     * @param <V>       the value type
+     * @return the string-V map at given key, or an empty map
+     */
+    <V> Map<String, V> getMap(String key, Class<V> valueType);
 }

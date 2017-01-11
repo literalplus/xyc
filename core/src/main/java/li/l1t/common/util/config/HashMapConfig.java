@@ -99,6 +99,12 @@ public class HashMapConfig implements MapConfig {
         };
     }
 
+    private Predicate<? super Map.Entry<?, ?>> entryTypeFilter(Class<?> keyType, Class<?> valueType, String key) {
+        return entry ->
+                typeFilter(keyType, key).test(entry.getKey()) &&
+                        typeFilter(valueType, key).test(entry.getValue());
+    }
+
     @Override
     public Optional<String> findString(String key) {
         return findTyped(key, String.class);
@@ -110,13 +116,20 @@ public class HashMapConfig implements MapConfig {
     }
 
     @Override
-    public <V, R extends Collection<V>> R getCollection(
-            String key, Class<V> valueType, Collector<V, ?, R> collector
-    ) {
+    public <V, R extends Collection<V>> R getCollection(String key, Class<V> valueType, Collector<V, ?, R> collector) {
         Collection<?> objCollection = findTyped(key, Collection.class).orElseGet(Collections::emptyList);
         return objCollection.stream()
                 .filter(typeFilter(valueType, key + "[]"))
                 .map(valueType::cast)
                 .collect(collector);
+    }
+
+    @Override
+    public <V> Map<String, V> getMap(String key, Class<V> valueType) {
+        Map<?, ?> objMap = findTyped(key, Map.class).orElseGet(HashMap::new);
+        return objMap.entrySet().stream()
+                .filter(entryTypeFilter(String.class, valueType, key + "<>"))
+                .map(e -> Pair.pairOf((String) e.getKey(), valueType.cast(e.getValue())))
+                .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
     }
 }
