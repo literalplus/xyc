@@ -94,7 +94,7 @@ Join my IRC channel [#lit on irc.spi.gt](http://irc.spi.gt/iris/?channels=lit), 
 License
 -------
 ````
-Copyright (c) 2013-2016 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+Copyright (c) 2013-2017 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
 
 Any usage, including, but not limited to, compiling, running, redistributing, printing,
  copying and reverse-engineering is strictly prohibited without permission from the
