@@ -106,14 +106,15 @@ public interface MapConfig {
     );
 
     /**
-     * Gets the string-keyed map at given key, or an empty map if there is no value associated with
-     * given key. Any values that are not instances of the value type and any keys that are not
-     * strings are ignored.
+     * Gets the map at given key, or an empty map if there is no value associated with given key. Any
+     * values that are not instances of the value type and any keys that are not instances of the key type are ignored.
      *
      * @param key       the key to operate on
      * @param valueType the expected value type
+     * @param keyType   the expected key type
      * @param <V>       the value type
-     * @return the string-V map at given key, or an empty map
+     * @param <K>       the key type
+     * @return the K-V map at given key, or an empty map
      */
-    <V> Map<String, V> getMap(String key, Class<V> valueType);
+    <K, V> Map<K, V> getMap(String key, Class<K> keyType, Class<V> valueType);
 }

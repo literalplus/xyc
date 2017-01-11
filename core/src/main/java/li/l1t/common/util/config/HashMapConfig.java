@@ -125,11 +125,11 @@ public class HashMapConfig implements MapConfig {
     }
 
     @Override
-    public <V> Map<String, V> getMap(String key, Class<V> valueType) {
+    public <K, V> Map<K, V> getMap(String key, Class<K> keyType, Class<V> valueType) {
         Map<?, ?> objMap = findTyped(key, Map.class).orElseGet(HashMap::new);
         return objMap.entrySet().stream()
-                .filter(entryTypeFilter(String.class, valueType, key + "<>"))
-                .map(e -> Pair.pairOf((String) e.getKey(), valueType.cast(e.getValue())))
+                .filter(entryTypeFilter(keyType, valueType, key + "<>"))
+                .map(e -> Pair.pairOf(keyType.cast(e.getKey()), valueType.cast(e.getValue())))
                 .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
     }
 }
