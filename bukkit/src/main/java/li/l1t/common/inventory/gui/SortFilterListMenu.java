@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.inventory.gui;
@@ -44,6 +44,8 @@ public abstract class SortFilterListMenu<V> extends PagingListMenu<V> {
 
     /**
      * Sets this menu's comparator and sorts the items according to it.
+     *
+     * @param comparator the comparator to sort with
      */
     public void setComparator(Comparator<? super V> comparator) {
         this.comparator = comparator;

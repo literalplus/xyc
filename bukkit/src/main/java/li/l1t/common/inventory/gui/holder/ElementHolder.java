@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.inventory.gui.holder;
@@ -40,7 +40,7 @@ public interface ElementHolder {
      *
      * @param slotId the id of the slot to check
      * @return whether there is currently an item rendered in given slot
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     boolean isOccupied(int slotId);
 
@@ -49,7 +49,7 @@ public interface ElementHolder {
      *
      * @param slot the position of the slot to check
      * @return whether there is currently an item rendered in given slot
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     boolean isOccupied(SlotPosition slot);
 
@@ -59,7 +59,7 @@ public interface ElementHolder {
      *
      * @param slotId the id of the slot to add the placeholder to
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addPlaceholder(int slotId);
 
@@ -68,7 +68,7 @@ public interface ElementHolder {
      *
      * @param slot the position of the slot to add the placeholder to
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addPlaceholder(SlotPosition slot);
 
@@ -80,7 +80,7 @@ public interface ElementHolder {
      * @param slotId  the id of the slot to render in
      * @param element the element to render, may be null to remove
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addElement(int slotId, MenuElement element);
 
@@ -91,7 +91,7 @@ public interface ElementHolder {
      * @param slot    the slot of the slot to render in
      * @param element the element to render, may be null to remove
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addElement(SlotPosition slot, MenuElement element);
 

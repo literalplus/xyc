@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.util;
@@ -61,12 +61,13 @@ public class ChatHelper {
     }
 
     /**
-     * Replaces occurrences of '&amp;' followed by a hexadecimal character specified in the second argument with the special
-     * formatting character accepted by Minecraft. Note that this is referred to as "legacy" by a lot of developers
-     * though, so please consider using one of the many JSON chat APIs if possible. Any character in the "allowed colors"
-     * string will be allowed as formatting code. Note that matching is case-sensitive.
+     * Replaces occurrences of '&amp;' followed by a hexadecimal character specified in the second argument with the
+     * special formatting character accepted by Minecraft. Note that this is referred to as "legacy" by a lot of
+     * developers though, so please consider using one of the many JSON chat APIs if possible. Any character in the
+     * "allowed colors" string will be allowed as formatting code. Note that matching is case-sensitive.
      *
-     * @param message the message to colorize
+     * @param message       the message to colorize
+     * @param allowedColors a string where each character specifies an allowed color
      * @return the colorized message
      */
     public static String convertChatColors(String message, String allowedColors) {

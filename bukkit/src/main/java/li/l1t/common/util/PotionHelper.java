@@ -32,13 +32,35 @@ public class PotionHelper {
     private static final Pattern EFFECT_SPEC_PATTERN = Pattern.compile("([a-zA-Z_]+)(:[0-9]|)(\\*[0-9]+|)");
 
     /**
-     * Creates a potion effect from a string specifying type, duration, and amplifier. The effects
-     * are matched using {@link PotionEffectType#getByName(String)}. <p> Specs look like this:
-     * {@code EFFECT:AMPLIFIER*DURATION} </p> <p> Only EFFECT is required, all other parameters may
-     * be omitted. Therefore, the following strings are all valid: <ul> <li>{@code SPEED} -> Speed I
-     * for Integer.MAX_VALUE ticks</li> <li>{@code SPEED:1} -> Speed II for Integer.MAX_VALUE
-     * ticks</li> <li>{@code SPEED:1*6000} -> Speed II for 6000 ticks (=5 minutes)</li> <li>{@code
-     * SLOW_DIGGING*6000} -> Mining Fatigue I for 6000 ticks (=5 minutes)</li> </ul> </p>
+     * Creates a potion effect from a string specifying type, duration, and amplifier. The effects are matched using
+     * {@link PotionEffectType#getByName(String)}. <p> Specs look like this: {@code EFFECT:AMPLIFIER*DURATION} </p> <p>
+     * Only EFFECT is required, all other parameters may be omitted. Therefore, the following strings are all valid:</p>
+     * <table summary="examples of valid specifiers">
+     * <thead>
+     * <tr>
+     * <td>valid spec</td>
+     * <td>resulting effect</td>
+     * </tr>
+     * </thead>
+     * <tbody>
+     * <tr>
+     * <td>{@code SPEED}</td>
+     * <td>Speed I for Integer.MAX_VALUE ticks</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SPEED:1}</td>
+     * <td>Speed II for Integer.MAX_VALUE ticks</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SPEED:1*6000}</td>
+     * <td>Speed II for 6000 ticks (=5 minutes)</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SLOW_DIGGING*6000}</td>
+     * <td>Mining Fatigue I for 6000 ticks (=5 minutes)</td>
+     * </tr>
+     * </tbody>
+     * </table>
      *
      * @param spec the specifier string for the potion effect to create
      * @return the potion effect parsed from given spec
