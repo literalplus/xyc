@@ -218,19 +218,19 @@ public final class WeakArrayList<E> implements List<E> {
     @Override
     @Nonnull
     public ListIterator<E> listIterator() {
-        throw new UnsupportedOperationException(); //TODO implement
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Nonnull
     public ListIterator<E> listIterator(final int index) {
-        throw new UnsupportedOperationException(); //TODO implement
+        throw new UnsupportedOperationException();
     }
 
     @Override
     @Nonnull
     public List<E> subList(final int fromIndex, final int toIndex) {
-        throw new UnsupportedOperationException(); //TODO implement
+        throw new UnsupportedOperationException();
     }
 
 }
