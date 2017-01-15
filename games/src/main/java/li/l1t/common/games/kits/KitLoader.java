@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.games.kits;
@@ -79,9 +79,14 @@ public class KitLoader {
         FileHelper.mkdirsWithException(getKitDirectory());
         ArrayList<Kit> kits = new ArrayList<>();
 
-        for (File kitFile : getKitDirectory().listFiles(
+        File[] files = getKitDirectory().listFiles(
                 file -> file.getName().endsWith(FILE_EXTENSION)
-        )) {
+        );
+        if (files == null) {
+            throw new IllegalStateException("listFiles() returned null for " + getKitDirectory().getAbsolutePath());
+        }
+
+        for (File kitFile : files) {
             kits.add(loadKit(kitFile));
         }
 
@@ -137,8 +142,7 @@ public class KitLoader {
      * @param iconStack  the icon stack to represent the new kit in inventories
      * @param contents   the inventory contents for the new kit
      * @param armor      the armor contents for the new kit
-     * @param objective  the {@link ObjectiveResolver
-     *                   objective} required to access the new kit
+     * @param objective  the {@link ObjectiveResolver objective} required to access the new kit
      * @param authorName the name of the player who created the new kit
      * @return the created kit
      * @throws IOException if an error occurs creating the file or saving the kit

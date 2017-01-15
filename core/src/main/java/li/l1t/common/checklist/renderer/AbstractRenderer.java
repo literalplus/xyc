@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.checklist.renderer;
@@ -34,8 +34,7 @@ public abstract class AbstractRenderer {
      */
     public String renderAll(Checklist checklist) {
         StringBuilder sb = new StringBuilder();
-        checklist.getItems().stream()
-                .forEach(item -> render(sb, item).append("\n"));
+        checklist.getItems().forEach(item -> render(sb, item).append("\n"));
         return sb.toString();
     }
 

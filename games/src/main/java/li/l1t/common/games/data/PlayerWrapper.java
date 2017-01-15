@@ -412,7 +412,7 @@ public class PlayerWrapper extends PlayerWrapperBase {
      */
     @Deprecated
     public long getPlayTimeMinutes() {
-        return 0l;
+        return 0L;
     }
 
     /**

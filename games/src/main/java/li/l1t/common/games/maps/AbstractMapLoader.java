@@ -57,12 +57,14 @@ public abstract class AbstractMapLoader {
         String path = this.getMapsLocation();
         try {
             this.mapsFolder = new File(path);
-            if (!this.mapsFolder.isDirectory()) {
+            String[] availableMapsArray = this.mapsFolder.list();
+            if (availableMapsArray == null) {
                 System.out.println(this.getClass().getSimpleName() + "|mapsFolder: " + path);
-                plugin.setError(this.getClass().getSimpleName() + "§cmapsFolder is not a valid directory! Please check your options.",
+                plugin.setError(this.getClass().getSimpleName() + "§cmapsFolder is not a valid directory (or an I/O error occurred)! Please check your options.",
                         "AbstractMapLoader.init#2");
+                return;
             }
-            this.availableMaps = Arrays.asList(this.mapsFolder.list());
+            this.availableMaps = Arrays.asList(availableMapsArray);
             Bukkit.getConsoleSender().sendMessage(
                     this.getClass().getSimpleName() + "§eFound maps: " + this.availableMaps + " at " + this.mapsFolder.
                             getAbsolutePath());

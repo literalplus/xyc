@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.util;
@@ -45,7 +45,10 @@ public final class FileHelper {
         if (src.isDirectory()) {
             FileHelper.mkdirsWithException(dest);
 
-            String files[] = src.list();
+            String[] files = src.list();
+            if (files == null) {
+                throw new IOException("src.list() returned null for " + src.getAbsolutePath());
+            }
 
             for (String file : files) {
                 File srcFile = new File(src, file);
@@ -100,10 +103,10 @@ public final class FileHelper {
     }
 
     /**
-     * Creates a directory and any necessary parent directories, throwing an exception if the operation failed.
-     * If the passed File does not represent a directory, the same exception is thrown.
-     * This is necessary because {@link java.io.File#mkdirs()} does not throw exceptions.
-     * If you prefer checked exceptions, take a look at {@link Files#createDirectories(java.nio.file.Path, java.nio.file.attribute.FileAttribute[])}.
+     * Creates a directory and any necessary parent directories, throwing an exception if the operation failed. If the
+     * passed File does not represent a directory, the same exception is thrown. This is necessary because {@link
+     * java.io.File#mkdirs()} does not throw exceptions. If you prefer checked exceptions, take a look at {@link
+     * Files#createDirectories(java.nio.file.Path, java.nio.file.attribute.FileAttribute[])}.
      *
      * @param file File representing the directory to create.
      * @return The passed file, for convenient construction

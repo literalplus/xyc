@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.chat;
@@ -33,7 +33,7 @@ public class AdFilterService {
         The first (and only) capturing group is the second-level domain part of the URL.
      */
     private static final Pattern URL_PATTERN = Pattern.compile(
-            "(?:https?://)?(?:[-\\w_\\.]{2,}\\.)?([-\\w_]{2,}\\.[a-z]{2,4})(?:/\\S*)?",
+            "(?:https?://)?(?:[-\\w_.]{2,}\\.)?([-\\w_]{2,}\\.[a-z]{2,4})(?:/\\S*)?",
             Pattern.CASE_INSENSITIVE); //Don't remove the query part since stuff like "index.php" is detected as URL then
 
     private final List<String> ignoredDomains = new ArrayList<>();
@@ -59,10 +59,10 @@ public class AdFilterService {
         Matcher matcher = URL_PATTERN.matcher(message); //That pattern is considered pretty accurate, so no setting here
         while (matcher.find()) {
             /*
-            //ArrayList#contains() loops too and is case-sensitive, so this doesn't make much of a difference while
+            ArrayList#contains() loops too and is case-sensitive, so this doesn't make much of a difference while
             providing the benefit of being case-insensitive!
              */
-            if (!ignoredDomains.stream().anyMatch(s -> matcher.group(1).equalsIgnoreCase(s))) {
+            if (ignoredDomains.stream().noneMatch(s -> matcher.group(1).equalsIgnoreCase(s))) {
                 return true;
             }
         }

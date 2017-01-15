@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -74,7 +74,7 @@ public class SqlPositionRepositoryTest extends AbstractLanatusSqlTest {
         Optional<Position> optional = client().positions().findByPurchase(PERMANENT_PURCHASE_ID);
         //then
         assertTrue(optional.isPresent());
-        Position position = optional.get();
+        Position position = optional.orElseThrow(AssertionError::new);
         assertThat(position.getPlayerId(), is(PLAYER_ID));
         assertThat(position.getProduct().getUniqueId(), is(PERMANENT_PRODUCT_ID));
         assertThat(position.getPurchaseId(), is(PERMANENT_PURCHASE_ID));

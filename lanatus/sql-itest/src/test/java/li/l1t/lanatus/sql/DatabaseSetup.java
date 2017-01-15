@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -46,7 +46,7 @@ public class DatabaseSetup extends ExternalResource implements SqlConnected {
         }
     }
 
-    private void runFlywayMigration(Properties flywayProperties) throws IOException {
+    private void runFlywayMigration(Properties flywayProperties) {
         Flyway flyway = new Flyway();
         flyway.configure(flywayProperties);
         flyway.migrate();

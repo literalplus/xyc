@@ -256,7 +256,7 @@ public class QueryBuilder { //TO/DO make concurrent
                         .append(",");
             }
         }
-        args.addAll(args);
+        args.addAll(args); // <-- Collection added to itself, probably a bug, no idea what that should do tho
 
         queryStringBuilder.deleteCharAt(queryStringBuilder.length() - 1); //Last char will always be ',';
 
