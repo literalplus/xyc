@@ -24,7 +24,9 @@ import java.util.UUID;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 3.4.14
+ * @deprecated Part of the deprecated QueryBuilder API. See {@link QueryBuilder} for details.
  */
+@Deprecated
 public class SqlUUIDHolder extends SqlIdentifierHolder<UUID> {
     public SqlUUIDHolder(String columnName) {
         super(columnName);

@@ -33,7 +33,9 @@ import java.util.Set;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 29.3.14
+ * @deprecated Part of the deprecated QueryBuilder API. See {@link QueryBuilder} for details.
  */
+@Deprecated
 public class SqlHolders {
     /**
      * Adds all annotated SqlHolders of a class to a set and populates the fields with the

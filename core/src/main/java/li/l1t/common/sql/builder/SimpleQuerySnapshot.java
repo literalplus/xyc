@@ -19,7 +19,9 @@ import javax.annotation.Nonnull;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 23.3.14
+ * @deprecated Part of the deprecated QueryBuilder API. See {@link QueryBuilder} for details.
  */
+@Deprecated
 public class SimpleQuerySnapshot implements QuerySnapshot {
     /**
      * Name of the column this snapshot belongs to.

@@ -22,7 +22,9 @@ import java.sql.SQLException;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 29.3.14
+ * @deprecated Part of the deprecated QueryBuilder API. See {@link QueryBuilder} for details.
  */
+@Deprecated
 public class SqlValueHolder<T> implements QuerySnapshot.Factory, QuerySnapshot {
     /**
      * Name of the represented column

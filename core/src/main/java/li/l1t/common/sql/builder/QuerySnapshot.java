@@ -24,7 +24,9 @@ import javax.annotation.Nonnull;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2.4.14
+ * @deprecated Part of the deprecated QueryBuilder API. See {@link QueryBuilder} for details.
  */
+@Deprecated
 public interface QuerySnapshot {
     /**
      * @return the name of the column this snapshot belongs to.

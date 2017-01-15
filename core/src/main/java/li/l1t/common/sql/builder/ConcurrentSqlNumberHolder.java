@@ -33,7 +33,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 22.3.14
+ * @deprecated Part of the deprecated QueryBuilder API. See {@link QueryBuilder} for details.
  */
+@Deprecated
 public class ConcurrentSqlNumberHolder<T extends Number> extends SqlValueHolder<T> {
     private final MathOperator<T> mathOperator;
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(false);

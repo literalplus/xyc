@@ -34,8 +34,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 23.3.14
+ * @deprecated The QueryBuilder API is basically just a lot of trial-and-error connected using unbelievable amounts of
+ * duct tape. It is not properly tested and probably has loads of race conditions, concurrency problems, bugs, and more
+ * unpleasant things. Further, it tries to be a ORM framework which would require a lot more effort and is way beyond
+ * the scope of XYC. Also, it  does not meet the clean code standards of XYC. Use a full-fledged ORM framework instead.
+ * For use with Bukkit, try <a href="https://bitbucket.org/xxyy/libhibernate">LibHibernate</a>.
  */
-public class QueryBuilder { //TODO make concurrent
+@Deprecated
+public class QueryBuilder { //TO/DO make concurrent
     /**
      * Name of the table this query is targeted to.
      */
@@ -68,7 +74,8 @@ public class QueryBuilder { //TODO make concurrent
     }
 
     /**
-     * Adds given snapshots to this builder. Snapshots are added to identifiers or parts based on their {@link QuerySnapshot#getType()}.
+     * Adds given snapshots to this builder. Snapshots are added to identifiers or parts based on their {@link
+     * QuerySnapshot#getType()}.
      *
      * @param snapshots       Snapshots to add
      * @param omitIdentifiers If this is set to {@code true}, identifiers are ignored.
@@ -96,7 +103,8 @@ public class QueryBuilder { //TODO make concurrent
      *
      * @param identifier snapshot of the column to be used as an identifier.
      * @return This object, for convenient construction.
-     * @throws java.lang.IllegalArgumentException If {@link SimpleQuerySnapshot#getType()} does not return {@link QuerySnapshot.Type#OBJECT_UPDATE} for {@code identifier}.
+     * @throws java.lang.IllegalArgumentException If {@link SimpleQuerySnapshot#getType()} does not return {@link
+     *                                            QuerySnapshot.Type#OBJECT_UPDATE} for {@code identifier}.
      */
     @Nonnull
     public QueryBuilder addUniqueIdentifier(@Nonnull final QuerySnapshot identifier) {
@@ -212,7 +220,8 @@ public class QueryBuilder { //TODO make concurrent
      * Will use ? arguments to infer values.
      *
      * @param statementFactory Where to get the statement from
-     * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts have been defined.
+     * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts have been
+     * defined.
      * @throws java.sql.SQLException if a sql error occurs
      */
     @Nullable
@@ -257,14 +266,14 @@ public class QueryBuilder { //TODO make concurrent
     }
 
     /**
-     * Builds a true update query from this builder. (Using pure SQL {@code UPDATE})
-     * Will use ? arguments to infer values.
-     * This uses less Text than {@link #buildUpdate(PreparedStatementFactory)}, but will fail (silently)
-     * if there is no row matched by the identifiers.
-     * <b>This will return null if no identifiers are specified to prevent accidental destruction of whole tables. Use an identifier of 1=1 to circumvent that.</b>
+     * Builds a true update query from this builder. (Using pure SQL {@code UPDATE}) Will use ? arguments to infer
+     * values. This uses less Text than {@link #buildUpdate(PreparedStatementFactory)}, but will fail (silently) if
+     * there is no row matched by the identifiers. <b>This will return null if no identifiers are specified to prevent
+     * accidental destruction of whole tables. Use an identifier of 1=1 to circumvent that.</b>
      *
      * @param statementFactory Where to get the statement from
-     * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts or identifiers have been defined.
+     * @return A {@link java.sql.PreparedStatement} derived from this builder, or {@code null} if no parts or
+     * identifiers have been defined.
      * @throws java.sql.SQLException if a database error occurs
      */
     @Nullable
@@ -310,7 +319,8 @@ public class QueryBuilder { //TODO make concurrent
      * This will close the created {@link java.sql.PreparedStatement}.
      *
      * @param statementFactory Where to get a statement from
-     * @return (1) The number of rows affected (2) 0 for statements that return nothing (3) -1 if this builder did not contain sufficient information to build a statement.
+     * @return (1) The number of rows affected (2) 0 for statements that return nothing (3) -1 if this builder did not
+     * contain sufficient information to build a statement.
      * @throws SQLException If a SQL error occurs.
      * @see java.sql.PreparedStatement#executeUpdate()
      * @see #buildUpdate(PreparedStatementFactory)
@@ -332,7 +342,8 @@ public class QueryBuilder { //TODO make concurrent
      * This will close the created {@link java.sql.PreparedStatement}.
      *
      * @param statementFactory Where to get a statement from
-     * @return (1) The number of rows affected (2) 0 for statements that return nothing (3) -1 if this builder did not contain sufficient information to build a statement.
+     * @return (1) The number of rows affected (2) 0 for statements that return nothing (3) -1 if this builder did not
+     * contain sufficient information to build a statement.
      * @throws SQLException If a SQL error occurs.
      * @see java.sql.PreparedStatement#executeUpdate()
      * @see #buildTrueUpdate(PreparedStatementFactory)
@@ -349,14 +360,14 @@ public class QueryBuilder { //TODO make concurrent
     }
 
     /**
-     * Builds a select query from this builder. (Using SQL {@code SELECT}).
-     * Will use arguments to infer values.
-     * If parts or identifiers are present, only these columns are selected.  (This behaviour can be overwritten by setting {@code selectStar} to {@code true})
-     * If no parts or identifiers are present, {@code SELECT *} will be used.
-     * If identifiers are present, these will be included in a {@code WHERE} clause.
+     * Builds a select query from this builder. (Using SQL {@code SELECT}). Will use arguments to infer values. If parts
+     * or identifiers are present, only these columns are selected.  (This behaviour can be overwritten by setting
+     * {@code selectStar} to {@code true}) If no parts or identifiers are present, {@code SELECT *} will be used. If
+     * identifiers are present, these will be included in a {@code WHERE} clause.
      *
      * @param statementFactory Where to get the statement from
-     * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
+     * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are
+     *                         present.
      * @return a {@link java.sql.PreparedStatement} derived from the current state of this builder.
      * @throws java.sql.SQLException if a database error occurs
      */
@@ -410,12 +421,15 @@ public class QueryBuilder { //TODO make concurrent
     }
 
     /**
-     * This executes the select statement derived from this builder. (See {@link #buildSelect(PreparedStatementFactory, boolean)} JavaDoc for details on that)
-     * <b>This will NOT close the {@link java.sql.PreparedStatement}! Make sure to ALWAYS close that!</b>
+     * This executes the select statement derived from this builder. (See {@link #buildSelect(PreparedStatementFactory,
+     * boolean)} JavaDoc for details on that) <b>This will NOT close the {@link java.sql.PreparedStatement}! Make sure
+     * to ALWAYS close that!</b>
      *
      * @param statementFactory Where to get the statement from
-     * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are present.
-     * @return A {@link QueryResult} created by the request, or {@code null} if {@link #buildSelect(PreparedStatementFactory, boolean)} returned {@code null}.
+     * @param selectStar       If this is true, {@code SELECT *} will be used, even if identifiers or parts are
+     *                         present.
+     * @return A {@link QueryResult} created by the request, or {@code null} if {@link
+     * #buildSelect(PreparedStatementFactory, boolean)} returned {@code null}.
      * @throws SQLException if a database error occurs
      */
     public QueryResult executeSelect(@Nonnull final PreparedStatementFactory statementFactory, final boolean selectStar) throws SQLException {
