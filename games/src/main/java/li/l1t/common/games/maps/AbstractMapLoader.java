@@ -10,17 +10,12 @@
 
 package li.l1t.common.games.maps;
 
-import li.l1t.common.util.CommandHelper;
 import li.l1t.common.util.FileHelper;
 import li.l1t.common.xyplugin.SqlXyGamePlugin;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -65,7 +60,7 @@ public abstract class AbstractMapLoader {
             }
             this.availableMaps = Arrays.asList(this.mapsFolder.list());
             Bukkit.getConsoleSender().sendMessage(
-                    this.getClass().getSimpleName() + "§eFound maps: " + CommandHelper.CSCollection(this.availableMaps) + " at " + this.mapsFolder.
+                    this.getClass().getSimpleName() + "§eFound maps: " + this.availableMaps + " at " + this.mapsFolder.
                             getAbsolutePath());
         } catch (Exception e) {
             System.out.println(this.getClass().getSimpleName() + "|mapsFolder: " + path);

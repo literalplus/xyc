@@ -82,7 +82,7 @@ public class LangHelper {
                 cfg.save(file);// vv Will not be printed in case of exception
                 CommandHelper.sendMessageToOpsAndConsole("§a[" + plug.getName() + "] Your language files were outdated and"
                         + " have automagically been updated for you. You may want to check if the changes reflect your opinion :)");
-                System.out.println("Updated Language Nodes: " + CommandHelper.CSCollection(newEntryMap.keySet()));
+                System.out.println("Updated Language Nodes: " + newEntryMap.keySet());
             } catch (IOException e) {
                 System.out.println("Could not save modified language file. That's an error.");
             }

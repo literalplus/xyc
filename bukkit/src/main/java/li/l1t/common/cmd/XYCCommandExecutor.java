@@ -85,7 +85,7 @@ public abstract class XYCCommandExecutor implements CommandExecutor {
                         int i = 0;
                         for (AbstractXyPlugin pl : AbstractXyPlugin.getInstances()) {
                             sender.sendMessage(pl.getDescription().getName() + " @ " + pl.getDescription().getVersion()
-                                    + " by " + CommandHelper.CSCollection(pl.getDescription().getAuthors()));
+                                    + " by " + pl.getDescription().getAuthors());
                             i++;
                         }
                         sender.sendMessage("§e" + i + " XyPlugins loaded.");

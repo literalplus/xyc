@@ -12,7 +12,6 @@ package li.l1t.common.games.data;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
-import li.l1t.common.XycConstants;
 import li.l1t.common.games.GameLib;
 import li.l1t.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import li.l1t.common.sql.QueryResult;
@@ -20,6 +19,7 @@ import li.l1t.common.sql.SafeSql;
 import li.l1t.common.sql.builder.QueryBuilder;
 import li.l1t.common.sql.builder.QuerySnapshot;
 import li.l1t.common.util.CommandHelper;
+import li.l1t.common.util.UUIDHelper;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
 {
 
-    public static final UUID CONSOLE_UUID = XycConstants.NIL_UUID;
+    public static final UUID CONSOLE_UUID = UUIDHelper.NIL_UUID;
     /**
      * No longer used, please make your own.
      */
