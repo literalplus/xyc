@@ -25,6 +25,7 @@ import java.util.logging.LogRecord;
  * A custom log formatter!
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @deprecated Use Log4J2 and {@link Log4JContextInitialiser} instead.
  */
 public class XYCFormatter extends Formatter {
     /**
@@ -52,7 +53,7 @@ public class XYCFormatter extends Formatter {
      * @param printMethodName Whether to print the calling method's name in every LogRecord.
      * @see XYCFormatter#XYCFormatter(String, String, String)
      */
-    public XYCFormatter(AbstractXyPlugin plug, String logName, boolean printMethodName) { //TODO: This should be in xyc-core - Make generic interface for plugins
+    public XYCFormatter(AbstractXyPlugin plug, String logName, boolean printMethodName) {
         this.pluginName = plug.getName();
         this.pluginVersion = plug.getDescription().getVersion();
         this.logName = logName;
