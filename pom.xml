@@ -32,7 +32,6 @@
         <module>bungee</module>
         <module>games</module>
         <module>games-bootstrap</module>
-        <module>bootstrap-legacy</module>
         <module>lanatus</module>
     </modules>
 
