@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common;
 
+import li.l1t.common.util.UUIDHelper;
 import li.l1t.common.version.PluginVersion;
 
 import java.util.UUID;
@@ -37,8 +38,9 @@ public class XycConstants {
     /**
      * The nil UUID - a special UUID which can be used to represent special values, such as the Minecraft server console.
      * {@code 00000000-0000-0000-0000-000000000000}
+     * @deprecated Use {@link UUIDHelper#NIL_UUID}
      */
-    public static final UUID NIL_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    public static final UUID NIL_UUID = UUIDHelper.NIL_UUID;
     /**
      * XYC chat prefix.
      */
