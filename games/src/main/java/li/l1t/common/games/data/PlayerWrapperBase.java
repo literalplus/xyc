@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.games.data;
@@ -41,7 +41,9 @@ import static li.l1t.common.sql.builder.annotation.SqlValueCache.Type.UUID_IDENT
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2.4.14
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Metadatable {
     //    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
     public static final String FULL_CENTRAL_USER_TABLE_NAME = GameLib.CENTRAL_DB_NAME + ".user";

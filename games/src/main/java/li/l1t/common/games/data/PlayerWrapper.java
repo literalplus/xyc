@@ -38,31 +38,44 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * Wrapper for {@link Player} to be used by games to store data. The default implementation stores some common data in SQL table
- * {@value PlayerWrapper#FULL_CENTRAL_USER_TABLE_NAME}.
+ * Wrapper for {@link Player} to be used by games to store data. The default implementation stores some common data in
+ * SQL table {@value PlayerWrapper#FULL_CENTRAL_USER_TABLE_NAME}.
  *
  * @author xxyy98
+ * @deprecated The PlayerWrapper API has some serious issues, such as using a custom ORM 'framework' that has design
+ * issues and probably also a lot of (concurrency) bugs, and also that it uses the outdated concept of 'passes', or that
+ * it depends on the outdated SafeSql API. Further, it shows poor API design and stores way too many things in the
+ * PlayerWrapper class. The Lanatus API should be used instead where possible.
  */
-public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
-{
+@Deprecated
+public class PlayerWrapper extends PlayerWrapperBase {
 
+    /**
+     * @deprecated Use {@link UUIDHelper#NIL_UUID}
+     */
+    @Deprecated
     public static final UUID CONSOLE_UUID = UUIDHelper.NIL_UUID;
     /**
      * No longer used, please make your own.
      */
     @Deprecated
     public static HttpProfileRepository HTTP_PROFILE_REPOSITORY;
+    /**
+     * @deprecated Not subclass-aware
+     */
+    @Deprecated
     private static PlayerWrapper CONSOLE_WRAPPER;
     private final ListMultimap<String, MetadataValue> metadata =
             MultimapBuilder.hashKeys().arrayListValues(1).build();
     private QueryBuilder passQueryBuilder;
 
     /**
-     * Gets a wrapper for a {@link CommandSender}. If it's a {@link ConsoleCommandSender}, internal things will happen. Use this method if you want to
-     * check permissions for {@link CommandSender}s!
-     * <b>Implementations must implement a constructor with the exact same arguments!!</b>
+     * Gets a wrapper for a {@link CommandSender}. If it's a {@link ConsoleCommandSender}, internal things will happen.
+     * Use this method if you want to check permissions for {@link CommandSender}s! <b>Implementations must implement a
+     * constructor with the exact same arguments!!</b>
      *
-     * @param sender A {@link CommandSender}. (must be {@link Player} or {@link ConsoleCommandSender} or {@link BlockCommandSender})
+     * @param sender A {@link CommandSender}. (must be {@link Player} or {@link ConsoleCommandSender} or {@link
+     *               BlockCommandSender})
      * @param ssql   SafeSql to use for storing the object.
      * @throws ClassCastException If {@code sender} is not any of the expected types.
      */
@@ -119,12 +132,12 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
 //    }
 
     /**
-     * Wraps a player by UUID. Use this if you don't have access to a Player instance; If the player is not online, {@link PlayerWrapper#plr()} will
-     * return null.
-     * <b>Notice:</b> If you have a CommandSender, use {@link PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for
-     * CONSOLE {@link PlayerWrapper#hasPermission(String)} checks.
-     * <b>Implementations must implement a constructor with the exact same arguments!!</b>
-     * Only use this if you don't have anything else, stuff will break very badly if there's no database entry for this UUID.
+     * Wraps a player by UUID. Use this if you don't have access to a Player instance; If the player is not online,
+     * {@link PlayerWrapper#plr()} will return null. <b>Notice:</b> If you have a CommandSender, use {@link
+     * PlayerWrapper#PlayerWrapper(CommandSender, SafeSql)} instead - that constructor also allows for CONSOLE {@link
+     * PlayerWrapper#hasPermission(String)} checks. <b>Implementations must implement a constructor with the exact same
+     * arguments!!</b> Only use this if you don't have anything else, stuff will break very badly if there's no database
+     * entry for this UUID.
      *
      * @param uuid    UUID of the player to wrap
      * @param plrName Name of the player to wrap (May be null if not available)
@@ -142,8 +155,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * Returns the real user name for a provided String.
      *
      * @param name Name to seek.
-     * @return Name of the player currently owning this nickname or {@code name} if {@code name} is a real name or {@code null} if
-     * there is no such user.
+     * @return Name of the player currently owning this nickname or {@code name} if {@code name} is a real name or
+     * {@code null} if there is no such user.
      */
     public static String getAnyName(String name) {
         try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(
@@ -161,7 +174,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
      * Gets the real name of an user by their nickname.
      *
      * @param nick Nickname to seek.
-     * @return Name of the player currently owning this nickname or {@code null} if this nickname has not been registered.
+     * @return Name of the player currently owning this nickname or {@code null} if this nickname has not been
+     * registered.
      */
     public static String getNameByNick(String nick) {
         try (QueryResult queryResult = GameLib.getSql().executeQueryWithResult(
@@ -229,8 +243,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Returns the amount of passes currently owned by the wrapped player. Passes are some kind of currency that is intended to be used up by games
-     * for premium functionality.
+     * Returns the amount of passes currently owned by the wrapped player. Passes are some kind of currency that is
+     * intended to be used up by games for premium functionality.
      *
      * @return The amount of passes currently owned by the wrapped player.
      * @see PlayerWrapper#addPassUse()
@@ -241,8 +255,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Returns how many passes the wrapped player has used up all-time. Passes are some kind of currency that is intended to be used up by games for
-     * premium functionality.
+     * Returns how many passes the wrapped player has used up all-time. Passes are some kind of currency that is
+     * intended to be used up by games for premium functionality.
      *
      * @return The all-time count of passes used by the wrapped player.
      */
@@ -261,8 +275,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Re-fetches only the amount of passes owned and passes used by the wrapped player. This is for safety and accuracy purposes, and should be
-     * invoked every once-in-a-while by games to prevent players from using their passes twice.
+     * Re-fetches only the amount of passes owned and passes used by the wrapped player. This is for safety and accuracy
+     * purposes, and should be invoked every once-in-a-while by games to prevent players from using their passes twice.
      */
     public void refetchPasses() {
         Validate.notNull(getUniqueId(), "Cannot re-fetch passes, no UUID!");
@@ -303,10 +317,12 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Parses a colorized name for the player represented by this wrapper. Primarily intended for chat, rankings and the TAB list.
+     * Parses a colorized name for the player represented by this wrapper. Primarily intended for chat, rankings and the
+     * TAB list.
      *
      * @param sixteenCharLimit Whether to limit the output to 16 characters (I did not make that limitation!)
-     * @return The colorized display name of this player, using the color of the "default" group if a nickname is enabled.
+     * @return The colorized display name of this player, using the color of the "default" group if a nickname is
+     * enabled.
      */
     public String getColorizedDisplayName(boolean sixteenCharLimit) {
         String nameColor = this.getGroup().getNameColor();
@@ -325,8 +341,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Returns the display name of the player represented by this wrapper. The name returned will *NOT* be colorified. This will return the name of
-     * the player or his nickname, if he/she has chosen one.
+     * Returns the display name of the player represented by this wrapper. The name returned will *NOT* be colorified.
+     * This will return the name of the player or his nickname, if he/she has chosen one.
      *
      * @return The display name for the wrapped player, either his/her real name or his/her nickname.
      */
@@ -339,8 +355,8 @@ public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //T
     }
 
     /**
-     * Returns the nickname the wrapped player has chosen or
-     * {@code null} if he/she has not (yet) chosen one. If the player has chosen a nickname, please try to use it as much as possible.
+     * Returns the nickname the wrapped player has chosen or {@code null} if he/she has not (yet) chosen one. If the
+     * player has chosen a nickname, please try to use it as much as possible.
      *
      * @return nickname the wrapped player has chosen or {@code null} if none.
      * @see PlayerWrapper#getDisplayName()

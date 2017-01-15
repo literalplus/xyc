@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.games.data;
@@ -32,7 +32,9 @@ import java.util.logging.Logger;
  *
  * @param <T> Implementation of {@link PlayerWrapper} that is produced by this factory.
  * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements PlayerWrapperFactory<T> {
 
     private static final PlayerWrapperFactory<PlayerWrapper> GENERIC_FACTORY = new DefaultPlayerWrapperFactory(GameLib.getSql());
