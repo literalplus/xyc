@@ -32,7 +32,9 @@ import java.util.logging.Logger;
  *
  * @param <T> Implementation of {@link PlayerWrapper} that is produced by this factory.
  * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public class ReflectionPlayerWrapperFactory<T extends PlayerWrapper> implements PlayerWrapperFactory<T> {
 
     private static final PlayerWrapperFactory<PlayerWrapper> GENERIC_FACTORY = new DefaultPlayerWrapperFactory(GameLib.getSql());

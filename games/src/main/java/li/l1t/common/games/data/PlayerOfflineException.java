@@ -14,7 +14,9 @@ package li.l1t.common.games.data;
  * Thrown when a {@link org.bukkit.entity.Player} is offline when it really shouldn't be.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public class PlayerOfflineException extends RuntimeException {
 
     private static final long serialVersionUID = -4816273007842678096L;

@@ -41,7 +41,9 @@ import static li.l1t.common.sql.builder.annotation.SqlValueCache.Type.UUID_IDENT
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 2.4.14
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Metadatable {
     //    public static final String FULL_XY_TABLE_NAME = GameLib.XY_DB_NAME + ".game_users";
     public static final String FULL_CENTRAL_USER_TABLE_NAME = GameLib.CENTRAL_DB_NAME + ".user";

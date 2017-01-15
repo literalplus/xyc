@@ -27,8 +27,9 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 16.4.14
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
-
+@Deprecated
 public class DefaultPlayerWrapperFactory implements PlayerWrapperFactory<PlayerWrapper> {
     private static final ReentrantLock WRAPPER_CACHE_LOCK = new ReentrantLock(false);
     private final SafeSql sql;

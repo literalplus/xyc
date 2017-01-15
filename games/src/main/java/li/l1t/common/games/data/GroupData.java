@@ -31,7 +31,9 @@ import java.util.regex.Pattern;
  * Provides data of groups.
  *
  * @author xxyy98
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public class GroupData {
 
     /**

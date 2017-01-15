@@ -66,9 +66,6 @@ public abstract class GameLib {
         return ssql;
     }
 
-    /**
-     * @param pl It's just needed.
-     */
     private static void initLib(SqlXyGamePlugin pl) {
         Bukkit.getLogger().log(Level.INFO, "\u00a78[Xyg] Loading xxyy98's game library...");
 

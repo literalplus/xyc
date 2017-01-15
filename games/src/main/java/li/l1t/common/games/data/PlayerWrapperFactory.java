@@ -21,7 +21,9 @@ import java.util.UUID;
 /**
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 15.4.14
+ * @deprecated Part of the deprecated PlayerWrapper API. See {@link PlayerWrapper} for details.
  */
+@Deprecated
 public interface PlayerWrapperFactory<T extends PlayerWrapper> {
     /**
      * Forces a full (re-)fetch for all products owned by this instance.
