@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.log;
@@ -25,6 +25,7 @@ import java.util.logging.LogRecord;
  * A custom log formatter!
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @deprecated Use Log4J2 and {@link Log4JContextInitialiser} instead.
  */
 public class XYCFormatter extends Formatter {
     /**
@@ -52,7 +53,7 @@ public class XYCFormatter extends Formatter {
      * @param printMethodName Whether to print the calling method's name in every LogRecord.
      * @see XYCFormatter#XYCFormatter(String, String, String)
      */
-    public XYCFormatter(AbstractXyPlugin plug, String logName, boolean printMethodName) { //TODO: This should be in xyc-core - Make generic interface for plugins
+    public XYCFormatter(AbstractXyPlugin plug, String logName, boolean printMethodName) {
         this.pluginName = plug.getName();
         this.pluginVersion = plug.getDescription().getVersion();
         this.logName = logName;

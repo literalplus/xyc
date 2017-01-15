@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.log;
@@ -33,8 +33,9 @@ import java.util.logging.Logger;
  * (reference will not be needed any more)
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
+ * @deprecated Bad design, and java.util.logging has its flaws. Use Log4J2 with {@link Log4JContextInitialiser} instead.
  */
-public abstract class LogHelper { //TODO this shouldn't be static and accept a plugin instance. And the JavaDoc is um..bad
+public abstract class LogHelper {
 
     protected static LogHelper instance;
     private List<Logger> loggers = new ArrayList<>();
@@ -70,7 +71,8 @@ public abstract class LogHelper { //TODO this shouldn't be static and accept a p
     }
 
     /**
-     * Override this method with logic to initialize your loggers using {@link LogHelper#initLogger(Logger, String, Formatter)}.
+     * Override this method with logic to initialize your loggers using {@link LogHelper#initLogger(Logger, String,
+     * Formatter)}.
      */
     public abstract void initLoggers();
 
