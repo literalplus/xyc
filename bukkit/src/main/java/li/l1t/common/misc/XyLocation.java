@@ -37,7 +37,6 @@ import java.util.Map;
 public class XyLocation extends Location implements ConfigurationSerializable {
     static {
         ConfigurationSerialization.registerClass(XyLocation.class);
-        ConfigurationSerialization.registerClass(XyLocation.class, "io.github.xxyy.common.misc.XyLocation"); //TODO: remove after 4.2.0.0
     }
 
     public XyLocation(World world, double x, double y, double z) {
