@@ -38,10 +38,33 @@ public class PotionHelper {
     /**
      * Creates a potion effect from a string specifying type, duration, and amplifier. The effects are matched using
      * {@link PotionEffectType#getByName(String)}. <p> Specs look like this: {@code EFFECT:AMPLIFIER*DURATION} </p> <p>
-     * Only EFFECT is required, all other parameters may be omitted. Therefore, the following strings are all valid:
-     * <ul> <li>{@code SPEED} -> Speed I for Integer.MAX_VALUE ticks</li> <li>{@code SPEED:1} -> Speed II for
-     * Integer.MAX_VALUE ticks</li> <li>{@code SPEED:1*6000} -> Speed II for 6000 ticks (=5 minutes)</li> <li>{@code
-     * SLOW_DIGGING*6000} -> Mining Fatigue I for 6000 ticks (=5 minutes)</li> </ul> </p>
+     * Only EFFECT is required, all other parameters may be omitted. Therefore, the following strings are all valid:</p>
+     * <table summary="examples of valid specifiers">
+     * <thead>
+     * <tr>
+     * <td>valid spec</td>
+     * <td>resulting effect</td>
+     * </tr>
+     * </thead>
+     * <tbody>
+     * <tr>
+     * <td>{@code SPEED}</td>
+     * <td>Speed I for Integer.MAX_VALUE ticks</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SPEED:1}</td>
+     * <td>Speed II for Integer.MAX_VALUE ticks</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SPEED:1*6000}</td>
+     * <td>Speed II for 6000 ticks (=5 minutes)</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SLOW_DIGGING*6000}</td>
+     * <td>Mining Fatigue I for 6000 ticks (=5 minutes)</td>
+     * </tr>
+     * </tbody>
+     * </table>
      *
      * @param spec the specifier string for the potion effect to create
      * @return the potion effect parsed from given spec
@@ -96,10 +119,31 @@ public class PotionHelper {
      * Creates a potion data from a string specifying type, duration, and amplifier. The effects are matched using
      * {@link PotionType#valueOf(String)}. <p> Specs look like this: {@code EFFECT.up.ext} </p> <p> Only EFFECT is
      * required, all other parameters may be omitted. The parameters specify whether the potion is upgraded in power and
-     * has extended duration, respectively. Therefore, the following strings are all valid: <ul> <li>{@code SPEED} ->
-     * Speed I with default duration</li> <li>{@code SPEED.up} -> Speed II with default duration</li>
-     * <li>{@code SPEED.up.ext} -> Speed II with extended duration</li> <li>{@code SLOW_DIGGING.ext} -> Mining
-     * Fatigue II with default duration</li> </ul> </p>
+     * has extended duration, respectively. Therefore, the following strings are all valid:</p>
+     * <table summary="examples of valid specifiers">
+     * <thead><tr>
+     * <td>valid input</td>
+     * <td>resulting potion data</td>
+     * </tr></thead>
+     * <tbody>
+     * <tr>
+     * <td>{@code SPEED}</td>
+     * <td>Speed I with default duration</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SPEED.up}</td>
+     * <td>Speed II with default duration</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SPEED.up.ext}</td>
+     * <td>Speed II with extended duration</td>
+     * </tr>
+     * <tr>
+     * <td>{@code SLOW_DIGGING.ext}</td>
+     * <td>Mining Fatigue II with default duration</td>
+     * </tr>
+     * </tbody>
+     * </table>
      *
      * @param spec the specifier string for the potion data to create
      * @return the potion data parsed from given spec

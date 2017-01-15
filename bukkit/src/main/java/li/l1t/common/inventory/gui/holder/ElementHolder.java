@@ -40,7 +40,7 @@ public interface ElementHolder {
      *
      * @param slotId the id of the slot to check
      * @return whether there is currently an item rendered in given slot
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     boolean isOccupied(int slotId);
 
@@ -49,7 +49,7 @@ public interface ElementHolder {
      *
      * @param slot the position of the slot to check
      * @return whether there is currently an item rendered in given slot
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     boolean isOccupied(SlotPosition slot);
 
@@ -59,7 +59,7 @@ public interface ElementHolder {
      *
      * @param slotId the id of the slot to add the placeholder to
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addPlaceholder(int slotId);
 
@@ -68,7 +68,7 @@ public interface ElementHolder {
      *
      * @param slot the position of the slot to add the placeholder to
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addPlaceholder(SlotPosition slot);
 
@@ -80,7 +80,7 @@ public interface ElementHolder {
      * @param slotId  the id of the slot to render in
      * @param element the element to render, may be null to remove
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addElement(int slotId, MenuElement element);
 
@@ -91,7 +91,7 @@ public interface ElementHolder {
      * @param slot    the slot of the slot to render in
      * @param element the element to render, may be null to remove
      * @throws IllegalPositionException  if drawing in given slot is prohibited
-     * @throws IndexOutOfBoundsException if slotId > {@value #INVENTORY_SIZE}
+     * @throws IndexOutOfBoundsException if slotId &gt; {@value #INVENTORY_SIZE}
      */
     void addElement(SlotPosition slot, MenuElement element);
 

@@ -44,6 +44,8 @@ public abstract class SortFilterListMenu<V> extends PagingListMenu<V> {
 
     /**
      * Sets this menu's comparator and sorts the items according to it.
+     *
+     * @param comparator the comparator to sort with
      */
     public void setComparator(Comparator<? super V> comparator) {
         this.comparator = comparator;
