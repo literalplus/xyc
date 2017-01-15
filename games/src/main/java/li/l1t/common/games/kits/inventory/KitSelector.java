@@ -28,7 +28,6 @@ import java.util.function.Consumer;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  */
-//TODO: Adapt Inventory API from MTC Shop
 public class KitSelector implements Listener, InventoryHolder {
     private final Plugin plugin;
     private final KitManager manager;

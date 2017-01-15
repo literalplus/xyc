@@ -272,7 +272,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
             tryFetchByUUID();
         }
 
-        if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TODO: um
+        if (getUniqueId() == null) { //This should actually never happen, except for really offline players...not even for them lol TO/DO: um
             throw new AssertionError("Could not find UUID! This is very bad..." +
                     "I will not attempt to fetch it for you because the name I got is not unique. (Thnx, Mojang, EvilSeph)");
         }
@@ -333,7 +333,7 @@ public abstract class PlayerWrapperBase implements SqlValueHolder.DataSource, Me
 
     @Override
     public void registerChange(@Nonnull SqlValueHolder<?> holder) {
-        this.xyChanged = true; //TODO only update actually changed values! :)
+        this.xyChanged = true; //TO/DO only update actually changed values! :)
     }
 
     /**
