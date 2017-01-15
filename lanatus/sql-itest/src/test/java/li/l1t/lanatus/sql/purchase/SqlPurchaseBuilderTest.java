@@ -163,6 +163,6 @@ public class SqlPurchaseBuilderTest extends AbstractLanatusSqlTest {
     }
 
     private void thenThePurchaseWasMadeInThePast(Purchase purchase) {
-        assertThat(purchase.getCreationInstant().isBefore(Instant.now()), is(true));
+        assertThat(Instant.now().plusMillis(1L).isAfter(purchase.getCreationInstant()), is(true));
     }
 }
