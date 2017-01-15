@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -163,6 +163,6 @@ public class SqlPurchaseBuilderTest extends AbstractLanatusSqlTest {
     }
 
     private void thenThePurchaseWasMadeInThePast(Purchase purchase) {
-        assertThat(purchase.getCreationInstant().isBefore(Instant.now()), is(true));
+        assertThat(Instant.now().plusMillis(1L).isAfter(purchase.getCreationInstant()), is(true));
     }
 }
