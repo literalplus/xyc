@@ -10,6 +10,7 @@
 
 package li.l1t.common;
 
+import li.l1t.common.util.UUIDHelper;
 import li.l1t.common.version.PluginVersion;
 
 import java.util.UUID;
@@ -37,8 +38,9 @@ public class XycConstants {
     /**
      * The nil UUID - a special UUID which can be used to represent special values, such as the Minecraft server console.
      * {@code 00000000-0000-0000-0000-000000000000}
+     * @deprecated Use {@link UUIDHelper#NIL_UUID}
      */
-    public static final UUID NIL_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    public static final UUID NIL_UUID = UUIDHelper.NIL_UUID;
     /**
      * XYC chat prefix.
      */
