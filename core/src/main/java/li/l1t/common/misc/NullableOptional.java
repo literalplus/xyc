@@ -17,7 +17,9 @@ import java.util.NoSuchElementException;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 19.8.14
+ * @deprecated This is not at all how Optional is supposed to be used. Use nested optionals instead.
  */
+@Deprecated
 public class NullableOptional<T> {
     private final T value;
     private final boolean present;
