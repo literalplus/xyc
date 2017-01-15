@@ -49,7 +49,10 @@ public final class StringHelper {
      * @param startIndex      first array index to process
      * @param translateColors whether to pass the output through {@link #translateAlternateColorCodes(java.lang.String)}
      * @return the concatenated string
+     * @deprecated Boolean parameter decides between two implementations. Use {@link li.l1t.common.chat.Arguments#joinRange(String[],
+     * int, int)} or {@link li.l1t.common.chat.Arguments#joinRangeColored(String[], int, int)}
      */
+    @Deprecated
     public static String varArgsString(final String[] args, final int startIndex, final boolean translateColors) {
         return varArgsString(args, startIndex, 0, translateColors);
     }
@@ -62,6 +65,8 @@ public final class StringHelper {
      * @param end             how many items to ignore at the end; 0 means to process all items
      * @param translateColors whether to pass the output through {@link #translateAlternateColorCodes(java.lang.String)}
      * @return the concatenated string
+     * @deprecated Boolean parameter decides between two implementations. Use {@link li.l1t.common.chat.Arguments#joinRange(String[],
+     * int, int)} or {@link li.l1t.common.chat.Arguments#joinRangeColored(String[], int, int)}
      */
     public static String varArgsString(String[] args, int startIndex, int end, boolean translateColors) {
         final StringBuilder builder = new StringBuilder();
@@ -69,16 +74,17 @@ public final class StringHelper {
             builder.append(((i == startIndex) ? "" : " ")).append(args[i]);
         }
         String text = builder.toString();
-        if (translateColors){
+        if (translateColors) {
             text = translateAlternateColorCodes(text);
         }
         return text;
     }
 
     /**
-     * Translates an alternate syntax for <a href="http://minecraftwiki.net/wiki/Formatting%20Codes">Minecraft's color codes</a>
-     * using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This only translates
-     * actual formatting codes (specified by {@code validCodes}) and ignores other instances of {@code &}.
+     * Translates an alternate syntax for <a href="http://minecraftwiki.net/wiki/Formatting%20Codes">Minecraft's color
+     * codes</a> using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This
+     * only translates actual formatting codes (specified by {@code validCodes}) and ignores other instances of {@code
+     * &}.
      *
      * @param text       the text to translate
      * @param validCodes a String containing each valid color code in lower case
@@ -90,7 +96,7 @@ public final class StringHelper {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '&' && validCodes.indexOf(Character.toLowerCase(text.charAt(i + 1))) != -1){
+            if (text.charAt(i) == '&' && validCodes.indexOf(Character.toLowerCase(text.charAt(i + 1))) != -1) {
                 stringBuilder.append('§');
             } else {
                 stringBuilder.append(text.charAt(i));
@@ -101,9 +107,9 @@ public final class StringHelper {
     }
 
     /**
-     * Translates an alternate syntax for <a href="http://minecraftwiki.net/wiki/Formatting%20Codes">Minecraft's color codes</a>
-     * using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This only translates
-     * actual formatting codes and ignores other instances of {@code &}.
+     * Translates an alternate syntax for <a href="http://minecraftwiki.net/wiki/Formatting%20Codes">Minecraft's color
+     * codes</a> using {@code &} instead of {@code §} to the {@code §} notation accepted by the Minecraft client. This
+     * only translates actual formatting codes and ignores other instances of {@code &}.
      *
      * @param text the text to translate
      * @return the input, with formatting codes as accepted by the Minecraft client
@@ -122,7 +128,7 @@ public final class StringHelper {
      */
     public static char alphanumericChar(boolean allowUpperCase) {
         char result = Character.forDigit(NumberHelper.RANDOM.nextInt(36), 36); //36....[0-9a-f]
-        if (allowUpperCase && NumberHelper.RANDOM.nextBoolean()){
+        if (allowUpperCase && NumberHelper.RANDOM.nextBoolean()) {
             return Character.toUpperCase(result);
         } else {
             return result;
@@ -165,7 +171,7 @@ public final class StringHelper {
      * @throws java.lang.IllegalArgumentException If the input couldn't be parsed
      */
     public static long parseTimePeriod(@Nonnull String input) {
-        if (input.isEmpty()){
+        if (input.isEmpty()) {
             throw new IllegalArgumentException("Empty input!");
         }
 
@@ -174,13 +180,13 @@ public final class StringHelper {
         for (int i = 0; i < input.length(); i++) {
             char chr = input.charAt(i);
             TimePeriod period = CHARS_TO_TIME_PERIODS.get(chr);
-            if (period != null){
-                if (numberBuilder.length() == 0){
+            if (period != null) {
+                if (numberBuilder.length() == 0) {
                     throw new IllegalArgumentException("Time period " + period.name() + " missing amount at index " + i);
                 }
                 result += TimeUnit.MILLISECONDS.convert(Long.parseLong(numberBuilder.toString()) * period.getMultiplier(), period.getUnit());
                 numberBuilder = new StringBuilder();
-            } else if (Character.isDigit(chr)){
+            } else if (Character.isDigit(chr)) {
                 numberBuilder.append(chr);
             } else {
                 throw new IllegalArgumentException("Unexpected symbol '" + chr + "' at index " + i);
