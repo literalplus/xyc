@@ -1,17 +1,16 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.games.teams;
 
 import li.l1t.common.games.maps.MapSpawn;
-import li.l1t.common.util.CommandHelper;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -31,7 +30,7 @@ import java.util.WeakHashMap;
 public abstract class AbstractTeam implements GameTeam {
     private final String name;
     private Map<Player, Void> playerMap = new WeakHashMap<>(12); //Doubt I'm gonna need more players in a team anytime soon
-    private List<MapSpawn> spawns = null;
+    private List<MapSpawn> spawns = new ArrayList<>();
 
     @java.beans.ConstructorProperties({"name"})
     public AbstractTeam(String name) {
@@ -99,16 +98,12 @@ public abstract class AbstractTeam implements GameTeam {
 
     @Override
     public void addSpawn(@Nonnull MapSpawn mapSpawn) {
-        if (spawns == null) {
-            spawns = new ArrayList<>();
-        }
-
         spawns.add(mapSpawn);
     }
 
     @Override
     public String toString() {
-        return getClass().getName() + ": `" + getName() + "` (" + CommandHelper.safeSize(getSpawns()) + " spawns, " + CommandHelper.safeSize(getPlayers()) + " players)";
+        return getClass().getName() + ": `" + getName() + "` (" + getSpawns().size() + " spawns, " + getPlayers().size() + " players)";
     }
 
     public boolean equals(Object o) {
@@ -133,6 +128,7 @@ public abstract class AbstractTeam implements GameTeam {
         return other instanceof AbstractTeam;
     }
 
+    @Nonnull
     public List<MapSpawn> getSpawns() {
         return this.spawns;
     }

@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.games.maps;
 
-import li.l1t.common.util.CommandHelper;
 import li.l1t.common.util.FileHelper;
 import li.l1t.common.xyplugin.SqlXyGamePlugin;
 import org.apache.commons.lang.Validate;
@@ -65,7 +64,7 @@ public abstract class AbstractMapLoader {
             }
             this.availableMaps = Arrays.asList(this.mapsFolder.list());
             Bukkit.getConsoleSender().sendMessage(
-                    this.getClass().getSimpleName() + "§eFound maps: " + CommandHelper.CSCollection(this.availableMaps) + " at " + this.mapsFolder.
+                    this.getClass().getSimpleName() + "§eFound maps: " + this.availableMaps + " at " + this.mapsFolder.
                             getAbsolutePath());
         } catch (Exception e) {
             System.out.println(this.getClass().getSimpleName() + "|mapsFolder: " + path);

@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.localisation;
@@ -82,7 +82,7 @@ public class LangHelper {
                 cfg.save(file);// vv Will not be printed in case of exception
                 CommandHelper.sendMessageToOpsAndConsole("§a[" + plug.getName() + "] Your language files were outdated and"
                         + " have automagically been updated for you. You may want to check if the changes reflect your opinion :)");
-                System.out.println("Updated Language Nodes: " + CommandHelper.CSCollection(newEntryMap.keySet()));
+                System.out.println("Updated Language Nodes: " + newEntryMap.keySet());
             } catch (IOException e) {
                 System.out.println("Could not save modified language file. That's an error.");
             }

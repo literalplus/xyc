@@ -1,18 +1,17 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.games.data;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
-import li.l1t.common.XycConstants;
 import li.l1t.common.games.GameLib;
 import li.l1t.common.lib.com.mojang.api.profiles.HttpProfileRepository;
 import li.l1t.common.sql.QueryResult;
@@ -20,6 +19,7 @@ import li.l1t.common.sql.SafeSql;
 import li.l1t.common.sql.builder.QueryBuilder;
 import li.l1t.common.sql.builder.QuerySnapshot;
 import li.l1t.common.util.CommandHelper;
+import li.l1t.common.util.UUIDHelper;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 public class PlayerWrapper extends PlayerWrapperBase//TODO implement Player? //TODO Why is there a T here?
 {
 
-    public static final UUID CONSOLE_UUID = XycConstants.NIL_UUID;
+    public static final UUID CONSOLE_UUID = UUIDHelper.NIL_UUID;
     /**
      * No longer used, please make your own.
      */
