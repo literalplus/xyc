@@ -8,11 +8,24 @@
   ~ See the included LICENSE file (core/src/main/resources) for details.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>li.l1t.common</groupId>
+    <parent>
+        <groupId>li.l1t.common</groupId>
+        <artifactId>xyc-api-parent</artifactId>
+        <version>4.4.0-SNAPSHOT</version>
+    </parent>
     <artifactId>xyc-parent</artifactId>
-    <version>4.3.4.1-SNAPSHOT</version>
+    <version>4.4.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>XYC Parent</name>
+    <description>
+        The parent pom for all modules of the XYC implementation.
+    </description>
+    <inceptionYear>2013</inceptionYear>
+
     <modules>
         <module>bukkit</module>
         <module>core</module>
@@ -22,23 +35,9 @@
         <module>bootstrap-legacy</module>
         <module>lanatus</module>
     </modules>
-    <name>XYC Parent</name>
-    <inceptionYear>2013</inceptionYear>
-    <packaging>pom</packaging>
 
     <properties>
-        <xyc-api.version>4.2.3</xyc-api.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
-        <minecraft.version>1.11</minecraft.version>
-        <spigot.version>${minecraft.version}-R0.1-SNAPSHOT</spigot.version>
-        <bungee.version>${minecraft.version}-SNAPSHOT</bungee.version>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <ignoreSnapshots>true</ignoreSnapshots>
-        <!-- maven-release-plugin -->
+        <!-- Some properties inherited from xyc-api-parent -->
         <log4j.version>2.0-beta9</log4j.version>
         <!-- Mojang ship outdated Beta Log4J code in Production -->
     </properties>
@@ -185,12 +184,6 @@
                 <version>3.0.0</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>li.l1t.common</groupId>
-                <artifactId>xyc-api</artifactId>
-                <version>${xyc-api.version}</version>
-            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>xyc-core</artifactId>
@@ -277,22 +270,6 @@
                             <Implementation-Build>${buildNumber}</Implementation-Build>
                         </manifestEntries>
                     </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-
-                <configuration>
-                    <excludePackageNames>*.internal.*</excludePackageNames>
-                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="https://l1t.li/">Literallie<a> (Philipp Nowak).
-                    Do not distribute or otherwise use without explicit written permission from the author. See the LICENSE file for details.]]></bottom>
-                    <defaultAuthor><![CDATA[<a href="https://l1t.li/">probably Literallie</a>]]></defaultAuthor>
-                    <doctitle>XYC JavaDoc ${project.version}</doctitle>
-                    <outputDirectory>${project.basedir}/target/apidocs</outputDirectory>
-                    <quiet>true</quiet>
                 </configuration>
             </plugin>
 
