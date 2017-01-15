@@ -49,6 +49,7 @@ public class Pair<L, R> {
      * @param <R>   the right type
      * @return a new pair
      */
+    @SuppressWarnings("deprecation")
     public static <L, R> Pair<L, R> pairOf(L left, R right) {
         return new Pair<>(left, right);
     }

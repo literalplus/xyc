@@ -44,6 +44,7 @@ public class Couple<V> extends Pair<V, V> {
      * @param <V>   the couple's value type
      * @return the created couple
      */
+    @SuppressWarnings("deprecation")
     public static <V> Couple<V> of(@Nullable V left, @Nullable V right) {
         return new Couple<>(left, right);
     }

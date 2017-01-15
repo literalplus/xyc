@@ -12,7 +12,7 @@ package li.l1t.common.localisation;
 
 import com.google.common.io.Files;
 import li.l1t.common.XyHelper;
-import li.l1t.common.sql.SafeSql;
+import li.l1t.common.util.Closer;
 import li.l1t.common.util.CommandHelper;
 import li.l1t.common.xyplugin.AbstractXyPlugin;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -106,8 +106,8 @@ public class LangHelper {
 
                 if (destinationFile.exists()) {
                     InputStream in = plugin.getResource("lang/" + language + LANG_FILE_EXTENSION);
-                    @SuppressWarnings("deprecation") YamlConfiguration defaultCfg = YamlConfiguration.loadConfiguration(in);
-                    SafeSql.tryClose(in);
+                    YamlConfiguration defaultCfg = YamlConfiguration.loadConfiguration(in);
+                    Closer.close(in);
                     updateLanguageFile(loadedCfg, defaultCfg, destinationFile, plugin);
                     languages.put(language, loadedCfg);
                 } else {
