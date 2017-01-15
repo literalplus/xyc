@@ -33,7 +33,7 @@ public class AdFilterService {
         The first (and only) capturing group is the second-level domain part of the URL.
      */
     private static final Pattern URL_PATTERN = Pattern.compile(
-            "(?:https?://)?(?:[-\\w_\\.]{2,}\\.)?([-\\w_]{2,}\\.[a-z]{2,4})(?:/\\S*)?",
+            "(?:https?://)?(?:[-\\w_.]{2,}\\.)?([-\\w_]{2,}\\.[a-z]{2,4})(?:/\\S*)?",
             Pattern.CASE_INSENSITIVE); //Don't remove the query part since stuff like "index.php" is detected as URL then
 
     private final List<String> ignoredDomains = new ArrayList<>();
@@ -59,10 +59,10 @@ public class AdFilterService {
         Matcher matcher = URL_PATTERN.matcher(message); //That pattern is considered pretty accurate, so no setting here
         while (matcher.find()) {
             /*
-            //ArrayList#contains() loops too and is case-sensitive, so this doesn't make much of a difference while
+            ArrayList#contains() loops too and is case-sensitive, so this doesn't make much of a difference while
             providing the benefit of being case-insensitive!
              */
-            if (!ignoredDomains.stream().anyMatch(s -> matcher.group(1).equalsIgnoreCase(s))) {
+            if (ignoredDomains.stream().noneMatch(s -> matcher.group(1).equalsIgnoreCase(s))) {
                 return true;
             }
         }

@@ -46,7 +46,7 @@ public class DatabaseSetup extends ExternalResource implements SqlConnected {
         }
     }
 
-    private void runFlywayMigration(Properties flywayProperties) throws IOException {
+    private void runFlywayMigration(Properties flywayProperties) {
         Flyway flyway = new Flyway();
         flyway.configure(flywayProperties);
         flyway.migrate();

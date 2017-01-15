@@ -67,7 +67,7 @@ public abstract class SortFilterListMenu<V> extends PagingListMenu<V> {
         List<V> newItems = copyAllItems();
         newItems.removeIf(PredicateHelper.not(filter));
         if (comparator != null) {
-            Collections.sort(newItems, comparator);
+            newItems.sort(comparator);
         }
         super.setItems(newItems);
     }

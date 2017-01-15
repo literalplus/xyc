@@ -73,11 +73,7 @@ public class GroupData {
      */
     public static GroupData getByName(@Nullable String name, @Nonnull SafeSql ssql) {
         Validate.notNull(ssql, "ssql");
-        GroupData rtrn = GroupData.cache.get(name);
-        if (rtrn == null) {
-            rtrn = new GroupData(name, ssql);
-            GroupData.cache.put(name, rtrn);
-        }
+        GroupData rtrn = GroupData.cache.computeIfAbsent(name, k -> new GroupData(name, ssql));
         return rtrn;
     }
 

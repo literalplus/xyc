@@ -42,7 +42,7 @@ public class MapSpawn implements ConfigurationSerializable {
     private final Location location;
 
     @java.beans.ConstructorProperties({"team", "location"})
-    public MapSpawn(GameTeam team, Location location) {
+    public MapSpawn(@Nonnull GameTeam team, @Nonnull Location location) {
         this.team = team;
         this.location = location;
     }
@@ -135,22 +135,14 @@ public class MapSpawn implements ConfigurationSerializable {
         if (o == this) return true;
         if (!(o instanceof MapSpawn)) return false;
         final MapSpawn other = (MapSpawn) o;
-        if (!other.canEqual(this)) return false;
-        final Object this$team = this.team;
-        final Object other$team = other.team;
-        if (this$team == null ? other$team != null : !this$team.equals(other$team)) return false;
-        final Object this$location = this.location;
-        final Object other$location = other.location;
-        return this$location == null ? other$location == null : this$location.equals(other$location);
+        return other.canEqual(this) && this.team.equals(other.team) && this.location.equals(other.location);
     }
 
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
-        final Object $team = this.team;
-        result = result * PRIME + ($team == null ? 0 : $team.hashCode());
-        final Object $location = this.location;
-        result = result * PRIME + ($location == null ? 0 : $location.hashCode());
+        result = result * PRIME + this.team.hashCode();
+        result = result * PRIME + this.location.hashCode();
         return result;
     }
 
@@ -159,6 +151,6 @@ public class MapSpawn implements ConfigurationSerializable {
     }
 
     public String toString() {
-        return "io.github.xxyy.common.games.maps.MapSpawn(team=" + this.team + ", location=" + this.location + ")";
+        return "li.l1t.common.games.maps.MapSpawn(team=" + this.team + ", location=" + this.location + ")";
     }
 }

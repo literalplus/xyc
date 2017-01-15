@@ -36,8 +36,7 @@ public class CommandSenderRenderer extends CheckmarkBasedRenderer {
      * @return always TRUE
      */
     public boolean renderFor(CommandSender sender, Checklist checklist) {
-        renderEach(checklist).stream()
-                .forEach(sender::sendMessage);
+        renderEach(checklist).forEach(sender::sendMessage);
         return true;
     }
 

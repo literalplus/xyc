@@ -18,7 +18,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 
 /**
- * provides static utility methods for dealing with blocks.
+ * Provides static utility methods for dealing with blocks.
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 05/01/15

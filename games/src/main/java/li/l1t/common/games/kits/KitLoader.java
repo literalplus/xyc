@@ -79,9 +79,14 @@ public class KitLoader {
         FileHelper.mkdirsWithException(getKitDirectory());
         ArrayList<Kit> kits = new ArrayList<>();
 
-        for (File kitFile : getKitDirectory().listFiles(
+        File[] files = getKitDirectory().listFiles(
                 file -> file.getName().endsWith(FILE_EXTENSION)
-        )) {
+        );
+        if (files == null) {
+            throw new IllegalStateException("listFiles() returned null for " + getKitDirectory().getAbsolutePath());
+        }
+
+        for (File kitFile : files) {
             kits.add(loadKit(kitFile));
         }
 
@@ -137,8 +142,7 @@ public class KitLoader {
      * @param iconStack  the icon stack to represent the new kit in inventories
      * @param contents   the inventory contents for the new kit
      * @param armor      the armor contents for the new kit
-     * @param objective  the {@link ObjectiveResolver
-     *                   objective} required to access the new kit
+     * @param objective  the {@link ObjectiveResolver objective} required to access the new kit
      * @param authorName the name of the player who created the new kit
      * @return the created kit
      * @throws IOException if an error occurs creating the file or saving the kit

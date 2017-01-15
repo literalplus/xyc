@@ -17,7 +17,9 @@ import com.mongodb.DBObject;
  *
  * @author <a href="http://xxyy.github.io/">xxyy</a>
  * @since 19/02/15
+ * @deprecated There is currently no known use case for this, may be removed without further notice.
  */
+@Deprecated
 public final class DBObjectHelper {
     private DBObjectHelper() {
 

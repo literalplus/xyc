@@ -74,7 +74,7 @@ public class SqlPositionRepositoryTest extends AbstractLanatusSqlTest {
         Optional<Position> optional = client().positions().findByPurchase(PERMANENT_PURCHASE_ID);
         //then
         assertTrue(optional.isPresent());
-        Position position = optional.get();
+        Position position = optional.orElseThrow(AssertionError::new);
         assertThat(position.getPlayerId(), is(PLAYER_ID));
         assertThat(position.getProduct().getUniqueId(), is(PERMANENT_PRODUCT_ID));
         assertThat(position.getPurchaseId(), is(PERMANENT_PURCHASE_ID));

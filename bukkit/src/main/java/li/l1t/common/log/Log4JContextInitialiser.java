@@ -95,7 +95,7 @@ public class Log4JContextInitialiser {
     }
 
     private static Document mergeLog4j2Configs(File from, InputStream to)
-            throws ParserConfigurationException, SAXException, IOException, TransformerException {
+            throws ParserConfigurationException, SAXException, IOException {
 
         /*
         Don't fucking touch any of this. It works now. Change one line, it breaks. I can speak out of hour-long

@@ -15,6 +15,7 @@ import li.l1t.common.util.inventory.InventoryHelper;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 /**
@@ -220,7 +221,7 @@ public class Kit implements Comparable<Kit> {
     }
 
     @Override
-    public int compareTo(Kit other) {
+    public int compareTo(@Nonnull Kit other) {
         if (this.equals(other)) {
             return 0;
         }

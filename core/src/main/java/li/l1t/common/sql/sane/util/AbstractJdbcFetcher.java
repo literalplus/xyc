@@ -27,7 +27,7 @@ import java.util.Collection;
 public abstract class AbstractJdbcFetcher<T> extends AbstractSqlConnected {
     protected final JdbcEntityCreator<? extends T> creator;
 
-    public AbstractJdbcFetcher(JdbcEntityCreator<? extends T> creator, SaneSql saneSql) {
+    protected AbstractJdbcFetcher(JdbcEntityCreator<? extends T> creator, SaneSql saneSql) {
         super(saneSql);
         this.creator = creator;
     }

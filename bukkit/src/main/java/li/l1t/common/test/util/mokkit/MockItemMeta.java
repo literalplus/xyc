@@ -159,6 +159,7 @@ public class MockItemMeta implements ItemMeta {
     }
 
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public ItemMeta clone() {
         return new MockItemMeta(this);
     }

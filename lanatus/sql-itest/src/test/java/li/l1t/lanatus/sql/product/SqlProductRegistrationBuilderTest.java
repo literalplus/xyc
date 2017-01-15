@@ -163,6 +163,7 @@ public class SqlProductRegistrationBuilderTest extends AbstractLanatusSqlTest {
         assertThat("expected active", result.isActive(), matcher);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void givenTheProductDoesNotExist(UUID productId) {
         try {
             repo().findById(productId);

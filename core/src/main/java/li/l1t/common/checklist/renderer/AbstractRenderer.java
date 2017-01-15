@@ -34,8 +34,7 @@ public abstract class AbstractRenderer {
      */
     public String renderAll(Checklist checklist) {
         StringBuilder sb = new StringBuilder();
-        checklist.getItems().stream()
-                .forEach(item -> render(sb, item).append("\n"));
+        checklist.getItems().forEach(item -> render(sb, item).append("\n"));
         return sb.toString();
     }
 
