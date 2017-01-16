@@ -22,6 +22,7 @@ import java.util.UUID;
  */
 public abstract class AbstractJdbcEntityCreator<T> implements JdbcEntityCreator<T> {
     protected UUID uuid(ResultSet rs, String column) throws SQLException {
-        return UUID.fromString(rs.getString(column));
+        String idString = rs.getString(column);
+        return idString == null ? null : UUID.fromString(idString);
     }
 }
