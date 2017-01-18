@@ -10,9 +10,10 @@
 
 package li.l1t.common.util.math;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -49,15 +50,17 @@ public class WeightedDistributionTest {
         dist.put("b", 16.5D);
         //then
         thenThereIsAProbabilitySuchThat(dist, 15.4D, "a");
-        thenThereIsAProbabilitySuchThat(dist, 16.5D, "b");
+        thenThereIsAProbabilitySuchThat(dist, 15.4D + 16.5D, "b");
     }
 
     private void thenThereIsAProbabilitySuchThat(WeightedDistribution<String> dist, double key, String value) {
-        assertThat("put key", dist.probabilities().entrySet(), Matchers.hasItem(
-                hasProperty("key", is(key))
-        ));
-        assertThat("put", dist.probabilities().entrySet(), Matchers.hasItem(
-                hasProperty("value", is(value))
+        assertThat("put key", dist.probabilities().entrySet(), hasItem(
+                both(
+                        hasProperty("key", is(key))
+                ).and(
+                        hasProperty("value", is(value))
+
+                )
         ));
     }
 
