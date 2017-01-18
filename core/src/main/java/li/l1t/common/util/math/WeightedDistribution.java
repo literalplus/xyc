@@ -41,10 +41,6 @@ public class WeightedDistribution<T> {
         return cachedSum;
     }
 
-    private void recalculateSum() {
-        cachedSum = probabilities.keySet().stream().mapToDouble(Number::doubleValue).sum();
-    }
-
     /**
      * Puts given item into the distribution with given probability. Note that the probability is
      * relative to the other items in this distribution.
@@ -55,9 +51,8 @@ public class WeightedDistribution<T> {
     public void put(T item, double probability) {
         Preconditions.checkNotNull(item, "item");
         Preconditions.checkArgument(probability > 0, "probability must be positive");
-        double newSum = probabilitySum() + probability;
-        probabilities.put(newSum, item);
-        recalculateSum();
+        cachedSum = cachedSum + probability;
+        probabilities.put(cachedSum, item);
     }
 
     /**
