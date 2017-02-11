@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.UUID;
 
 /**
  * Abstract base class for JDBC statement providers relying on {@link ConnectionProvider}
@@ -73,6 +74,8 @@ abstract class AbstractStatementProvider implements StatementProvider {
         } else if (parameter instanceof Temporal) {
             long epochMilli = ((Instant) parameter).toEpochMilli();
             statement.setTimestamp(parameterNumber, new Timestamp(epochMilli));
+        } else if (parameter instanceof UUID) {
+            statement.setString(parameterNumber, parameter.toString());
         } else {
             statement.setObject(parameterNumber, parameter);
         }
