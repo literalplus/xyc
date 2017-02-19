@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+  ~ Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
   ~
   ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
   ~  copying and reverse-engineering is strictly prohibited without explicit written permission
   ~  from the original author and may result in legal steps being taken.
   ~
-  ~ See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+  ~ See the included LICENSE file (core/src/main/resources) for details.
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>li.l1t.common</groupId>
-        <artifactId>xyc-parent</artifactId>
-        <version>4.2.2.1-SNAPSHOT</version>
+        <artifactId>xyc-1.8-parent</artifactId>
+        <version>4.4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xyc-games</artifactId>
-    <name>XYC Game Library</name>
+    <artifactId>xyc-1.8-games</artifactId>
+    <name>XYC-1.8 Game Library</name>
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>li.l1t.common</groupId>
-            <artifactId>xyc-bukkit</artifactId>
+            <artifactId>xyc-1.8-bukkit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>

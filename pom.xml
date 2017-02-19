@@ -8,37 +8,35 @@
   ~ See the included LICENSE file (core/src/main/resources) for details.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>li.l1t.common</groupId>
-    <artifactId>xyc-parent</artifactId>
-    <version>4.2.2.1-SNAPSHOT</version>
+    <parent>
+        <groupId>li.l1t.common</groupId>
+        <artifactId>xyc-api-1.8-parent</artifactId>
+        <version>4.4.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>xyc-1.8-parent</artifactId>
+    <version>4.4.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>XYC-1.8 Parent</name>
+    <description>
+        The parent pom for all modules of the XYC implementation.
+    </description>
+    <inceptionYear>2013</inceptionYear>
+
     <modules>
         <module>bukkit</module>
         <module>core</module>
-        <module>bungee</module>
         <module>games</module>
         <module>games-bootstrap</module>
-        <module>bootstrap-legacy</module>
         <module>lanatus</module>
     </modules>
-    <name>XYC Parent</name>
-    <inceptionYear>2013</inceptionYear>
-    <packaging>pom</packaging>
 
     <properties>
-        <xyc-api.version>4.2.3</xyc-api.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
-        <minecraft.version>1.8</minecraft.version>
-        <spigot.version>${minecraft.version}.3-R0.1-SNAPSHOT</spigot.version>
-        <bungee.version>${minecraft.version}-SNAPSHOT</bungee.version>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <ignoreSnapshots>true</ignoreSnapshots>
-        <!-- maven-release-plugin -->
+        <!-- Some properties inherited from xyc-api-parent -->
         <log4j.version>2.0-beta9</log4j.version>
         <!-- Mojang ship outdated Beta Log4J code in Production -->
     </properties>
@@ -51,11 +49,11 @@
 
     <ciManagement>
         <system>jenkins</system>
-        <url>https://ci.l1t.li/job/xyc~master/</url>
+        <url>https://ci.l1t.li/job/xyc~1.8/</url>
     </ciManagement>
 
     <distributionManagement>
-        <downloadUrl>https://ci.l1t.li/job/xyc~master/</downloadUrl>
+        <downloadUrl>https://ci.l1t.li/job/xyc~1.8/</downloadUrl>
         <repository>
             <id>xxyy-repo</id>
             <url>https://repo.l1t.li/xxyy-private/</url>
@@ -185,45 +183,39 @@
                 <version>3.0.0</version>
             </dependency>
 
-
-            <dependency>
-                <groupId>li.l1t.common</groupId>
-                <artifactId>xyc-api</artifactId>
-                <version>${xyc-api.version}</version>
-            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>xyc-core</artifactId>
+                <artifactId>xyc-1.8-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>xyc-bukkit</artifactId>
+                <artifactId>xyc-1.8-bukkit</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>xyc-bungee</artifactId>
+                <artifactId>xyc-1.8-bungee</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>xyc-games</artifactId>
+                <artifactId>xyc-1.8-games</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>xyc-games-bootstrap</artifactId>
+                <artifactId>xyc-1.8-games-bootstrap</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>lanatus-api</artifactId>
+                <artifactId>lanatus-1.8-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>lanatus-sql</artifactId>
+                <artifactId>lanatus-1.8-sql</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -277,23 +269,6 @@
                             <Implementation-Build>${buildNumber}</Implementation-Build>
                         </manifestEntries>
                     </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-
-                <configuration>
-                    <excludePackageNames>*.internal.*</excludePackageNames>
-                    <bottom><![CDATA[Copyright ${project.inceptionYear} - ${maven.build.timestamp} <a href="https://l1t.li/">Literallie<a> (Philipp Nowak).
-                    Do not distribute or otherwise use without explicit written permission from the author. See the LICENSE file for details.]]></bottom>
-                    <defaultAuthor>
-                        <![CDATA[<a href="https://l1t.li/">probably Literallie</a>]]></defaultAuthor>
-                    <doctitle>XYC JavaDoc ${project.version}</doctitle>
-                    <outputDirectory>${project.basedir}/target/apidocs</outputDirectory>
-                    <quiet>true</quiet>
                 </configuration>
             </plugin>
 

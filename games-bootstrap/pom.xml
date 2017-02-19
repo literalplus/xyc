@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+  ~ Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
   ~
   ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
   ~  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -11,19 +11,19 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>xyc-parent</artifactId>
+        <artifactId>xyc-1.8-parent</artifactId>
         <groupId>li.l1t.common</groupId>
-        <version>4.2.2.1-SNAPSHOT</version>
+        <version>4.4.0.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>XYC Games Standalone for Bukkit</name>
+    <name>XYC-1.8 Games Standalone for Bukkit</name>
     <description>
         The XYC Games, Bukkit and Core library shipped in a single Bukkit
         plugin for usage by multiple plugins - without any shading!
     </description>
 
-    <artifactId>xyc-games-bootstrap</artifactId>
+    <artifactId>xyc-1.8-games-bootstrap</artifactId>
 
     <properties>
         <pomFile>dependency-reduced-pom.xml</pomFile>
@@ -32,27 +32,23 @@
     <dependencies>
         <dependency>
             <groupId>li.l1t.common</groupId>
-            <artifactId>xyc-api</artifactId>
+            <artifactId>xyc-api-1.8</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>xyc-core</artifactId>
+            <artifactId>xyc-1.8-core</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>xyc-bukkit</artifactId>
+            <artifactId>xyc-1.8-bukkit</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>xyc-games</artifactId>
+            <artifactId>xyc-1.8-games</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>xyc-bungee</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>lanatus-sql</artifactId>
+            <artifactId>lanatus-1.8-sql</artifactId>
         </dependency>
 
 

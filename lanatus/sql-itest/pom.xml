@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+  ~ Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
   ~
   ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
   ~  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -11,14 +11,14 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>lanatus-parent</artifactId>
+        <artifactId>lanatus-1.8-parent</artifactId>
         <groupId>li.l1t.common</groupId>
-        <version>4.2.2.1-SNAPSHOT</version>
+        <version>4.4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>lanatus-sql-itest</artifactId>
-    <name>Lanatus SQL Client Integration Tests</name>
+    <artifactId>lanatus-1.8-sql-itest</artifactId>
+    <name>Lanatus-1.8 SQL Client Integration Tests</name>
     <description>
         Integration Tests for the Lanatus SQL Client, using Flyway and H2 as backend.
     </description>
@@ -26,7 +26,7 @@
     <dependencies>
         <dependency>
             <groupId>li.l1t.common</groupId>
-            <artifactId>lanatus-sql</artifactId>
+            <artifactId>lanatus-1.8-sql</artifactId>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>

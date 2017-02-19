@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2013 - 2016 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
+  ~ Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
   ~
   ~ Any usage, including, but not limited to, compiling, running, redistributing, printing,
   ~  copying and reverse-engineering is strictly prohibited without explicit written permission
@@ -12,13 +12,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>li.l1t.common</groupId>
-        <artifactId>xyc-parent</artifactId>
-        <version>4.2.2.1-SNAPSHOT</version>
+        <artifactId>xyc-1.8-parent</artifactId>
+        <version>4.4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xyc-core</artifactId>
-    <name>XYC Core Features</name>
+    <artifactId>xyc-1.8-core</artifactId>
+    <name>XYC-1.8 Core Features</name>
 
     <dependencies>
         <dependency>
@@ -55,7 +55,7 @@
         </dependency>
         <dependency>
             <groupId>li.l1t.common</groupId>
-            <artifactId>xyc-api</artifactId>
+            <artifactId>xyc-api-1.8-minecraft</artifactId>
         </dependency>
 
         <dependency>
@@ -73,47 +73,6 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-shade-plugin</artifactId>-->
-
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>core-shade</id>-->
-            <!--<goals>-->
-            <!--<goal>shade</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-
-            <!--<configuration>-->
-            <!--<artifactSet>-->
-            <!--<includes>-->
-            <!--<include>com.google.code.gson:gson</include>-->
-            <!--<include>org.jetbrains:annotations</include>-->
-            <!--<include>net.sf.trove4j:trove4j</include>-->
-            <!--<include>com.google.guava:guava</include>-->
-            <!--</includes>-->
-            <!--</artifactSet>-->
-            <!--<filters>-->
-            <!--<filter>-->
-            <!--<artifact>net.sf.trove4j:trove4j</artifact>-->
-            <!--<includes>-->
-            <!--<include>gnu/trove/**</include>-->
-            <!--</includes>-->
-            <!--</filter>-->
-            <!--<filter>-->
-            <!--<artifact>com.google.guava:guava</artifact>-->
-            <!--<includes>-->
-            <!--<include>com/google/common/**</include>-->
-            <!--</includes>-->
-            <!--</filter>-->
-            <!--</filters>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
-        </plugins>
-
         <finalName>xyc-core</finalName>
     </build>
 </project>
