@@ -10,6 +10,7 @@
 
 package li.l1t.common.xyplugin;
 
+import com.google.common.base.Preconditions;
 import li.l1t.common.version.PluginVersion;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandExecutor;
@@ -110,7 +111,21 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
 
     protected abstract void unloadImplementation();
 
+    @Override
     public PluginVersion getPluginVersion() {
         return this.pluginVersion;
+    }
+
+
+    @Override
+    public void async(Runnable task) {
+        Preconditions.checkNotNull(task, "task");
+        getServer().getScheduler().runTaskAsynchronously(this, task);
+    }
+
+    @Override
+    public void serverThread(Runnable task) {
+        Preconditions.checkNotNull(task, "task");
+        getServer().getScheduler().runTask(this, task);
     }
 }
