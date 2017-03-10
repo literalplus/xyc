@@ -13,7 +13,7 @@
     <parent>
         <artifactId>xyc-1.8-parent</artifactId>
         <groupId>li.l1t.common</groupId>
-        <version>4.4.0.5</version>
+        <version>4.4.0.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
