@@ -10,6 +10,7 @@
 
 package li.l1t.common.xyplugin;
 
+import li.l1t.common.util.task.TaskService;
 import li.l1t.common.version.PluginVersion;
 
 /**
@@ -28,16 +29,21 @@ public interface XyPluggable {
      * Convenience shorthand for scheduling an asynchronous task with the server's scheduler for immediate execution.
      *
      * @param task the task to execute
-     * @see #serverThread(Runnable) (Runnable) for scheduling in the server thread
+     * @see #tasks() for more advanced configurations
      */
     void async(Runnable task);
 
     /**
-     * Convenience shorthand for scheduling an task with the server's scheduler for immediate execution in the server
+     * Convenience shorthand for scheduling a task with the server's scheduler for immediate execution in the server
      * thread.
      *
      * @param task the task to execute
-     * @see #async(Runnable) for async scheduling
+     * @see #tasks() for more advanced configurations
      */
     void serverThread(Runnable task);
+
+    /**
+     * @return a service for scheduling tasks related to this plugin
+     */
+    TaskService tasks();
 }
