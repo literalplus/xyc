@@ -10,7 +10,8 @@
 
 package li.l1t.common.xyplugin;
 
-import com.google.common.base.Preconditions;
+import li.l1t.common.util.task.BukkitTaskService;
+import li.l1t.common.util.task.TaskService;
 import li.l1t.common.version.PluginVersion;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandExecutor;
@@ -28,16 +29,18 @@ import java.util.List;
  * Abstract implementation of the {@link XyPluggable} interface inheriting from
  * {@link org.bukkit.plugin.java.JavaPlugin}.
  *
- * @author xxyy
+ * @author <a href="https://l1t.li/">Literallie</a>
  */
 public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable {
-
     private static List<AbstractXyPlugin> INSTANCES = new ArrayList<>();
     private static List<AbstractXyPlugin> IMMUTABLE_INSTANCES = Collections.unmodifiableList(INSTANCES); //Changes with the wrapped List
     // but this is used far more often.
     private final PluginVersion pluginVersion = PluginVersion.ofClass(getClass());
+    private final TaskService tasks = new BukkitTaskService(this);
+
     public AbstractXyPlugin() {
     }
+
     public AbstractXyPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
     }
@@ -116,16 +119,18 @@ public abstract class AbstractXyPlugin extends JavaPlugin implements XyPluggable
         return this.pluginVersion;
     }
 
-
     @Override
     public void async(Runnable task) {
-        Preconditions.checkNotNull(task, "task");
-        getServer().getScheduler().runTaskAsynchronously(this, task);
+        tasks.async(task);
     }
 
     @Override
     public void serverThread(Runnable task) {
-        Preconditions.checkNotNull(task, "task");
-        getServer().getScheduler().runTask(this, task);
+        tasks.serverThread(task);
+    }
+
+    @Override
+    public TaskService tasks() {
+        return tasks;
     }
 }
