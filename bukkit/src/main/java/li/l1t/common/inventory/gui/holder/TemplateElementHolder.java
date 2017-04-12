@@ -68,6 +68,32 @@ public class TemplateElementHolder extends SimpleElementHolder {
         return holder;
     }
 
+    /**
+     * Copies some elements from this template into a holder, using the public API. Does not override
+     * elements that are already defined in the holder, and does not apply elements if they are
+     * null in this template.
+     *
+     * @param holder the holder to copy into
+     * @param <T>    the type of the holder
+     * @return {@code holder}, for easy chaining
+     */
+    public <T extends ElementHolder> T applySoft(T holder) {
+        MenuElement[] elements = getElements();
+        for (int slotId = 0; slotId < elements.length; slotId++) {
+            if (!holder.isOccupied(slotId)) {
+                if (placeholderSlots.get(slotId)) {
+                    holder.addPlaceholder(slotId);
+                } else {
+                    MenuElement element = elements[slotId];
+                    if(element != null) {
+                        holder.addElement(slotId, element);
+                    }
+                }
+            }
+        }
+        return holder;
+    }
+
     @Override
     public void addPlaceholder(int slotId) {
         placeholderSlots.set(slotId);
