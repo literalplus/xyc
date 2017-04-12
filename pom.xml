@@ -16,7 +16,7 @@
         <version>4.4.4</version>
     </parent>
     <artifactId>xyc-1.8-parent</artifactId>
-    <version>4.4.2.2</version>
+    <version>4.4.2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>XYC-1.8 Parent</name>
@@ -43,7 +43,7 @@
         <connection>scm:git:git@bitbucket.org:xxyy/xyc.git</connection>
         <developerConnection>scm:git:git@bitbucket.org:xxyy/xyc.git</developerConnection>
         <url>https://bitbucket.org/xxyy/xyc/</url>
-      <tag>xyc-1.8-parent-4.4.2.2</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <ciManagement>
