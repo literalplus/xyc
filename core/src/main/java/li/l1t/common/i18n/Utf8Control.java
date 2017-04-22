@@ -65,13 +65,17 @@ public class Utf8Control extends ResourceBundle.Control {
         return timeToLive;
     }
 
+    /**
+     * {@inheritDoc} <p><b>Note:</b> This implementation disables the {@link URLConnection#setUseCaches(boolean)
+     * URLConnection cache} if {@link #getTimeToLive(String, Locale)} is {@link #TTL_DONT_CACHE}.</p>
+     */
     public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
             throws IllegalAccessException, InstantiationException, IOException {
         // below is basically a copy of the default implementation that just uses UTF-8
         String bundleName = toBundleName(baseName, locale);
         String resourceName = toResourceName(bundleName, "properties");
         InputStream stream = null;
-        if (reload) {
+        if (reload || timeToLive == TTL_DONT_CACHE) {
             URL url = loader.getResource(resourceName);
             if (url != null) {
                 URLConnection connection = url.openConnection();
