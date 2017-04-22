@@ -19,7 +19,52 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+/**
+ * A Resource Bundle Control which loads bundles in UTF-8 instead of the default encoding. This allows for maximum
+ * portability and ensures that a future-proof encoding is used. Further, it allows to specify the time-to-live value
+ * for the bundle, which specifies caching behaviour. See {@link #getTimeToLive(String, Locale)} for details.
+ */
 public class Utf8Control extends ResourceBundle.Control {
+    /**
+     * A reusable control instance constructed using the {@link #Utf8Control() default constructor}.
+     */
+    public static final Utf8Control INSTANCE = new Utf8Control();
+
+    /**
+     * A reusable control instance with a {@link #getTimeToLive(String, Locale) time to live} of
+     * {@link #TTL_DONT_CACHE}, which disables the bundle cache.
+     *
+     * @see #Utf8Control(long)
+     */
+    public static final Utf8Control NO_CACHE = new Utf8Control();
+
+    private final long timeToLive;
+
+    /**
+     * Creates a new UTF-8 control with the default time to live of {@link #TTL_NO_EXPIRATION_CONTROL}.
+     */
+    public Utf8Control() {
+        this(TTL_NO_EXPIRATION_CONTROL);
+    }
+
+    /**
+     * Creates a new UTF-8 control.
+     *
+     * @param timeToLive the {@link #getTimeToLive(String, Locale) time to live} to use for all created bundles
+     */
+    public Utf8Control(long timeToLive) {
+        this.timeToLive = timeToLive;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>{@link Utf8Control} returns the time to live passed to its constructor.</p>
+     */
+    @Override
+    public long getTimeToLive(String baseName, Locale locale) {
+        return timeToLive;
+    }
+
     public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
             throws IllegalAccessException, InstantiationException, IOException {
         // below is basically a copy of the default implementation that just uses UTF-8
