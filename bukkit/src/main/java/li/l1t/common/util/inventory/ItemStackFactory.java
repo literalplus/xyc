@@ -22,6 +22,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.Colorable;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionData;
@@ -243,6 +244,20 @@ public class ItemStackFactory {
         Preconditions.checkArgument(meta instanceof LeatherArmorMeta,
                 "Base stack must be leather armor (is: %s)", meta.getClass());
         ((LeatherArmorMeta) meta).setColor(color);
+        return this;
+    }
+
+    /**
+     * Sets the color of the {@link org.bukkit.material.Colorable} product.
+     *
+     * @param color the new color of the product
+     * @return this factory
+     * @throws IllegalArgumentException if the base stack is not colorable
+     */
+    public ItemStackFactory color(DyeColor color) {
+        Preconditions.checkArgument(meta instanceof Colorable,
+                "Base stack must be colorable (is: %s)", meta.getClass());
+        ((Colorable) meta).setColor(color);
         return this;
     }
 
