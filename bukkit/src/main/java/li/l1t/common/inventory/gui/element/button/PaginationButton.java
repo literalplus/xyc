@@ -63,7 +63,7 @@ public class PaginationButton extends CheckedMenuElement<ElementHolder, Pageable
                 if (menu.getCurrentPageNum() == 1) {
                     return menu.getPageCount();
                 } else {
-                    return menu.getCurrentPageNum() + 1;
+                    return menu.getCurrentPageNum() - 1;
                 }
             }
         },
@@ -73,7 +73,7 @@ public class PaginationButton extends CheckedMenuElement<ElementHolder, Pageable
                 if (menu.getCurrentPageNum() == menu.getPageCount()) {
                     return 1;
                 } else {
-                    return menu.getCurrentPageNum() - 1;
+                    return menu.getCurrentPageNum() + 1;
                 }
             }
         },
