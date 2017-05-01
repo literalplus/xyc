@@ -48,6 +48,7 @@ public class PaginationButton extends CheckedMenuElement<ElementHolder, Pageable
     @Override
     protected void checkedHandleMenuClick(InventoryClickEvent evt, PageableListMenu menu) {
         menu.selectPageNum(action.getTargetPageNum(menu));
+        menu.open();
     }
 
     public enum PaginationAction {
