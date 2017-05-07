@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2013 - 2015 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
+ * Copyright (c) 2013 - 2017 xxyy (Philipp Nowak; xyc@l1t.li). All rights reserved.
  *
  * Any usage, including, but not limited to, compiling, running, redistributing, printing,
  *  copying and reverse-engineering is strictly prohibited without explicit written permission
  *  from the original author and may result in legal steps being taken.
  *
- * See the included LICENSE file (core/src/main/resources) or email xxyy98+xyclicense@gmail.com for details.
+ * See the included LICENSE file (core/src/main/resources) for details.
  */
 
 package li.l1t.common.chat;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class AdFilterService {
     private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-    private static final Pattern HIDDEN_DOTS_PATTERN = Pattern.compile("\\s?\\(((?:punkt|dot|point|\\.))\\)\\s?|\\s\\.\\s|\\.{2,}", Pattern.CASE_INSENSITIVE);
+    private static final Pattern HIDDEN_DOTS_PATTERN = Pattern.compile("\\s?(\\(|\\[)?((?:punkt|dot|\\.))(\\)|\\])?\\s?|\\s\\.\\s|\\.{2,}", Pattern.CASE_INSENSITIVE);
 
     /*
         Matches any URL with(out) http(s) and at least second-level domain part. Paths and query string are also captured.
