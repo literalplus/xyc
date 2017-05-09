@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class AdFilterService {
     private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-    private static final Pattern HIDDEN_DOTS_PATTERN = Pattern.compile("\\s?(\\(|\\[)?((?:punkt|dot|\\.))(\\)|\\])?\\s?|\\s\\.\\s|\\.{2,}", Pattern.CASE_INSENSITIVE);
+    private static final Pattern HIDDEN_DOTS_PATTERN = Pattern.compile("[(\\[ ]{1,2}((?:punkt|dot|\\.))[)\\] ]{1,2}|\\.{2,}", Pattern.CASE_INSENSITIVE);
 
     /*
         Matches any URL with(out) http(s) and at least second-level domain part. Paths and query string are also captured.
