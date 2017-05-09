@@ -12,11 +12,12 @@ package li.l1t.common.xyplugin;
 
 import li.l1t.common.util.task.TaskService;
 import li.l1t.common.version.PluginVersion;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Common interface for plugins interfacing with XYC using the {@link AbstractXyPlugin} API.
  */
-public interface XyPluggable {
+public interface XyPluggable extends Plugin {
     String pluginPrefix = "§7[§8XYC§7]";
 
     void disable();
