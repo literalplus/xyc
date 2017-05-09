@@ -13,7 +13,7 @@ package li.l1t.common.yaml;
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
-import li.l1t.common.xyplugin.AbstractXyPlugin;
+import li.l1t.common.xyplugin.XyPluggable;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -131,7 +131,7 @@ public class XyConfiguration extends YamlConfiguration {
      *
      * @param plugin the plugin to use for interacting with Bukkit's scheduler
      */
-    public void asyncSave(AbstractXyPlugin plugin) {
+    public void asyncSave(XyPluggable plugin) {
         Validate.notNull(file, "File cannot be null");
 
         try {
