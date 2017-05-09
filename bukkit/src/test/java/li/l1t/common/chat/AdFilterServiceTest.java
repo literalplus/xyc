@@ -48,7 +48,9 @@ public class AdFilterServiceTest {
             "yolo (dot) yolo",
             "www . minotopia . me",
             "join le minotopia..de",
-            "geht alle auf play....minotopia (punkt) me"
+            "geht alle auf play....minotopia (punkt) me",
+            "google dot com",
+            "search with le google dot com"
     );
 
     private static List<String> ordinaryText = Arrays.asList(
@@ -79,7 +81,6 @@ public class AdFilterServiceTest {
         filterService.setFindHiddenDots(false);
 
         assertAllMatch(advertisements, "findHiddenDots/advertisements");
-        assertAllMatch(allowedDomainAdvertisements, "findHiddenDots/allowedDomainAdvertisements");
         assertNoMatch(hiddenDotAdvertisements, "findHiddenDots/hiddenDotAdvertisements");
         assertNoMatch(ordinaryText, "findHiddenDots/ordinaryText");
     }
