@@ -45,7 +45,7 @@ public class AdFilterServiceTest {
     private static List<String> hiddenDotAdvertisements = Arrays.asList(
             "alle auf www (punkt) minotopia (punkt) me !!!",
             "bester server bei play (.) minotopia (punkt) me",
-            "yolo (point) yolo",
+            "yolo (dot) yolo",
             "www . minotopia . me",
             "join le minotopia..de",
             "geht alle auf play....minotopia (punkt) me"
