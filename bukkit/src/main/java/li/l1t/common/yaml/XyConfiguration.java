@@ -137,7 +137,7 @@ public class XyConfiguration extends YamlConfiguration {
         try {
             com.google.common.io.Files.createParentDirs(file); //We're using the other Files class in this file too
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Unable to create parent dirs for " + file.getAbsolutePath() + ":", e);
+            logError("Unable to create parent dirs for " + file.getAbsolutePath() + ":", e);
             setError(e);
             return; //We're not throwing the other exception so we might as well swallow this one
         }
@@ -152,11 +152,15 @@ public class XyConfiguration extends YamlConfiguration {
 
     }
 
+    private void logError(String msg, Exception e) {
+        Bukkit.getLogger().log(Level.WARNING, msg, e);
+    }
+
     private void internalSave(Plugin plugin, String data) {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8)) {
             writer.write(data);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Unable to save managed config to " + file.getAbsolutePath() + ":", e);
+            logError("Unable to save managed config to " + file.getAbsolutePath() + ":", e);
             setError(e);
         }
     }
@@ -170,7 +174,7 @@ public class XyConfiguration extends YamlConfiguration {
         try {
             save();
         } catch (IOException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Couldn't save managed configuration to " + file.getAbsolutePath() + "!");
+            logError("Couldn't save managed configuration to " + file.getAbsolutePath() + "!", e);
             setError(e);
             return false;
         }
@@ -192,7 +196,7 @@ public class XyConfiguration extends YamlConfiguration {
             setError(ex);
             return false;
         } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
+            logError("Cannot load " + file, ex);
             setError(ex);
             return false;
         }
@@ -213,11 +217,11 @@ public class XyConfiguration extends YamlConfiguration {
             try {
                 File backupFile = new File(file.getParentFile().getAbsolutePath(), file.getName() + ".mtcbak");
                 Files.copy(file, backupFile); //We're using the other Files class in this class too
-                Bukkit.getLogger().log(Level.SEVERE, String.format("Invalid configuration syntax detected for %s! Backup is available at %s",
+                logError(String.format("Invalid configuration syntax detected for %s! Backup is available at %s",
                         file, backupFile.getName()), ex);
             } catch (IOException e) {
-                Bukkit.getLogger().log(Level.SEVERE, "Failed to save backup for invalid configuration file at " + file + "!", e);
-                Bukkit.getLogger().log(Level.SEVERE, "YAMl error: ", ex);
+                logError("Failed to save backup for invalid configuration file at " + file + "!", e);
+                logError("YAMl error: ", ex);
             }
             setError(ex);
         }
