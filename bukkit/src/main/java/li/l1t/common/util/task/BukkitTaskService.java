@@ -133,7 +133,7 @@ public class BukkitTaskService implements TaskService {
         Preconditions.checkNotNull(day, "day");
         Preconditions.checkNotNull(time, "time");
         LocalDateTime nextOccurrence = LocalDateTime.now()
-                .with(TemporalAdjusters.next(day)).with(time);
+                .with(TemporalAdjusters.nextOrSame(day)).with(time);
         return Duration.between(LocalDateTime.now(), nextOccurrence);
     }
 
