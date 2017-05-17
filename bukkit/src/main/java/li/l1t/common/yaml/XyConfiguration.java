@@ -211,6 +211,9 @@ public class XyConfiguration extends YamlConfiguration {
      * @throws IOException If an error occurs loading the file
      */
     public void load(File file) throws IOException {
+        if(!getFile().exists()) {
+            Files.touch(getFile());
+        }
         try {
             super.load(file);
         } catch (InvalidConfigurationException ex) { //Handle backups
