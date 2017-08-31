@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Authlib" pattern="src[xyc-core]:li.l1t.common.lib.com.mojang.api.http..*||src[xyc-core]:li.l1t.common.lib.com.mojang.api.profiles..*" />
+</component>

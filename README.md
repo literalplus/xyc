@@ -2,6 +2,11 @@ XYC
 ====
 XYC is a library containing a rich set of features, mainly intended for Minecraft use. 
 
+**Note:** Even though there are some relatively recent parts,
+certain legacy components haven't been significantly refactored
+since the project's inception in 2013. These may expose dirty 
+APIs and usually don't follow clean code guidelines.
+
 Modules
 --------
 ### xyc-core
@@ -10,7 +15,7 @@ It includes some annotations, an API for checklists, a few Collection-related cl
 thingy as well as a class for determining jar versions and a few miscellaneous utilities.
 
 3rd-party libraries included:
- - [Mojang's AuthLib](http://github.com/Mojang/AuthLib) (in source)
+ - [Mojang's AuthLib](http://github.com/Mojang/AuthLib) (in source; modified)
  - [Google Guava v17](https://code.google.com/p/guava-libraries/) (shaded; Bukkit/Spigot include outdated versions)
  - [Trove4j](http://trove.starlight-systems.com/) (shaded; for CaseInsensitiveMap)
  - [Google Gson](https://code.google.com/p/google-gson/) (shaded; for AuthLib)
@@ -63,13 +68,13 @@ If you want to use XYC in a project, try this:
 ````xml
 <repository>
   <id>xxyy-repo</id>
-  <url>http://repo.nowak-at.net/repo/xxyy-lib/</url>
+  <url>http://repo.l1t.li/repo/xxyy-lib/</url>
 </repository>
 ````
 *Add to your `<dependencies>` section:*
 ````xml
 <dependency>
-  <groupId>io.github.xxyy.common</groupId>
+  <groupId>li.l1t.common</groupId>
   <artifactId>xyc-[[your module]]</artifactId>
   <version>[[See pom.xml]]</version>
 </dependency>
@@ -89,16 +94,11 @@ XYC uses a `a.y.x.z` semantic versioning scheme.
 
 Support
 -------
-Join my IRC channel [#lit on irc.spi.gt](http://irc.spi.gt/iris/?channels=lit), ask your question and patiently wait for help.
+
+Just open an issue on GitHub.
 
 License
 -------
-````
-Copyright (c) 2013-2017 xxyy (Philipp Nowak; devnull@nowak-at.net). All rights reserved.
 
-Any usage, including, but not limited to, compiling, running, redistributing, printing,
- copying and reverse-engineering is strictly prohibited without permission from the
- original author and may result in legal steps being taken.
- 
-See the LICENSE file for details.
-````
+This project is licensed under a MIT License.
+See the `LICENSE` file for details.
