@@ -38,7 +38,7 @@ def findNextSnapshotVersion = { org.apache.maven.model.Model model ->
     try {
         def lastPartInt = Integer.parseInt(versionParts[lastPartIndex])
         lastPartInt += 1;
-        versionParts[lastPartIndex] = String.valueOf(lastPartInt)
+        versionParts[lastPartIndex] = Integer.toString(lastPartInt)
         return versionParts.join(".")
     } catch (NumberFormatException ignored) {
         return ""
