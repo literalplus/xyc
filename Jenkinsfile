@@ -69,12 +69,6 @@ pipeline {
                 }
                 sh 'echo Package workspace: $(pwd)'
             }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                    archiveArtifacts '*/target/xyc-*.jar'
-                }
-            }
         }
 
         stage('Generate Javadocs') {
