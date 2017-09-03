@@ -22,17 +22,16 @@
  * SOFTWARE.
  */
 
-def findReleaseVersion = { ->
-    def version = env.MAVEN_VERSION
-    if (!version) {
+def findReleaseVersion = { String mavenVersion ->
+    if (!mavenVersion) {
         return ''
     } else {
-        return version.replace('-SNAPSHOT', '')
+        return mavenVersion.replace('-SNAPSHOT', '')
     }
 }
 
-def findNextSnapshotVersion = { ->
-    def releaseVersion = findReleaseVersion()
+def findNextSnapshotVersion = { String mavenVersion ->
+    def releaseVersion = findReleaseVersion(mavenVersion)
     def versionParts = releaseVersion.split('\\.')
     def lastPartIndex = versionParts.length - 1
     try {
@@ -47,10 +46,6 @@ def findNextSnapshotVersion = { ->
 
 pipeline {
     agent none // Don't block an agent while waiting for approval
-
-    environment {
-        MAVEN_VERSION = readMavenPom().getVersion()
-    }
 
     parameters {
         booleanParam(defaultValue: false,
@@ -77,7 +72,6 @@ pipeline {
     }
 
     stages {
-
         stage('Maven Package') {
             agent any
             steps {
@@ -109,12 +103,13 @@ pipeline {
             agent any
             steps {
                 script {
+                    def mavenVersion = readMavenPom().getVersion()
                     if (params.releaseVersion == '%auto%') {
-                        params.releaseVersion = findReleaseVersion()
+                        params.releaseVersion = findReleaseVersion(mavenVersion)
                         echo "Computed release version: ${params.releaseVersion}"
                     }
                     if (params.devVersion == '%auto%') {
-                        params.devVersion = findNextSnapshotVersion()
+                        params.devVersion = findNextSnapshotVersion(mavenVersion)
                         echo "Computed dev version: ${params.devVersion}"
                     }
                 }
