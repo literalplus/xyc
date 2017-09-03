@@ -105,10 +105,10 @@ pipeline {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
                     echo "Release: ${params.releaseVersion}"
+                    echo "W/o params: ${releaseVersion}"
                     echo "Equals: ${'%auto'.equals(params.releaseVersion)}"
                     echo "==: ${('%auto' == params.releaseVersion)}"
                     echo "eIC: ${('%auto'.equalsIgnoreCase(params.releaseVersion))}"
-                    echo "trim: ${('%auto'.equalsIgnoreCase(params.releaseVersion.trim()))}"
                     if (params.releaseVersion.equals('%auto%')) {
                         env.releaseVersion = findReleaseVersion(mavenVersion)
                         echo "Computed release version: ${env.releaseVersion}"
