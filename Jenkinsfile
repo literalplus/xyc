@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-def findReleaseVersion = { org.apache.maven.model.Model model ->
-    def version = model.getVersion()
+def findReleaseVersion = { ->
+    def version = env.MAVEN_VERSION
     if (!version) {
         return ''
     } else {
@@ -31,8 +31,8 @@ def findReleaseVersion = { org.apache.maven.model.Model model ->
     }
 }
 
-def findNextSnapshotVersion = { org.apache.maven.model.Model model ->
-    def releaseVersion = findReleaseVersion(model)
+def findNextSnapshotVersion = { ->
+    def releaseVersion = findReleaseVersion()
     def versionParts = releaseVersion.split('\\.')
     def lastPartIndex = versionParts.length - 1
     try {
@@ -47,6 +47,25 @@ def findNextSnapshotVersion = { org.apache.maven.model.Model model ->
 
 pipeline {
     agent none // Don't block an agent while waiting for approval
+
+    environment {
+        MAVEN_VERSION = readMavenPom().getVersion()
+    }
+
+    parameters {
+        string(defaultValue: suggestedReleaseVersion,
+                description: 'Release version',
+                name: 'releaseVersion')
+        string(defaultValue: suggestedDevVersion,
+                description: 'Next development version',
+                name: 'devVersion')
+        booleanParam(defaultValue: false,
+                description: 'Dry run only?',
+                name: 'dryRun')
+        booleanParam(defaultValue: false,
+                description: 'Run Maven Release build?',
+                name: 'doRelease')
+    }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '50'))
@@ -81,44 +100,13 @@ pipeline {
             }
         }
 
-        stage('Calculate Release Versions') {
-            agent any
-            steps {
-                script {
-                    project = readMavenPom()
-                    suggestedReleaseVersion = findReleaseVersion(project)
-                    suggestedDevVersion = findNextSnapshotVersion(project)
-                }
-            }
-        }
-
-        stage('Release?') {
-            steps {
-                script {
-                    releaseParams = input(
-                            message: 'Release a new version?', submitter: 'xxyy',
-                            parameters: [
-                                    string(defaultValue: suggestedReleaseVersion,
-                                            description: 'Release version',
-                                            name: 'releaseVersion'),
-                                    string(defaultValue: suggestedDevVersion,
-                                            description: 'Next development version',
-                                            name: 'devVersion'),
-                                    booleanParam(defaultValue: false,
-                                            description: 'Dry run only?',
-                                            name: 'dryRun')
-                            ]
-                    )
-                }
-            }
-        }
-
         stage('Maven Release') {
+            when { doRelease }
             agent any
             steps {
-                echo 'Release version: ' + releaseParams['releaseVersion']
-                echo 'Dev version: ' + releaseParams['devVersion']
-                echo 'Dry run: ' + releaseParams['dryRun']
+                echo 'Release version: ' + releaseVersion
+                echo 'Dev version: ' + devVersion
+                echo 'Dry run: ' + dryRun
             }
         }
     }
