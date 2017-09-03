@@ -151,10 +151,8 @@ pipeline {
                     }
                     echo "Checking out local branch ${env.BRANCH_NAME}..."
                     sh "git checkout ${env.BRANCH_NAME}"
-                    echo "Preparing ${env.releaseVersion}..."
-                    sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
-                    sh "mvn ${mvnParams} javadoc:jar release:perform"
+                    sh "mvn ${mvnParams} javadoc:jar release:prepare release:perform"
                 }
             }
         }
