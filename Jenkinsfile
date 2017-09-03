@@ -133,8 +133,10 @@ pipeline {
             agent any
             steps {
                 withMaven {
-                    mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
-                            "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
+                    script {
+                        mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
+                                "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
+                    }
                     echo "Preparing ${env.releaseVersion}..."
                     sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
