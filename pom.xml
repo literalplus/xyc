@@ -22,8 +22,7 @@
   ~ SOFTWARE.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>li.l1t.common</groupId>
@@ -31,7 +30,7 @@
         <version>4.5.0</version>
     </parent>
     <artifactId>xyc-parent</artifactId>
-    <version>4.4.0.5-SNAPSHOT</version>
+    <version>4.5.0.0</version>
     <packaging>pom</packaging>
 
     <name>XYC Parent</name>
@@ -66,7 +65,7 @@
         <connection>scm:git:git@github.com:xxyy/xyc.git</connection>
         <developerConnection>scm:git:git@github.com:xxyy/xyc.git</developerConnection>
         <url>https://github.com/xxyy/xyc/</url>
-        <tag>HEAD</tag>
+        <tag>xyc-parent-4.5.0.0</tag>
     </scm>
 
     <ciManagement>
