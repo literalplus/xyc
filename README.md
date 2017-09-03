@@ -61,7 +61,7 @@ This project uses Apache Maven for compilation.
 ````
 mvn clean install
 ````
-You can also find pre-built artifacts [at my CI server](https://ci.l1t.li/jenkins/job/xyca~XYC_compile/).
+You can also find pre-built artifacts [at my CI server](https://ci.l1t.li/job/xxyy/job/xyc/job/master/).
 
 If you want to use XYC in a project, try this:
 *Add to your `<repositories>` section:* (Warning: You need special access to my repo for this)

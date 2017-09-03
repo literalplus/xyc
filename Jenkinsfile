@@ -94,7 +94,11 @@ pipeline {
                     sh 'mvn -B javadoc:jar javadoc:aggregate'
                 }
                 sh 'echo Javadocs workspace: $(pwd)'
-                publishHTML(reportDir: 'target/site/apidocs', reportName: 'Javadocs', reportFiles: 'index.html')
+                publishHTML(
+                        reportDir: 'target/site/apidocs', reportName: 'Javadocs', reportFiles: 'index.html',
+                        keepAll: false, allowMissing: false, alwaysLinkToLastBuild: false,
+                        reportTitles: 'Javadocs'
+                )
             }
         }
 
