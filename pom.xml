@@ -30,7 +30,7 @@
         <version>4.5.0</version>
     </parent>
     <artifactId>xyc-parent</artifactId>
-    <version>4.5.0.1-SNAPSHOT</version>
+    <version>4.5.0.1</version>
     <packaging>pom</packaging>
 
     <name>XYC Parent</name>
@@ -65,7 +65,7 @@
         <connection>scm:git:git@github.com:xxyy/xyc.git</connection>
         <developerConnection>scm:git:git@github.com:xxyy/xyc.git</developerConnection>
         <url>https://github.com/xxyy/xyc/</url>
-        <tag>HEAD</tag>
+        <tag>xyc-parent-4.5.0.1</tag>
     </scm>
 
     <ciManagement>
