@@ -68,22 +68,21 @@ pipeline {
                 script {
                     suggestedReleaseVersion = findReleaseVersion()
                     suggestedDevVersion = findNextSnapshotVersion()
+                    properties([parameters([
+                            string(defaultValue: suggestedReleaseVersion,
+                                    description: 'Release version',
+                                    name: 'releaseVersion'),
+                            string(defaultValue: suggestedDevVersion,
+                                    description: 'Next development version',
+                                    name: 'devVersion'),
+                            booleanParam(defaultValue: false,
+                                    description: 'Dry run only?',
+                                    name: 'dryRun'),
+                            booleanParam(defaultValue: false,
+                                    description: 'Run Maven Release build?',
+                                    name: 'doRelease')
+                    ])])
                 }
-                properties([parameters([
-                        string(defaultValue: suggestedReleaseVersion,
-                                description: 'Release version',
-                                name: 'releaseVersion'),
-                        string(defaultValue: suggestedDevVersion,
-                                description: 'Next development version',
-                                name: 'devVersion'),
-                        booleanParam(defaultValue: false,
-                                description: 'Dry run only?',
-                                name: 'dryRun'),
-                        booleanParam(defaultValue: false,
-                                description: 'Run Maven Release build?',
-                                name: 'doRelease')
-                ])])
-
             }
         }
 
