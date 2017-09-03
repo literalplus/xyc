@@ -100,20 +100,22 @@ pipeline {
 
         stage('Release?') {
             steps {
-                releaseParams = input(
-                        message: 'Release a new version?', submitter: 'xxyy',
-                        parameters: [
-                                string(defaultValue: suggestedReleaseVersion,
-                                        description: 'Release version',
-                                        name: 'releaseVersion'),
-                                string(defaultValue: suggestedDevVersion,
-                                        description: 'Next development version',
-                                        name: 'devVersion'),
-                                booleanParam(defaultValue: false,
-                                        description: 'Dry run only?',
-                                        name: 'dryRun')
-                        ]
-                )
+                script {
+                    releaseParams = input(
+                            message: 'Release a new version?', submitter: 'xxyy',
+                            parameters: [
+                                    string(defaultValue: suggestedReleaseVersion,
+                                            description: 'Release version',
+                                            name: 'releaseVersion'),
+                                    string(defaultValue: suggestedDevVersion,
+                                            description: 'Next development version',
+                                            name: 'devVersion'),
+                                    booleanParam(defaultValue: false,
+                                            description: 'Dry run only?',
+                                            name: 'dryRun')
+                            ]
+                    )
+                }
             }
         }
 
