@@ -50,28 +50,10 @@ pipeline {
 
     environment {
         MAVEN_VERSION = readMavenPom().getVersion()
-        RELEASE_VERSION = findReleaseVersion()
-        DEV_VERSION = findNextSnapshotVersion()
-    }
-
-    parameters {
-        string(defaultValue: env.RELEASE_VERSION,
-                description: 'Release version',
-                name: 'releaseVersion')
-        string(defaultValue: env.DEV_VERSION,
-                description: 'Next development version',
-                name: 'devVersion')
-        booleanParam(defaultValue: false,
-                description: 'Dry run only?',
-                name: 'dryRun')
-        booleanParam(defaultValue: false,
-                description: 'Run Maven Release build?',
-                name: 'doRelease')
     }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '50'))
-        disableConcurrentBuilds()
         skipDefaultCheckout()
     }
 
@@ -80,6 +62,31 @@ pipeline {
     }
 
     stages {
+        stage('Prepare parameters for next execution') {
+            agent any
+            steps {
+                script {
+                    suggestedReleaseVersion = findReleaseVersion()
+                    suggestedDevVersion = findNextSnapshotVersion()
+                }
+                properties([parameters([
+                        string(defaultValue: suggestedReleaseVersion,
+                                description: 'Release version',
+                                name: 'releaseVersion'),
+                        string(defaultValue: suggestedDevVersion,
+                                description: 'Next development version',
+                                name: 'devVersion'),
+                        booleanParam(defaultValue: false,
+                                description: 'Dry run only?',
+                                name: 'dryRun'),
+                        booleanParam(defaultValue: false,
+                                description: 'Run Maven Release build?',
+                                name: 'doRelease')
+                ])])
+
+            }
+        }
+
         stage('Maven Package') {
             agent any
             steps {
