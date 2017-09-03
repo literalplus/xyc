@@ -104,17 +104,24 @@ pipeline {
             steps {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
+                    echo "Release: ${params.releaseVersion}"
+                    echo "Equals: ${'%auto'.equals(params.releaseVersion)}"
+                    echo "==: ${('%auto' == params.releaseVersion)}"
+                    echo "eIC: ${('%auto'.equalsIgnoreCase(params.releaseVersion))}"
+                    echo "trim: ${('%auto'.equalsIgnoreCase(params.releaseVersion.trim()))}"
                     if (params.releaseVersion.equals('%auto%')) {
                         env.releaseVersion = findReleaseVersion(mavenVersion)
                         echo "Computed release version: ${env.releaseVersion}"
                     } else {
                         env.releaseVersion = params.paramReleaseVersion;
+                        echo "Using specified release version"
                     }
                     if (params.devVersion.equals('%auto%')) {
                         env.devVersion = findNextSnapshotVersion(mavenVersion)
                         echo "Computed dev version: ${devVersion}"
                     } else {
                         env.devVersion = params.paramDevVersion
+                        echo "Using specified dev version"
                     }
                 }
                 input """
