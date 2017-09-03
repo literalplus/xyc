@@ -72,7 +72,6 @@ pipeline {
 
     tools {
         maven 'Default Maven'
-        git 'Default git'
     }
 
     stages {
@@ -148,6 +147,8 @@ pipeline {
                         mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
                                 "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
                     }
+                    echo "Checking out local branch ${env.GIT_LOCAL_BRANCH}..."
+                    sh "git checkout ${env.GIT_LOCAL_BRANCH}"
                     echo "Preparing ${env.releaseVersion}..."
                     sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
