@@ -106,19 +106,19 @@ pipeline {
             steps {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
-                    echo "Release: ${params.releaseVersion}"
-                    echo "W/o params: ${releaseVersion}"
-                    echo "Equals: ${'%auto'.equals(params.releaseVersion)}"
-                    echo "==: ${('%auto' == params.releaseVersion)}"
-                    echo "eIC: ${('%auto'.equalsIgnoreCase(params.releaseVersion))}"
-                    if (params.releaseVersion.equals('%auto%')) {
+                    echo "Release: ${params.paramReleaseVersion}"
+                    echo "W/o params: ${paramReleaseVersion}"
+                    echo "Equals: ${'%auto'.equals(params.paramReleaseVersion)}"
+                    echo "==: ${('%auto' == params.paramReleaseVersion)}"
+                    echo "eIC: ${('%auto'.equalsIgnoreCase(params.paramReleaseVersion))}"
+                    if (params.paramReleaseVersion.equals('%auto%')) {
                         env.releaseVersion = findReleaseVersion(mavenVersion)
                         echo "Computed release version: ${env.releaseVersion}"
                     } else {
                         env.releaseVersion = params.paramReleaseVersion;
                         echo "Using specified release version"
                     }
-                    if (params.devVersion.equals('%auto%')) {
+                    if (params.paramDevVersion.equals('%auto%')) {
                         env.devVersion = findNextSnapshotVersion(mavenVersion)
                         echo "Computed dev version: ${devVersion}"
                     } else {
