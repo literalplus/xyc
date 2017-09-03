@@ -95,6 +95,7 @@ pipeline {
         stage('Generate Javadocs') {
             agent any
             steps {
+                checkout scm
                 withMaven {
                     sh 'mvn -B javadoc:jar javadoc:aggregate'
                 }
@@ -142,13 +143,14 @@ pipeline {
             when { expression { params.doRelease } }
             agent any
             steps {
+                def scmVars = checkout scm
                 withMaven {
                     script {
                         mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
                                 "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
                     }
-                    echo "Checking out local branch ${env.GIT_LOCAL_BRANCH}..."
-                    sh "git checkout ${env.GIT_LOCAL_BRANCH}"
+                    echo "Checking out local branch ${scmVars.GIT_LOCAL_BRANCH}..."
+                    sh "git checkout ${scmVars.GIT_LOCAL_BRANCH}"
                     echo "Preparing ${env.releaseVersion}..."
                     sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
