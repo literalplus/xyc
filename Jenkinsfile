@@ -94,6 +94,7 @@ pipeline {
                     sh 'mvn -B javadoc:jar javadoc:aggregate'
                 }
                 sh 'echo Javadocs workspace: $(pwd)'
+                publishHTML(reportDir: 'target/site/apidocs', reportName: 'Javadocs', reportFiles: 'index.html')
             }
         }
 
@@ -140,7 +141,7 @@ pipeline {
                     echo "Preparing ${env.releaseVersion}..."
                     sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
-                    sh "mvn ${mvnParams} release:perform"
+                    sh "mvn ${mvnParams} javadoc:jar release:perform"
                 }
             }
         }
