@@ -72,6 +72,7 @@ pipeline {
 
     tools {
         maven 'Default Maven'
+        git 'Default git'
     }
 
     stages {
