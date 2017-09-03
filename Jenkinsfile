@@ -77,6 +77,11 @@ pipeline {
 
     stages {
         stage('Maven Package') {
+            when {
+                expression {
+                    !params.doRelease
+                }
+            }
             agent any
             steps {
                 deleteDir()
