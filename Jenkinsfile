@@ -143,9 +143,9 @@ pipeline {
             when { expression { params.doRelease } }
             agent any
             steps {
-                def scmVars = checkout scm
                 withMaven {
                     script {
+                        def scmVars = checkout(scm)
                         mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
                                 "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
                     }
