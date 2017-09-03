@@ -149,8 +149,8 @@ pipeline {
                         mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
                                 "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
                     }
-                    echo "Checking out local branch ${env.scmVars.GIT_LOCAL_BRANCH}..."
-                    sh "git checkout ${env.scmVars.GIT_LOCAL_BRANCH}"
+                    echo "Checking out local branch ${env.BRANCH_NAME}..."
+                    sh "git checkout ${env.BRANCH_NAME}"
                     echo "Preparing ${env.releaseVersion}..."
                     sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
