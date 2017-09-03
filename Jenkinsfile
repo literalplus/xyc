@@ -60,6 +60,9 @@ pipeline {
         booleanParam(defaultValue: false,
                 description: 'Dry run only?',
                 name: 'dryRun')
+        booleanParam(defaultValue: false,
+                description: 'Skip manual sanity check of generated versions (danger!)',
+                name: 'skipVersionSanityCheck')
     }
 
     options {
@@ -73,7 +76,6 @@ pipeline {
 
     stages {
         stage('Maven Package') {
-            when { expression {false}}
             agent any
             steps {
                 deleteDir()
@@ -86,7 +88,6 @@ pipeline {
         }
 
         stage('Generate Javadocs') {
-            when { expression {false}}
             agent any
             steps {
                 withMaven {
@@ -106,31 +107,24 @@ pipeline {
             steps {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
-                    echo "Release: ${params.paramReleaseVersion}"
-                    echo "W/o params: ${paramReleaseVersion}"
-                    echo "Equals: ${'%auto'.equals(params.paramReleaseVersion)}"
-                    echo "==: ${('%auto' == params.paramReleaseVersion)}"
-                    echo "eIC: ${('%auto'.equalsIgnoreCase(params.paramReleaseVersion))}"
                     if (params.paramReleaseVersion.equals('%auto%')) {
                         env.releaseVersion = findReleaseVersion(mavenVersion)
-                        echo "Computed release version: ${env.releaseVersion}"
                     } else {
-                        env.releaseVersion = params.paramReleaseVersion;
-                        echo "Using specified release version"
+                        env.releaseVersion = params.paramReleaseVersion
                     }
                     if (params.paramDevVersion.equals('%auto%')) {
                         env.devVersion = findNextSnapshotVersion(mavenVersion)
-                        echo "Computed dev version: ${devVersion}"
                     } else {
                         env.devVersion = params.paramDevVersion
-                        echo "Using specified dev version"
+                    }
+                    if (!params.skipVersionSanityCheck) {
+                        input """
+                              Do these computed versions look okay?
+                              Release version: ${env.releaseVersion}
+                              Development version: ${env.devVersion}
+                              """
                     }
                 }
-                input """
-                Do these computed versions look okay?
-                Release version: ${env.releaseVersion}
-                Development version: ${env.devVersion}
-                """
             }
         }
 
@@ -138,9 +132,14 @@ pipeline {
             when { expression { params.doRelease } }
             agent any
             steps {
-                echo 'Release version: ' + env.releaseVersion
-                echo 'Dev version: ' + env.devVersion
-                echo 'Dry run: ' + params.dryRun
+                withMaven {
+                    mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
+                            "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
+                    echo "Preparing ${env.releaseVersion}..."
+                    sh "mvn ${mvnParams} release:prepare"
+                    echo "Releasing ${env.releaseVersion}..."
+                    sh "mvn ${mvnParams} release:perform"
+                }
             }
         }
     }
