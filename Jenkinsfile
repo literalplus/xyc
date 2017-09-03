@@ -50,13 +50,15 @@ pipeline {
 
     environment {
         MAVEN_VERSION = readMavenPom().getVersion()
+        RELEASE_VERSION = findReleaseVersion()
+        DEV_VERSION = findNextSnapshotVersion()
     }
 
     parameters {
-        string(defaultValue: findReleaseVersion(),
+        string(defaultValue: env.RELEASE_VERSION,
                 description: 'Release version',
                 name: 'releaseVersion')
-        string(defaultValue: findNextSnapshotVersion(),
+        string(defaultValue: env.DEV_VERSION,
                 description: 'Next development version',
                 name: 'devVersion')
         booleanParam(defaultValue: false,
