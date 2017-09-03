@@ -105,24 +105,22 @@ pipeline {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
                     if (params.releaseVersion == '%auto%') {
-                        def releaseVersion = findReleaseVersion(mavenVersion)
-                        echo "Computed release version: ${releaseVersion}"
+                        env.releaseVersion = findReleaseVersion(mavenVersion)
+                        echo "Computed release version: ${env.releaseVersion}"
                     } else {
-                        def releaseVersion = params.paramReleaseVersion;
+                        env.releaseVersion = params.paramReleaseVersion;
                     }
                     if (params.devVersion == '%auto%') {
-                        def devVersion = findNextSnapshotVersion(mavenVersion)
+                        env.devVersion = findNextSnapshotVersion(mavenVersion)
                         echo "Computed dev version: ${devVersion}"
                     } else {
-                        def devVersion = params.paramDevVersion
+                        env.devVersion = params.paramDevVersion
                     }
-                    env.testE = 'kek'
                 }
                 input """
                 Do these computed versions look okay?
-                Release version: ${releaseVersion}
-                Development version: ${devVersion}
-                ${env.testE}
+                Release version: ${env.releaseVersion}
+                Development version: ${env.devVersion}
                 """
             }
         }
@@ -131,10 +129,9 @@ pipeline {
             when { expression { params.doRelease } }
             agent any
             steps {
-                echo 'aa ' + env.testE
-                echo 'Release version: ' + releaseVersion
-                echo 'Dev version: ' + devVersion
-                echo 'Dry run: ' + dryRun
+                echo 'Release version: ' + env.releaseVersion
+                echo 'Dev version: ' + env.devVersion
+                echo 'Dry run: ' + params.dryRun
             }
         }
     }
