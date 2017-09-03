@@ -53,10 +53,10 @@ pipeline {
                 name: 'doRelease')
         string(defaultValue: '%auto%',
                 description: 'Release version',
-                name: 'releaseVersion')
+                name: 'paramReleaseVersion')
         string(defaultValue: '%auto%',
                 description: 'Next development version',
-                name: 'devVersion')
+                name: 'paramDevVersion')
         booleanParam(defaultValue: false,
                 description: 'Dry run only?',
                 name: 'dryRun')
@@ -97,7 +97,7 @@ pipeline {
         stage('Compute Release Versions') {
             when {
                 expression {
-                    params.doRelease && (params.releaseVersion == '%auto%' || params.devVersion == '%auto%')
+                    params.doRelease && (params.paramReleaseVersion == '%auto%' || params.paramDevVersion == '%auto%')
                 }
             }
             agent any
@@ -105,18 +105,22 @@ pipeline {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
                     if (params.releaseVersion == '%auto%') {
-                        params.releaseVersion = findReleaseVersion(mavenVersion)
-                        echo "Computed release version: ${params.releaseVersion}"
+                        releaseVersion = findReleaseVersion(mavenVersion)
+                        echo "Computed release version: ${releaseVersion}"
+                    } else {
+                        releaseVersion = params.paramReleaseVersion;
                     }
                     if (params.devVersion == '%auto%') {
-                        params.devVersion = findNextSnapshotVersion(mavenVersion)
-                        echo "Computed dev version: ${params.devVersion}"
+                        devVersion = findNextSnapshotVersion(mavenVersion)
+                        echo "Computed dev version: ${devVersion}"
+                    } else {
+                        devVersion = params.paramDevVersion
                     }
                 }
                 input """
                 Do these computed versions look okay?
-                Release version: ${params.releaseVersion}
-                Development version: ${params.devVersion}
+                Release version: ${releaseVersion}
+                Development version: ${devVersion}
                 """
             }
         }
