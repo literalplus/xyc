@@ -53,31 +53,33 @@ You can build documentation yourself using Maven:
 ````
 mvn javadoc:aggregate
 ````
-On the other hand, you could find JavaDocs [from my CI server](http://server.nowak-at.net/jenkins/job/public~XYC-Deploy/javadoc/)
+On the other hand, you could find JavaDocs [at my CI server](https://ci.l1t.li/job/xxyy/job/xyc/job/master/Javadocs/)
 
 Compilation
 -----------
 This project uses Apache Maven for compilation.
+
 ````
 mvn clean install
 ````
 You can also find pre-built artifacts [at my CI server](https://ci.l1t.li/job/xxyy/job/xyc/job/master/).
 
-If you want to use XYC in a project, try this:
-*Add to your `<repositories>` section:* (Warning: You need special access to my repo for this)
+Maven artifact descriptor:
+
 ````xml
-<repository>
-  <id>xxyy-repo</id>
-  <url>http://repo.l1t.li/repo/xxyy-lib/</url>
-</repository>
-````
-*Add to your `<dependencies>` section:*
-````xml
-<dependency>
-  <groupId>li.l1t.common</groupId>
-  <artifactId>xyc-[[your module]]</artifactId>
-  <version>[[See pom.xml]]</version>
-</dependency>
+<repositories>
+  <repository>
+    <id>xxyy-repo</id>
+    <url>http://repo.l1t.li/repo/xxyy-lib/</url>
+  </repository>
+</repositories>
+<dependencies>
+  <dependency>
+    <groupId>li.l1t.common</groupId>
+    <artifactId>xyc-[[your module]]</artifactId>
+    <version>[[See pom.xml]]</version>
+  </dependency>
+</dependencies>
 ````
 
 Versioning
