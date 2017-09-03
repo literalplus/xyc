@@ -145,12 +145,12 @@ pipeline {
             steps {
                 withMaven {
                     script {
-                        def scmVars = checkout(scm)
+                        env.scmVars = checkout(scm)
                         mvnParams = "-B -Dresume=false -DdryRun=${params.dryRun} " +
                                 "-DdevelopmentVersion=${env.devVersion} -DreleaseVersion=${env.releaseVersion}"
                     }
-                    echo "Checking out local branch ${scmVars.GIT_LOCAL_BRANCH}..."
-                    sh "git checkout ${scmVars.GIT_LOCAL_BRANCH}"
+                    echo "Checking out local branch ${env.scmVars.GIT_LOCAL_BRANCH}..."
+                    sh "git checkout ${env.scmVars.GIT_LOCAL_BRANCH}"
                     echo "Preparing ${env.releaseVersion}..."
                     sh "mvn ${mvnParams} release:prepare"
                     echo "Releasing ${env.releaseVersion}..."
