@@ -52,6 +52,21 @@ pipeline {
         MAVEN_VERSION = readMavenPom().getVersion()
     }
 
+    parameters {
+        booleanParam(defaultValue: false,
+                description: 'Run Maven Release build?',
+                name: 'doRelease')
+        string(defaultValue: '%auto%',
+                description: 'Release version',
+                name: 'releaseVersion')
+        string(defaultValue: '%auto%',
+                description: 'Next development version',
+                name: 'devVersion')
+        booleanParam(defaultValue: false,
+                description: 'Dry run only?',
+                name: 'dryRun')
+    }
+
     options {
         buildDiscarder(logRotator(numToKeepStr: '50'))
         skipDefaultCheckout()
@@ -62,29 +77,6 @@ pipeline {
     }
 
     stages {
-        stage('Prepare parameters for next execution') {
-            agent any
-            steps {
-                script {
-                    suggestedReleaseVersion = findReleaseVersion()
-                    suggestedDevVersion = findNextSnapshotVersion()
-                    properties([parameters([
-                            string(defaultValue: suggestedReleaseVersion,
-                                    description: 'Release version',
-                                    name: 'releaseVersion'),
-                            string(defaultValue: suggestedDevVersion,
-                                    description: 'Next development version',
-                                    name: 'devVersion'),
-                            booleanParam(defaultValue: false,
-                                    description: 'Dry run only?',
-                                    name: 'dryRun'),
-                            booleanParam(defaultValue: false,
-                                    description: 'Run Maven Release build?',
-                                    name: 'doRelease')
-                    ])])
-                }
-            }
-        }
 
         stage('Maven Package') {
             agent any
@@ -108,8 +100,34 @@ pipeline {
             }
         }
 
+        stage('Compute Release Versions') {
+            when {
+                expression {
+                    params.doRelease && (params.releaseVersion == '%auto%' || params.devVersion == '%auto%')
+                }
+            }
+            agent any
+            steps {
+                script {
+                    if (params.releaseVersion == '%auto%') {
+                        params.releaseVersion = findReleaseVersion()
+                        echo "Computed release version: ${params.releaseVersion}"
+                    }
+                    if (params.devVersion == '%auto%') {
+                        params.devVersion = findNextSnapshotVersion()
+                        echo "Computed dev version: ${params.devVersion}"
+                    }
+                }
+                input """
+                Do these computed versions look okay?
+                Release version: ${params.releaseVersion}
+                Development version: ${params.devVersion}
+                """
+            }
+        }
+
         stage('Maven Release') {
-            when { expression { doRelease } }
+            when { expression { params.doRelease } }
             agent any
             steps {
                 echo 'Release version: ' + releaseVersion
