@@ -73,6 +73,7 @@ pipeline {
 
     stages {
         stage('Maven Package') {
+            when { expression {false}}
             agent any
             steps {
                 deleteDir()
@@ -85,6 +86,7 @@ pipeline {
         }
 
         stage('Generate Javadocs') {
+            when { expression {false}}
             agent any
             steps {
                 withMaven {
