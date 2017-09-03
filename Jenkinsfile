@@ -105,7 +105,7 @@ pipeline {
         stage('Compute Release Versions') {
             when {
                 expression {
-                    params.doRelease && (params.paramReleaseVersion == '%auto%' || params.paramDevVersion == '%auto%')
+                    params.doRelease
                 }
             }
             agent any
