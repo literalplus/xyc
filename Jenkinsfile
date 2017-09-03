@@ -53,10 +53,10 @@ pipeline {
     }
 
     parameters {
-        string(defaultValue: suggestedReleaseVersion,
+        string(defaultValue: findReleaseVersion(),
                 description: 'Release version',
                 name: 'releaseVersion')
-        string(defaultValue: suggestedDevVersion,
+        string(defaultValue: findNextSnapshotVersion(),
                 description: 'Next development version',
                 name: 'devVersion')
         booleanParam(defaultValue: false,
