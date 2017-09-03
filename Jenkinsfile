@@ -85,7 +85,7 @@ pipeline {
             agent any
             steps {
                 script {
-                    project = readMavenPom
+                    project = readMavenPom()
                     suggestedReleaseVersion = findReleaseVersion(project)
                     suggestedDevVersion = findNextSnapshotVersion(project)
                 }
