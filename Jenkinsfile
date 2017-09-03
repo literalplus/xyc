@@ -25,7 +25,7 @@
 def findReleaseVersion = { org.apache.maven.model.Model model ->
     def version = model.getVersion()
     if (!version) {
-        return ""
+        return ''
     } else {
         return version.replace('-SNAPSHOT', '')
     }
@@ -33,15 +33,15 @@ def findReleaseVersion = { org.apache.maven.model.Model model ->
 
 def findNextSnapshotVersion = { org.apache.maven.model.Model model ->
     def releaseVersion = findReleaseVersion(model)
-    def versionParts = releaseVersion.split("\\.")
+    def versionParts = releaseVersion.split('\\.')
     def lastPartIndex = versionParts.length - 1
     try {
         def lastPartInt = Integer.parseInt(versionParts[lastPartIndex])
         lastPartInt += 1;
         versionParts[lastPartIndex] = Integer.toString(lastPartInt)
-        return versionParts.join(".")
+        return versionParts.join('.') + '-SNAPSHOT'
     } catch (NumberFormatException ignored) {
-        return ""
+        return ''
     }
 }
 
