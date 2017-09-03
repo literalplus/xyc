@@ -86,7 +86,7 @@ pipeline {
                 deleteDir()
                 checkout scm
                 withMaven {
-                    sh 'mvn -B package'
+                    sh 'mvn -B install'
                 }
                 sh 'echo Package workspace: $(pwd)'
             }
