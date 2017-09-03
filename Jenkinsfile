@@ -105,22 +105,24 @@ pipeline {
                 script {
                     def mavenVersion = readMavenPom().getVersion()
                     if (params.releaseVersion == '%auto%') {
-                        releaseVersion = findReleaseVersion(mavenVersion)
+                        def releaseVersion = findReleaseVersion(mavenVersion)
                         echo "Computed release version: ${releaseVersion}"
                     } else {
-                        releaseVersion = params.paramReleaseVersion;
+                        def releaseVersion = params.paramReleaseVersion;
                     }
                     if (params.devVersion == '%auto%') {
-                        devVersion = findNextSnapshotVersion(mavenVersion)
+                        def devVersion = findNextSnapshotVersion(mavenVersion)
                         echo "Computed dev version: ${devVersion}"
                     } else {
-                        devVersion = params.paramDevVersion
+                        def devVersion = params.paramDevVersion
                     }
+                    env.testE = 'kek'
                 }
                 input """
                 Do these computed versions look okay?
                 Release version: ${releaseVersion}
                 Development version: ${devVersion}
+                ${env.testE}
                 """
             }
         }
@@ -129,6 +131,7 @@ pipeline {
             when { expression { params.doRelease } }
             agent any
             steps {
+                echo 'aa ' + env.testE
                 echo 'Release version: ' + releaseVersion
                 echo 'Dev version: ' + devVersion
                 echo 'Dry run: ' + dryRun
