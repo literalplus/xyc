@@ -101,7 +101,7 @@ pipeline {
         }
 
         stage('Maven Release') {
-            when { doRelease }
+            when { expression { doRelease } }
             agent any
             steps {
                 echo 'Release version: ' + releaseVersion
