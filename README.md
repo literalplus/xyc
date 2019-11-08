@@ -53,7 +53,7 @@ You can build documentation yourself using Maven:
 ````
 mvn javadoc:aggregate
 ````
-On the other hand, you could find JavaDocs [at my CI server](https://ci.l1t.li/job/xxyy/job/xyc/job/master/Javadocs/)
+On the other hand, you could find JavaDocs [at my CI server](https://ci.lit.plus/job/literalplus/job/xyc/job/master/Javadocs/)
 
 Compilation
 -----------
@@ -62,7 +62,7 @@ This project uses Apache Maven for compilation.
 ````
 mvn clean install
 ````
-You can also find pre-built artifacts [at my CI server](https://ci.l1t.li/job/xxyy/job/xyc/job/master/).
+You can also find pre-built artifacts [at my CI server](https://ci.lit.plus/job/literalplus/job/xyc/job/master/).
 
 Maven artifact descriptor:
 
@@ -70,7 +70,7 @@ Maven artifact descriptor:
 <repositories>
   <repository>
     <id>xxyy-repo</id>
-    <url>http://repo.l1t.li/repo/xxyy-lib/</url>
+    <url>http://repo.lit.plus/repo/xxyy-lib/</url>
   </repository>
 </repositories>
 <dependencies>
