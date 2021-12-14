@@ -57,7 +57,7 @@
 
     <properties>
         <!-- Some properties inherited from xyc-api-parent -->
-        <log4j.version>2.0-beta9</log4j.version>
+        <log4j.version>2.16.0</log4j.version>
         <!-- Mojang ship outdated Beta Log4J code in Production -->
     </properties>
 
